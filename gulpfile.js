@@ -45,6 +45,7 @@ gulp.task('build-html', function () {
 gulp.task('build-css', function () {
   return gulp.src(FILES.SCSS)
     .pipe(sass().on('error', sass.logError))
+    .pipe(concat('styles.css'))
     .pipe(gulp.dest(DIR.BUILD));
 });
 
