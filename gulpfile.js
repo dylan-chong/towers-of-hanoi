@@ -1,9 +1,14 @@
 'use strict';
 
+
+// **************** DEPENDENCIES **************** //
+
 const gulp = require('gulp');
 const concat = require('gulp-concat');
 const sass = require('gulp-sass');
 const liveReload = require('livereload');
+
+// **************** CONSTANTS **************** //
 
 const DIR = {
   BUILD: 'build/',
@@ -14,13 +19,23 @@ const FILES = {
   SCSS: DIR.SRC + '**/*.scss',
   JS: DIR.SRC + '**/*.js'
 };
+const DEPENDENCIES = {
+  JS: ['bower_components/angular/angular.min.js']
+};
 
-gulp.task('default', ['build'], function () {});
+// **************** TASKS **************** //
+
+gulp.task('default', ['build', 'serve'], function () {});
+
+gulp.task('serve', ['build'], function () {
+  var server = liveReload.createServer();
+  server.watch(DIR.BUILD);
+});
+
+// ---------------- BUILD ---------------- //
 
 gulp.task('build', ['build-html', 'build-css',
-  'build-js'], function () {
-  
-});
+  'build-js'], function () {});
 
 gulp.task('build-html', function () {
   return gulp.src(FILES.HTML)
@@ -34,10 +49,7 @@ gulp.task('build-css', function () {
 });
 
 gulp.task('build-js', function () {
-  return gulp.src(FILES.JS)
+  return gulp.src(DEPENDENCIES.JS.concat([FILES.JS]))
     .pipe(concat('scripts.js'))
     .pipe(gulp.dest(DIR.BUILD));
 });
-
-var server = liveReload.createServer();
-server.watch(DIR.BUILD);
