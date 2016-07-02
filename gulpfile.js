@@ -1,6 +1,5 @@
 'use strict';
 
-
 // **************** DEPENDENCIES **************** //
 
 const gulp = require('gulp');
@@ -25,17 +24,24 @@ const DEPENDENCIES = {
 
 // **************** TASKS **************** //
 
-gulp.task('default', ['build', 'serve'], function () {});
+gulp.task('default', ['watch'], function () {});
 
 gulp.task('serve', ['build'], function () {
   var server = liveReload.createServer();
   server.watch(DIR.BUILD);
+  console.log('Live-reload is watching "' + DIR.BUILD + '"');
+});
+
+gulp.task('watch', ['serve'], function () {
+  gulp.watch(DIR.SRC + '**/*', ['build']);
 });
 
 // ---------------- BUILD ---------------- //
 
 gulp.task('build', ['build-html', 'build-css',
-  'build-js'], function () {});
+  'build-js'], function () {
+  console.log('Finished building');
+});
 
 gulp.task('build-html', function () {
   return gulp.src(FILES.HTML)
