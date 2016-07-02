@@ -1,0 +1,21 @@
+{
+  "name": "towers-of-hanoi",
+  "description": "Mockup of the puzzle \"Towers of Hanoi\"",
+  "main": "index.js",
+  "authors": [
+    "Dylan Chong <dylan.chong@icloud.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/dylan-chong/towers-of-hanoi",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.7"
+  }
+}
