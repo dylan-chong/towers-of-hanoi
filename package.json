@@ -17,8 +17,10 @@
   },
   "homepage": "https://github.com/dylan-chong/towers-of-hanoi#readme",
   "devDependencies": {
+    "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-sass": "^2.3.2",
-    "livereload": "^0.4.1"
+    "livereload": "^0.4.1",
+    "opn": "^4.0.2"
   }
 }
