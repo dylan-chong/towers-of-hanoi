@@ -1,15 +1,18 @@
+'use strict';
+
 const gulp = require('gulp');
 const concat = require('gulp-concat');
+const sass = require('gulp-sass');
 const liveReload = require('livereload');
 
 const DIR = {
   BUILD: 'build/',
-  APP: 'app/src/'
+  SRC: 'src/'
 };
 const FILES = {
-  HTML: DIR.APP + 'index.html',
-  CSS: DIR.APP + '**/*.scss',
-  JS: DIR.APP + '**/*.js'
+  HTML: DIR.SRC + 'index.html',
+  SCSS: DIR.SRC + '**/*.scss',
+  JS: DIR.SRC + '**/*.js'
 };
 
 gulp.task('default', ['build'], function () {});
@@ -25,7 +28,8 @@ gulp.task('build-html', function () {
 });
 
 gulp.task('build-css', function () {
-  return gulp.src(FILES.CSS)
+  return gulp.src(FILES.SCSS)
+    .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest(DIR.BUILD));
 });
 
