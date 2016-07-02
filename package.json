@@ -18,7 +18,6 @@
   "homepage": "https://github.com/dylan-chong/towers-of-hanoi#readme",
   "devDependencies": {
     "gulp-concat": "^2.6.0",
-    "livereload": "^0.4.1",
-    "mkdirp": "^0.5.1"
+    "livereload": "^0.4.1"
   }
 }
