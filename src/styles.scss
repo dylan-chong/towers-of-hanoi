@@ -1,8 +1,9 @@
 .page-container {
-  $padding: 25px;
-  $page-width: 770px - $padding * 2;
+  $page-padding: 25px;
+  $page-width: 770px - $page-padding * 2;
+
   margin: 25px auto;
-  padding: $padding;
+  padding: $page-padding;
 
   width: 100%;
   min-width: $page-width;
@@ -15,7 +16,7 @@
 
   }
 
-  .game-canvas {
+  th-tower-game {
     display: block;
     position: relative;
     margin: 0 auto;
