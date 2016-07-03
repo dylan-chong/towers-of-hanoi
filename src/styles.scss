@@ -1,15 +1,29 @@
 .page-container {
-  margin: 20px auto;
-  padding: 25px;
+  $padding: 25px;
+  $page-width: 770px - $padding * 2;
+  margin: 25px auto;
+  padding: $padding;
 
-  width: 90%;
-  min-width: 700px;
-  max-width: 1000px;
+  width: 100%;
+  min-width: $page-width;
+  max-width: $page-width;
   min-height: 500px;
 
-  background-color: green;
+  border: 1px solid black;
 
   h1 {
-    color: white;
+
+  }
+
+  .game-canvas {
+    display: block;
+    position: relative;
+    margin: 0 auto;
+
+    $game-width: $page-width;
+    width: $game-width;
+    height: $game-width / 16px * 9px;
+
+    border: 1px solid black;
   }
 }
