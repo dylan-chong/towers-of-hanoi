@@ -27,9 +27,8 @@ single page.
 # Usage
 
 Running `gulp` builds the project from `src/` into `build/` and then opens
-`build/index.html` in your default browser. Gulp will watch for changes in the
-`src/` file, and will automatically rebuild the project and the browser will
-automatically refresh.
+`build/index.html` in your default browser. Gulp will automatically watch for
+changes in the `src/` file, rebuild the project, and refresh the browser.
 
 ## Website Dependencies
 

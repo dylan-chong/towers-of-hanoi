@@ -10,15 +10,20 @@
 
   <!--suppress HtmlUnknownTarget -->
   <script src="scripts.js"></script>
+
+  <!--Live reload-->
+  <!--TODO move this to the gulpfile, and use my fill module to fill a comment-->
+  <script>
+    document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
+        ':35729/livereload.js?snipver=1"></' + 'script>')
+  </script>
 </head>
 
 <body>
-<h1>Test <span>Stuff</span></h1>
 
-<!--Live reload-->
-<script>
-  document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
-      ':35729/livereload.js?snipver=1"></' + 'script>')
-</script>
+<div class="page-container">
+  <h1>Replace Me</h1>
+</div>
+
 </body>
 </html>
