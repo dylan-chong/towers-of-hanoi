@@ -18,7 +18,7 @@ const FILES = {
   HOME_PAGE_HTML: DIR.BUILD + 'index.html',
   HTML: DIR.SRC + 'index.html',
   SCSS: DIR.SRC + '**/*.scss',
-  JS: DIR.SRC + '**/*.js'
+  JS: [DIR.SRC + '**/*.module.js', DIR.SRC + '**/*.js']
 };
 const DEPENDENCIES = {
   JS: ['bower_components/angular/angular.min.js']
@@ -61,7 +61,7 @@ gulp.task('build-css', function () {
 });
 
 gulp.task('build-js', function () {
-  return gulp.src(DEPENDENCIES.JS.concat([FILES.JS]))
+  return gulp.src(DEPENDENCIES.JS.concat(FILES.JS))
     .pipe(concat('scripts.js'))
     .pipe(gulp.dest(DIR.BUILD));
 });
