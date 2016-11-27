@@ -1,4 +1,7 @@
 import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Dylan on 27/11/16.
@@ -19,7 +22,7 @@ public class THStack {
         assert disks >= 1;
 
         THStack stack = new THStack();
-        for (int d = disks; d >= 1; d++) {
+        for (int d = disks; d >= 1; d--) {
             if (!stack.push(new THDisk(d))) assert false;
         }
 
@@ -31,7 +34,7 @@ public class THStack {
      * @param disk Disk to add
      * @return true iff disk is smaller than others on the stack
      */
-    private boolean push(THDisk disk) {
+    boolean push(THDisk disk) {
         invariant();
 
         if (diskStack.size() != 0 && diskStack.peek().radius < disk.radius)
@@ -42,13 +45,26 @@ public class THStack {
         return true;
     }
 
-    private THDisk pop() {
+    THDisk pop() {
         if (diskStack.isEmpty()) return null;
         return diskStack.pop();
     }
 
+    int size() {
+        return diskStack.size();
+    }
+
+    List<String> toStrings() {
+        Object[] stack = diskStack.toArray();
+        List<String> diskStrings = Arrays.stream(stack)
+            .map(Object::toString)
+            .collect(Collectors.toList());
+
+        return diskStrings;
+    }
+
     private void invariant() {
-        boolean isAssertOn;
+        boolean isAssertOn = false;
         // noinspection AssertWithSideEffects
         assert isAssertOn = true;
         if (!isAssertOn) return;
@@ -68,17 +84,4 @@ public class THStack {
         }
     }
 
-    private static class THDisk {
-        final int radius;
-
-        THDisk(int radius) {
-            assert radius >= 1;
-            this.radius = radius;
-        }
-
-        @Override
-        public String toString() {
-            return "(" + radius + ")";// TODO LATER make it look better
-        }
-    }
 }

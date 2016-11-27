@@ -17,26 +17,49 @@ public class THMain {
     private THMain() {
         printWelcome();
         diskStacks = new THStackList(DEFAULT_NUM_STACKS, 3);
+        printStackState();
     }
-
 
     private void printWelcome() {
+        // Push everything to bottom of screen
+        for (int l = 0; l < 300; l++) System.out.println();
+
         System.out.println();
-        System.out.println();
-        System.out.println();
-        printSectionLine();
-        System.out.println();
+        printSectionLine(0);
         System.out.println(TITLE);
-        System.out.println();
-        printSectionLine();
-        System.out.println();
-        System.out.println();
-        System.out.println();
+        printSectionLine(0);
     }
 
-    private void printSectionLine() {
+    /**
+     *
+     * @param importance 0 for most important
+     */
+    private void printSectionLine(int importance) {
+        String c;
+        switch (importance) {
+            case 0:
+                c = "*";
+                break;
+            case 1:
+                c = "-";
+                break;
+            default:
+                throw new IllegalArgumentException(
+                        "Nothing set for " + importance + " importance level"
+                );
+        }
         System.out.println(
-                new String(new char[TITLE.length()]).replace("\0", "*")
+                new String(new char[TITLE.length()]).replace("\0", c)
         );
+    }
+
+    private void printStackState() {
+        System.out.println();
+        printSectionLine(1);
+        System.out.println();
+        System.out.println(diskStacks.toString());
+        System.out.println();
+        printSectionLine(1);
+        System.out.println();
     }
 }
