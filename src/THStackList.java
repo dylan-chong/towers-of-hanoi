@@ -12,6 +12,10 @@ public class THStackList {
         discStacks = createStartingDiskStacks(numStacks, numDisks);
     }
 
+    int numberOfStacks() {
+        return discStacks.size();
+    }
+
     private static List<THStack> createStartingDiskStacks(int numStacks,
                                                           int numDisks) {
         assert numStacks >= 2;
@@ -27,12 +31,21 @@ public class THStackList {
         return Collections.unmodifiableList(stacks);
     }
 
+    private int getTotalDisks() {
+        return discStacks.stream()
+                .mapToInt(THStack::size)
+                .reduce((size1, size2) -> size1 + size2)
+                .orElseThrow(RuntimeException::new);
+    }
+
     private String[][] toGridOfStrings() {
-        int maxStackSize = discStacks.stream()
-                .reduce((thStack, thStack2) ->
-                        thStack.size() > thStack2.size() ? thStack : thStack2)
-                .orElseThrow(() -> new RuntimeException("No discStacks available"))
-                .size();
+        // int maxStackSize = discStacks.stream()
+        //         .reduce((thStack, thStack2) ->
+        //                 thStack.size() > thStack2.size() ? thStack : thStack2)
+        //         .orElseThrow(() -> new RuntimeException("No discStacks available"))
+        //         .size();
+
+        int maxStackSize = getTotalDisks();
 
         // stacksStrings[0] gives a stack where stacksStrings[0][0] is the
         // bottom of the stack.
@@ -67,5 +80,28 @@ public class THStackList {
         }
 
         return sb.toString();
+    }
+
+    /**
+     * @param fromStackIndex
+     * @param toStackIndex
+     * @return The radius of the disc
+     * @throws DiskMoveException If moving the disk wasn't possible
+     */
+    int moveDisk(int fromStackIndex, int toStackIndex) throws DiskMoveException {
+        try {
+            THDisk diskToMove = discStacks.get(fromStackIndex).pop();
+
+            try {
+                discStacks.get(toStackIndex).push(diskToMove);
+                return diskToMove.radius;
+            } catch (RuntimeException e) {
+                discStacks.get(fromStackIndex).push(diskToMove);
+                throw new DiskMoveException(e.getMessage());
+            }
+        } catch (RuntimeException e) {
+            throw new DiskMoveException(e.getMessage());
+        }
+
     }
 }

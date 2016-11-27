@@ -1,6 +1,7 @@
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 /**
@@ -23,7 +24,7 @@ public class THStack {
 
         THStack stack = new THStack();
         for (int d = disks; d >= 1; d--) {
-            if (!stack.push(new THDisk(d))) assert false;
+            stack.push(new THDisk(d));
         }
 
         stack.invariant();
@@ -34,19 +35,20 @@ public class THStack {
      * @param disk Disk to add
      * @return true iff disk is smaller than others on the stack
      */
-    boolean push(THDisk disk) {
+    void push(THDisk disk) {
         invariant();
 
         if (diskStack.size() != 0 && diskStack.peek().radius < disk.radius)
-            return false;
+            throw new RuntimeException("Disk is bigger than the one at the " +
+                    "top of the stack");
         diskStack.push(disk);
 
         invariant();
-        return true;
     }
 
     THDisk pop() {
-        if (diskStack.isEmpty()) return null;
+        if (diskStack.isEmpty())
+            throw new NoSuchElementException("There is no disk to remove");
         return diskStack.pop();
     }
 
