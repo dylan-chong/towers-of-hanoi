@@ -42,8 +42,30 @@ public class THStack {
         return true;
     }
 
+    private THDisk pop() {
+        if (diskStack.isEmpty()) return null;
+        return diskStack.pop();
+    }
+
     private void invariant() {
-        // TODO
+        boolean isAssertOn;
+        // noinspection AssertWithSideEffects
+        assert isAssertOn = true;
+        if (!isAssertOn) return;
+
+        // ***
+
+        if (diskStack.size() <= 1) return; // nothing to check
+
+        THDisk smallerDisk = null;
+        for (THDisk disk : diskStack) { // Iterates in popping order
+            if (smallerDisk == null) {
+                smallerDisk = disk;
+                continue;
+            }
+
+            assert disk.radius > smallerDisk.radius;
+        }
     }
 
     private static class THDisk {
