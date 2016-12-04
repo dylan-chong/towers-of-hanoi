@@ -1,3 +1,8 @@
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
 /**
  * Created by Dylan on 27/11/16.
  */
@@ -6,34 +11,40 @@ public class THMain {
 
     public static void main(String[] args) {
         THMain game = new THMain();
-        // O.p("hello the fox jumped over the lazy world");
     }
 
     // *********************************************************
 
 
-    static final String TITLE = "*** WELCOME TO TOWERS OF HANOI ***";
+    private static final String TITLE_PREFIX = "***************";
+    static final String TITLE = TITLE_PREFIX + " WELCOME TO TOWERS OF HANOI "
+            + TITLE_PREFIX;
     private static final int DEFAULT_NUM_STACKS = 3;
-
 
     private THStackList diskStacks;
 
-
     private THMain() {
-        printWelcome();
         diskStacks = new THStackList(DEFAULT_NUM_STACKS, 3);
+
+        printWelcome();
+        O.pln();
+        printInstructions();
+        O.pln();
+        printControls();
         printStackState();
 
-        // TODO LATER remove
-        for (int i = 0; i < 3; i++) {
-            int from = (int) (Math.random() * diskStacks.numberOfStacks());
-            int to = (int) (Math.random() * diskStacks.numberOfStacks());
-            moveDisk(from, to);
+        Scanner systemInput = new Scanner(System.in);
+
+        while (true) {
+            O.pln("Move from x to y: ");
+
+            String ln = systemInput.nextLine();
             try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                consumeUserInput(ln);
+            } catch (Exception e) {
+                O.pln(e.getMessage() + "\n");
             }
+            printStackState();
         }
     }
 
@@ -41,10 +52,46 @@ public class THMain {
         // Push everything to bottom of screen
         for (int l = 0; l < 300; l++) O.pln();
 
-        O.pln();
         printSectionLine(0);
         O.pln(TITLE);
         printSectionLine(0);
+    }
+
+    private void printInstructions() {
+        O.pln("Objective: Get everything to the right stack");
+    }
+
+    private void printControls() {
+        O.pln("Controls: Enter '1 3' to move from the left stack to the 3rd stack");
+    }
+
+    private void consumeUserInput(String line) throws Exception {
+        List<Integer> stackNumbers = Arrays.stream(line.split(" "))
+                .filter(token -> !token.equals(""))
+                .map(token -> {
+                    try {
+                        return Integer.parseInt(token);
+                    } catch (NumberFormatException e) {
+                        return null;
+                    }
+                })
+                .collect(Collectors.toList());
+
+        // Validate input
+        if (stackNumbers.contains(null)) throw new Exception(
+                "Number format exception");
+        if (stackNumbers.size() != 2) throw new Exception(
+                "Wrong number of arguments");
+        if (stackNumbers.stream()
+                .filter(this::isInvalidStackForUserInput)
+                .count() > 0) throw new Exception("Invalid stack number");
+        // if (stackNumbers.)
+
+        moveDisk(stackNumbers.get(0) - 1, stackNumbers.get(1) - 1);
+
+    }
+    private boolean isInvalidStackForUserInput(int stackNum) {
+        return stackNum < 1 || stackNum > diskStacks.numberOfStacks();
     }
 
     private void moveDisk(int fromStackIndex, int toStackIndex) {
@@ -55,8 +102,6 @@ public class THMain {
         } catch (DiskMoveException e) {
             O.pln("CAN'T MOVE: " + e.getMessage());
         }
-
-        printStackState();
     }
 
     /**
