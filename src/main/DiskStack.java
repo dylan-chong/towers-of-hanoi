@@ -1,30 +1,29 @@
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.List;
-import java.util.NoSuchElementException;
+package main;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * Created by Dylan on 27/11/16.
  */
-public class THStack {
-    private ArrayDeque<THDisk> diskStack = new ArrayDeque<>();
+public class DiskStack {
+    private Deque<Disk> diskStack = new ArrayDeque<>();
 
-    private THStack() {
+    private DiskStack() {
     }
 
-    static THStack buildEmptyStack() {
-        THStack stack = new THStack();
+    static DiskStack buildEmptyStack() {
+        DiskStack stack = new DiskStack();
         stack.invariant();
         return stack;
     }
 
-    static THStack buildFullStack(int disks) {
+    static DiskStack buildFullStack(int disks) {
         assert disks >= 1;
 
-        THStack stack = new THStack();
+        DiskStack stack = new DiskStack();
         for (int d = disks; d >= 1; d--) {
-            stack.push(new THDisk(d));
+            stack.push(new Disk(d));
         }
 
         stack.invariant();
@@ -35,7 +34,7 @@ public class THStack {
      * @param disk Disk to add
      * @return true iff disk is smaller than others on the stack
      */
-    void push(THDisk disk) {
+    void push(Disk disk) {
         invariant();
 
         if (diskStack.size() != 0 && diskStack.peek().radius < disk.radius)
@@ -46,7 +45,7 @@ public class THStack {
         invariant();
     }
 
-    THDisk pop() {
+    Disk pop() {
         if (diskStack.isEmpty())
             throw new NoSuchElementException("There is no disk to remove");
         return diskStack.pop();
@@ -75,8 +74,8 @@ public class THStack {
 
         if (diskStack.size() <= 1) return; // nothing to check
 
-        THDisk smallerDisk = null;
-        for (THDisk disk : diskStack) { // Iterates in popping order
+        Disk smallerDisk = null;
+        for (Disk disk : diskStack) { // Iterates in popping order
             if (smallerDisk == null) {
                 smallerDisk = disk;
                 continue;

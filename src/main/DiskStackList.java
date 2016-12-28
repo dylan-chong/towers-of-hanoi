@@ -1,3 +1,5 @@
+package main;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -5,10 +7,10 @@ import java.util.List;
 /**
  * Created by Dylan on 27/11/16.
  */
-public class THStackList {
-    private final List<THStack> discStacks;
+public class DiskStackList {
+    private final List<DiskStack> discStacks;
 
-    THStackList(int numStacks, int numDisks) {
+    DiskStackList(int numStacks, int numDisks) {
         discStacks = createStartingDiskStacks(numStacks, numDisks);
     }
 
@@ -16,16 +18,16 @@ public class THStackList {
         return discStacks.size();
     }
 
-    private static List<THStack> createStartingDiskStacks(int numStacks,
-                                                          int numDisks) {
+    private static List<DiskStack> createStartingDiskStacks(int numStacks,
+                                                            int numDisks) {
         assert numStacks >= 2;
         assert numDisks >= 1;
 
-        List<THStack> stacks = new ArrayList<>();
-        stacks.add(THStack.buildFullStack(numDisks));
+        List<DiskStack> stacks = new ArrayList<>();
+        stacks.add(DiskStack.buildFullStack(numDisks));
 
         for (int s = 1; s < numStacks; s++) {
-            stacks.add(THStack.buildEmptyStack());
+            stacks.add(DiskStack.buildEmptyStack());
         }
 
         return Collections.unmodifiableList(stacks);
@@ -33,7 +35,7 @@ public class THStackList {
 
     private int getTotalDisks() {
         return discStacks.stream()
-                .mapToInt(THStack::size)
+                .mapToInt(DiskStack::size)
                 .reduce((size1, size2) -> size1 + size2)
                 .orElseThrow(RuntimeException::new);
     }
@@ -52,7 +54,7 @@ public class THStackList {
         String[][] stacksStrings = new String[discStacks.size()][maxStackSize];
 
         for (int s = 0; s < stacksStrings.length; s++) {
-            THStack stack = discStacks.get(s);
+            DiskStack stack = discStacks.get(s);
             List<String> diskStrings = stack.toStrings();
             Collections.reverse(diskStrings);
 
@@ -72,7 +74,7 @@ public class THStackList {
             for (String[] stacksString : stacksStrings) {
 
                 String diskString = stacksString[y];
-                if (diskString == null) diskString = THDisk.toString(null);
+                if (diskString == null) diskString = Disk.toString(null);
                 sb.append(diskString);
             }
 
@@ -90,7 +92,7 @@ public class THStackList {
      */
     int moveDisk(int fromStackIndex, int toStackIndex) throws DiskMoveException {
         try {
-            THDisk diskToMove = discStacks.get(fromStackIndex).pop();
+            Disk diskToMove = discStacks.get(fromStackIndex).pop();
 
             try {
                 discStacks.get(toStackIndex).push(diskToMove);

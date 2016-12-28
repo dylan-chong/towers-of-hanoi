@@ -1,3 +1,5 @@
+package main;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -6,11 +8,11 @@ import java.util.stream.Collectors;
 /**
  * Created by Dylan on 27/11/16.
  */
-public class THMain {
+public class Main {
 
 
     public static void main(String[] args) {
-        THMain game = new THMain();
+        Main game = new Main();
     }
 
     // *********************************************************
@@ -21,10 +23,10 @@ public class THMain {
             + TITLE_PREFIX;
     private static final int DEFAULT_NUM_STACKS = 3;
 
-    private THStackList diskStacks;
+    private DiskStackList diskStacks;
 
-    private THMain() {
-        diskStacks = new THStackList(DEFAULT_NUM_STACKS, 3);
+    private Main() {
+        diskStacks = new DiskStackList(DEFAULT_NUM_STACKS, 3);
 
         printWelcome();
         O.pln();

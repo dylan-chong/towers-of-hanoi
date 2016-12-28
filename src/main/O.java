@@ -1,3 +1,5 @@
+package main;
+
 import java.util.Arrays;
 
 /**
@@ -6,7 +8,7 @@ import java.util.Arrays;
  * Output, i.e. printing to console
  */
 class O {
-    static final int CONSOLE_WIDTH = THMain.TITLE.length();
+    static final int CONSOLE_WIDTH = Main.TITLE.length();
 
     /**
      * Print. Wraps tokens to next line if necessary
