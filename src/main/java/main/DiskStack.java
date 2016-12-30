@@ -1,3 +1,5 @@
+package main;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,6 +30,16 @@ public class DiskStack {
         return stack;
     }
 
+    public int getHeight() {
+        return diskStack.size();
+    }
+
+    public List<Disk> getDiskStack() {
+        Disk[] diskArray = diskStack.toArray(new Disk[diskStack.size()]);
+        List<Disk> diskList = Arrays.asList(diskArray);
+        return Collections.unmodifiableList(diskList);
+    }
+
     /**
      * @param disk Disk to add
      * @return true iff disk is smaller than others on the stack
@@ -56,8 +68,8 @@ public class DiskStack {
     List<String> toStrings() {
         Object[] stack = diskStack.toArray();
         List<String> diskStrings = Arrays.stream(stack)
-            .map(Object::toString)
-            .collect(Collectors.toList());
+                .map(Object::toString)
+                .collect(Collectors.toList());
 
         return diskStrings;
     }

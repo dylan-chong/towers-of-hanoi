@@ -1,3 +1,5 @@
+package main;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,12 +10,16 @@ import java.util.List;
 public class DiskStackList {
     private final List<DiskStack> discStacks;
 
-    DiskStackList(int numStacks, int numDisks) {
+    public DiskStackList(int numStacks, int numDisks) {
         discStacks = createStartingDiskStacks(numStacks, numDisks);
     }
 
-    int numberOfStacks() {
+    public int numberOfStacks() {
         return discStacks.size();
+    }
+
+    public List<DiskStack> getDiscStacks() {
+        return Collections.unmodifiableList(discStacks);
     }
 
     private static List<DiskStack> createStartingDiskStacks(int numStacks,
@@ -88,7 +94,7 @@ public class DiskStackList {
      * @return The radius of the disc
      * @throws DiskMoveException If moving the disk wasn't possible
      */
-    int moveDisk(int fromStackIndex, int toStackIndex) throws DiskMoveException {
+    public int moveDisk(int fromStackIndex, int toStackIndex) throws DiskMoveException {
         try {
             Disk diskToMove = discStacks.get(fromStackIndex).pop();
 
