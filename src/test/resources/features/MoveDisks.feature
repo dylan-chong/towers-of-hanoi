@@ -13,8 +13,9 @@ Feature: Move disks between stacks
     And stack 2 should have 0 disks
     And stack 3 should have 1 disk
 
-  Scenario: Move disk from empty stack, fails
-    # Todo
+  Scenario: Should not be able to move disk from empty stack
+    When the user tries to move a disk from stack 2 to stack 3 (expect fail)
+    Then stack 1 should have 3 disks
+    And stack 2 should have 0 disks
+    And stack 3 should have 0 disk
 
-  Scenario: Move disk to full stack, fails
-    # Todo

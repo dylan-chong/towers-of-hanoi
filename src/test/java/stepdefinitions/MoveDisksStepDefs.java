@@ -14,6 +14,7 @@ import java.io.PrintStream;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -58,5 +59,13 @@ public class MoveDisksStepDefs {
             int excludedStackIndex = excludedStackNum - 1;
             assertTrue(i == excludedStackIndex || diskHeight == numDisks);
         }
+    }
+
+    @When("^the user tries to move a disk from stack (\\d+) to stack (\\d+) \\(expect fail\\)$")
+    public void theUserTriesToMoveADiskFromStackToStackExpectFail(
+            int fromStackNum, int toStackNum) throws Throwable {
+        boolean didChangeSomething =
+                game.onUserInputtedLine(fromStackNum + " " + toStackNum);
+        assertFalse(didChangeSomething);
     }
 }
