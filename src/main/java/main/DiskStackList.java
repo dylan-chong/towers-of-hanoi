@@ -8,18 +8,17 @@ import java.util.List;
  * Created by Dylan on 27/11/16.
  */
 public class DiskStackList {
+    private static final int DEFAULT_NUM_STACKS = 3;
+    private static final int DEFAULT_NUM_DISKS = 3;
+
     private final List<DiskStack> discStacks;
 
     public DiskStackList(int numStacks, int numDisks) {
         discStacks = createStartingDiskStacks(numStacks, numDisks);
     }
 
-    public int numberOfStacks() {
-        return discStacks.size();
-    }
-
-    public List<DiskStack> getDiscStacks() {
-        return Collections.unmodifiableList(discStacks);
+    public DiskStackList() {
+        this(DEFAULT_NUM_STACKS, DEFAULT_NUM_DISKS);
     }
 
     private static List<DiskStack> createStartingDiskStacks(int numStacks,
@@ -35,6 +34,14 @@ public class DiskStackList {
         }
 
         return Collections.unmodifiableList(stacks);
+    }
+
+    public int numberOfStacks() {
+        return discStacks.size();
+    }
+
+    public List<DiskStack> getDiscStacks() {
+        return Collections.unmodifiableList(discStacks);
     }
 
     private int getTotalDisks() {

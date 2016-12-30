@@ -6,7 +6,7 @@
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
-    <option name="myFilePath" value="$PROJECT_DIR$/src/test/resources/features/DiskStackList.feature" />
+    <option name="myFilePath" value="$PROJECT_DIR$/src/test/resources/features/" />
     <option name="GLUE" value="stepdefinitions" />
     <option name="myNameFilter" value="^Move disk from full stack to empty stack$" />
     <option name="myGeneratedName" value="Scenario: Move disk from full stack to empty stack" />

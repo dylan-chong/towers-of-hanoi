@@ -8,7 +8,7 @@ import java.util.Arrays;
  * Output, i.e. printing to console
  */
 class O {
-    static final int CONSOLE_WIDTH = Main.TITLE.length();
+    static final int CONSOLE_WIDTH = TowersOfHanoiGame.TITLE.length();
 
     /**
      * Print. Wraps tokens to next line if necessary
