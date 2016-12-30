@@ -6,3 +6,7 @@
 
 # Gradle
 .gradle
+
+# BlueJ
+*.class
+*.ctxt
