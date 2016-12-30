@@ -1,5 +1,7 @@
 package main;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.Arrays;
 
 /**
@@ -7,13 +9,15 @@ import java.util.Arrays;
  *
  * Output, i.e. printing to console
  */
-class O {
-    static final int CONSOLE_WIDTH = TowersOfHanoiGame.TITLE.length();
+public class WrappedPrinter extends PrintStream { // todo extend
+    public static final int WIDTH = InfoPrinter.GAME_TITLE.length();
 
-    /**
-     * Print. Wraps tokens to next line if necessary
-     */
-    static void p(String str) {
+    public WrappedPrinter(OutputStream out) {
+        super(out);
+    }
+
+    @Override
+    public void print(String str) {
         if (str.equals("\n")) {
             System.out.println();
             return;
@@ -24,7 +28,7 @@ class O {
 
             for (int i = 0; i < lines.length; i++) {
                 String line = lines[i];
-                p(line);
+                print(line);
                 if (i != lines.length - 1 || line.equals(""))
                     System.out.println();
             }
@@ -35,7 +39,7 @@ class O {
 
         String[] tokens = str.split(" ");
 
-        assert !Arrays.stream(tokens).anyMatch(t -> t.contains("\t"))
+        assert Arrays.stream(tokens).noneMatch(t -> t.contains("\t"))
                 : "Haven't taken into account tabs yet";
 
         int textX = 0;
@@ -51,8 +55,7 @@ class O {
                 didJustIndent = true;
             }
 
-            if (textX + token.length() > CONSOLE_WIDTH &&
-                    !(textX == 0 || didJustIndent)) {
+            if (textX + token.length() > WIDTH && !(textX == 0 || didJustIndent)) {
                 textX = 0;
                 System.out.println();
                 line++;
@@ -68,27 +71,14 @@ class O {
         }
     }
 
-    /**
-     * Println
-     */
-    static void pln() {
-        pln(null);
+    @Override
+    public void println(String ln) {
+        super.println(ln);
     }
 
-    /**
-     * Println
-     * @param ln
-     */
-    static void pln(String ln) {
-        if (ln == null) p("\n");
-        else p(ln + '\n');
-    }
-
-    /**
-     * Printf
-     * @param str
-     */
-    static void pf(String str, Object ... args) {
-        p(String.format(str, args));
+    @Override
+    public WrappedPrinter printf(String str, Object ... args) {
+        super.printf(String.format(str, args));
+        return this;
     }
 }

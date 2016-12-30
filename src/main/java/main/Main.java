@@ -9,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
         TowersOfHanoiGame game = new TowersOfHanoiGame(
-                System.out, new DiskStackList()
+                new WrappedPrinter(System.out), new DiskStackList()
         );
 
         Scanner userIn = new Scanner(System.in);
