@@ -1,4 +1,4 @@
-package main.printing;
+package main.textprintable;
 
 /**
  * Created by Dylan on 31/12/16.

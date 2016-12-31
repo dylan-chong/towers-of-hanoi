@@ -1,6 +1,6 @@
 package main;
 
-import main.printing.TextPrintable;
+import main.textprintable.TextPrintable;
 
 import java.util.Arrays;
 import java.util.List;

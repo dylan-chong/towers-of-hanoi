@@ -1,15 +1,15 @@
-package main.printing;
+package main.textprintable;
 
-import java.awt.*;
+import javax.swing.*;
 
 /**
  * Created by Dylan on 31/12/16.
  */
 public class TextAreaPrinter implements TextPrintable {
 
-    private final TextArea textArea;
+    private final JTextArea textArea;
 
-    public TextAreaPrinter(TextArea textArea) {
+    public TextAreaPrinter(JTextArea textArea) {
         this.textArea = textArea;
     }
 

@@ -1,6 +1,6 @@
 package main;
 
-import main.printing.TextPrintable;
+import main.textprintable.TextPrintable;
 
 /**
  * Created by Dylan on 30/12/16.
@@ -19,9 +19,6 @@ public class GameInfoPrinter {
     }
 
     public void printWelcome() {
-        // Push everything to bottom of screen
-        for (int l = 0; l < 300; l++) out.println();
-
         printSectionLine(0);
         out.println(GAME_TITLE);
         printSectionLine(0);
