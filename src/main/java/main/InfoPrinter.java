@@ -1,7 +1,5 @@
 package main;
 
-import java.io.PrintStream;
-
 /**
  * Created by Dylan on 30/12/16.
  */
@@ -10,9 +8,9 @@ public class InfoPrinter {
     static final String GAME_TITLE =
             TITLE_PREFIX + " WELCOME TO TOWERS OF HANOI " + TITLE_PREFIX;
 
-    private final PrintStream out;
+    private final TextPrintable out;
 
-    public InfoPrinter(PrintStream out) {
+    public InfoPrinter(TextPrintable out) {
         this.out = out;
     }
 

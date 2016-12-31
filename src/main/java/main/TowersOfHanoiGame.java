@@ -1,6 +1,5 @@
 package main;
 
-import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,16 +11,16 @@ import java.util.stream.Collectors;
  */
 public class TowersOfHanoiGame {
 
-    private final PrintStream out;
+    private final TextPrintable out;
     private final InfoPrinter infoPrinter;
 
     private DiskStackList diskStacks;
 
-    public TowersOfHanoiGame(PrintStream messageOutputStream,
+    public TowersOfHanoiGame(TextPrintable messageOutput,
                              DiskStackList diskStacks) {
-        this.out = messageOutputStream;
+        this.out = messageOutput;
         this.diskStacks = diskStacks;
-        this.infoPrinter = new InfoPrinter(messageOutputStream);
+        this.infoPrinter = new InfoPrinter(messageOutput);
 
         infoPrinter.printWelcome();
         out.println();

@@ -13,7 +13,8 @@
     <module name="towers-of-hanoi_main" />
     <envs />
     <method>
-      <option name="RunConfigurationTask" enabled="true" run_configuration_name="towers-of-hanoi [build]" run_configuration_type="GradleRunConfiguration" />
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="towers-of-hanoi [compileJava]" run_configuration_type="GradleRunConfiguration" />
+      <option name="Make" enabled="true" />
     </method>
   </configuration>
 </component>

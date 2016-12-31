@@ -9,7 +9,7 @@ import java.util.Arrays;
  *
  * Output, i.e. printing to console
  */
-public class WrappedPrinter extends PrintStream { // todo extend
+public class WrappedPrinter extends PrintStream {
     public static final int WIDTH = InfoPrinter.GAME_TITLE.length();
 
     public WrappedPrinter(OutputStream out) {
