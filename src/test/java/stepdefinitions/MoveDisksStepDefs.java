@@ -7,7 +7,7 @@ import cucumber.api.java.en.When;
 import main.DiskStack;
 import main.DiskStackList;
 import main.TowersOfHanoiGame;
-import main.textprintable.StringTextPrintable;
+import main.textprinter.StringTextPrinter;
 
 import java.util.List;
 
@@ -18,12 +18,12 @@ import static org.junit.Assert.*;
  */
 public class MoveDisksStepDefs {
     private TowersOfHanoiGame game;
-    private StringTextPrintable gameOut;
+    private StringTextPrinter gameOut;
 
     @Given("^a starting-game stack with (\\d+) disks and (\\d+) stacks$")
     public void aStartingGameStackWithDisksAndStacks(int numDisks,
                                                      int numStacks) throws Throwable {
-        gameOut = new StringTextPrintable(new StringBuilder());
+        gameOut = new StringTextPrinter(new StringBuilder());
         game = new TowersOfHanoiGame(
                 gameOut,
                 new DiskStackList(numStacks, numDisks));

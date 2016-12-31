@@ -1,9 +1,9 @@
 package main;
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.ActionEvent;
 
 /**
  * Created by Dylan on 31/12/16.
@@ -12,11 +12,12 @@ public class GameGui extends JFrame {
     private JPanel mainPanel;
     private JTextArea gameOut;
     private JTextField userInput;
+    private JScrollPane gameOutScroll;
     private TowersOfHanoiGame towersOfHanoiGame;
 
     public GameGui() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setContentPane(mainPanel); // todo need?
+        setContentPane(mainPanel);
 
         Font font = new Font("monospaced", Font.PLAIN, 12);
         gameOut.setFont(font);
@@ -24,14 +25,18 @@ public class GameGui extends JFrame {
 
         gameOut.setColumns(GameInfoPrinter.WIDTH);
 
+        // Make gameOut scroll to the bottom automatically
+        ((DefaultCaret) gameOut.getCaret())
+                .setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+
         pack();
         setVisible(true);
         setResizable(false);
 
-        addComponentListener(new ComponentAdapter() {
+        userInput.addActionListener(new AbstractAction() {
             @Override
-            public void componentResized(ComponentEvent e) {
-                System.out.println(e);
+            public void actionPerformed(ActionEvent e) {
+                onUserEnteredLine();
             }
         });
     }
@@ -44,8 +49,14 @@ public class GameGui extends JFrame {
         this.towersOfHanoiGame = towersOfHanoiGame;
     }
 
+    // todo don't auto size window
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(450, 380);
+        return new Dimension(470, 380);
+    }
+
+    private void onUserEnteredLine() {
+        towersOfHanoiGame.onUserInputtedLine(userInput.getText());
+        userInput.setText("");
     }
 }
