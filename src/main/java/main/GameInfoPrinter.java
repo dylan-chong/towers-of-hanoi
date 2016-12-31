@@ -32,6 +32,10 @@ public class GameInfoPrinter {
         out.println("Controls: Enter '1 3' to move from the left stack to the 3rd stack");
     }
 
+    public void printShortControls() {
+        out.println("Move from x to y: ");
+    }
+
     public void printStackState(DiskStackList diskStacks) {
         out.println();
         printSectionLine(1);

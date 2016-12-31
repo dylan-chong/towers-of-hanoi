@@ -30,6 +30,8 @@ public class TowersOfHanoiGame {
         out.println();
         gameInfoPrinter.printControls();
         gameInfoPrinter.printStackState(diskStacks);
+
+        gameInfoPrinter.printShortControls();
     }
 
     public DiskStackList getDiskStackList() {
@@ -40,7 +42,7 @@ public class TowersOfHanoiGame {
      * @return True iff a change was made to the diskStacks
      */
     public boolean onUserInputtedLine(String line) {
-        out.println("Move from x to y: ");
+        out.println(line);
 
         boolean didChange = false;
         try {
@@ -48,12 +50,16 @@ public class TowersOfHanoiGame {
             didChange = moveDisk(
                     stackNumbers.get(0) - 1,
                     stackNumbers.get(1) - 1);
-        } catch (Exception e) {
+        } catch (Exception e) { // todo illegalformatexception
             out.println(e.getMessage() + "\n");
         }
         gameInfoPrinter.printStackState(diskStacks);
+        gameInfoPrinter.printShortControls();
+
         return didChange;
     }
+
+    // todo after build configurations
 
     private List<Integer> getStackNumbers(String line) throws Exception {
         List<Integer> stackNumbers = Arrays.stream(line.split(" "))
@@ -87,11 +93,9 @@ public class TowersOfHanoiGame {
         boolean didMove = false;
         try {
             int radius = diskStacks.moveDisk(fromStackIndex, toStackIndex);
-            out.printf("MOVED DISK of size %d: from index %d to %d\n",
-                    radius, fromStackIndex, toStackIndex);
             didMove = true;
         } catch (DiskMoveException e) {
-            out.println("CAN'T MOVE: " + e.getMessage());
+            out.println("CAN'T MOVE: " + e.getMessage()); // todo move into gameinfopriner
         }
         return didMove;
     }
