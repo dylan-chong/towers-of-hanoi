@@ -2,10 +2,10 @@ plugins {
     id "com.github.samueltbrown.cucumber" version "0.9"
 }
 
+apply plugin: 'java'
+
 group 'org.dylanchong'
 version '1.0-SNAPSHOT'
-
-apply plugin: 'java'
 
 repositories {
     mavenCentral()
@@ -16,8 +16,16 @@ dependencies {
     testCompile group: 'info.cukes', name: 'cucumber-java', version: '1.2.5'
 }
 
+// Cucumber tests
 cucumber {
     sourceSets = [project.sourceSets.test]
 }
-
 test.finalizedBy('cucumber')
+
+// Run application with 'run' task
+apply plugin: 'application'
+mainClassName = "main.Main"
+run {
+    standardInput = System.in
+}
+
