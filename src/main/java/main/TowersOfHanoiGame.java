@@ -1,5 +1,7 @@
 package main;
 
+import main.printing.TextPrintable;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,7 +14,7 @@ import java.util.stream.Collectors;
 public class TowersOfHanoiGame {
 
     private final TextPrintable out;
-    private final InfoPrinter infoPrinter;
+    private final GameInfoPrinter gameInfoPrinter;
 
     private DiskStackList diskStacks;
 
@@ -20,14 +22,14 @@ public class TowersOfHanoiGame {
                              DiskStackList diskStacks) {
         this.out = messageOutput;
         this.diskStacks = diskStacks;
-        this.infoPrinter = new InfoPrinter(messageOutput);
+        this.gameInfoPrinter = new GameInfoPrinter(messageOutput);
 
-        infoPrinter.printWelcome();
+        gameInfoPrinter.printWelcome();
         out.println();
-        infoPrinter.printInstructions();
+        gameInfoPrinter.printInstructions();
         out.println();
-        infoPrinter.printControls();
-        infoPrinter.printStackState(diskStacks);
+        gameInfoPrinter.printControls();
+        gameInfoPrinter.printStackState(diskStacks);
     }
 
     public DiskStackList getDiskStackList() {
@@ -49,7 +51,7 @@ public class TowersOfHanoiGame {
         } catch (Exception e) {
             out.println(e.getMessage() + "\n");
         }
-        infoPrinter.printStackState(diskStacks);
+        gameInfoPrinter.printStackState(diskStacks);
         return didChange;
     }
 

@@ -1,4 +1,4 @@
-package main;
+package main.printing;
 
 import java.awt.*;
 

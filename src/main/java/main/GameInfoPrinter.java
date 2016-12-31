@@ -1,16 +1,20 @@
 package main;
 
+import main.printing.TextPrintable;
+
 /**
  * Created by Dylan on 30/12/16.
  */
-public class InfoPrinter {
+public class GameInfoPrinter {
+    public static final int WIDTH = GameInfoPrinter.GAME_TITLE.length();
+
     private static final String TITLE_PREFIX = "***************";
     static final String GAME_TITLE =
             TITLE_PREFIX + " WELCOME TO TOWERS OF HANOI " + TITLE_PREFIX;
 
     private final TextPrintable out;
 
-    public InfoPrinter(TextPrintable out) {
+    public GameInfoPrinter(TextPrintable out) {
         this.out = out;
     }
 
@@ -59,7 +63,7 @@ public class InfoPrinter {
                 );
         }
         out.println(
-                new String(new char[WrappedPrinter.WIDTH]).replace("\0", c)
+                new String(new char[WIDTH]).replace("\0", c)
         );
     }
 }
