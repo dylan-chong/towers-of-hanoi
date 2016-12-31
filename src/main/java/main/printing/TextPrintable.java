@@ -10,5 +10,5 @@ public interface TextPrintable {
 
     void println(String ln);
 
-    TextAreaPrinter printf(String str, Object... args);
+    TextPrintable printf(String str, Object... args);
 }

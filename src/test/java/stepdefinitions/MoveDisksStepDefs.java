@@ -7,31 +7,26 @@ import cucumber.api.java.en.When;
 import main.DiskStack;
 import main.DiskStackList;
 import main.TowersOfHanoiGame;
+import main.printing.StringTextPrintable;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by Dylan on 29/12/16.
  */
 public class MoveDisksStepDefs {
     private TowersOfHanoiGame game;
-    private OutputStream gameOut;
+    private StringTextPrintable gameOut;
 
     @Given("^a starting-game stack with (\\d+) disks and (\\d+) stacks$")
     public void aStartingGameStackWithDisksAndStacks(int numDisks,
                                                      int numStacks) throws Throwable {
-        gameOut = new ByteArrayOutputStream();
+        gameOut = new StringTextPrintable(new StringBuilder());
         game = new TowersOfHanoiGame(
-                new PrintStream(gameOut),
-                new DiskStackList(numStacks, numDisks)
-        );
+                gameOut,
+                new DiskStackList(numStacks, numDisks));
     }
 
     @When("^the user moves a disk from stack (\\d+) to stack (\\d+)$")
