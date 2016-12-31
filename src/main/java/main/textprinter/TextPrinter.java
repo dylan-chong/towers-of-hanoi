@@ -1,14 +1,14 @@
-package main.textprintable;
+package main.textprinter;
 
 /**
  * Created by Dylan on 31/12/16.
  */
-public interface TextPrintable {
+public interface TextPrinter {
     void print(String str);
 
     void println();
 
     void println(String ln);
 
-    TextPrintable printf(String str, Object... args);
+    void printf(String str, Object... args);
 }

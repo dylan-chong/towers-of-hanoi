@@ -1,6 +1,6 @@
 package main;
 
-import main.textprintable.TextAreaPrinter;
+import main.textprinter.TextAreaPrinter;
 
 /**
  * Created by Dylan on 27/11/16.

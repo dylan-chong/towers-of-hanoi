@@ -1,6 +1,6 @@
 package main;
 
-import main.textprintable.TextPrintable;
+import main.textprinter.TextPrinter;
 
 /**
  * Created by Dylan on 30/12/16.
@@ -12,9 +12,9 @@ public class GameInfoPrinter {
     static final String GAME_TITLE =
             TITLE_PREFIX + " WELCOME TO TOWERS OF HANOI " + TITLE_PREFIX;
 
-    private final TextPrintable out;
+    private final TextPrinter out;
 
-    public GameInfoPrinter(TextPrintable out) {
+    public GameInfoPrinter(TextPrinter out) {
         this.out = out;
     }
 
