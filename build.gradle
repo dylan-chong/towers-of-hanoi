@@ -27,5 +27,6 @@ apply plugin: 'application'
 mainClassName = "main.Main"
 run {
     standardInput = System.in
+    enableAssertions = true
 }
 
