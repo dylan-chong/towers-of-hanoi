@@ -3,6 +3,7 @@ plugins {
 }
 
 apply plugin: 'java'
+apply plugin: 'eclipse'
 
 group 'org.dylanchong'
 version '1.0-SNAPSHOT'
