@@ -6,8 +6,14 @@
 /build/
 
 # Gradle
-.gradle/
+/.gradle/
 
 # BlueJ
 *.class
 *.ctxt
+
+# Eclipse project
+/bin/
+/.classpath
+/.project
+/.settings/
