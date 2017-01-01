@@ -10,7 +10,9 @@ public class Main {
     public static void main(String[] args) {
         GameGui gameGui = new GameGui();
         gameGui.setTowersOfHanoiGame(new TowersOfHanoiGame(
-                new TextAreaPrinter(gameGui.getGameOut()),
+                new GameInfoPrinter(
+                        new TextAreaPrinter(gameGui.getGameOut())
+                ),
                 new DiskStackList()
         ));
     }

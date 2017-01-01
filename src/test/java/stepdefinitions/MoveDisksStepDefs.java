@@ -6,6 +6,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import main.DiskStack;
 import main.DiskStackList;
+import main.GameInfoPrinter;
 import main.TowersOfHanoiGame;
 import main.textprinter.StringTextPrinter;
 
@@ -25,7 +26,7 @@ public class MoveDisksStepDefs {
                                                      int numStacks) throws Throwable {
         gameOut = new StringTextPrinter(new StringBuilder());
         game = new TowersOfHanoiGame(
-                gameOut,
+                new GameInfoPrinter(gameOut),
                 new DiskStackList(numStacks, numDisks));
     }
 

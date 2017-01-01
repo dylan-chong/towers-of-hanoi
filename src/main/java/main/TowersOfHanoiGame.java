@@ -1,35 +1,29 @@
 package main;
 
-import main.textprinter.TextPrinter;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-// todo move the print welcome into a new class
 
 /**
  * Created by Dylan on 30/12/16.
  */
 public class TowersOfHanoiGame {
 
-    private final TextPrinter out;
     private final GameInfoPrinter gameInfoPrinter;
 
     private DiskStackList diskStacks;
 
-    public TowersOfHanoiGame(TextPrinter messageOutput,
+    public TowersOfHanoiGame(GameInfoPrinter gameInfoPrinter,
                              DiskStackList diskStacks) {
-        this.out = messageOutput;
+        this.gameInfoPrinter = gameInfoPrinter;
         this.diskStacks = diskStacks;
-        this.gameInfoPrinter = new GameInfoPrinter(messageOutput);
 
-        gameInfoPrinter.printWelcome();
-        out.println();
-        gameInfoPrinter.printInstructions();
-        out.println();
-        gameInfoPrinter.printControls();
-        gameInfoPrinter.printStackState(diskStacks);
+        gameInfoPrinter.printWelcome()
+                .printEmptyLine()
+                .printInstructions()
+                .printEmptyLine()
+                .printControls()
+                .printStackState(diskStacks);
 
         gameInfoPrinter.printShortControls();
     }
@@ -42,7 +36,7 @@ public class TowersOfHanoiGame {
      * @return True iff a change was made to the diskStacks
      */
     public boolean onUserInputtedLine(String line) {
-        out.println(line);
+        gameInfoPrinter.printUserEnteredLine(line);
 
         boolean didChange = false;
         try {
@@ -55,8 +49,8 @@ public class TowersOfHanoiGame {
         } catch (DiskMoveException e) {
             gameInfoPrinter.printUnableToMoveDisk(e.getMessage());
         }
-        gameInfoPrinter.printStackState(diskStacks);
-        gameInfoPrinter.printShortControls();
+        gameInfoPrinter.printStackState(diskStacks)
+                .printShortControls();
 
         return didChange;
     }
@@ -81,7 +75,7 @@ public class TowersOfHanoiGame {
         if (stackNumbers.stream()
                 .filter(this::isInvalidStackForUserInput)
                 .count() > 0) throw new UserInputFormatException(
-                        "Invalid stack number");
+                "Invalid stack number");
 
         return stackNumbers;
     }

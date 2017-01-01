@@ -49,10 +49,10 @@ public class GameGui extends JFrame {
         this.towersOfHanoiGame = towersOfHanoiGame;
     }
 
-    // todo don't auto size window
+    // todo auto size window
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(470, 380);
+        return new Dimension(450, 380);
     }
 
     private void onUserEnteredLine() {

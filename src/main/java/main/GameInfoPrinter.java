@@ -6,11 +6,10 @@ import main.textprinter.TextPrinter;
  * Created by Dylan on 30/12/16.
  */
 public class GameInfoPrinter {
-    public static final int WIDTH = GameInfoPrinter.GAME_TITLE.length();
-
     private static final String TITLE_PREFIX = "***************";
-    static final String GAME_TITLE =
+    private static final String GAME_TITLE =
             TITLE_PREFIX + " WELCOME TO TOWERS OF HANOI " + TITLE_PREFIX;
+    public static final int WIDTH = GAME_TITLE.length();
 
     private final TextPrinter out;
 
@@ -18,25 +17,29 @@ public class GameInfoPrinter {
         this.out = out;
     }
 
-    public void printWelcome() {
+    public GameInfoPrinter printWelcome() {
         printSectionLine(0);
         out.println(GAME_TITLE);
         printSectionLine(0);
+        return this;
     }
 
-    public void printInstructions() {
+    public GameInfoPrinter printInstructions() {
         out.println("Objective: Get everything to the right stack");
+        return this;
     }
 
-    public void printControls() {
+    public GameInfoPrinter printControls() {
         out.println("Controls: Enter '1 3' to move from the left stack to the 3rd stack");
+        return this;
     }
 
-    public void printShortControls() {
-        out.println("Move from x to y: ");
+    public GameInfoPrinter printShortControls() {
+        out.print("Move from x to y: ");
+        return this;
     }
 
-    public void printStackState(DiskStackList diskStacks) {
+    public GameInfoPrinter printStackState(DiskStackList diskStacks) {
         out.println();
         printSectionLine(1);
         out.println();
@@ -44,16 +47,28 @@ public class GameInfoPrinter {
         out.println();
         printSectionLine(1);
         out.println();
+        return this;
     }
 
-    public void printUnableToMoveDisk(String reason) {
+    public GameInfoPrinter printUnableToMoveDisk(String reason) {
         out.println("CAN'T MOVE: " + reason);
+        return this;
+    }
+
+    public GameInfoPrinter printEmptyLine() {
+        out.println();
+        return this;
+    }
+
+    public GameInfoPrinter printUserEnteredLine(String line) {
+        out.println(line);
+        return this;
     }
 
     /**
      * @param importance 0 for most important
      */
-    public void printSectionLine(int importance) {
+    public GameInfoPrinter printSectionLine(int importance) {
         String c;
         switch (importance) {
             case 0:
@@ -64,11 +79,11 @@ public class GameInfoPrinter {
                 break;
             default:
                 throw new IllegalArgumentException(
-                        "Nothing set for " + importance + " importance level"
-                );
+                        "Nothing set for " + importance + " importance level");
         }
         out.println(
                 new String(new char[WIDTH]).replace("\0", c)
         );
+        return this;
     }
 }
