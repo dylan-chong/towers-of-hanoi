@@ -46,6 +46,10 @@ public class GameInfoPrinter {
         out.println();
     }
 
+    public void printUnableToMoveDisk(String reason) {
+        out.println("CAN'T MOVE: " + reason);
+    }
+
     /**
      * @param importance 0 for most important
      */

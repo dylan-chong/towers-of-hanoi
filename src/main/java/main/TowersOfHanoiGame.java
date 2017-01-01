@@ -47,11 +47,13 @@ public class TowersOfHanoiGame {
         boolean didChange = false;
         try {
             List<Integer> stackNumbers = getStackNumbers(line);
-            didChange = moveDisk(
-                    stackNumbers.get(0) - 1,
+            moveDisk(stackNumbers.get(0) - 1,
                     stackNumbers.get(1) - 1);
-        } catch (Exception e) { // todo illegalformatexception
-            out.println(e.getMessage() + "\n");
+            didChange = true;
+        } catch (UserInputFormatException e) {
+            gameInfoPrinter.printUnableToMoveDisk(e.getMessage());
+        } catch (DiskMoveException e) {
+            gameInfoPrinter.printUnableToMoveDisk(e.getMessage());
         }
         gameInfoPrinter.printStackState(diskStacks);
         gameInfoPrinter.printShortControls();
@@ -59,9 +61,7 @@ public class TowersOfHanoiGame {
         return didChange;
     }
 
-    // todo after build configurations
-
-    private List<Integer> getStackNumbers(String line) throws Exception {
+    private List<Integer> getStackNumbers(String line) throws UserInputFormatException {
         List<Integer> stackNumbers = Arrays.stream(line.split(" "))
                 .filter(token -> !token.equals(""))
                 .map(token -> {
@@ -74,13 +74,14 @@ public class TowersOfHanoiGame {
                 .collect(Collectors.toList());
 
         // Validate input
-        if (stackNumbers.contains(null)) throw new Exception(
+        if (stackNumbers.contains(null)) throw new UserInputFormatException(
                 "Number format exception");
-        if (stackNumbers.size() != 2) throw new Exception(
+        if (stackNumbers.size() != 2) throw new UserInputFormatException(
                 "Wrong number of arguments");
         if (stackNumbers.stream()
                 .filter(this::isInvalidStackForUserInput)
-                .count() > 0) throw new Exception("Invalid stack number");
+                .count() > 0) throw new UserInputFormatException(
+                        "Invalid stack number");
 
         return stackNumbers;
     }
@@ -89,15 +90,9 @@ public class TowersOfHanoiGame {
         return stackNum < 1 || stackNum > diskStacks.numberOfStacks();
     }
 
-    private boolean moveDisk(int fromStackIndex, int toStackIndex) {
-        boolean didMove = false;
-        try {
-            int radius = diskStacks.moveDisk(fromStackIndex, toStackIndex);
-            didMove = true;
-        } catch (DiskMoveException e) {
-            out.println("CAN'T MOVE: " + e.getMessage()); // todo move into gameinfopriner
-        }
-        return didMove;
+    private void moveDisk(int fromStackIndex, int toStackIndex)
+            throws DiskMoveException {
+        diskStacks.moveDisk(fromStackIndex, toStackIndex);
     }
 
 }
