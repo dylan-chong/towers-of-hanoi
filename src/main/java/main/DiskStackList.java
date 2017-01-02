@@ -52,12 +52,6 @@ public class DiskStackList {
     }
 
     private String[][] toGridOfStrings() {
-        // int maxStackSize = discStacks.stream()
-        //         .reduce((thStack, thStack2) ->
-        //                 thStack.size() > thStack2.size() ? thStack : thStack2)
-        //         .orElseThrow(() -> new RuntimeException("No discStacks available"))
-        //         .size();
-
         int maxStackSize = getTotalDisks();
 
         // stacksStrings[0] gives a stack where stacksStrings[0][0] is the
@@ -102,19 +96,15 @@ public class DiskStackList {
      * @throws DiskMoveException If moving the disk wasn't possible
      */
     public int moveDisk(int fromStackIndex, int toStackIndex) throws DiskMoveException {
+        Disk diskToMove = discStacks.get(fromStackIndex).pop();
+
         try {
-            Disk diskToMove = discStacks.get(fromStackIndex).pop();
-
-            try {
-                discStacks.get(toStackIndex).push(diskToMove);
-                return diskToMove.radius;
-            } catch (RuntimeException e) {
-                discStacks.get(fromStackIndex).push(diskToMove);
-                throw new DiskMoveException(e.getMessage());
-            }
-        } catch (RuntimeException e) {
-            throw new DiskMoveException(e.getMessage());
+            discStacks.get(toStackIndex).push(diskToMove);
+            return diskToMove.radius;
+        } catch (DiskMoveException e) {
+            // Put diskToMove back where it was before
+            discStacks.get(fromStackIndex).push(diskToMove);
+            throw e;
         }
-
     }
 }

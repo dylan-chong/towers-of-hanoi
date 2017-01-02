@@ -32,6 +32,11 @@ public class TowersOfHanoiGame {
         return diskStacks;
     }
 
+    public void moveDisk(int fromStackIndex, int toStackIndex)
+            throws DiskMoveException {
+        diskStacks.moveDisk(fromStackIndex, toStackIndex);
+    }
+
     /**
      * @return True iff a change was made to the diskStacks
      */
@@ -44,9 +49,7 @@ public class TowersOfHanoiGame {
             moveDisk(stackNumbers.get(0) - 1,
                     stackNumbers.get(1) - 1);
             didChange = true;
-        } catch (UserInputFormatException e) {
-            gameInfoPrinter.printUnableToMoveDisk(e.getMessage());
-        } catch (DiskMoveException e) {
+        } catch (UserInputFormatException | DiskMoveException e) {
             gameInfoPrinter.printUnableToMoveDisk(e.getMessage());
         }
         gameInfoPrinter.printStackState(diskStacks)
@@ -82,11 +85,6 @@ public class TowersOfHanoiGame {
 
     private boolean isInvalidStackForUserInput(int stackNum) {
         return stackNum < 1 || stackNum > diskStacks.numberOfStacks();
-    }
-
-    private void moveDisk(int fromStackIndex, int toStackIndex)
-            throws DiskMoveException {
-        diskStacks.moveDisk(fromStackIndex, toStackIndex);
     }
 
 }

@@ -23,7 +23,9 @@ public class DiskStack {
 
         DiskStack stack = new DiskStack();
         for (int d = disks; d >= 1; d--) {
-            stack.push(new Disk(d));
+            try {
+                stack.push(new Disk(d));
+            } catch (DiskMoveException ignored) {}
         }
 
         stack.invariant();
@@ -44,20 +46,20 @@ public class DiskStack {
      * @param disk Disk to add
      * @return true iff disk is smaller than others on the stack
      */
-    void push(Disk disk) {
+    void push(Disk disk) throws DiskMoveException {
         invariant();
 
         if (diskStack.size() != 0 && diskStack.peek().radius < disk.radius)
-            throw new RuntimeException("Disk is bigger than the one at the " +
+            throw new DiskMoveException("Disk is bigger than the one at the " +
                     "top of the stack");
         diskStack.push(disk);
 
         invariant();
     }
 
-    Disk pop() {
+    Disk pop() throws DiskMoveException {
         if (diskStack.isEmpty())
-            throw new NoSuchElementException("There is no disk to remove");
+            throw new DiskMoveException("There is no disk to remove");
         return diskStack.pop();
     }
 
