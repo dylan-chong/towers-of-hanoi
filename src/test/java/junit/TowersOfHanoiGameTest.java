@@ -16,13 +16,13 @@ public class TowersOfHanoiGameTest {
     }
 
     @Test
-    public void getSuccessfulMoveCount_startingState_shouldBe0() {
+    public void getSuccessfulMoveCount_startingState_shouldReturn0() {
         TowersOfHanoiGame game = getNewTowersOfHanoiGame();
         Assert.assertEquals(0, game.getSuccessfulMoveCount());
     }
 
     @Test
-    public void getSuccessfulMoveCount_1move_shouldBe1() throws DiskMoveException {
+    public void getSuccessfulMoveCount_1move_shouldReturn1() throws DiskMoveException {
         TowersOfHanoiGame game = getNewTowersOfHanoiGame();
         game.moveDisk(new Move(0, 1));
         Assert.assertEquals(1, game.getSuccessfulMoveCount());
@@ -30,7 +30,7 @@ public class TowersOfHanoiGameTest {
 
 
     @Test
-    public void getSuccessfulMoveCount_2moves_shouldBe2() throws DiskMoveException {
+    public void getSuccessfulMoveCount_2moves_shouldReturn2() throws DiskMoveException {
         TowersOfHanoiGame game = getNewTowersOfHanoiGame();
         game.moveDisk(new Move(0, 1));
         game.moveDisk(new Move(0, 2));
@@ -38,7 +38,7 @@ public class TowersOfHanoiGameTest {
     }
 
     @Test
-    public void getSuccessfulMoveCount_moveDiskNowhere_shouldBe0() {
+    public void getSuccessfulMoveCount_moveDiskNowhere_shouldReturn0() {
         TowersOfHanoiGame game = getNewTowersOfHanoiGame();
         try {
             game.moveDisk(new Move(0, 0));
@@ -47,7 +47,7 @@ public class TowersOfHanoiGameTest {
     }
 
     @Test
-    public void getSuccessfulMoveCount_startingStateFailedMove_shouldBe0() {
+    public void getSuccessfulMoveCount_startingStateFailedMove_shouldReturn0() {
         TowersOfHanoiGame game = getNewTowersOfHanoiGame();
         try {
             game.moveDisk(new Move(1, 2)); // no disk there
@@ -55,4 +55,7 @@ public class TowersOfHanoiGameTest {
 
         Assert.assertEquals(0, game.getSuccessfulMoveCount());
     }
+
+    // @Test
+    // public void isSolved
 }

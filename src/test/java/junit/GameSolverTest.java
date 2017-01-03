@@ -17,13 +17,10 @@ public class GameSolverTest {
                 new DiskStackList(3));
     }
 
-    private boolean isSolved(TowersOfHanoiGame game, List<Move> solutionMoves) {
-        throw new RuntimeException("todo");
-    }
-
     @Test
-    public void solveGame_partiallyPlayedGame_shouldRefuseToSolve()
+    public void getSolutionMoves_partiallyPlayedGame_shouldRefuseToSolve()
             throws DiskMoveException {
+
         TowersOfHanoiGame towersOfHanoiGame = getNewTowersOfHanoiGame();
         GameSolver gameSolver = new GameSolver(towersOfHanoiGame);
 
@@ -36,8 +33,9 @@ public class GameSolverTest {
     }
 
     @Test
-    public void solveGame_startingStateWith1Disk_shouldBeSolved()
-            throws GameSolverStateException {
+    public void getSolutionMoves_startingStateWith1Disk_shouldBeSolved()
+            throws GameSolverStateException, DiskMoveException {
+
         TowersOfHanoiGame towersOfHanoiGame = new TowersOfHanoiGame(
                 new GameInfoPrinter(new StringTextPrinter(new StringBuilder())),
                 new DiskStackList(1));
@@ -45,6 +43,8 @@ public class GameSolverTest {
         GameSolver gameSolver = new GameSolver(towersOfHanoiGame);
         List<Move> moves = gameSolver.getSolutionMoves();
 
-        Assert.assertTrue(isSolved(towersOfHanoiGame, moves));
+        towersOfHanoiGame.moveDisks(moves);
+
+        Assert.assertTrue(towersOfHanoiGame.isSolved());
     }
 }

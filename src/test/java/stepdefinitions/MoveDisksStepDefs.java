@@ -20,14 +20,16 @@ import static org.junit.Assert.*;
 public class MoveDisksStepDefs {
     private TowersOfHanoiGame game;
     private StringTextPrinter gameOut;
+    private DiskStackList diskStackList;
 
     @Given("^a starting-game stack with (\\d+) disks and (\\d+) stacks$")
     public void aStartingGameStackWithDisksAndStacks(int numDisks,
                                                      int numStacks) throws Throwable {
         gameOut = new StringTextPrinter(new StringBuilder());
+        diskStackList = new DiskStackList(numStacks, numDisks);
         game = new TowersOfHanoiGame(
                 new GameInfoPrinter(gameOut),
-                new DiskStackList(numStacks, numDisks));
+                diskStackList);
     }
 
     @When("^the user moves a disk from stack (\\d+) to stack (\\d+)$")
@@ -39,7 +41,7 @@ public class MoveDisksStepDefs {
     @Then("^stack (\\d+) should have (\\d+) disks?$")
     public void stackShouldHaveDisks(int stackNum,
                                      int idealNumberOfDisks) throws Throwable {
-        int numDisks = game.getDiskStackList()
+        int numDisks = diskStackList
                 .getDiskStacks()
                 .get(stackNum - 1)
                 .getHeight();
@@ -49,7 +51,7 @@ public class MoveDisksStepDefs {
     @And("^all stacks except stack (\\d+) should have (\\d+) disks?$")
     public void allStacksExceptStackShouldHaveDisks(int excludedStackNum,
                                                     int numDisks) throws Throwable {
-        List<DiskStack> stacks = game.getDiskStackList().getDiskStacks();
+        List<DiskStack> stacks = diskStackList.getDiskStacks();
         for (int i = 0; i < stacks.size(); i++) {
             int diskHeight = stacks.get(i).getHeight();
             int excludedStackIndex = excludedStackNum - 1;

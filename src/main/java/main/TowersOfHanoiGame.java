@@ -29,14 +29,19 @@ public class TowersOfHanoiGame {
         gameInfoPrinter.printShortControls();
     }
 
-    public DiskStackList getDiskStackList() {
-        return diskStacks;
-    }
-
-    public void moveDisk(Move move)
-            throws DiskMoveException {
+    public void moveDisk(Move move) throws DiskMoveException {
         diskStacks.moveDisk(move);
         successfulMoveCount++; // called iff above line doesn't throw exception
+    }
+
+    /**
+     * @throws DiskMoveException Will not complete all the moves if one throws
+     *                           an exception
+     */
+    public void moveDisks(List<Move> moves) throws DiskMoveException {
+        for (Move move : moves) {
+            moveDisk(move);
+        }
     }
 
     /**
@@ -59,6 +64,10 @@ public class TowersOfHanoiGame {
                 .printShortControls();
 
         return didChange;
+    }
+
+    public boolean isSolved() {
+        return false; //todo
     }
 
     private List<Integer> getStackNumbers(String line) throws UserInputFormatException {
