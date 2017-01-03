@@ -69,7 +69,7 @@ public class TowersOfHanoiGame {
     public boolean isSolved() {
         List<DiskStack> diskStacks = diskStackList.getDiskStacks();
         for (int i = 0; i < diskStacks.size() - 1; i++) {
-            DiskStack diskStack = diskStackList.getDiskStacks().get(0);
+            DiskStack diskStack = diskStackList.getDiskStacks().get(i);
             if (diskStack.size() != 0) return false;
         }
 

@@ -9,16 +9,19 @@ import java.util.stream.Collectors;
 public class DiskStack {
     private Deque<Disk> diskStack = new ArrayDeque<>();
 
+    /**
+     * Use static build methods instead
+     */
     private DiskStack() {
     }
 
-    static DiskStack buildEmptyStack() {
+    public static DiskStack buildEmptyStack() {
         DiskStack stack = new DiskStack();
         stack.invariant();
         return stack;
     }
 
-    static DiskStack buildFullStack(int disks) {
+    public static DiskStack buildFullStack(int disks) {
         assert disks >= 1;
 
         DiskStack stack = new DiskStack();
@@ -44,8 +47,9 @@ public class DiskStack {
 
     /**
      * @param disk Disk to add
+     * @returns true iff disk is smaller than others on the stack
      */
-    void push(Disk disk) throws DiskMoveException {
+    public void push(Disk disk) throws DiskMoveException {
         invariant();
 
         if (diskStack.size() != 0 &&
@@ -58,17 +62,17 @@ public class DiskStack {
         invariant();
     }
 
-    Disk pop() throws DiskMoveException {
+    public Disk pop() throws DiskMoveException {
         if (diskStack.isEmpty())
             throw new DiskMoveException("There is no disk to remove");
         return diskStack.pop();
     }
 
-    int size() {
+    public int size() {
         return diskStack.size();
     }
 
-    List<String> toStrings() {
+    public List<String> toStrings() {
         Object[] stack = diskStack.toArray();
         List<String> diskStrings = Arrays.stream(stack)
                 .map(Object::toString)
@@ -79,7 +83,6 @@ public class DiskStack {
 
     private void invariant() {
         boolean isAssertOn = false;
-        // noinspection AssertWithSideEffects
         assert isAssertOn = true;
         if (!isAssertOn) return;
 
