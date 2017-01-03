@@ -1,5 +1,7 @@
 package main;
 
+import java.util.Comparator;
+
 /**
  * Created by Dylan on 27/11/16.
  */
@@ -17,6 +19,14 @@ public class Disk {
         else radius = disk.radius + "";
 
         return "[" + radius + "]"; // TODO LATER make it look better
+    }
+
+    public static Comparator<Disk> getRadiusComparator() {
+        return (o1, o2) -> {
+            if (o1.getRadius() < o2.getRadius()) return -1;
+            if (o1.getRadius() > o2.getRadius()) return 1;
+            return 0;
+        };
     }
 
     public int getRadius() {

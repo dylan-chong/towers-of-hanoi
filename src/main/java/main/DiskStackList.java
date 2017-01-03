@@ -51,8 +51,11 @@ public class DiskStackList {
     public List<Disk> getAllDisks() {
         List<Disk> disks = new ArrayList<>();
 
+        // Gather all disks
         diskStacks.forEach(diskStack ->
                 diskStack.getDiskStack().forEach(disks::add));
+
+        disks.sort(Disk.getRadiusComparator());
 
         return disks;
     }

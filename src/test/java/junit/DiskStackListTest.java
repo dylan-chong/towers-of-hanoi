@@ -1,6 +1,7 @@
 package junit;
 
 import main.Disk;
+import main.DiskMoveException;
 import main.DiskStackList;
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,15 +29,15 @@ public class DiskStackListTest {
         return new DiskStackList(NUM_STACKS, numDisks);
     }
 
-    // private boolean areDisksSorted(List<Disk> disks) {
-    //     for (int d = 0; d < disks.size() - 1; d++) {
-    //         if (disks.get(d).getRadius() > disks.get(d + 1).getRadius()) {
-    //             return false;
-    //         }
-    //     }
-    //
-    //     return true;
-    // }
+    private boolean areDisksSorted(List<Disk> disks) {
+        for (int d = 0; d < disks.size() - 1; d++) {
+            if (disks.get(d).getRadius() > disks.get(d + 1).getRadius()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     private boolean checkAllDisksCorrectSize(int numDisks) {
         List<Disk> disks = getAllDisksFromNewDiskStackList(numDisks);
@@ -55,10 +56,11 @@ public class DiskStackListTest {
 
     @Test
     public void getAllDisks_disksMovedToDifferentStacks_returnsCorrectSizeList()
-            throws Exception {
+            throws DiskMoveException {
         final int numDisks = 5;
         DiskStackList diskStackList = getNewDiskStackList(numDisks);
 
+        // Move 3 disks out of starting stack
         diskStackList.moveDisk(0, 1);
         diskStackList.moveDisk(0, 2);
         diskStackList.moveDisk(1, 2);
@@ -68,11 +70,25 @@ public class DiskStackListTest {
         Assert.assertEquals(size, numDisks);
     }
 
-    // @Test
-    // public void getAllDisks_startingGameSetup_returnsSortedList() {
-    //     List<Disk> disks = getAllDisksFromNewDiskStackList();
-    //     Assert.assertTrue(areDisksSorted(disks));
-    // }
+    @Test
+    public void getAllDisks_startingGameSetup_returnsSortedList() {
+        List<Disk> disks = getAllDisksFromNewDiskStackList();
+        Assert.assertTrue(areDisksSorted(disks));
+    }
+
+    @Test
+    public void getAllDisks_disksMovedToDifferentStacks_returnsSortedList() throws DiskMoveException {
+        final int numDisks = 5;
+        DiskStackList diskStackList = getNewDiskStackList(numDisks);
+
+        // Move 3 disks out of starting stack
+        diskStackList.moveDisk(0, 1);
+        diskStackList.moveDisk(0, 2);
+        diskStackList.moveDisk(1, 2);
+        diskStackList.moveDisk(0, 1);
+
+        Assert.assertTrue(areDisksSorted(diskStackList.getAllDisks()));
+    }
 
 
     // todo correct number
