@@ -12,9 +12,13 @@ import java.util.List;
  */
 public class GameSolverTest {
     private TowersOfHanoiGame getNewTowersOfHanoiGame() {
+        return getNewTowersOfHanoiGame(3);
+    }
+
+    private TowersOfHanoiGame getNewTowersOfHanoiGame(int numDisks) {
         return new TowersOfHanoiGame(
                 new GameInfoPrinter(new StringTextPrinter(new StringBuilder())),
-                new DiskStackList(3));
+                new DiskStackList(numDisks));
     }
 
     @Test
@@ -36,9 +40,7 @@ public class GameSolverTest {
     public void getSolutionMoves_startingStateWith1Disk_shouldBeSolved()
             throws GameSolverStateException, DiskMoveException {
 
-        TowersOfHanoiGame towersOfHanoiGame = new TowersOfHanoiGame(
-                new GameInfoPrinter(new StringTextPrinter(new StringBuilder())),
-                new DiskStackList(1));
+        TowersOfHanoiGame towersOfHanoiGame = getNewTowersOfHanoiGame(1);
 
         GameSolver gameSolver = new GameSolver(towersOfHanoiGame);
         List<Move> moves = gameSolver.getSolutionMoves();

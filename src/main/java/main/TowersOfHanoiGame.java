@@ -11,26 +11,26 @@ public class TowersOfHanoiGame {
 
     private final GameInfoPrinter gameInfoPrinter;
 
-    private DiskStackList diskStacks;
+    private DiskStackList diskStackList;
     private int successfulMoveCount = 0;
 
     public TowersOfHanoiGame(GameInfoPrinter gameInfoPrinter,
-                             DiskStackList diskStacks) {
+                             DiskStackList diskStackList) {
         this.gameInfoPrinter = gameInfoPrinter;
-        this.diskStacks = diskStacks;
+        this.diskStackList = diskStackList;
 
         gameInfoPrinter.printWelcome()
                 .printEmptyLine()
                 .printInstructions()
                 .printEmptyLine()
                 .printControls()
-                .printStackState(diskStacks);
+                .printStackState(diskStackList);
 
         gameInfoPrinter.printShortControls();
     }
 
     public void moveDisk(Move move) throws DiskMoveException {
-        diskStacks.moveDisk(move);
+        diskStackList.moveDisk(move);
         successfulMoveCount++; // called iff above line doesn't throw exception
     }
 
@@ -45,7 +45,7 @@ public class TowersOfHanoiGame {
     }
 
     /**
-     * @return True iff a change was made to the diskStacks
+     * @return True iff a change was made to the diskStackList
      */
     public boolean onUserInputtedLine(String line) {
         gameInfoPrinter.printUserEnteredLine(line);
@@ -60,14 +60,23 @@ public class TowersOfHanoiGame {
         } catch (UserInputFormatException | DiskMoveException e) {
             gameInfoPrinter.printUnableToMoveDisk(e.getMessage());
         }
-        gameInfoPrinter.printStackState(diskStacks)
+        gameInfoPrinter.printStackState(diskStackList)
                 .printShortControls();
 
         return didChange;
     }
 
     public boolean isSolved() {
-        return false; //todo
+        List<DiskStack> diskStacks = diskStackList.getDiskStacks();
+        for (int i = 0; i < diskStacks.size() - 1; i++) {
+            DiskStack diskStack = diskStackList.getDiskStacks().get(0);
+            if (diskStack.size() != 0) return false;
+        }
+
+        assert diskStacks.get(diskStacks.size() - 1).size()
+                == diskStackList.getNumberOfDisks();
+
+        return true;
     }
 
     private List<Integer> getStackNumbers(String line) throws UserInputFormatException {
@@ -96,7 +105,7 @@ public class TowersOfHanoiGame {
     }
 
     private boolean isInvalidStackForUserInput(int stackNum) {
-        return stackNum < 1 || stackNum > diskStacks.numberOfStacks();
+        return stackNum < 1 || stackNum > diskStackList.getNumberOfStacks();
     }
 
     public int getSuccessfulMoveCount() {

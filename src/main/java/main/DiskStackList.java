@@ -40,8 +40,12 @@ public class DiskStackList {
         return Collections.unmodifiableList(stacks);
     }
 
-    public int numberOfStacks() {
+    public int getNumberOfStacks() {
         return diskStacks.size();
+    }
+
+    public int getNumberOfDisks() {
+        return getAllDisks().size();
     }
 
     public List<DiskStack> getDiskStacks() {

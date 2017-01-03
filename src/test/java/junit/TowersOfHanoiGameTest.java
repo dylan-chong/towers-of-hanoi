@@ -56,6 +56,23 @@ public class TowersOfHanoiGameTest {
         Assert.assertEquals(0, game.getSuccessfulMoveCount());
     }
 
-    // @Test
-    // public void isSolved
+    @Test
+    public void isSolved_startingState_shouldReturnFalse() {
+        TowersOfHanoiGame game = getNewTowersOfHanoiGame();
+        Assert.assertFalse(game.isSolved());
+    }
+
+
+    @Test
+    public void isSolved_solvedState_shouldReturnTrue() throws DiskMoveException {
+        TowersOfHanoiGame game = getNewTowersOfHanoiGame();
+        game.moveDisk(new Move(0, 2));
+        game.moveDisk(new Move(0, 1));
+        game.moveDisk(new Move(2, 1));
+        game.moveDisk(new Move(0, 2));
+        game.moveDisk(new Move(1, 0));
+        game.moveDisk(new Move(1, 2));
+        game.moveDisk(new Move(0, 2));
+        Assert.assertTrue(game.isSolved());
+    }
 }
