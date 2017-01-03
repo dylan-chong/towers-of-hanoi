@@ -41,6 +41,15 @@ public class TowersOfHanoiGameTest {
     }
 
     @Test
+    public void getSuccessfulMoveCount_moveDiskNowhere_shouldBe0() {
+        TowersOfHanoiGame game = getNewTowersOfHanoiGame();
+        try {
+            game.moveDisk(0, 0);
+        } catch (DiskMoveException ignored) {}
+        Assert.assertEquals(0, game.getSuccessfulMoveCount());
+    }
+
+    @Test
     public void getSuccessfulMoveCount_startingStateFailedMove_shouldBe0() {
         TowersOfHanoiGame game = getNewTowersOfHanoiGame();
         try {

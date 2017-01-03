@@ -89,8 +89,4 @@ public class DiskStackListTest {
 
         Assert.assertTrue(areDisksSorted(diskStackList.getAllDisks()));
     }
-
-    // todo correct number
-
-    // todo non-starting setup
 }

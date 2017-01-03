@@ -91,6 +91,9 @@ public class DiskStackList {
      * @throws DiskMoveException If moving the disk wasn't possible
      */
     public int moveDisk(int fromStackIndex, int toStackIndex) throws DiskMoveException {
+        if (fromStackIndex == toStackIndex) throw new DiskMoveException(
+                "Not moving stack anywhere");
+
         Disk diskToMove = diskStacks.get(fromStackIndex).pop();
 
         try {
