@@ -11,10 +11,10 @@ public class DiskStackList {
     private static final int DEFAULT_NUM_STACKS = 3;
     private static final int DEFAULT_NUM_DISKS = 3;
 
-    private final List<DiskStack> discStacks;
+    private final List<DiskStack> diskStacks;
 
     public DiskStackList(int numStacks, int numDisks) {
-        discStacks = createStartingDiskStacks(numStacks, numDisks);
+        diskStacks = createStartingDiskStacks(numStacks, numDisks);
     }
 
     public DiskStackList() {
@@ -37,36 +37,24 @@ public class DiskStackList {
     }
 
     public int numberOfStacks() {
-        return discStacks.size();
+        return diskStacks.size();
     }
 
-    public List<DiskStack> getDiscStacks() {
-        return Collections.unmodifiableList(discStacks);
+    public List<DiskStack> getDiskStacks() {
+        return Collections.unmodifiableList(diskStacks);
     }
 
-    private int getTotalDisks() {
-        return discStacks.stream()
-                .mapToInt(DiskStack::size)
-                .reduce((size1, size2) -> size1 + size2)
-                .orElseThrow(RuntimeException::new);
-    }
+    /**
+     * @return A sorted {@link List<Disk>} where the disk with the smallest
+     * radius is at index 0
+     */
+    public List<Disk> getAllDisks() {
+        List<Disk> disks = new ArrayList<>();
 
-    private String[][] toGridOfStrings() {
-        int maxStackSize = getTotalDisks();
+        diskStacks.forEach(diskStack ->
+                diskStack.getDiskStack().forEach(disks::add));
 
-        // stacksStrings[0] gives a stack where stacksStrings[0][0] is the
-        // bottom of the stack.
-        String[][] stacksStrings = new String[discStacks.size()][maxStackSize];
-
-        for (int s = 0; s < stacksStrings.length; s++) {
-            DiskStack stack = discStacks.get(s);
-            List<String> diskStrings = stack.toStrings();
-            Collections.reverse(diskStrings);
-
-            diskStrings.toArray(stacksStrings[s]);
-        }
-
-        return stacksStrings;
+        return disks;
     }
 
     @Override
@@ -92,19 +80,44 @@ public class DiskStackList {
     /**
      * @param fromStackIndex
      * @param toStackIndex
-     * @return The radius of the disc
+     * @return The radius of the disk
      * @throws DiskMoveException If moving the disk wasn't possible
      */
     public int moveDisk(int fromStackIndex, int toStackIndex) throws DiskMoveException {
-        Disk diskToMove = discStacks.get(fromStackIndex).pop();
+        Disk diskToMove = diskStacks.get(fromStackIndex).pop();
 
         try {
-            discStacks.get(toStackIndex).push(diskToMove);
-            return diskToMove.radius;
+            diskStacks.get(toStackIndex).push(diskToMove);
+            return diskToMove.getRadius();
         } catch (DiskMoveException e) {
             // Put diskToMove back where it was before
-            discStacks.get(fromStackIndex).push(diskToMove);
+            diskStacks.get(fromStackIndex).push(diskToMove);
             throw e;
         }
+    }
+
+    private int getTotalDisks() {
+        return diskStacks.stream()
+                .mapToInt(DiskStack::size)
+                .reduce((size1, size2) -> size1 + size2)
+                .orElseThrow(RuntimeException::new);
+    }
+
+    private String[][] toGridOfStrings() {
+        int maxStackSize = getTotalDisks();
+
+        // stacksStrings[0] gives a stack where stacksStrings[0][0] is the
+        // bottom of the stack.
+        String[][] stacksStrings = new String[diskStacks.size()][maxStackSize];
+
+        for (int s = 0; s < stacksStrings.length; s++) {
+            DiskStack stack = diskStacks.get(s);
+            List<String> diskStrings = stack.toStrings();
+            Collections.reverse(diskStrings);
+
+            diskStrings.toArray(stacksStrings[s]);
+        }
+
+        return stacksStrings;
     }
 }

@@ -44,14 +44,15 @@ public class DiskStack {
 
     /**
      * @param disk Disk to add
-     * @return true iff disk is smaller than others on the stack
      */
     void push(Disk disk) throws DiskMoveException {
         invariant();
 
-        if (diskStack.size() != 0 && diskStack.peek().radius < disk.radius)
+        if (diskStack.size() != 0 &&
+                diskStack.peek().getRadius() < disk.getRadius()) {
             throw new DiskMoveException("Disk is bigger than the one at the " +
                     "top of the stack");
+        }
         diskStack.push(disk);
 
         invariant();
@@ -93,7 +94,7 @@ public class DiskStack {
                 continue;
             }
 
-            assert disk.radius > smallerDisk.radius;
+            assert disk.getRadius() > smallerDisk.getRadius();
         }
     }
 

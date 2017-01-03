@@ -40,7 +40,7 @@ public class MoveDisksStepDefs {
     public void stackShouldHaveDisks(int stackNum,
                                      int idealNumberOfDisks) throws Throwable {
         int numDisks = game.getDiskStackList()
-                .getDiscStacks()
+                .getDiskStacks()
                 .get(stackNum - 1)
                 .getHeight();
         assertEquals(idealNumberOfDisks, numDisks);
@@ -49,7 +49,7 @@ public class MoveDisksStepDefs {
     @And("^all stacks except stack (\\d+) should have (\\d+) disks?$")
     public void allStacksExceptStackShouldHaveDisks(int excludedStackNum,
                                                     int numDisks) throws Throwable {
-        List<DiskStack> stacks = game.getDiskStackList().getDiscStacks();
+        List<DiskStack> stacks = game.getDiskStackList().getDiskStacks();
         for (int i = 0; i < stacks.size(); i++) {
             int diskHeight = stacks.get(i).getHeight();
             int excludedStackIndex = excludedStackNum - 1;
