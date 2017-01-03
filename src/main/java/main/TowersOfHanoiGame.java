@@ -33,9 +33,9 @@ public class TowersOfHanoiGame {
         return diskStacks;
     }
 
-    public void moveDisk(int fromStackIndex, int toStackIndex)
+    public void moveDisk(Move move)
             throws DiskMoveException {
-        diskStacks.moveDisk(fromStackIndex, toStackIndex);
+        diskStacks.moveDisk(move);
         successfulMoveCount++; // called iff above line doesn't throw exception
     }
 
@@ -48,8 +48,9 @@ public class TowersOfHanoiGame {
         boolean didChange = false;
         try {
             List<Integer> stackNumbers = getStackNumbers(line);
-            moveDisk(stackNumbers.get(0) - 1,
-                    stackNumbers.get(1) - 1);
+            moveDisk(new Move(
+                    stackNumbers.get(0) - 1,
+                    stackNumbers.get(1) - 1));
             didChange = true;
         } catch (UserInputFormatException | DiskMoveException e) {
             gameInfoPrinter.printUnableToMoveDisk(e.getMessage());

@@ -1,5 +1,7 @@
 package main;
 
+import java.util.List;
+
 /**
  * Created by Dylan on 3/01/17.
  */
@@ -10,7 +12,10 @@ public class GameSolver {
         this.towersOfHanoiGame = towersOfHanoiGame;
     }
 
-    public void solve() throws GameSolverStateException {
-        towersOfHanoiGame.getSuccessfulMoveCount();
+    public List<Move> getSolutionMoves() {
+        if (towersOfHanoiGame.getSuccessfulMoveCount() != 0)
+            throw new GameSolverStateException();
+
+        return null;
     }
 }

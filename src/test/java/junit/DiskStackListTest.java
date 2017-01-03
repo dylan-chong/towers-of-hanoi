@@ -3,6 +3,7 @@ package junit;
 import main.Disk;
 import main.DiskMoveException;
 import main.DiskStackList;
+import main.Move;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -61,10 +62,10 @@ public class DiskStackListTest {
         DiskStackList diskStackList = getNewDiskStackList(numDisks);
 
         // Move 3 disks out of starting stack
-        diskStackList.moveDisk(0, 1);
-        diskStackList.moveDisk(0, 2);
-        diskStackList.moveDisk(1, 2);
-        diskStackList.moveDisk(0, 1);
+        diskStackList.moveDisk(new Move(0, 1));
+        diskStackList.moveDisk(new Move(0, 2));
+        diskStackList.moveDisk(new Move(1, 2));
+        diskStackList.moveDisk(new Move(0, 1));
 
         int size = diskStackList.getAllDisks().size();
         Assert.assertEquals(size, numDisks);
@@ -82,10 +83,10 @@ public class DiskStackListTest {
         DiskStackList diskStackList = getNewDiskStackList(numDisks);
 
         // Move 3 disks out of starting stack
-        diskStackList.moveDisk(0, 1);
-        diskStackList.moveDisk(0, 2);
-        diskStackList.moveDisk(1, 2);
-        diskStackList.moveDisk(0, 1);
+        diskStackList.moveDisk(new Move(0, 1));
+        diskStackList.moveDisk(new Move(0, 2));
+        diskStackList.moveDisk(new Move(1, 2));
+        diskStackList.moveDisk(new Move(0, 1));
 
         Assert.assertTrue(areDisksSorted(diskStackList.getAllDisks()));
     }

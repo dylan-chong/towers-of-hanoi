@@ -85,23 +85,21 @@ public class DiskStackList {
     }
 
     /**
-     * @param fromStackIndex
-     * @param toStackIndex
      * @return The radius of the disk
      * @throws DiskMoveException If moving the disk wasn't possible
      */
-    public int moveDisk(int fromStackIndex, int toStackIndex) throws DiskMoveException {
-        if (fromStackIndex == toStackIndex) throw new DiskMoveException(
+    public int moveDisk(Move move) throws DiskMoveException {
+        if (move.fromStackIndex == move.toStackIndex) throw new DiskMoveException(
                 "Not moving stack anywhere");
 
-        Disk diskToMove = diskStacks.get(fromStackIndex).pop();
+        Disk diskToMove = diskStacks.get(move.fromStackIndex).pop();
 
         try {
-            diskStacks.get(toStackIndex).push(diskToMove);
+            diskStacks.get(move.toStackIndex).push(diskToMove);
             return diskToMove.getRadius();
         } catch (DiskMoveException e) {
             // Put diskToMove back where it was before
-            diskStacks.get(fromStackIndex).push(diskToMove);
+            diskStacks.get(move.fromStackIndex).push(diskToMove);
             throw e;
         }
     }

@@ -1,9 +1,6 @@
 package junit;
 
-import main.DiskMoveException;
-import main.DiskStackList;
-import main.GameInfoPrinter;
-import main.TowersOfHanoiGame;
+import main.*;
 import main.textprinter.StringTextPrinter;
 import org.junit.Assert;
 import org.junit.Test;
@@ -27,7 +24,7 @@ public class TowersOfHanoiGameTest {
     @Test
     public void getSuccessfulMoveCount_1move_shouldBe1() throws DiskMoveException {
         TowersOfHanoiGame game = getNewTowersOfHanoiGame();
-        game.moveDisk(0, 1);
+        game.moveDisk(new Move(0, 1));
         Assert.assertEquals(1, game.getSuccessfulMoveCount());
     }
 
@@ -35,8 +32,8 @@ public class TowersOfHanoiGameTest {
     @Test
     public void getSuccessfulMoveCount_2moves_shouldBe2() throws DiskMoveException {
         TowersOfHanoiGame game = getNewTowersOfHanoiGame();
-        game.moveDisk(0, 1);
-        game.moveDisk(0, 2);
+        game.moveDisk(new Move(0, 1));
+        game.moveDisk(new Move(0, 2));
         Assert.assertEquals(2, game.getSuccessfulMoveCount());
     }
 
@@ -44,7 +41,7 @@ public class TowersOfHanoiGameTest {
     public void getSuccessfulMoveCount_moveDiskNowhere_shouldBe0() {
         TowersOfHanoiGame game = getNewTowersOfHanoiGame();
         try {
-            game.moveDisk(0, 0);
+            game.moveDisk(new Move(0, 0));
         } catch (DiskMoveException ignored) {}
         Assert.assertEquals(0, game.getSuccessfulMoveCount());
     }
@@ -53,7 +50,7 @@ public class TowersOfHanoiGameTest {
     public void getSuccessfulMoveCount_startingStateFailedMove_shouldBe0() {
         TowersOfHanoiGame game = getNewTowersOfHanoiGame();
         try {
-            game.moveDisk(1, 2); // no disk there
+            game.moveDisk(new Move(1, 2)); // no disk there
         } catch (DiskMoveException ignored) {}
 
         Assert.assertEquals(0, game.getSuccessfulMoveCount());
