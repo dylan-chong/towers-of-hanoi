@@ -68,15 +68,37 @@ public class TowersOfHanoiGame {
 
     public boolean isSolved() {
         List<DiskStack> diskStacks = diskStackList.getDiskStacks();
-        for (int i = 0; i < diskStacks.size() - 1; i++) {
+        for (int i = 0; i < diskStacks.size(); i++) {
             DiskStack diskStack = diskStackList.getDiskStacks().get(i);
+            if (i == getFinalStackIndex()) continue;
             if (diskStack.size() != 0) return false;
         }
 
-        assert diskStacks.get(diskStacks.size() - 1).size()
+        assert diskStacks.get(getFinalStackIndex()).size()
                 == diskStackList.getNumberOfDisks();
 
         return true;
+    }
+
+    public int getStartingDiskStackIndex() {
+        return 0;
+    }
+
+    public int getSpareStackIndex() {
+        if (getNumberOfStacks() != 3) throw new RuntimeException();
+        return 1;
+    }
+
+    public int getFinalStackIndex() {
+        return diskStackList.getDiskStacks().size() - 1;
+    }
+
+    public int getNumberOfStacks() {
+        return diskStackList.getNumberOfStacks();
+    }
+
+    public int getNumberOfDisks() {
+        return diskStackList.getNumberOfDisks();
     }
 
     private List<Integer> getStackNumbers(String line) throws UserInputFormatException {

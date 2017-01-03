@@ -44,7 +44,6 @@ public class GameSolverTest {
 
         GameSolver gameSolver = new GameSolver(towersOfHanoiGame);
         List<Move> moves = gameSolver.getSolutionMoves();
-
         towersOfHanoiGame.moveDisks(moves);
 
         Assert.assertTrue(towersOfHanoiGame.isSolved());
