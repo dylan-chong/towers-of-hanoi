@@ -12,6 +12,7 @@ public class TowersOfHanoiGame {
     private final GameInfoPrinter gameInfoPrinter;
 
     private DiskStackList diskStacks;
+    private int successfulMoveCount = 0;
 
     public TowersOfHanoiGame(GameInfoPrinter gameInfoPrinter,
                              DiskStackList diskStacks) {
@@ -35,6 +36,7 @@ public class TowersOfHanoiGame {
     public void moveDisk(int fromStackIndex, int toStackIndex)
             throws DiskMoveException {
         diskStacks.moveDisk(fromStackIndex, toStackIndex);
+        successfulMoveCount++; // called iff above line doesn't throw exception
     }
 
     /**
@@ -87,4 +89,7 @@ public class TowersOfHanoiGame {
         return stackNum < 1 || stackNum > diskStacks.numberOfStacks();
     }
 
+    public int getSuccessfulMoveCount() {
+        return successfulMoveCount;
+    }
 }

@@ -17,6 +17,10 @@ public class DiskStackList {
         diskStacks = createStartingDiskStacks(numStacks, numDisks);
     }
 
+    public DiskStackList(int numDisks) {
+        diskStacks = createStartingDiskStacks(DEFAULT_NUM_STACKS, numDisks);
+    }
+
     public DiskStackList() {
         this(DEFAULT_NUM_STACKS, DEFAULT_NUM_DISKS);
     }

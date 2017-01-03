@@ -18,7 +18,7 @@ public class Disk {
         if (disk == null) radius = " ";
         else radius = disk.radius + "";
 
-        return "[" + radius + "]"; // TODO LATER make it look better
+        return "[" + radius + "]";
     }
 
     public static Comparator<Disk> getRadiusComparator() {
