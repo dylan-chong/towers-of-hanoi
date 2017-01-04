@@ -11,6 +11,8 @@ public class GameInfoPrinter {
             TITLE_PREFIX + " WELCOME TO TOWERS OF HANOI " + TITLE_PREFIX;
     public static final int WIDTH = GAME_TITLE.length();
 
+    public static final String CANT_SOLVE = "CAN'T SOLVE: ";
+
     private final TextPrinter out;
 
     public GameInfoPrinter(TextPrinter out) {
@@ -30,8 +32,8 @@ public class GameInfoPrinter {
     }
 
     public GameInfoPrinter printControls() {
-        out.println("Controls: Enter '1 3' to move from the left stack to" +
-                "the 3rd stack. Enter 'solve' when you start the game to" +
+        out.println("Controls: Enter '1 3' to move from the left stack to " +
+                "the 3rd stack. Enter 'solve' when you start the game to " +
                 "automatically solve the game");
         return this;
     }
@@ -90,7 +92,7 @@ public class GameInfoPrinter {
     }
 
     public GameInfoPrinter printGameSolverStateException(GameSolverStateException e) {
-        out.println("CANNOT SOLVE: " + e.getMessage());
+        out.println(CANT_SOLVE + e.getMessage());
         return this;
     }
 
