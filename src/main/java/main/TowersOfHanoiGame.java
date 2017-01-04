@@ -131,6 +131,7 @@ public class TowersOfHanoiGame {
             assert false : e;
         }
         assert isSolved();
+        gameInfoPrinter.printSolveSuccess();
         return true;
     }
 

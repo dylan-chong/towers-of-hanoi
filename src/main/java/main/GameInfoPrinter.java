@@ -12,6 +12,7 @@ public class GameInfoPrinter {
     public static final int WIDTH = GAME_TITLE.length();
 
     public static final String CANT_SOLVE = "CAN'T SOLVE: ";
+    public static final String GAME_HAS_BEEN_SOLVED = "GAME HAS BEEN SOLVED";
 
     private final TextPrinter out;
 
@@ -104,6 +105,11 @@ public class GameInfoPrinter {
     public GameInfoPrinter printReadyForAction(DiskStackList diskStackList) {
         printStackState(diskStackList);
         printShortControls();
+        return this;
+    }
+
+    public GameInfoPrinter printSolveSuccess() {
+        out.println(GAME_HAS_BEEN_SOLVED);
         return this;
     }
 }

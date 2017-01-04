@@ -18,8 +18,7 @@ public class GameSolverStepDefs {
     private StringBuilder gameOutSB;
 
     private boolean isThereSolveErrorDisplayed() {
-        return gameOutSB
-                .toString()
+        return gameOutSB.toString()
                 .contains(GameInfoPrinter.CANT_SOLVE);
     }
 
@@ -51,4 +50,14 @@ public class GameSolverStepDefs {
         Assert.assertTrue(isThereSolveErrorDisplayed());
     }
 
+    @Then("^the game should be solved$")
+    public void theGameShouldBeSolved() throws Throwable {
+        Assert.assertTrue(game.isSolved());
+    }
+
+    @And("^a solve success message should be displayed to the user$")
+    public void aSolveSuccessMessageShouldBeDisplayedToTheUser() throws Throwable {
+        Assert.assertTrue(gameOutSB.toString()
+                .contains(GameInfoPrinter.GAME_HAS_BEEN_SOLVED));
+    }
 }
