@@ -20,7 +20,7 @@ public class GameSolverDifferentNumDisksTest {
 
     @Parameterized.Parameters(name = "numberOfDisksToTrySolveGame == {0}")
     public static Iterable<Integer[]> data() {
-        return Arrays.asList(new Integer[][]{{1}, {2}});
+        return Arrays.asList(new Integer[][]{{1}});
     }
 
     private TowersOfHanoiGame getNewTowersOfHanoiGame(int numDisks) {
@@ -32,10 +32,11 @@ public class GameSolverDifferentNumDisksTest {
     @Test
     public void getSolutionMoves_startingStateWithNDisks_shouldBeSolved()
             throws GameSolverStateException, DiskMoveException {
+
         TowersOfHanoiGame towersOfHanoiGame =
                 getNewTowersOfHanoiGame(numberOfDisksToTrySolveGame);
 
-        GameSolver gameSolver = new GameSolver(towersOfHanoiGame);
+        GameSolver gameSolver = towersOfHanoiGame.getNewSolver();
         List<Move> moves = gameSolver.getSolutionMoves();
         towersOfHanoiGame.moveDisks(moves);
 

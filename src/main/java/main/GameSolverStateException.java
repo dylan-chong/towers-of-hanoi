@@ -6,7 +6,7 @@ package main;
  *
  * Created by Dylan on 3/01/17.
  */
-public class GameSolverStateException extends RuntimeException {
+public class GameSolverStateException extends Exception {
     public GameSolverStateException(String message) {
         super(message);
     }

@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
  */
 public class TowersOfHanoiGame {
 
+    private static final String SOLVE_FUNCTION = "solve";
     private final GameInfoPrinter gameInfoPrinter;
 
     private DiskStackList diskStackList;
@@ -32,6 +33,7 @@ public class TowersOfHanoiGame {
     public void moveDisk(Move move) throws DiskMoveException {
         diskStackList.moveDisk(move);
         successfulMoveCount++; // called iff above line doesn't throw exception
+        gameInfoPrinter.printReadyForAction(diskStackList);
     }
 
     /**
@@ -50,6 +52,13 @@ public class TowersOfHanoiGame {
     public boolean onUserInputtedLine(String line) {
         gameInfoPrinter.printUserEnteredLine(line);
 
+        line = line.toLowerCase();
+
+        if (line.equals(SOLVE_FUNCTION)) return solve();
+        else return moveDisk(line);
+    }
+
+    private boolean moveDisk(String line) {
         boolean didChange = false;
         try {
             List<Integer> stackNumbers = getStackNumbers(line);
@@ -60,8 +69,6 @@ public class TowersOfHanoiGame {
         } catch (UserInputFormatException | DiskMoveException e) {
             gameInfoPrinter.printUnableToMoveDisk(e.getMessage());
         }
-        gameInfoPrinter.printStackState(diskStackList)
-                .printShortControls();
 
         return didChange;
     }
@@ -99,6 +106,32 @@ public class TowersOfHanoiGame {
 
     public int getNumberOfDisks() {
         return diskStackList.getNumberOfDisks();
+    }
+
+    public GameSolver getNewSolver() {
+        try {
+            return GameSolver.createNewGameSolver(this);
+        } catch (GameSolverStateException e) {
+            gameInfoPrinter.printGameSolverStateException(e);
+            return null;
+        }
+    }
+
+    public boolean solve() {
+        GameSolver solver = getNewSolver();
+        if (solver == null) {
+            gameInfoPrinter.printCannotSolve();
+            gameInfoPrinter.printReadyForAction(diskStackList);
+            return false;
+        }
+
+        try {
+            moveDisks(solver.getSolutionMoves());
+        } catch (DiskMoveException | GameSolverStateException e) {
+            assert false : e;
+        }
+        assert isSolved();
+        return true;
     }
 
     private List<Integer> getStackNumbers(String line) throws UserInputFormatException {

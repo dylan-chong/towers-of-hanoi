@@ -30,12 +30,14 @@ public class GameInfoPrinter {
     }
 
     public GameInfoPrinter printControls() {
-        out.println("Controls: Enter '1 3' to move from the left stack to the 3rd stack");
+        out.println("Controls: Enter '1 3' to move from the left stack to" +
+                "the 3rd stack. Enter 'solve' when you start the game to" +
+                "automatically solve the game");
         return this;
     }
 
     public GameInfoPrinter printShortControls() {
-        out.print("Move from x to y: ");
+        out.print("Action: ");
         return this;
     }
 
@@ -84,6 +86,22 @@ public class GameInfoPrinter {
         out.println(
                 new String(new char[WIDTH]).replace("\0", c)
         );
+        return this;
+    }
+
+    public GameInfoPrinter printGameSolverStateException(GameSolverStateException e) {
+        out.println("CANNOT SOLVE: " + e.getMessage());
+        return this;
+    }
+
+    public GameInfoPrinter printCannotSolve() {
+        out.println();
+        return this;
+    }
+
+    public GameInfoPrinter printReadyForAction(DiskStackList diskStackList) {
+        printStackState(diskStackList);
+        printShortControls();
         return this;
     }
 }

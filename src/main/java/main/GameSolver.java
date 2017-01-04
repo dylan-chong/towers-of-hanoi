@@ -9,17 +9,28 @@ import java.util.List;
 public class GameSolver {
     private final TowersOfHanoiGame game;
 
-    public GameSolver(TowersOfHanoiGame game) {
+    private GameSolver(TowersOfHanoiGame game) {
         this.game = game;
     }
 
-    public List<Move> getSolutionMoves() {
+    private static void checkGameIsValid(TowersOfHanoiGame game)
+            throws GameSolverStateException {
         if (game.getSuccessfulMoveCount() != 0)
             throw new GameSolverStateException(
                     "Only works from the starting state");
-        if (game.getNumberOfStacks() != 3)
+        if (game.getNumberOfStacks() < 3)
             throw new GameSolverStateException(
-                    "Only works when there are 3 stacks");
+                    "Only works when there are 3 or more stacks");
+    }
+
+    static GameSolver createNewGameSolver(TowersOfHanoiGame game)
+            throws GameSolverStateException {
+        checkGameIsValid(game);
+        return new GameSolver(game);
+    }
+
+    public List<Move> getSolutionMoves() throws GameSolverStateException {
+        checkGameIsValid(game);
 
         List<Move> moves = new ArrayList<>();
         if (game.getNumberOfDisks() == 0) return moves;

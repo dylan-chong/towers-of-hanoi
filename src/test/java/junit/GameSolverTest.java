@@ -24,14 +24,7 @@ public class GameSolverTest {
             throws DiskMoveException {
 
         TowersOfHanoiGame towersOfHanoiGame = getNewTowersOfHanoiGame();
-        GameSolver gameSolver = new GameSolver(towersOfHanoiGame);
-
         towersOfHanoiGame.moveDisk(new Move(0, 1));
-
-        try {
-            gameSolver.getSolutionMoves();
-            Assert.fail("Expected exception");
-        } catch (GameSolverStateException ignored) {
-        }
+        Assert.assertNull(towersOfHanoiGame.getNewSolver());
     }
 }
