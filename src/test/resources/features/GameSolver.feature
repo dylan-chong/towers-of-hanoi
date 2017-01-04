@@ -1,6 +1,6 @@
 Feature: Solving Towers of Hanoi puzzle
 
-  Scenario: Solver should not try to solve a game if it is not in the starting state
+  Scenario: Should not try to solve a game if it is not in the starting state
     Given a new game with 3 disks
     And no solve error should be displayed to the user
     And the user enters the command "1 2"
@@ -8,7 +8,7 @@ Feature: Solving Towers of Hanoi puzzle
     And the game should not be in the solved state
     And a solve error should be displayed to the user
 
-  Scenario Outline: GameSolver should be able to solve the puzzle with <numberOfDisks> disks
+  Scenario Outline: Should solve the puzzle with <numberOfDisks> disks
     Given a new game with <numberOfDisks> disks
     When the user enters the command "solve"
     Then the game should be solved
@@ -18,3 +18,9 @@ Feature: Solving Towers of Hanoi puzzle
       | numberOfDisks |
       | 1             |
       | 2             |
+      | 3             |
+      | 4             |
+      | 5             |
+      | 6             |
+      | 7             |
+      | 8             |

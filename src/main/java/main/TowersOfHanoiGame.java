@@ -167,4 +167,9 @@ public class TowersOfHanoiGame {
     public int getSuccessfulMoveCount() {
         return successfulMoveCount;
     }
+
+
+    public List<Disk> getAllDisks() {
+        return diskStackList.getAllDisks();
+    }
 }
