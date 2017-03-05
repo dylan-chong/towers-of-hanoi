@@ -7,7 +7,7 @@ import cucumber.api.java.en.When;
 import main.DiskStackList;
 import main.GameInfoPrinter;
 import main.TowersOfHanoiGame;
-import main.textprinter.StringTextPrinter;
+import main.StringTextPrinter;
 import org.junit.Assert;
 
 /**

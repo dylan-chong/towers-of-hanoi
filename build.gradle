@@ -1,3 +1,5 @@
+import groovy.io.FileType
+
 plugins {
     id "com.github.samueltbrown.cucumber" version "0.9"
 }
@@ -17,16 +19,69 @@ dependencies {
 }
 
 // Cucumber tests
+
 cucumber {
     sourceSets = [project.sourceSets.test]
 }
 test.finalizedBy('cucumber')
 
 // Run application with 'run' task
+
 apply plugin: 'application'
-mainClassName = "main.Main"
 run {
+    mainClassName = "main.Main"
     standardInput = System.in
     enableAssertions = true
+}
+
+// Submit task
+
+task submit << {
+    String sourcePath = './src/main/java/main/'
+    String resourcesPath = './src/main/resources/'
+    String exportPath = './submit/'
+    // Hack to get resources to be in same path (relative to the program's
+    // working diretory when exported
+    String resourcesExportPath = exportPath + 'src/main/resources/'
+
+    println "Exporting top-level Java files and resources for assignment " +
+            "submission: "
+    println "- Java $sourcePath to $exportPath"
+    println "- Resources $resourcesPath to $resourcesExportPath"
+
+    // Clean folder first
+    delete exportPath
+
+    // Check for sub-packages (which are not allowed for submission) by
+    // checking for sub-directories
+    int numDirs = new File(sourcePath).listFiles()
+            .findAll { it.isDirectory() }
+            .size()
+    if (numDirs > 0) {
+        println "The $sourcePath directory contains $numDirs sub-directories." +
+                " The submission system doesn't allow packages."
+        return
+    }
+
+    // Copy Java
+    copy {
+        from sourcePath
+        into exportPath
+    }
+    // Copy resources
+    copy {
+        from resourcesPath
+        into resourcesExportPath
+    }
+
+    // Remove the 'package' statement in each file to allow the submission
+    // system to accept our Java files
+    new File(exportPath).eachFile FileType.FILES, { file ->
+        if (!file.path.endsWith('.java')) return
+
+        String contents = file.getText('UTF-8')
+        contents = contents.replaceFirst('package main;', '');
+        new File(file.path).write(contents, 'UTF-8')
+    }
 }
 

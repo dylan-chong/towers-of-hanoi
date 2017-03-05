@@ -17,3 +17,6 @@
 /.classpath
 /.project
 /.settings/
+
+# Assignment submit
+/submit/

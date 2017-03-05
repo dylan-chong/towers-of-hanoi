@@ -1,4 +1,4 @@
-package main.textprinter;
+package main;
 
 import javax.swing.*;
 

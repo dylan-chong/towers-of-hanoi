@@ -1,7 +1,7 @@
 package junit;
 
 import main.*;
-import main.textprinter.StringTextPrinter;
+import main.StringTextPrinter;
 import org.junit.Assert;
 import org.junit.Test;
 

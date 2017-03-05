@@ -1,4 +1,4 @@
-package main.textprinter;
+package main;
 
 /**
  * Created by Dylan on 31/12/16.

@@ -1,7 +1,5 @@
 package main;
 
-import main.textprinter.TextPrinter;
-
 /**
  * Created by Dylan on 30/12/16.
  */
