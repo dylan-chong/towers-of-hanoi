@@ -1,21 +1,26 @@
 package main;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Created by Dylan on 31/12/16.
  */
+@Singleton
 public class DefaultGameGui extends JFrame implements GameGui {
     private JPanel mainPanel;
     private JTextArea gameOut;
     private JTextField userInput;
     private JScrollPane gameOutScroll;
-    private TowersOfHanoiGame towersOfHanoiGame;
+
+    private Collection<Observer<GameGui, TextInputOnEnterEvent>> observers = new HashSet<>();
 
     @Inject
     public DefaultGameGui() {
@@ -49,21 +54,27 @@ public class DefaultGameGui extends JFrame implements GameGui {
         return gameOut;
     }
 
-    @Override
-    public void setTowersOfHanoiGame(TowersOfHanoiGame towersOfHanoiGame) {
-        this.towersOfHanoiGame = towersOfHanoiGame;
-    }
-
-    @Override
-    public void onUserEnteredLine() {
-        towersOfHanoiGame.onUserInputtedLine(userInput.getText());
-        userInput.setText("");
-    }
-
     // todo auto size window
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(450, 380);
+    }
+
+    @Override
+    public boolean registerObserver(Observer<GameGui, TextInputOnEnterEvent> observer) {
+        return observers.add(observer);
+    }
+
+    @Override
+    public void notifyObservers(TextInputOnEnterEvent notification) {
+        observers.forEach(
+                observer -> observer.receiveNotification(notification)
+        );
+    }
+
+    private void onUserEnteredLine() {
+        notifyObservers(new TextInputOnEnterEvent(userInput.getText()));
+        userInput.setText("");
     }
 
     {
@@ -121,4 +132,5 @@ public class DefaultGameGui extends JFrame implements GameGui {
     public JComponent $$$getRootComponent$$$() {
         return mainPanel;
     }
+
 }

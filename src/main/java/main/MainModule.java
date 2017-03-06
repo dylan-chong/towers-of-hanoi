@@ -14,6 +14,7 @@ public class MainModule implements Module {
     public void configure(Binder binder) {
         binder.bind(GameGui.class).to(DefaultGameGui.class);
         binder.bind(TextPrinter.class).to(TextAreaPrinter.class);
-        binder.bind(JTextArea.class).toProvider(JTextAreaProvider.class);
+        binder.bind(JTextArea.class).toProvider(GameOutProvider.class);
+        binder.bind(DiskStackFactory.class).to(DefaultDiskStackFactory.class);
     }
 }

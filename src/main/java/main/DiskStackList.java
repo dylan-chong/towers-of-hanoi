@@ -15,29 +15,36 @@ public class DiskStackList {
 
     private final List<DiskStack> diskStacks;
 
-    public DiskStackList(int numStacks, int numDisks) {
-        diskStacks = createStartingDiskStacks(numStacks, numDisks);
+    public DiskStackList(int numStacks, int numDisks, DiskStackFactory factory) {
+        diskStacks = createStartingDiskStacks(numStacks, numDisks, factory);
     }
 
-    public DiskStackList(int numDisks) {
-        diskStacks = createStartingDiskStacks(DEFAULT_NUM_STACKS, numDisks);
+    public DiskStackList(int numDisks, DiskStackFactory factory) {
+        diskStacks = createStartingDiskStacks(
+                DEFAULT_NUM_STACKS,
+                numDisks,
+                factory
+        );
     }
 
     @Inject
-    public DiskStackList() {
-        this(DEFAULT_NUM_STACKS, DEFAULT_NUM_DISKS);
+    public DiskStackList(DiskStackFactory diskStackFactory) {
+        this(DEFAULT_NUM_STACKS, DEFAULT_NUM_DISKS, diskStackFactory);
     }
 
-    private static List<DiskStack> createStartingDiskStacks(int numStacks,
-                                                            int numDisks) {
+    private static List<DiskStack> createStartingDiskStacks(
+            int numStacks,
+            int numDisks,
+            DiskStackFactory factory) {
+
         assert numStacks >= 2;
         assert numDisks >= 1;
 
         List<DiskStack> stacks = new ArrayList<>();
-        stacks.add(DiskStack.buildFullStack(numDisks)); //todo use factory instead
+        stacks.add(factory.createFullStack(numDisks));
 
         for (int s = 1; s < numStacks; s++) {
-            stacks.add(DiskStack.buildEmptyStack()); //todo use factory here too
+            stacks.add(factory.createEmptyStack());
         }
 
         return Collections.unmodifiableList(stacks);

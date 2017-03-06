@@ -9,11 +9,11 @@ import javax.swing.*;
  * Created by Dylan on 6/03/17.
  */
 
-public class JTextAreaProvider implements Provider<JTextArea> {
+public class GameOutProvider implements Provider<JTextArea> {
     private GameGui gameGui;
 
     @Inject
-    public JTextAreaProvider(GameGui gameGui) {
+    public GameOutProvider(GameGui gameGui) {
         this.gameGui = gameGui;
     }
 

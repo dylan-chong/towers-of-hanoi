@@ -1,6 +1,7 @@
 package main;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +10,8 @@ import java.util.stream.Collectors;
 /**
  * Created by Dylan on 30/12/16.
  */
-public class TowersOfHanoiGame {
+@Singleton
+public class TowersOfHanoiGame implements Observer<GameGui, TextInputOnEnterEvent> {
 
     private static final String SOLVE_FUNCTION = "solve";
     private final GameInfoPrinter gameInfoPrinter;
@@ -52,7 +54,7 @@ public class TowersOfHanoiGame {
     /**
      * @return True iff a change was made to the diskStackList
      */
-    public boolean onUserInputtedLine(String line) {
+    private boolean onUserInputtedLine(String line) {
         gameInfoPrinter.printUserEnteredLine(line);
 
         line = line.toLowerCase();
@@ -174,5 +176,10 @@ public class TowersOfHanoiGame {
 
     public List<Disk> getAllDisks() {
         return diskStackList.getAllDisks();
+    }
+
+    @Override
+    public void receiveNotification(TextInputOnEnterEvent notification) {
+        onUserInputtedLine(notification.getUserEnteredLine());
     }
 }

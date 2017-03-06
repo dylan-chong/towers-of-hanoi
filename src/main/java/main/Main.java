@@ -11,9 +11,10 @@ public class Main {
     public static void main(String[] args) {
         Injector mainInjector = Guice.createInjector(new MainModule());
 
-        GameGui gameGui = mainInjector.getInstance(GameGui.class);
+        GameGui gui = mainInjector.getInstance(GameGui.class);
         TowersOfHanoiGame game = mainInjector.getInstance(TowersOfHanoiGame.class);
-        gameGui.setTowersOfHanoiGame(game);
+
+        gui.registerObserver(game);
     }
 
 }

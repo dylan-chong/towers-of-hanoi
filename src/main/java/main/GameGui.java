@@ -7,10 +7,6 @@ import javax.swing.*;
  *
  * todo make this observable
  */
-public interface GameGui {
+public interface GameGui extends Observable<GameGui, TextInputOnEnterEvent> {
     JTextArea getGameOut();
-
-    void setTowersOfHanoiGame(TowersOfHanoiGame towersOfHanoiGame);
-
-    void onUserEnteredLine();
 }

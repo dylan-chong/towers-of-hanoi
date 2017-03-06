@@ -12,27 +12,8 @@ public class DiskStack {
     /**
      * Use static build methods instead
      */
-    private DiskStack() {
-    }
-
-    public static DiskStack buildEmptyStack() {
-        DiskStack stack = new DiskStack();
-        stack.invariant();
-        return stack;
-    }
-
-    public static DiskStack buildFullStack(int disks) {
-        assert disks >= 1;
-
-        DiskStack stack = new DiskStack();
-        for (int d = disks; d >= 1; d--) {
-            try {
-                stack.push(new Disk(d));
-            } catch (DiskMoveException ignored) {}
-        }
-
-        stack.invariant();
-        return stack;
+    public DiskStack() {
+        invariant();
     }
 
     public int getHeight() {
