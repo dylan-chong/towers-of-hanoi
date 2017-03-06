@@ -14,6 +14,7 @@ repositories {
 }
 
 dependencies {
+    compile group: 'com.google.inject', name: 'guice', version: '4.1.0'
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile group: 'info.cukes', name: 'cucumber-java', version: '1.2.5'
 }
@@ -83,5 +84,19 @@ task submit << {
         contents = contents.replaceFirst('package main;', '');
         new File(file.path).write(contents, 'UTF-8')
     }
+
+    // Export dependencies as jar files
+    println "Copying dependencies into $exportPath"
+    project.configurations.compile.forEach({
+        File f = new File(it.toString())
+        println "- Copying $f.absolutePath"
+        copy {
+            from f.parent // the "copy" task copies the stuff inside "from"
+            into exportPath
+        }
+    })
+    println 'After'
 }
+submit.dependsOn assemble
+submit.dependsOn jar
 
