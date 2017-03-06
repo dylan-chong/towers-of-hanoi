@@ -1,5 +1,7 @@
 package main;
 
+import com.google.inject.Inject;
+
 /**
  * Created by Dylan on 30/12/16.
  */
@@ -14,6 +16,7 @@ public class GameInfoPrinter {
 
     private final TextPrinter out;
 
+    @Inject
     public GameInfoPrinter(TextPrinter out) {
         this.out = out;
     }

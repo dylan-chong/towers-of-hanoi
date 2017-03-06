@@ -1,5 +1,7 @@
 package main;
 
+import com.google.inject.Inject;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +17,7 @@ public class TowersOfHanoiGame {
     private DiskStackList diskStackList;
     private int successfulMoveCount = 0;
 
+    @Inject
     public TowersOfHanoiGame(GameInfoPrinter gameInfoPrinter,
                              DiskStackList diskStackList) {
         this.gameInfoPrinter = gameInfoPrinter;

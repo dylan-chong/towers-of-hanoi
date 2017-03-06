@@ -1,5 +1,7 @@
 package main;
 
+import com.google.inject.Inject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,6 +23,7 @@ public class DiskStackList {
         diskStacks = createStartingDiskStacks(DEFAULT_NUM_STACKS, numDisks);
     }
 
+    @Inject
     public DiskStackList() {
         this(DEFAULT_NUM_STACKS, DEFAULT_NUM_DISKS);
     }
@@ -31,10 +34,10 @@ public class DiskStackList {
         assert numDisks >= 1;
 
         List<DiskStack> stacks = new ArrayList<>();
-        stacks.add(DiskStack.buildFullStack(numDisks));
+        stacks.add(DiskStack.buildFullStack(numDisks)); //todo use factory instead
 
         for (int s = 1; s < numStacks; s++) {
-            stacks.add(DiskStack.buildEmptyStack());
+            stacks.add(DiskStack.buildEmptyStack()); //todo use factory here too
         }
 
         return Collections.unmodifiableList(stacks);
