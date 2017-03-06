@@ -1,5 +1,3 @@
-import groovy.io.FileType
-
 plugins {
     id "com.github.samueltbrown.cucumber" version "0.9"
 }
@@ -38,7 +36,7 @@ run {
 }
 
 // Submit task
-
+String withDependenciesTag = '-with-dependencies'
 task submit << {
     String sourcePath = './src/main/java/main/'
     String resourcesPath = './src/main/resources/'
@@ -66,39 +64,36 @@ task submit << {
         return
     }
 
-    // Copy Java
-    copy {
-        from sourcePath
-        into exportPath
-    }
-    // Copy resources
+    // Copy resources (todo?)
     copy {
         from resourcesPath
         into resourcesExportPath
     }
-
-    // Remove the 'package' statement in each file to allow the submission
-    // system to accept our Java files
-    new File(exportPath).eachFile FileType.FILES, { file ->
-        if (!file.path.endsWith('.java')) return
-
-        String contents = file.getText('UTF-8')
-        contents = contents.replaceFirst('package main;', '');
-        new File(file.path).write(contents, 'UTF-8')
+    // Copy jar
+    copy {
+        from './build/libs/'
+        include "$project.name$withDependenciesTag*.jar"
+        into exportPath
     }
-
-    // Export dependencies as jar files
-    println "Copying dependencies into $exportPath"
-    project.configurations.compile.forEach({
-        File f = new File(it.toString())
-        println "- Copying $f.absolutePath"
-        copy {
-            from f.parent // the "copy" task copies the stuff inside "from"
-            into exportPath
-        }
-    })
-    println 'After'
 }
 submit.dependsOn assemble
-submit.dependsOn jar
 
+// Export jar that includes the dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Project',
+                'Implementation-Version': version,
+                'Main-Class': mainClassName
+    }
+    baseName = project.name + withDependenciesTag
+    println 'From'
+    from {
+        println 'Collect'
+        configurations.compile.collect {
+            println it
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    with jar
+}
+jar.dependsOn fatJar
