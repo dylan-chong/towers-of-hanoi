@@ -30,7 +30,7 @@ test.finalizedBy('cucumber')
 
 apply plugin: 'application'
 run {
-    mainClassName = "main.Main"
+    mainClassName = 'swen221.assignment1.LeftWalker'
     standardInput = System.in
     enableAssertions = true
 }
@@ -38,37 +38,13 @@ run {
 // Submit task
 String withDependenciesTag = '-with-dependencies'
 task submit << {
-    String sourcePath = './src/main/java/main/'
-    String resourcesPath = './src/main/resources/'
     String exportPath = './submit/'
-    // Hack to get resources to be in same path (relative to the program's
-    // working diretory when exported
-    String resourcesExportPath = exportPath + 'src/main/resources/'
 
-    println "Exporting top-level Java files and resources for assignment " +
-            "submission: "
-    println "- Java $sourcePath to $exportPath"
-    println "- Resources $resourcesPath to $resourcesExportPath"
+    println "Exporting Java files and resources for assignment submission: $exportPath"
 
     // Clean folder first
     delete exportPath
 
-    // Check for sub-packages (which are not allowed for submission) by
-    // checking for sub-directories
-    int numDirs = new File(sourcePath).listFiles()
-            .findAll { it.isDirectory() }
-            .size()
-    if (numDirs > 0) {
-        println "The $sourcePath directory contains $numDirs sub-directories." +
-                " The submission system doesn't allow packages."
-        return
-    }
-
-    // Copy resources (todo?)
-    copy {
-        from resourcesPath
-        into resourcesExportPath
-    }
     // Copy jar
     copy {
         from './build/libs/'
@@ -79,6 +55,7 @@ task submit << {
 submit.dependsOn assemble
 
 // Export jar that includes the dependencies
+// (copied from http://www.mkyong.com/gradle/gradle-create-a-jar-file-with-dependencies/)
 task fatJar(type: Jar) {
     manifest {
         attributes 'Implementation-Title': 'Gradle Project',
@@ -97,3 +74,8 @@ task fatJar(type: Jar) {
     with jar
 }
 jar.dependsOn fatJar
+
+jar {
+    // Copy Java files into jar
+    from sourceSets.main.allSource
+}
