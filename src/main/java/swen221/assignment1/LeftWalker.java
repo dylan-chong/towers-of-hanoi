@@ -5,7 +5,9 @@ import maze.View;
 import maze.Walker;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * An implementation of the left walker, which you need to complete according to
@@ -13,6 +15,8 @@ import java.util.List;
  *
  */
 public class LeftWalker extends Walker {
+
+    private DirectionUseful currentDirection;
 
     public static void main(String[] args) {
     }
@@ -23,35 +27,29 @@ public class LeftWalker extends Walker {
 
     @Override
     protected Direction move(View v) {
-        // TODO: you need to implement this method according to the
-        // specification given for the left walker!!
+        List<Direction> possibleDirs = determinePossibleDirections(v);
 
-        // Use the pause() command to slow the simulation down so you can see
-        // what's happening...
-        pause(100);
+        if (currentDirection == null) {
+            currentDirection = DirectionUseful.fromDirection(
+                    selectRandomDirection(possibleDirs)
+            );
+        }
 
-        // Currently, the left walker just follows a completely random
-        // direction. This is not what the specification said it should do, so
-        // tests will fail ... but you should find it helpful to look at how it
-        // works!
-        return getRandomDirection(v);
-    }
+        // Convert Direction to DirectionUseful
+        Collection<DirectionUseful> possibleUsefulDirs =
+                determinePossibleDirections(v)
+                        .stream()
+                        .map(DirectionUseful::fromDirection)
+                        .collect(Collectors.toSet());
 
-    /**
-     * This simply returns a randomly chosen (valid) direction which the walker
-     * can move in.
-     *
-     * @param v
-     * @return
-     */
-    private Direction getRandomDirection(View v) {
-        // The random walker first decides what directions it can move in. The
-        // walker cannot move in a direction which is blocked by a wall.
-        List<Direction> possibleDirections = determinePossibleDirections(v);
+        // Prefer turning left, then forward, then right, then backwards
+        currentDirection = currentDirection
+                .turnLeft90()
+                // Turn right 0 or more times
+                .turnLeft90()
+                .turnRight90(possibleUsefulDirs);
 
-        // Second, the walker chooses a random direction from the list of
-        // possible directions
-        return selectRandomDirection(possibleDirections);
+        return currentDirection.asDirection();
     }
 
     /**

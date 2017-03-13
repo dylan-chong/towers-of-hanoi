@@ -9,8 +9,10 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.io.StringReader;
+import java.lang.reflect.Field;
 
 import static org.junit.Assert.fail;
 
@@ -192,10 +194,23 @@ public class LeftWalkerTests {
      * @param correctPath
      */
     private void checkTest(String inputMaze, int[][] correctPath) {
+        JFrame jFrame = null;
         try {
             Board board = new Board(new StringReader(inputMaze));
             Walker walker = new LeftWalker();
             MazeWindow.getWindowAndShow(board);
+
+            try {
+                Field frame = MazeWindow.class.getDeclaredField("frame");
+                frame.setAccessible(true);
+                jFrame = (JFrame) frame.get(MazeWindow.mainWindow);
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            jFrame.setLocation(0, 0);
+
             walker.solve(board);
             Path p = board.getPath();
 
@@ -222,6 +237,10 @@ public class LeftWalkerTests {
         } catch (IOException e) {
             // ensure the maximum possible path length, so the test will fail.
             fail("IO exception - " + e.getMessage());
+        } finally {
+            if (jFrame != null) {
+                jFrame.setVisible(false);
+            }
         }
     }
 
