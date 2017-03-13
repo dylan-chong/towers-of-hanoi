@@ -1,7 +1,5 @@
 package main;
 
-import com.google.inject.Singleton;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,7 +9,7 @@ import java.util.List;
 /**
  * Created by Dylan on 9/03/17.
  */
-@Singleton
+// @Singleton
 public class Resources {
 
     /**

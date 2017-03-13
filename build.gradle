@@ -13,9 +13,9 @@ repositories {
 
 dependencies {
     // Normal compile dependencies
-    compile group: 'com.google.inject', name: 'guice', version: '4.1.0'
-    compile group: 'com.google.inject.extensions',
-            name: 'guice-assistedinject', version: '4.1.0'
+//    compile group: 'com.google.inject', name: 'guice', version: '4.1.0'
+//    compile group: 'com.google.inject.extensions',
+//            name: 'guice-assistedinject', version: '4.1.0'
 
     // Required dependencies for assignments
     compile fileTree(dir: 'lib', include: ['*.jar'])
@@ -80,7 +80,8 @@ task fatJar(type: Jar) {
         configurations.compile
                 .filter {
                     // Ignore local lib files (for now)
-                    !it.getAbsolutePath().matches('^.*\\/lib\\/.*.jar$')
+//                    !it.getAbsolutePath().matches('^.*\\/lib\\/.*.jar$')
+                    true
                 }
                 .collect { it.isDirectory() ? it : zipTree(it) }
     }
