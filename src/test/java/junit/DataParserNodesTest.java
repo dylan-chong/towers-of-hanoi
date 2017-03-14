@@ -15,16 +15,17 @@ import static org.junit.Assert.assertEquals;
  *
  * Use naming format methodName_state_expectedResult for tests
  */
-public class DataParserTest {
+public class DataParserNodesTest {
+
     @Test
-    public void parse_emptyScanner_returnsEmpty() {
+    public void parseNodes_emptyScanner_returnsEmpty() {
         assertEquals(Collections.emptyList(), getNodesFromString(""));
     }
 
     @Test
-    public void parse_singleLine_returnsOneNode() {
+    public void parseNodes_singleLine_returnsOneNode() {
         assertEquals(
-                Arrays.asList(
+                Collections.singletonList(
                         new Node(5, new LatLong(-7, 9))
                 ),
                 getNodesFromString("5\t-7\t9\n")
@@ -32,9 +33,9 @@ public class DataParserTest {
     }
 
     @Test
-    public void parse_singleLineWithDecimals_returnsOneNode() {
+    public void parseNodes_singleLineWithDecimals_returnsOneNode() {
         assertEquals(
-                Arrays.asList(
+                Collections.singletonList(
                         new Node(2, new LatLong(-99, 0.123))
                 ),
                 getNodesFromString("2\t-99\t0.123\n")
@@ -42,7 +43,7 @@ public class DataParserTest {
     }
 
     @Test
-    public void parse_2Lines_returns2Nodes() {
+    public void parseNodes_2Lines_returns2Nodes() {
         assertEquals(
                 Arrays.asList(
                         new Node(2, new LatLong(-99, 0.123)),
@@ -54,7 +55,7 @@ public class DataParserTest {
     }
 
     @Test
-    public void parse_2LinesEndingWithLineSpace_returns2Nodes() {
+    public void parseNodes_2LinesEndingWithLineSpace_returns2Nodes() {
         assertEquals(
                 Arrays.asList(
                         new Node(2, new LatLong(-99, 0.123)),

@@ -22,6 +22,9 @@ public class MapGUI extends GUI {
 
     private Collection<Node> nodes;
 
+    private Location viewOrigin = Location.CITY_CENTER.asLocation();
+    private double viewScale = 60;
+
     @Inject
     public MapGUI(DataParser dataParser) {
         this.dataParser = dataParser;
@@ -29,14 +32,13 @@ public class MapGUI extends GUI {
 
     @Override
     protected void redraw(Graphics graphics) {
-        // TODO
-
         if (nodes != null) nodes.forEach(node -> {
             Point p = node.latLong.asPoint(
-                    new Location(0, 0),
-                    50
+                    viewOrigin,
+                    viewScale
             );
             graphics.drawOval(p.x, p.y, 1, 1);
+            // TODO LATER change to something else
         });
     }
 
@@ -53,7 +55,30 @@ public class MapGUI extends GUI {
 
     @Override
     protected void onMove(Move m) {
-        // TODO sometime
+        if (m == Move.ZOOM_IN || m == Move.ZOOM_OUT) {
+            double zoomChangeFactor = 1.3; // Greater than 1 for zooming in
+            if (m == Move.ZOOM_OUT) zoomChangeFactor = 1 / zoomChangeFactor;
+            viewScale *= zoomChangeFactor;
+            return;
+
+            // TODO SOMETIME zoom in center
+        }
+
+        double dx = 0;
+        if (m == Move.WEST) {
+            dx = -1;
+        } else if (m == Move.EAST) {
+            dx = 1;
+        }
+
+        double dy = 0;
+        if (m == Move.NORTH) {
+            dy = 1;
+        } else if (m == Move.SOUTH) {
+            dy = -1;
+        }
+
+        viewOrigin = viewOrigin.moveBy(dx, dy);
     }
 
     /**

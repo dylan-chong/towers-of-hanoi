@@ -29,7 +29,7 @@ import java.awt.*;
 public class Location {
 
     // the center of Auckland City according to Google Maps
-    private static final LatLong CITY_CENTER = new LatLong(-36.847622, 174.763444);
+    public static final LatLong CITY_CENTER = new LatLong(-36.847622, 174.763444);
 
     // how many kilometers per degree.
     private static final double SCALE_LAT = 111.0;
