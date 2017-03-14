@@ -1,11 +1,16 @@
 package main;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import modifiedtemplate.GUI;
+import slightlymodifiedtemplate.GUI;
+import slightlymodifiedtemplate.Location;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Collection;
+import java.util.Scanner;
 
 /**
  * Created by Dylan on 14/03/17.
@@ -13,14 +18,26 @@ import java.io.File;
 @Singleton
 public class MapGUI extends GUI {
 
-    public MapGUI() {
+    private final DataParser dataParser;
 
+    private Collection<Node> nodes;
+
+    @Inject
+    public MapGUI(DataParser dataParser) {
+        this.dataParser = dataParser;
     }
 
     @Override
-    protected void redraw(Graphics g) {
+    protected void redraw(Graphics graphics) {
         // TODO
-        System.out.println("redraw");
+
+        if (nodes != null) nodes.forEach(node -> {
+            Point p = node.latLong.asPoint(
+                    new Location(0, 0),
+                    50
+            );
+            graphics.drawOval(p.x, p.y, 1, 1);
+        });
     }
 
     @Override
@@ -44,5 +61,11 @@ public class MapGUI extends GUI {
      */
     @Override
     protected void onLoad(File nodes, File roads, File segments, File polygons) {
+        try {
+            this.nodes = dataParser.parseNodes(new Scanner(nodes));
+        } catch (FileNotFoundException e) {
+            throw new AssertionError(e);
+        }
     }
+
 }

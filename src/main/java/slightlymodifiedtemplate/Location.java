@@ -1,4 +1,4 @@
-package modifiedtemplate;
+package slightlymodifiedtemplate;
 
 import main.LatLong;
 
@@ -74,7 +74,7 @@ public class Location {
      * Create a new Location object from the given latitude and longitude, which
      * is the format used in the data files.
      */
-    public static Location newFromLatLon(LatLong latLong) {
+    public static Location newFromLatLong(LatLong latLong) {
         double y = (latLong.latitude - CITY_CENTER.latitude) * SCALE_LAT;
         double x = (latLong.longitude - CITY_CENTER.longitude)
                 * (SCALE_LAT * Math.cos((latLong.latitude - CITY_CENTER.longitude) * DEG_TO_RAD));

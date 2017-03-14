@@ -4,7 +4,7 @@ import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import modifiedtemplate.GUI;
+import slightlymodifiedtemplate.GUI;
 
 /**
  * Created by Dylan on 14/03/17.
