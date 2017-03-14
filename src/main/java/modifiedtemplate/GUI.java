@@ -1,4 +1,4 @@
-package template;
+package modifiedtemplate;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -8,7 +8,7 @@ import java.awt.event.*;
 import java.io.File;
 
 /**
- * This is a template GUI that you can use for your mapping program. It is an
+ * This is a modifiedtemplate GUI that you can use for your mapping program. It is an
  * *abstract class*, which means you'll need to extend it in your own program.
  * For a simple example of how to do this, have a look at the SquaresExample
  * class.
@@ -28,8 +28,6 @@ public abstract class GUI {
     public enum Move {
         NORTH, SOUTH, EAST, WEST, ZOOM_IN, ZOOM_OUT
     }
-
-    ;
 
     // these are the methods you need to implement.
 
@@ -173,7 +171,7 @@ public abstract class GUI {
                 File nodes = null, roads = null, segments = null, polygons = null;
 
                 // set up the file chooser
-                fileChooser.setCurrentDirectory(new File("."));
+                fileChooser.setCurrentDirectory(new File("./src/main/resources/"));
                 fileChooser.setDialogTitle("Select input directory");
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 

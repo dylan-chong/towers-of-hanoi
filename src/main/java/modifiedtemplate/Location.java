@@ -1,4 +1,6 @@
-package template;
+package modifiedtemplate;
+
+import main.LatLong;
 
 import java.awt.*;
 
@@ -27,8 +29,7 @@ import java.awt.*;
 public class Location {
 
     // the center of Auckland City according to Google Maps
-    private static final double CENTRE_LAT = -36.847622;
-    private static final double CENTRE_LON = 174.763444;
+    private static final LatLong CITY_CENTER = new LatLong(-36.847622, 174.763444);
 
     // how many kilometers per degree.
     private static final double SCALE_LAT = 111.0;
@@ -73,10 +74,10 @@ public class Location {
      * Create a new Location object from the given latitude and longitude, which
      * is the format used in the data files.
      */
-    public static Location newFromLatLon(double lat, double lon) {
-        double y = (lat - CENTRE_LAT) * SCALE_LAT;
-        double x = (lon - CENTRE_LON)
-                * (SCALE_LAT * Math.cos((lat - CENTRE_LAT) * DEG_TO_RAD));
+    public static Location newFromLatLon(LatLong latLong) {
+        double y = (latLong.latitude - CITY_CENTER.latitude) * SCALE_LAT;
+        double x = (latLong.longitude - CITY_CENTER.longitude)
+                * (SCALE_LAT * Math.cos((latLong.latitude - CITY_CENTER.longitude) * DEG_TO_RAD));
         return new Location(x, y);
     }
 

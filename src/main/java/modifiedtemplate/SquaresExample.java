@@ -1,4 +1,4 @@
-package template;
+package modifiedtemplate;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
