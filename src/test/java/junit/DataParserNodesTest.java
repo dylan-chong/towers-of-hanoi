@@ -2,24 +2,21 @@ package junit;
 
 import main.LatLong;
 import main.Node;
-import main.DataParser;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Dylan on 3/01/17.
- *
- * Use naming format methodName_state_expectedResult for tests
  */
 public class DataParserNodesTest {
 
     @Test
     public void parseNodes_emptyScanner_returnsEmpty() {
-        assertEquals(Collections.emptyList(), getNodesFromString(""));
+        assertEquals(Collections.emptyList(), TestUtils.getNodesFromString(""));
     }
 
     @Test
@@ -28,7 +25,7 @@ public class DataParserNodesTest {
                 Collections.singletonList(
                         new Node(5, new LatLong(-7, 9))
                 ),
-                getNodesFromString("5\t-7\t9\n")
+                TestUtils.getNodesFromString("5\t-7\t9\n")
         );
     }
 
@@ -38,7 +35,7 @@ public class DataParserNodesTest {
                 Collections.singletonList(
                         new Node(2, new LatLong(-99, 0.123))
                 ),
-                getNodesFromString("2\t-99\t0.123\n")
+                TestUtils.getNodesFromString("2\t-99\t0.123\n")
         );
     }
 
@@ -49,7 +46,7 @@ public class DataParserNodesTest {
                         new Node(2, new LatLong(-99, 0.123)),
                         new Node(123, new LatLong(456, 7890))
                 ),
-                getNodesFromString("2\t-99\t0.123\n" +
+                TestUtils.getNodesFromString("2\t-99\t0.123\n" +
                         "123\t456\t7890")
         );
     }
@@ -61,16 +58,9 @@ public class DataParserNodesTest {
                         new Node(2, new LatLong(-99, 0.123)),
                         new Node(123, new LatLong(456, 7890))
                 ),
-                getNodesFromString("2\t-99\t0.123\n" +
+                TestUtils.getNodesFromString("2\t-99\t0.123\n" +
                         "123\t456\t7890\n")
         );
     }
 
-    private List<Node> getNodesFromString(String input) {
-        Scanner scanner = new Scanner(
-                new ByteArrayInputStream(input.getBytes())
-        );
-        DataParser parser = new DataParser();
-        return new ArrayList<>(parser.parseNodes(scanner));
-    }
 }

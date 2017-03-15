@@ -2,6 +2,8 @@ package main;
 
 /**
  * Created by Dylan on 14/03/17.
+ *
+ * Represents an intersection or the dead end of a road
  */
 public class Node {
     public final LatLong latLong;
