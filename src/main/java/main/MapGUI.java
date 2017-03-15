@@ -21,6 +21,7 @@ public class MapGUI extends GUI {
     private final View view;
 
     private Collection<Node> nodes;
+    private Collection<RoadSegment> roadSegments;
 
     @Inject
     public MapGUI(DataParser dataParser, View view) {
@@ -30,10 +31,37 @@ public class MapGUI extends GUI {
 
     @Override
     protected void redraw(Graphics graphics) {
+        int r = 2;
+        // TODO LATER complete this method
+
+        // Optimisation ideas:
+        // - Use Java shapes rather than drawOval?
+        // - Clipping area (avoid drawing unnecessarily)
+
+        graphics.setColor(Color.BLACK);
         if (nodes != null) nodes.forEach(node -> {
             Point p = view.getPointFromLatLong(node.latLong);
-            graphics.drawOval(p.x, p.y, 1, 1);
-            // TODO LATER change to something else
+            graphics.drawOval(p.x - r, p.y - r, r * 2, r * 2);
+        });
+
+        if (roadSegments != null) roadSegments.forEach(roadSegment -> {
+            // Draw pairs of latLongs
+            LatLong previousPoint = null;
+            for (LatLong point : roadSegment.points) {
+                if (previousPoint == null) {
+                    previousPoint = point;
+                    continue;
+                }
+
+                Point previousPointLocation = view.getPointFromLatLong(previousPoint);
+                Point pointLocation = view.getPointFromLatLong(point);
+                graphics.drawLine(
+                        previousPointLocation.x,
+                        previousPointLocation.y,
+                        pointLocation.x,
+                        pointLocation.y
+                );
+            }
         });
     }
 
@@ -60,6 +88,7 @@ public class MapGUI extends GUI {
     protected void onLoad(File nodes, File roads, File segments, File polygons) {
         try {
             this.nodes = dataParser.parseNodes(new Scanner(nodes));
+            this.roadSegments = dataParser.parseRoadSegments(new Scanner(segments));
         } catch (FileNotFoundException e) {
             throw new AssertionError(e);
         }

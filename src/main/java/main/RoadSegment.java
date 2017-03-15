@@ -1,23 +1,24 @@
 package main;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by Dylan on 15/03/17.
  */
 public class RoadSegment {
-    private final long roadId;
-    private final double length;
+    public final long roadId;
+    public final double length;
 
     /**
      * Start and end nodes
      */
-    private final long node1ID, node2ID; // TODO point to actual nodes?
+    public final long node1ID, node2ID; // TODO point to actual nodes?
 
     /**
      * The road makes up straight lines between these points
      */
-    private final List<LatLong> points;
+    public final List<LatLong> points;
 
     public RoadSegment(long roadId,
                        double length,
@@ -28,7 +29,7 @@ public class RoadSegment {
         this.length = length;
         this.node1ID = node1ID;
         this.node2ID = node2ID;
-        this.points = points;
+        this.points = Collections.unmodifiableList(points);
     }
 
     @Override
