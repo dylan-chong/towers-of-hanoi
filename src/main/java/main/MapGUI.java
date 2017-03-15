@@ -4,11 +4,11 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import slightlymodifiedtemplate.GUI;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Collection;
 import java.util.Scanner;
 
 /**
@@ -19,50 +19,28 @@ public class MapGUI extends GUI {
 
     private final DataParser dataParser;
     private final View view;
+    private final MapData.Factory mapDataFactory;
+    private final Drawer.Factory drawerFactory;
 
-    private Collection<Node> nodes;
-    private Collection<RoadSegment> roadSegments;
+    private MapData mapData; // Null unless data is loaded from onLoad();
+    private Drawer drawer;
 
     @Inject
-    public MapGUI(DataParser dataParser, View view) {
+    public MapGUI(DataParser dataParser,
+                  View view,
+                  MapData.Factory mapDataFactory,
+                  Drawer.Factory drawerFactory) {
         this.dataParser = dataParser;
         this.view = view;
+        this.mapDataFactory = mapDataFactory;
+        this.drawerFactory = drawerFactory;
     }
 
     @Override
     protected void redraw(Graphics graphics) {
-        int r = 2;
-        // TODO LATER complete this method
+        if (drawer == null) return;
 
-        // Optimisation ideas:
-        // - Use Java shapes rather than drawOval?
-        // - Clipping area (avoid drawing unnecessarily)
-
-        graphics.setColor(Color.BLACK);
-        if (nodes != null) nodes.forEach(node -> {
-            Point p = view.getPointFromLatLong(node.latLong);
-            graphics.drawOval(p.x - r, p.y - r, r * 2, r * 2);
-        });
-
-        if (roadSegments != null) roadSegments.forEach(roadSegment -> {
-            // Draw pairs of latLongs
-            LatLong previousPoint = null;
-            for (LatLong point : roadSegment.points) {
-                if (previousPoint == null) {
-                    previousPoint = point;
-                    continue;
-                }
-
-                Point previousPointLocation = view.getPointFromLatLong(previousPoint);
-                Point pointLocation = view.getPointFromLatLong(point);
-                graphics.drawLine(
-                        previousPointLocation.x,
-                        previousPointLocation.y,
-                        pointLocation.x,
-                        pointLocation.y
-                );
-            }
-        });
+        drawer.draw(graphics);
     }
 
     @Override
@@ -87,11 +65,29 @@ public class MapGUI extends GUI {
     @Override
     protected void onLoad(File nodes, File roads, File segments, File polygons) {
         try {
-            this.nodes = dataParser.parseNodes(new Scanner(nodes));
-            this.roadSegments = dataParser.parseRoadSegments(new Scanner(segments));
+            outputInfo("Loading data");
+            long loadStartTime = System.currentTimeMillis();
+
+            mapData = mapDataFactory.create(
+                    dataParser.parseNodes(new Scanner(nodes)),
+                    dataParser.parseRoadSegments(new Scanner(segments))
+            );
+
+            drawer = drawerFactory.create(mapData, view);
+
+            long duration = System.currentTimeMillis() - loadStartTime;
+            outputInfo("Loading finished (took " + duration + "ms)");
         } catch (FileNotFoundException e) {
             throw new AssertionError(e);
         }
     }
 
+    /**
+     * @param info Text to put in the text area
+     */
+    private void outputInfo(String info) {
+        JTextArea t = getTextOutputArea();
+        t.append(info);
+        t.append("\n");
+    }
 }
