@@ -1,10 +1,16 @@
-package main;
+package main.mapdata;
+
+import main.LatLong;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by Dylan on 15/03/17.
+ *
+ * Represents the segment of road between two {@link Node} objects. The name
+ * is slightly misleading - although it is called a 'segment', it can be broken
+ * down into smaller segments. See {@link RoadInfo} for more info.
  */
 public class RoadSegment {
     public final long roadId;
@@ -34,6 +40,8 @@ public class RoadSegment {
 
     @Override
     public boolean equals(Object obj) {
+        if (obj == this) return true;
+
         if (!(obj instanceof RoadSegment)) {
             return false;
         }

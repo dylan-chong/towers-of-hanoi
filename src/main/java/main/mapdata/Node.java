@@ -1,4 +1,6 @@
-package main;
+package main.mapdata;
+
+import main.LatLong;
 
 /**
  * Created by Dylan on 14/03/17.
@@ -16,6 +18,8 @@ public class Node {
 
     @Override
     public boolean equals(Object obj) {
+        if (obj == this) return true;
+
         if (!(obj instanceof Node)) {
             return false;
         }

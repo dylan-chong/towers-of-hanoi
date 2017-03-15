@@ -1,5 +1,8 @@
 package main;
 
+import main.mapdata.MapData;
+import main.mapdata.RoadSegment;
+
 import java.awt.*;
 
 /**

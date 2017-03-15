@@ -1,8 +1,9 @@
 package junit;
 
-import main.DataParser;
-import main.Node;
-import main.RoadSegment;
+import main.mapdata.MapDataParser;
+import main.mapdata.Node;
+import main.mapdata.RoadInfo;
+import main.mapdata.RoadSegment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,18 +11,25 @@ import java.util.Scanner;
 
 /**
  * Created by Dylan on 14/03/17.
+ *
+ * Helper methods for tests
  */
 public class TestUtils {
     public static List<Node> getNodesFromString(String input) {
         Scanner scanner = new Scanner(input);
-        DataParser parser = new DataParser();
+        MapDataParser parser = new MapDataParser();
         return new ArrayList<>(parser.parseNodes(scanner));
     }
 
     public static List<RoadSegment> getRoadSegmentsFromString(String input) {
         Scanner scanner = new Scanner(input);
-        DataParser parser = new DataParser();
+        MapDataParser parser = new MapDataParser();
         return new ArrayList<>(parser.parseRoadSegments(scanner));
     }
 
+    public static List<RoadInfo> getRoadInfoFromString(String input) {
+        Scanner scanner = new Scanner(input);
+        MapDataParser parser = new MapDataParser();
+        return new ArrayList<>(parser.parseRoadInfo(scanner));
+    }
 }

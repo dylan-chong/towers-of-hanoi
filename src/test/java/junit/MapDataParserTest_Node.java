@@ -1,7 +1,7 @@
 package junit;
 
 import main.LatLong;
-import main.Node;
+import main.mapdata.Node;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by Dylan on 3/01/17.
  */
-public class DataParserNodesTest {
+public class MapDataParserTest_Node {
 
     @Test
     public void parseNodes_emptyScanner_returnsEmpty() {

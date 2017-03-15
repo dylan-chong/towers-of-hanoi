@@ -1,7 +1,7 @@
 package junit;
 
 import main.LatLong;
-import main.RoadSegment;
+import main.mapdata.RoadSegment;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,7 +13,16 @@ import java.util.Collections;
  * <p>
  * Tests the loading of road segments
  */
-public class DataParserRoadSegTests {
+public class MapDataParserTest_RoadSegment {
+
+    @Test
+    public void parseRoadSegments_withEmptyString_returnsEmpty() {
+        Assert.assertEquals(
+                Collections.emptyList(),
+                TestUtils.getRoadSegmentsFromString("")
+        );
+    }
+
     @Test
     public void parseRoadSegments_withOnlyHeaders_returnsEmpty() {
         Assert.assertEquals(

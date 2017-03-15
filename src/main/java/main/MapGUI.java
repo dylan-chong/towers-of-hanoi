@@ -2,6 +2,8 @@ package main;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import main.mapdata.MapDataParser;
+import main.mapdata.MapData;
 import slightlymodifiedtemplate.GUI;
 
 import javax.swing.*;
@@ -17,16 +19,15 @@ import java.util.Scanner;
 @Singleton
 public class MapGUI extends GUI {
 
-    private final DataParser dataParser;
+    private final MapDataParser dataParser;
     private final View view;
     private final MapData.Factory mapDataFactory;
     private final Drawer.Factory drawerFactory;
 
-    private MapData mapData; // Null unless data is loaded from onLoad();
     private Drawer drawer;
 
     @Inject
-    public MapGUI(DataParser dataParser,
+    public MapGUI(MapDataParser dataParser,
                   View view,
                   MapData.Factory mapDataFactory,
                   Drawer.Factory drawerFactory) {
@@ -68,11 +69,11 @@ public class MapGUI extends GUI {
             outputInfo("Loading data");
             long loadStartTime = System.currentTimeMillis();
 
-            mapData = mapDataFactory.create(
+            MapData mapData = mapDataFactory.create(
                     dataParser.parseNodes(new Scanner(nodes)),
-                    dataParser.parseRoadSegments(new Scanner(segments))
+                    dataParser.parseRoadSegments(new Scanner(segments)),
+                    dataParser.parseRoadInfo(new Scanner(roads))
             );
-
             drawer = drawerFactory.create(mapData, view);
 
             long duration = System.currentTimeMillis() - loadStartTime;

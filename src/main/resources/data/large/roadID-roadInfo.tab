@@ -1,4 +1,4 @@
-roadid	type	label    	city    	oneway	speed	roadclass	notforcar	notforpede	notforbicy
+roadid	type	label    	city    	isOneWay	speed	roadclass	notforcar	notforpede	notforbicy
 1	6	hepburn creek rd	warkworth	0	3	0	0	0	0
 3	6	wilson rd	warkworth	0	3	0	0	0	0
 7	6	hodgart rd	warkworth	0	3	0	0	0	0
