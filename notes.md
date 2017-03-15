@@ -3,7 +3,7 @@ Minimum out of 30:
 - [ ] (15) It constructs a graph structure using collections of intersections, segments, and roads.
 
 Core out of 35 (up to 65):
-- [ ] (15) The map can be zoomed and panned, and the user can select intersections with the mouse,
+- [x] (15) The map can be zoomed and panned, and the user can select intersections with the mouse,
 and some details are shown.
 - [ ] (10) Road names can be entered into the text box and all segments are highlighted on the map.
 Can be either exact or prefix matches, check that all segments highlighted.

@@ -4,7 +4,9 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import main.mapdata.MapDataParser;
 import main.mapdata.MapData;
+import main.mapdata.Node;
 import slightlymodifiedtemplate.GUI;
+import slightlymodifiedtemplate.Location;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +27,8 @@ public class MapGUI extends GUI {
     private final Drawer.Factory drawerFactory;
 
     private Drawer drawer;
+    private MapData mapData;
+    private Node highlightedNode;
 
     @Inject
     public MapGUI(MapDataParser dataParser,
@@ -40,14 +44,29 @@ public class MapGUI extends GUI {
     @Override
     protected void redraw(Graphics graphics) {
         if (drawer == null) return;
-
-        drawer.draw(graphics);
+        drawer.draw(graphics, highlightedNode);
     }
 
+    /**
+     * Called after the mouse has been clicked on the graphics pane and then
+     * released.
+     */
     @Override
     protected void onClick(MouseEvent e) {
-        // TODO sometime
-        System.out.println("clic");
+        if (mapData == null) return;
+
+        Location clickLocation = view.getLocationFromPoint(
+                new Point(e.getX(), e.getY())
+        );
+
+        double maxDistance = view.getClickRadius();
+        highlightedNode = mapData.findNodeNearLocation(clickLocation, maxDistance);
+        if (highlightedNode == null) {
+            outputLine("There are no nodes close to where you clicked");
+            return;
+        }
+
+        outputLine("Found a node: " + highlightedNode.id);
     }
 
     @Override
@@ -66,10 +85,10 @@ public class MapGUI extends GUI {
     @Override
     protected void onLoad(File nodes, File roads, File segments, File polygons) {
         try {
-            outputInfo("Loading data");
+            outputLine("Loading data");
             long loadStartTime = System.currentTimeMillis();
 
-            MapData mapData = mapDataFactory.create(
+            mapData = mapDataFactory.create(
                     dataParser.parseNodes(new Scanner(nodes)),
                     dataParser.parseRoadSegments(new Scanner(segments)),
                     dataParser.parseRoadInfo(new Scanner(roads))
@@ -77,7 +96,7 @@ public class MapGUI extends GUI {
             drawer = drawerFactory.create(mapData, view);
 
             long duration = System.currentTimeMillis() - loadStartTime;
-            outputInfo("Loading finished (took " + duration + "ms)");
+            outputLine("Loading finished (took " + duration + "ms)");
         } catch (FileNotFoundException e) {
             throw new AssertionError(e);
         }
@@ -86,7 +105,7 @@ public class MapGUI extends GUI {
     /**
      * @param info Text to put in the text area
      */
-    private void outputInfo(String info) {
+    private void outputLine(String info) {
         JTextArea t = getTextOutputArea();
         t.append(info);
         t.append("\n");

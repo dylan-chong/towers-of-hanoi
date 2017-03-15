@@ -34,6 +34,7 @@ public class Location {
     // how many kilometers per degree.
     private static final double SCALE_LAT = 111.0;
     private static final double DEG_TO_RAD = Math.PI / 180;
+    private static final double SQRT_2 = Math.sqrt(2);
 
     // fields are public for easy access, but they are final so that the
     // location is immutable.
@@ -106,7 +107,12 @@ public class Location {
      * distance for greater speed. Equivalent to whether other is within a
      * diamond shape around this location.
      */
-    public boolean isClose(Location other, double dist) {
+    public boolean isCloseFast(Location other, double dist) {
+        // Make sure to return true for locations diagonally from this.
+        // But this means that some non-close Locations would cause a true
+        // return value.
+        dist *= SQRT_2;
+
         return Math.abs(this.x - other.x) + Math.abs(this.y - other.y) <= dist;
     }
 

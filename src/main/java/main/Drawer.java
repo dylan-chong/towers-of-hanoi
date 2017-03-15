@@ -1,6 +1,7 @@
 package main;
 
 import main.mapdata.MapData;
+import main.mapdata.Node;
 import main.mapdata.RoadSegment;
 
 import java.awt.*;
@@ -12,6 +13,9 @@ public class Drawer {
 
     private static final int NODE_RADIUS_PX = 2;
 
+    private static final Color ROADS_COLOR = Color.BLACK;
+    private static final Color NODE_HIGHLIGHT_COLOR = Color.RED;
+
     private final MapData mapData;
     private final View view;
 
@@ -22,15 +26,22 @@ public class Drawer {
 
     /**
      * @param graphics Draws a single frame onto graphics
+     * @param highlightedNode The node that has been clicked by the user
      */
-    public void draw(Graphics graphics) {
-        graphics.setColor(Color.BLACK);
+    public void draw(Graphics graphics, Node highlightedNode) {
+        graphics.setColor(ROADS_COLOR);
 
         // Optimisation ideas:
         // - Use Java shapes rather than drawOval?
         // - Clipping area (avoid drawing unnecessarily)
 
+        mapData.roadSegments.forEach(roadSegment ->
+                drawRoadSegment(graphics, roadSegment)
+        );
+
         mapData.nodes.forEach(node -> {
+            if (node == highlightedNode) graphics.setColor(NODE_HIGHLIGHT_COLOR);
+
             Point p = view.getPointFromLatLong(node.latLong);
             graphics.drawOval(
                     p.x - NODE_RADIUS_PX,
@@ -38,11 +49,9 @@ public class Drawer {
                     NODE_RADIUS_PX * 2,
                     NODE_RADIUS_PX * 2
             );
-        });
 
-        mapData.roadSegments.forEach(roadSegment ->
-                drawRoadSegment(graphics, roadSegment)
-        );
+            if (node == highlightedNode) graphics.setColor(ROADS_COLOR);
+        });
     }
 
     private void drawRoadSegment(Graphics graphics, RoadSegment roadSegment) {

@@ -1,10 +1,13 @@
 package junit;
 
+import main.LatLong;
+import main.View;
 import main.mapdata.MapDataParser;
 import main.mapdata.Node;
 import main.mapdata.RoadInfo;
 import main.mapdata.RoadSegment;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -31,5 +34,22 @@ public class TestUtils {
         Scanner scanner = new Scanner(input);
         MapDataParser parser = new MapDataParser();
         return new ArrayList<>(parser.parseRoadInfo(scanner));
+    }
+
+    public static double getScale(View view)
+            throws IllegalAccessException, NoSuchFieldException {
+        Field scaleField = view.getClass().getDeclaredField("scale");
+        scaleField.setAccessible(true);
+        return (double) scaleField.get(view);
+    }
+
+    /**
+     * Roughly convert a distance in the {@link LatLong} coordinate system
+     * into the {@link slightlymodifiedtemplate.Location} coordinate system.
+     */
+    public static double roughLocationDistance(double latLongDistance) {
+        LatLong latLongA = new LatLong(0, 0);
+        LatLong latLongB = new LatLong(0, latLongDistance);
+        return latLongA.asLocation().distance(latLongB.asLocation());
     }
 }
