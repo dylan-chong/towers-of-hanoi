@@ -8,11 +8,24 @@ import java.awt.*;
 /**
  * Created by Dylan on 14/03/17.
  *
- * Deals with scale and origin so that the map can be viewed at different
+ * Deals with scale and originOnScreen so that the map can be viewed at different
  * zoom levels and positions
  */
 public class View {
-    private Location origin = Location.CITY_CENTER.asLocation();
+    /**
+     * A number controlling how far to move when a {@link GUI.Move} is applied.
+     * Prefer using the {@link View::distanceToMoveBy()} method instead of this.
+     */
+    private static final int MOVE_DISTANCE = 60;
+
+    /**
+     * Adjust this so that the map can be panned around.
+     */
+    private Location originOnScreen = Location.CITY_CENTER.asLocation();
+
+    /**
+     * How zoomed in the map is (higher scale means closer zoom)
+     */
     private double scale = 60;
 
     public void applyMove(GUI.Move move) {
@@ -27,25 +40,29 @@ public class View {
 
         double dx = 0;
         if (move == GUI.Move.WEST) {
-            dx = -1;
+            dx = -distanceToMoveBy();
         } else if (move == GUI.Move.EAST) {
-            dx = 1;
+            dx = distanceToMoveBy();
         }
 
         double dy = 0;
         if (move == GUI.Move.NORTH) {
-            dy = 1;
+            dy = distanceToMoveBy();
         } else if (move == GUI.Move.SOUTH) {
-            dy = -1;
+            dy = -distanceToMoveBy();
         }
 
-        origin = origin.moveBy(dx, dy);
+        originOnScreen = originOnScreen.moveBy(dx, dy);
     }
 
     public Point getPointFromLatLong(LatLong latLong) {
         return latLong.asPoint(
-                origin,
+                originOnScreen,
                 scale
         );
+    }
+
+    private double distanceToMoveBy() {
+        return MOVE_DISTANCE / scale;
     }
 }

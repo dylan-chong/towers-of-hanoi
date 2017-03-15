@@ -24,5 +24,4 @@ public class TestUtils {
         return new ArrayList<>(parser.parseRoadSegments(scanner));
     }
 
-    // public static List<Road>
 }
