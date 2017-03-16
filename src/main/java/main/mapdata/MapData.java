@@ -1,8 +1,12 @@
 package main.mapdata;
 
+import com.google.inject.Inject;
+import main.async.AsyncTask;
+import main.async.AsyncTaskQueues;
 import slightlymodifiedtemplate.Location;
 
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -14,14 +18,39 @@ import java.util.stream.Stream;
 public class MapData {
     public final Collection<Node> nodes;
     public final Collection<RoadSegment> roadSegments;
-    public final Collection<RoadInfo> roadInfos;
 
-    private MapData(Collection<Node> nodes,
+    /**
+     * Don't access this variable directly. Use the getter
+     */
+    private Collection<RoadInfo> roadInfos;
+
+    private final AsyncTaskQueues asyncTaskQueues;
+
+
+    @Inject
+    private MapData(AsyncTaskQueues asyncTaskQueues,
+                    Collection<Node> nodes,
                     Collection<RoadSegment> roadSegments,
-                    Collection<RoadInfo> roadInfos) {
+                    Supplier<Collection<RoadInfo>> roadInfosSupplier) {
+        this.asyncTaskQueues = asyncTaskQueues;
         this.nodes = Collections.unmodifiableCollection(nodes);
         this.roadSegments = Collections.unmodifiableCollection(roadSegments);
-        this.roadInfos = Collections.unmodifiableCollection(roadInfos);
+
+        asyncTaskQueues.addTask(new AsyncTask(
+                () -> roadInfos = roadInfosSupplier.get(),
+                () -> {} // Needs no callback
+        ));
+    }
+
+    public Collection<RoadInfo> getRoadInfos() {
+        while (roadInfos == null) {
+            try {
+                Thread.sleep(75);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return roadInfos;
     }
 
     /**
@@ -56,7 +85,7 @@ public class MapData {
     public Map<RoadInfo, Collection<RoadSegment>> findRoadSegmentsByString(
             String searchTerm) {
 
-        Collection<RoadInfo> matchingRoadInfos = roadInfos.stream()
+        Collection<RoadInfo> matchingRoadInfos = getRoadInfos().stream()
                 .filter(roadInfo -> searchMatches(roadInfo.label, searchTerm) ||
                         searchMatches(roadInfo.city, searchTerm))
                 .collect(Collectors.toList());
@@ -103,17 +132,33 @@ public class MapData {
     }
 
     public RoadInfo findRoadInfoForSegment(RoadSegment segment) {
-        return this.roadInfos.stream()
+        return this.getRoadInfos().stream()
                 .filter(roadInfo -> roadInfo.id == segment.roadId)
                 .findAny()
                 .orElse(null);
     }
 
     public static class Factory {
+        private final AsyncTaskQueues asyncTaskQueues;
+
+        @Inject
+        public Factory(AsyncTaskQueues asyncTaskQueues) {
+            this.asyncTaskQueues = asyncTaskQueues;
+        }
+
+        /**
+         * Must have the same parameter names as the MapData constructor (this
+         * is used by Guice)
+         */
         public MapData create(Collection<Node> nodes,
-                              Collection<RoadSegment> roadSegments,
-                              Collection<RoadInfo> roadInfos) {
-            return new MapData(nodes, roadSegments, roadInfos);
+                       Collection<RoadSegment> roadSegments,
+                       Supplier<Collection<RoadInfo>> roadInfosSupplier) {
+            return new MapData(
+                    asyncTaskQueues,
+                    nodes,
+                    roadSegments,
+                    roadInfosSupplier
+            );
         }
     }
 }

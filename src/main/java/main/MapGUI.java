@@ -2,6 +2,8 @@ package main;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import main.async.AsyncTask;
+import main.async.AsyncTaskQueues;
 import main.mapdata.*;
 import slightlymodifiedtemplate.GUI;
 import slightlymodifiedtemplate.Location;
@@ -12,6 +14,8 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 /**
  * Created by Dylan on 14/03/17.
@@ -23,6 +27,7 @@ public class MapGUI extends GUI {
     private final View view;
     private final MapData.Factory mapDataFactory;
     private final Drawer.Factory drawerFactory;
+    private final AsyncTaskQueues asyncTaskQueues;
 
     private Drawer drawer;
     private MapData mapData;
@@ -37,11 +42,13 @@ public class MapGUI extends GUI {
     public MapGUI(MapDataParser dataParser,
                   View view,
                   MapData.Factory mapDataFactory,
-                  Drawer.Factory drawerFactory) {
+                  Drawer.Factory drawerFactory,
+                  AsyncTaskQueues asyncTaskQueues) {
         this.dataParser = dataParser;
         this.view = view;
         this.mapDataFactory = mapDataFactory;
         this.drawerFactory = drawerFactory;
+        this.asyncTaskQueues = asyncTaskQueues;
     }
 
     @Override
@@ -131,18 +138,58 @@ public class MapGUI extends GUI {
             outputLine("Loading data");
             long loadStartTime = System.currentTimeMillis();
 
-            mapData = mapDataFactory.create(
-                    dataParser.parseNodes(new Scanner(nodes)),
-                    dataParser.parseRoadSegments(new Scanner(segments)),
-                    dataParser.parseRoadInfo(new Scanner(roads))
-            );
-            drawer = drawerFactory.create(mapData, view);
+            Scanner nodesScanner = new Scanner(nodes);
+            Scanner segmentsScanner = new Scanner(segments);
+            Scanner roadInfoScanner = new Scanner(roads);
 
-            long duration = System.currentTimeMillis() - loadStartTime;
-            outputLine("Loading finished (took " + duration + "ms)");
+            // Use atomic to allow assigning the values from within lambdas
+            AtomicReference<Collection<Node>> parsedNodes
+                    = new AtomicReference<>();
+            AtomicReference<Collection<RoadSegment>> parsedRoadSegments
+                    = new AtomicReference<>();
+
+            // Called when any task has completed
+            Runnable onTaskCompletion = () -> {
+                if (parsedNodes.get() == null) return;
+                if (parsedRoadSegments.get() == null) return;
+
+                // All tasks have been completed
+                onParse(parsedNodes.get(),
+                        parsedRoadSegments.get(),
+                        () -> dataParser.parseRoadInfo(roadInfoScanner));
+
+                long duration = System.currentTimeMillis() - loadStartTime;
+                outputLine("Loading finished (took " + duration + "ms)");
+            };
+
+            // Queue up bg threads
+            asyncTaskQueues.addTask(new AsyncTask(
+                    () -> parsedNodes.set(dataParser.parseNodes(nodesScanner)),
+                    onTaskCompletion
+            ));
+            asyncTaskQueues.addTask(new AsyncTask(
+                    () -> parsedRoadSegments.set(
+                            dataParser.parseRoadSegments(segmentsScanner)
+                    ),
+                    onTaskCompletion
+            ));
         } catch (FileNotFoundException e) {
             throw new AssertionError(e);
         }
+    }
+
+    /**
+     * Call this to collect data about what has been parsed from files
+     */
+    private void onParse(Collection<Node> nodes,
+                         Collection<RoadSegment> roadSegments,
+                         Supplier<Collection<RoadInfo>> roadInfoSupplier) {
+        mapData = mapDataFactory.create(
+                nodes,
+                roadSegments,
+                roadInfoSupplier
+        );
+        drawer = drawerFactory.create(mapData, view);
     }
 
     /**
