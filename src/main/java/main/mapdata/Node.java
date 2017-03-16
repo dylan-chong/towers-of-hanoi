@@ -6,7 +6,7 @@ import main.LatLong;
  * Created by Dylan on 14/03/17.
  *
  * Represents an intersection or the dead end of a road. Not to be confused
- * with {@link main.structures.GraphNode}.
+ * with {@link main.structures.Graph.Node}.
  */
 public class Node {
     public final LatLong latLong;

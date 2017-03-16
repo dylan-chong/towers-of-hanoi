@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 /**
  * Created by Dylan on 15/03/17.
  * <p>
- * Struct for storing data about the map.
+ * For storing data about the map and finding data
  */
 public class MapData {
     public final Collection<Node> nodes;
@@ -23,8 +23,6 @@ public class MapData {
         this.roadSegments = Collections.unmodifiableCollection(roadSegments);
         this.roadInfos = Collections.unmodifiableCollection(roadInfos);
     }
-
-    // TODO move to different class?
 
     /**
      * Find the nearest {@link Node} near the given location, within a circle
