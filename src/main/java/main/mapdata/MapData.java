@@ -97,17 +97,16 @@ public class MapData {
      */
     public Collection<RoadInfo> findRoadsConnectedToNode(Node node) {
         Collection<RoadSegment> roadSegmentsForNode = findRoadSegmentsForNode(node);
-        Collection<RoadInfo> roadInfos = new HashSet<>();
-        roadSegmentsForNode.forEach(segment ->
-                roadInfos.addAll(findRoadInfosConnectedToSegment(segment))
-        );
-        return roadInfos;
+        return roadSegmentsForNode.stream()
+                .map(this::findRoadInfoForSegment)
+                .collect(Collectors.toSet());
     }
 
-    public Collection<RoadInfo> findRoadInfosConnectedToSegment(RoadSegment segment) {
-        return roadInfos.stream()
+    public RoadInfo findRoadInfoForSegment(RoadSegment segment) {
+        return this.roadInfos.stream()
                 .filter(roadInfo -> roadInfo.id == segment.roadId)
-                .collect(Collectors.toList());
+                .findAny()
+                .orElse(null);
     }
 
     public static class Factory {

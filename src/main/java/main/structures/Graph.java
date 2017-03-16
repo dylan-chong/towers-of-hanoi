@@ -5,44 +5,48 @@ import java.util.Collections;
 import java.util.HashSet;
 
 /**
- * A class just used for namespacing, and allowing the inner classes to call
- * private methods on each other
+ * @param <NodeInfoT> The type of info stored in a {@link Node}
+ * @param <EdgeInfoT> The type of info stored in an {@link Edge}
  */
-public class Graph {
+public class Graph<NodeInfoT, EdgeInfoT> {
+    // private HashMap<NodeInfoT, Node> nodesForNodeInfo = new HashMap<>();
+    // private HashMap<EdgeInfoT, Edge> edgesForEdgeInfo = new HashMap<>();
 
-    /**
-     * No instances are required
-     */
-    private Graph() {
+    public Graph() {
     }
 
-    /**
-     * This class represents a graph where each Node contains a class containing
-     * info about the Node ({@link Graph}), and a {@link java.util.Set} of
-     * {@link Edge} objects.
-     *
-     * @param <NodeInfoType> Type to store information in this {@link Node}
-     * @param <EdgeInfoType> Type to store information in an {@link Edge} that is
-     *                       connected to this {@link Node}
-     */
-    public static class Node<NodeInfoType, EdgeInfoType> {
-        public final NodeInfoType info;
+    public Edge createEdge(Node node1,
+                           Node node2,
+                           EdgeInfoT info) {
+        return new Edge(node1, node2, info);
+    }
 
-        private Collection<Edge<NodeInfoType, EdgeInfoType>> edges;
+    public Node createNode(NodeInfoT info) {
+        return new Node(info);
+    }
 
-        public Node(NodeInfoType info) {
+    public class Node {
+        private final NodeInfoT info;
+
+        private Collection<Edge> edges;
+
+        private Node(NodeInfoT info) {
             this.edges = new HashSet<>();
             this.info = info;
         }
 
-        public Collection<Edge<NodeInfoType, EdgeInfoType>> getEdges() {
+        public Collection<Edge> getEdges() {
             return Collections.unmodifiableCollection(edges);
+        }
+
+        public NodeInfoT getInfo() {
+            return info;
         }
 
         /**
          * This is called when creating an edge
          */
-        private void addEdge(Edge<NodeInfoType, EdgeInfoType> edge) {
+        private void addEdge(Edge edge) {
             if (edges.contains(edge)) {
                 throw new IllegalStateException("Already added");
             }
@@ -51,24 +55,19 @@ public class Graph {
         }
     }
 
-    /**
-     * @param <NodeInfoType> The type of info stored in a {@link Graph} connected
-     *                       to this {@link Edge}
-     * @param <EdgeInfoType> The type of info stored this {@link Edge}
-     */
-    public static class Edge<NodeInfoType, EdgeInfoType> {
-        public final EdgeInfoType info;
+    public class Edge {
+        private final EdgeInfoT info;
         /**
          * Either of these can be null
          */
-        public final Node<NodeInfoType, EdgeInfoType> node1, node2;
+        private final Node node1, node2;
 
         /**
          * Creates an Edge and connects it to two nodes (which can be null)
          */
-        public Edge(Node<NodeInfoType, EdgeInfoType> node1,
-                    Node<NodeInfoType, EdgeInfoType> node2,
-                    EdgeInfoType info) {
+        private Edge(Node node1,
+                     Node node2,
+                     EdgeInfoT info) {
             this.node1 = node1;
             this.node2 = node2;
             this.info = info;
@@ -76,12 +75,16 @@ public class Graph {
             if (node2 != null) node2.addEdge(this);
         }
 
-        public Node<NodeInfoType, EdgeInfoType> getNode1() {
+        public Node getNode1() {
             return node1;
         }
 
-        public Node<NodeInfoType, EdgeInfoType> getNode2() {
+        public Node getNode2() {
             return node2;
+        }
+
+        public EdgeInfoT getInfo() {
+            return info;
         }
     }
 }
