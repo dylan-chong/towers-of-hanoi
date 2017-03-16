@@ -3,13 +3,13 @@ package junit;
 import main.LatLong;
 import main.mapdata.MapData;
 import main.mapdata.Node;
+import main.mapdata.RoadInfo;
+import main.mapdata.RoadSegment;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * Created by Dylan on 15/03/17.
@@ -108,4 +108,17 @@ public class MapDataTest {
         );
         assertEquals(2, foundNode.id);
     }
+
+    @Test
+    public void findRoadSegmentsByString_emptyData_returnsEmpty() {
+        MapData mapData = new MapData.Factory().create(
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList()
+        );
+        Map<RoadInfo, Collection<RoadSegment>> roadSegments =
+                mapData.findRoadSegmentsByString("");
+        assertEquals(Collections.emptyMap(), roadSegments);
+    }
+
 }

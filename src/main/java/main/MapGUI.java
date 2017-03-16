@@ -2,9 +2,7 @@ package main;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import main.mapdata.MapDataParser;
-import main.mapdata.MapData;
-import main.mapdata.Node;
+import main.mapdata.*;
 import slightlymodifiedtemplate.GUI;
 import slightlymodifiedtemplate.Location;
 
@@ -13,6 +11,8 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Collection;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -28,7 +28,9 @@ public class MapGUI extends GUI {
 
     private Drawer drawer;
     private MapData mapData;
+
     private Node highlightedNode;
+    private Map<RoadInfo, Collection<RoadSegment>> searchResults;
 
     @Inject
     public MapGUI(MapDataParser dataParser,
@@ -44,7 +46,7 @@ public class MapGUI extends GUI {
     @Override
     protected void redraw(Graphics graphics) {
         if (drawer == null) return;
-        drawer.draw(graphics, highlightedNode);
+        drawer.draw(graphics, highlightedNode, searchResults);
     }
 
     /**
@@ -71,7 +73,15 @@ public class MapGUI extends GUI {
 
     @Override
     protected void onSearch() {
-        // TODO sometime
+        String searchTerm = getSearchBox().getText();
+        outputLine("Search results for '" + searchTerm + "':");
+        searchResults = mapData.findRoadSegmentsByString(searchTerm);
+
+        searchResults.entrySet()
+                .forEach(entry -> {
+                    RoadInfo info = entry.getKey();
+                    outputLine("- Found: " + info.city + ", " + info.label);
+                });
     }
 
     @Override

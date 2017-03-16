@@ -2,8 +2,8 @@ package main.mapdata;
 
 import slightlymodifiedtemplate.Location;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -25,6 +25,7 @@ public class MapData {
     }
 
     // TODO move to different class?
+
     /**
      * Find the nearest {@link Node} near the given location, within a circle
      * with a radius defined by locationUnits.
@@ -33,7 +34,7 @@ public class MapData {
      *                      coordinate system.
      */
     public Node findNodeNearLocation(Location location, double locationUnits) {
-        Stream<Node> stream =  nodes.stream();
+        Stream<Node> stream = nodes.stream();
 
         // Find all nodes within range
         stream = stream.filter(node -> node.latLong
@@ -52,6 +53,31 @@ public class MapData {
             return null;
         }
         return closestNode;
+    }
+
+    public Map<RoadInfo, Collection<RoadSegment>> findRoadSegmentsByString(
+            String searchTerm) {
+
+        Collection<RoadInfo> matchingRoadInfos = roadInfos.stream()
+                .filter(roadInfo -> searchMatches(roadInfo.label, searchTerm) ||
+                        searchMatches(roadInfo.city, searchTerm))
+                .collect(Collectors.toList());
+
+        Map<RoadInfo, Collection<RoadSegment>> result = new HashMap<>();
+        matchingRoadInfos.forEach(roadInfo ->
+                result.put(roadInfo, roadSegmentsForRoadInfo(roadInfo))
+        );
+        return result;
+    }
+
+    public Collection<RoadSegment> roadSegmentsForRoadInfo(RoadInfo roadInfo) {
+        return roadSegments.stream()
+                .filter(segment -> segment.roadId == roadInfo.id)
+                .collect(Collectors.toList());
+    }
+
+    private boolean searchMatches(String stringToCheck, String searchTerm) {
+        return stringToCheck.toLowerCase().startsWith(searchTerm.toLowerCase());
     }
 
     public static class Factory {
