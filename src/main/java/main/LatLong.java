@@ -42,4 +42,12 @@ public class LatLong {
     public Point asPoint(Location origin, double scale) {
         return asLocation().asPoint(origin, scale);
     }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "{ latitude: %f, longitude: %f }",
+                latitude, longitude
+        );
+    }
 }

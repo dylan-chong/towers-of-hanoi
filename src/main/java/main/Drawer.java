@@ -2,19 +2,17 @@ package main;
 
 import main.mapdata.MapData;
 import main.mapdata.Node;
-import main.mapdata.RoadInfo;
 import main.mapdata.RoadSegment;
 
 import java.awt.*;
 import java.util.Collection;
-import java.util.Map;
 
 /**
  * Created by Dylan on 15/03/17.
  */
 public class Drawer {
 
-    private static final int NODE_RADIUS_PX = 2;
+    private static final int NODE_RADIUS_PX = 5;
 
     private static final Color ROADS_COLOR = Color.BLACK;
     private static final Color ROADS_HIGHLIGHT_COLOR = Color.RED;
@@ -29,30 +27,31 @@ public class Drawer {
     }
 
     /**
-     * @param graphics Draws a single frame onto graphics
-     * @param highlightedNode The node that has been clicked by the user
-     * @param searchResults Contains {@link RoadSegment} objects to highlight
+     * @param graphics Draws a single frame onto this graphics
+     * @param highlightedNode (nullable) The node that has been clicked by
+     *                        the user
+     * @param highlightedRoadSegments (nullable) More {@link RoadSegment}
+     *                                objects to highlight
      */
     public void draw(Graphics graphics,
                      Node highlightedNode,
-                     Map<RoadInfo, Collection<RoadSegment>> searchResults) {
-        graphics.setColor(ROADS_COLOR);
-
+                     Collection<RoadSegment> highlightedRoadSegments) {
         // Optimisation ideas:
         // - Clipping area (avoid drawing unnecessarily)
 
+        // Road Segments
+        graphics.setColor(ROADS_COLOR);
         mapData.roadSegments.forEach(roadSegment ->
-                drawRoadSegment(graphics, roadSegment, false)
+                drawRoadSegment(graphics, roadSegment)
         );
-        if (searchResults != null) {
+        if (highlightedRoadSegments != null) {
             graphics.setColor(ROADS_HIGHLIGHT_COLOR);
-            searchResults.forEach((roadInfo, roadSegments) ->
-                    roadSegments.forEach(roadSegment ->
-                            drawRoadSegment(graphics, roadSegment, true)
-                    )
+            highlightedRoadSegments.forEach(roadSegment ->
+                    drawRoadSegment(graphics, roadSegment)
             );
         }
 
+        // Node
         if (highlightedNode != null) {
             Point p = view.getPointFromLatLong(highlightedNode.latLong);
             graphics.setColor(NODE_HIGHLIGHT_COLOR);
@@ -66,8 +65,7 @@ public class Drawer {
     }
 
     private void drawRoadSegment(Graphics graphics,
-                                 RoadSegment roadSegment,
-                                 boolean shouldHighlight) {
+                                 RoadSegment roadSegment) {
         // Draw pairs of latLongs
         LatLong previousPoint = null;
         for (LatLong point : roadSegment.points) {
@@ -84,6 +82,7 @@ public class Drawer {
                     pointLocation.x,
                     pointLocation.y
             );
+            previousPoint = point;
         }
     }
 

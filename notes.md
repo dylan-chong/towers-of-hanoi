@@ -5,6 +5,7 @@ Minimum out of 30:
 Core out of 35 (up to 65):
 - [x] (15) The map can be zoomed and panned, and the user can select intersections with the mouse,
 and some details are shown.
+    - [ ] Show location and roads that go through this intersection
 - [x] (10) Road names can be entered into the text box and all segments are highlighted on the map.
 Can be either exact or prefix matches, check that all segments highlighted.
 - [ ] (5) The names of all roads joining the selected intersection are outputted, without duplicates.
@@ -17,6 +18,7 @@ with a given prefix.
 - [ ] (5) Trie is used to output the names of all roads which match a prefix in the search box, as well
 as highlighting them on the map. If the prefix exactly matches a road name, only output and
 highlight road(s) of that name.
+    - [ ] As the user types, show up to 10 completions
 
 Challenge out of 15 (up to 100 max, with 5 spare marks here):
 - [ ] (5) A quad-tree structure is used to quickly find intersections near a mouse click.

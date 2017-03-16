@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Scanner;
@@ -31,6 +32,10 @@ public class MapGUI extends GUI {
 
     private Node highlightedNode;
     private Map<RoadInfo, Collection<RoadSegment>> searchResults;
+    /**
+     * For when the user clicks on a Node
+     */
+    private Collection<RoadSegment> highlightedRoadSegments;
 
     @Inject
     public MapGUI(MapDataParser dataParser,
@@ -46,7 +51,8 @@ public class MapGUI extends GUI {
     @Override
     protected void redraw(Graphics graphics) {
         if (drawer == null) return;
-        drawer.draw(graphics, highlightedNode, searchResults);
+
+        drawer.draw(graphics, highlightedNode, highlightedRoadSegments);
     }
 
     /**
@@ -64,23 +70,32 @@ public class MapGUI extends GUI {
         double maxDistance = view.getClickRadius();
         highlightedNode = mapData.findNodeNearLocation(clickLocation, maxDistance);
         if (highlightedNode == null) {
+            highlightedRoadSegments = null;
             outputLine("There are no nodes close to where you clicked");
             return;
         }
 
-        outputLine("Found a node: " + highlightedNode.id);
+        outputLine("Found an intersection: " + highlightedNode.latLong);
     }
 
     @Override
     protected void onSearch() {
         String searchTerm = getSearchBox().getText();
-        outputLine("Search results for '" + searchTerm + "':");
-        searchResults = mapData.findRoadSegmentsByString(searchTerm);
+        if (searchTerm.isEmpty()) {
+            searchResults = null;
+            highlightedRoadSegments = null;
+            return;
+        }
 
+        outputLine("Search results for '" + searchTerm + "':");
+
+        searchResults = mapData.findRoadSegmentsByString(searchTerm);
+        highlightedRoadSegments = new ArrayList<>();
         searchResults.entrySet()
                 .forEach(entry -> {
                     RoadInfo info = entry.getKey();
                     outputLine("- Found: " + info.city + ", " + info.label);
+                    highlightedRoadSegments.addAll(entry.getValue());
                 });
     }
 
