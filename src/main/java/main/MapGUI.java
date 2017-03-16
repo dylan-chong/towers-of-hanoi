@@ -11,10 +11,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Created by Dylan on 14/03/17.
@@ -76,6 +73,25 @@ public class MapGUI extends GUI {
         }
 
         outputLine("Found an intersection: " + highlightedNode.latLong);
+
+        // Get RoadInfo objects for displaying info
+        Collection<RoadInfo> roadsConnectedToNode =
+                mapData.findRoadsConnectedToNode(highlightedNode);
+        roadsConnectedToNode.stream()
+                // Avoid printing duplicate names
+                .map(roadInfo -> new RoadInfoByName(roadInfo.label, roadInfo.city))
+                .distinct()
+                .forEach(roadInfo ->
+                        outputLine("- Connected to: " + roadInfo)
+                );
+
+        // Get RoadSegments for highlighting
+        highlightedRoadSegments = new HashSet<>();
+        roadsConnectedToNode.forEach(roadInfo ->
+                highlightedRoadSegments.addAll(
+                        mapData.findRoadSegmentsForRoadInfo(roadInfo)
+                )
+        );
     }
 
     @Override
@@ -94,7 +110,7 @@ public class MapGUI extends GUI {
         searchResults.entrySet()
                 .forEach(entry -> {
                     RoadInfo info = entry.getKey();
-                    outputLine("- Found: " + info.city + ", " + info.label);
+                    outputLine("- Found: " + info);
                     highlightedRoadSegments.addAll(entry.getValue());
                 });
     }

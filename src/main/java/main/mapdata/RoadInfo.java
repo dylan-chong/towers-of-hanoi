@@ -68,6 +68,11 @@ public class RoadInfo {
                 other.notForBicycles == notForBicycles;
     }
 
+    @Override
+    public String toString() {
+        return new RoadInfoByName(label, city).toString();
+    }
+
     /**
      * Speed limit categories (sorted from slowest to fastest)
      * <p>

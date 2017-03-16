@@ -65,19 +65,51 @@ public class MapData {
 
         Map<RoadInfo, Collection<RoadSegment>> result = new HashMap<>();
         matchingRoadInfos.forEach(roadInfo ->
-                result.put(roadInfo, roadSegmentsForRoadInfo(roadInfo))
+                result.put(roadInfo, findRoadSegmentsForRoadInfo(roadInfo))
         );
         return result;
     }
 
-    public Collection<RoadSegment> roadSegmentsForRoadInfo(RoadInfo roadInfo) {
+    public Collection<RoadSegment> findRoadSegmentsForRoadInfo(RoadInfo roadInfo) {
         return roadSegments.stream()
-                .filter(segment -> segment.roadId == roadInfo.id)
+                .filter(segment ->
+                        segment.roadId == roadInfo.id
+                )
                 .collect(Collectors.toList());
     }
 
     private boolean searchMatches(String stringToCheck, String searchTerm) {
         return stringToCheck.toLowerCase().startsWith(searchTerm.toLowerCase());
+    }
+
+    /**
+     * Selects roads segments connected to node
+     */
+    public Collection<RoadSegment> findRoadSegmentsForNode(Node node) {
+         return roadSegments.stream()
+                .filter(segment ->
+                        node.id == segment.node1ID || node.id == segment.node2ID
+                )
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Finds {@link RoadSegment} objects connected to node, then finds the
+     * {@link RoadInfo} for each {@link RoadSegment}.
+     */
+    public Collection<RoadInfo> findRoadsConnectedToNode(Node node) {
+        Collection<RoadSegment> roadSegmentsForNode = findRoadSegmentsForNode(node);
+        Collection<RoadInfo> roadInfos = new HashSet<>();
+        roadSegmentsForNode.forEach(segment ->
+                roadInfos.addAll(findRoadInfosConnectedToSegment(segment))
+        );
+        return roadInfos;
+    }
+
+    public Collection<RoadInfo> findRoadInfosConnectedToSegment(RoadSegment segment) {
+        return roadInfos.stream()
+                .filter(roadInfo -> roadInfo.id == segment.roadId)
+                .collect(Collectors.toList());
     }
 
     public static class Factory {

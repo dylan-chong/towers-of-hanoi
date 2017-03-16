@@ -13,6 +13,11 @@ import java.util.List;
  * down into smaller segments. See {@link RoadInfo} for more info.
  */
 public class RoadSegment {
+
+    /**
+     * There can be multiple {@link RoadSegment} objects where they have the
+     * same name, are connected to each other, and have different ids.
+     */
     public final long roadId;
     public final double length;
 
