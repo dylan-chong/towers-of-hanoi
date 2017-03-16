@@ -26,13 +26,12 @@ public class MapGUI extends GUI {
 
     private Drawer drawer;
     private MapData mapData;
-
-    private Node highlightedNode;
-    private Map<RoadInfo, Collection<RoadSegment>> searchResults;
     /**
-     * For when the user clicks on a Node
+     * Should never be null. Stuff to highlight
      */
-    private Collection<RoadSegment> highlightedRoadSegments;
+    private HighlightData highlightData = new HighlightData(null, null);
+
+    private Map<RoadInfo, Collection<RoadSegment>> searchResults;
 
     @Inject
     public MapGUI(MapDataParser dataParser,
@@ -49,7 +48,7 @@ public class MapGUI extends GUI {
     protected void redraw(Graphics graphics) {
         if (drawer == null) return;
 
-        drawer.draw(graphics, highlightedNode, highlightedRoadSegments);
+        drawer.draw(graphics, highlightData);
     }
 
     /**
@@ -65,9 +64,9 @@ public class MapGUI extends GUI {
         );
 
         double maxDistance = view.getClickRadius();
-        highlightedNode = mapData.findNodeNearLocation(clickLocation, maxDistance);
+        Node highlightedNode = mapData.findNodeNearLocation(clickLocation, maxDistance);
         if (highlightedNode == null) {
-            highlightedRoadSegments = null;
+            highlightData = new HighlightData(null, null);
             outputLine("There are no nodes close to where you clicked");
             return;
         }
@@ -86,33 +85,36 @@ public class MapGUI extends GUI {
                 );
 
         // Get RoadSegments for highlighting
-        highlightedRoadSegments = new HashSet<>();
+        Collection<RoadSegment> highlightedRoadSegments = new HashSet<>();
         roadsConnectedToNode.forEach(roadInfo ->
                 highlightedRoadSegments.addAll(
                         mapData.findRoadSegmentsForRoadInfo(roadInfo)
                 )
         );
+
+        highlightData = new HighlightData(highlightedNode, highlightedRoadSegments);
     }
 
     @Override
     protected void onSearch() {
         String searchTerm = getSearchBox().getText();
         if (searchTerm.isEmpty()) {
-            searchResults = null;
-            highlightedRoadSegments = null;
+            highlightData = new HighlightData(null, null);
             return;
         }
 
         outputLine("Search results for '" + searchTerm + "':");
 
         searchResults = mapData.findRoadSegmentsByString(searchTerm);
-        highlightedRoadSegments = new ArrayList<>();
+        Collection<RoadSegment> highlightedRoadSegments = new ArrayList<>();
         searchResults.entrySet()
                 .forEach(entry -> {
                     RoadInfo info = entry.getKey();
                     outputLine("- Found: " + info);
                     highlightedRoadSegments.addAll(entry.getValue());
                 });
+
+        highlightData = new HighlightData(null, highlightedRoadSegments);
     }
 
     @Override
@@ -151,4 +153,5 @@ public class MapGUI extends GUI {
         t.append(info);
         t.append("\n");
     }
+
 }

@@ -1,11 +1,9 @@
 package main;
 
 import main.mapdata.MapData;
-import main.mapdata.Node;
 import main.mapdata.RoadSegment;
 
 import java.awt.*;
-import java.util.Collection;
 
 /**
  * Created by Dylan on 15/03/17.
@@ -26,16 +24,8 @@ public class Drawer {
         this.view = view;
     }
 
-    /**
-     * @param graphics Draws a single frame onto this graphics
-     * @param highlightedNode (nullable) The node that has been clicked by
-     *                        the user
-     * @param highlightedRoadSegments (nullable) More {@link RoadSegment}
-     *                                objects to highlight
-     */
     public void draw(Graphics graphics,
-                     Node highlightedNode,
-                     Collection<RoadSegment> highlightedRoadSegments) {
+                     HighlightData highlightData) {
         // Optimisation ideas:
         // - Clipping area (avoid drawing unnecessarily)
 
@@ -44,16 +34,16 @@ public class Drawer {
         mapData.roadSegments.forEach(roadSegment ->
                 drawRoadSegment(graphics, roadSegment)
         );
-        if (highlightedRoadSegments != null) {
+        if (highlightData.highlightedRoadSegments != null) {
             graphics.setColor(ROADS_HIGHLIGHT_COLOR);
-            highlightedRoadSegments.forEach(roadSegment ->
+            highlightData.highlightedRoadSegments.forEach(roadSegment ->
                     drawRoadSegment(graphics, roadSegment)
             );
         }
 
         // Node
-        if (highlightedNode != null) {
-            Point p = view.getPointFromLatLong(highlightedNode.latLong);
+        if (highlightData.highlightedNode != null) {
+            Point p = view.getPointFromLatLong(highlightData.highlightedNode.latLong);
             graphics.setColor(NODE_HIGHLIGHT_COLOR);
             graphics.drawOval(
                     p.x - NODE_RADIUS_PX,
