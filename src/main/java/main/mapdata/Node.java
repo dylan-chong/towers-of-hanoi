@@ -6,7 +6,7 @@ import main.LatLong;
  * Created by Dylan on 14/03/17.
  *
  * Represents an intersection or the dead end of a road. Not to be confused
- * with {@link main.structures.Graph.Node}.
+ * with {@link main.structures.Graph.Node} (so is sometimes called NodeInfo)
  */
 public class Node {
     public final LatLong latLong;
@@ -28,6 +28,11 @@ public class Node {
         Node otherNode = (Node) obj;
         return otherNode.latLong.equals(latLong) &&
                 otherNode.id == id;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) id;
     }
 }
 

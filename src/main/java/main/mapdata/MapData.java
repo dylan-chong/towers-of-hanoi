@@ -3,9 +3,13 @@ package main.mapdata;
 import com.google.inject.Inject;
 import main.async.AsyncTask;
 import main.async.AsyncTaskQueues;
+import main.structures.Graph;
 import slightlymodifiedtemplate.Location;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -16,41 +20,92 @@ import java.util.stream.Stream;
  * For storing data about the map and finding data
  */
 public class MapData {
-    public final Collection<Node> nodes;
-    public final Collection<RoadSegment> roadSegments;
-
     /**
-     * Don't access this variable directly. Use the getter
+     * Node id to Node (intersection/nodeInfo). It is called nodeInfos to avoid
+     * confusion with {@link main.structures.Graph.Node}
      */
-    private Collection<RoadInfo> roadInfos;
+    private final Map<Long, Node> nodeInfos;
+    private final Collection<RoadSegment> roadSegments;
 
-    private final AsyncTaskQueues asyncTaskQueues;
+    // Don't access any of these variables directly. Use the getter, because
+    // these are loaded in a separate thread
+    /**
+     * RoadId to RoadInfo
+     */
+    private Map<Long, RoadInfo> roadInfos;
+    private MapGraph mapGraph;
 
-
-    @Inject
     private MapData(AsyncTaskQueues asyncTaskQueues,
                     Collection<Node> nodes,
                     Collection<RoadSegment> roadSegments,
                     Supplier<Collection<RoadInfo>> roadInfosSupplier) {
-        this.asyncTaskQueues = asyncTaskQueues;
-        this.nodes = Collections.unmodifiableCollection(nodes);
+        nodeInfos = nodes.stream()
+                .collect(Collectors.toMap(
+                        (node) -> node.id,
+                        (node) -> node
+                ));
+
         this.roadSegments = Collections.unmodifiableCollection(roadSegments);
 
+        // Load data in a new thread to prevent blocking user input
         asyncTaskQueues.addTask(new AsyncTask(
-                () -> roadInfos = roadInfosSupplier.get(),
-                () -> {} // Needs no callback
+                () -> setRoadInfos(roadInfosSupplier.get()),
+                () -> {} // No callback required
+        ));
+        asyncTaskQueues.addTask(new AsyncTask(
+                this::setMapGraph,
+                () -> {}
         ));
     }
 
-    public Collection<RoadInfo> getRoadInfos() {
+    private void setRoadInfos(Collection<RoadInfo> roadInfosCollection) {
+        this.roadInfos = roadInfosCollection.stream()
+            .collect(Collectors.toMap(
+                    (roadInfo) -> roadInfo.id,
+                    (roadInfo) -> roadInfo
+            ));
+    }
+
+    private void setMapGraph() {
+        MapGraph mapGraph = new MapGraph();
+        // Create nodes
+        nodeInfos.values().forEach(mapGraph::createNode);
+        // Create edges
+        roadSegments.forEach(segment -> mapGraph.createEdge(
+                mapGraph.getNodeForNodeInfo(nodeInfos.get(segment.node1ID)),
+                mapGraph.getNodeForNodeInfo(nodeInfos.get(segment.node2ID)),
+                segment
+        ));
+        this.mapGraph = mapGraph;
+    }
+
+    /**
+     * @return roadInfos when ready
+     */
+    private Map<Long, RoadInfo> getRoadInfos() {
         while (roadInfos == null) {
-            try {
-                Thread.sleep(75);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            waitForLoad();
         }
         return roadInfos;
+    }
+
+    private MapGraph getMapGraph() {
+        while (roadInfos == null) {
+            waitForLoad();
+        }
+        return mapGraph;
+    }
+
+    private void waitForLoad() {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            throw new AssertionError(e);
+        }
+    }
+
+    public Collection<RoadSegment> getRoadSegments() {
+        return roadSegments;
     }
 
     /**
@@ -61,9 +116,9 @@ public class MapData {
      *                      coordinate system.
      */
     public Node findNodeNearLocation(Location location, double locationUnits) {
-        Stream<Node> stream = nodes.stream();
+        Stream<Node> stream = nodeInfos.values().stream();
 
-        // Find all nodes within range
+        // Find all nodeInfos within range
         stream = stream.filter(node -> node.latLong
                 .asLocation().isCloseFast(location, locationUnits));
 
@@ -83,11 +138,14 @@ public class MapData {
     }
 
     public Map<RoadInfo, Collection<RoadSegment>> findRoadSegmentsByString(
-            String searchTerm) {
+            String searchTerm, int maxResults) {
 
-        Collection<RoadInfo> matchingRoadInfos = getRoadInfos().stream()
+        // TODO trie
+        Collection<RoadInfo> matchingRoadInfos = getRoadInfos().values()
+                .stream()
                 .filter(roadInfo -> searchMatches(roadInfo.label, searchTerm) ||
                         searchMatches(roadInfo.city, searchTerm))
+                .limit(maxResults)
                 .collect(Collectors.toList());
 
         Map<RoadInfo, Collection<RoadSegment>> result = new HashMap<>();
@@ -112,30 +170,15 @@ public class MapData {
     /**
      * Selects roads segments connected to node
      */
-    public Collection<RoadSegment> findRoadSegmentsForNode(Node node) {
-         return roadSegments.stream()
-                .filter(segment ->
-                        node.id == segment.node1ID || node.id == segment.node2ID
-                )
+    public Collection<RoadSegment> findRoadSegmentsForNode(Node nodeInfo) {
+        MapGraph.Node graphNode = getMapGraph().getNodeForNodeInfo(nodeInfo);
+        return graphNode.getEdges().stream()
+                .map(Graph.Edge::getInfo)
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Finds {@link RoadSegment} objects connected to node, then finds the
-     * {@link RoadInfo} for each {@link RoadSegment}.
-     */
-    public Collection<RoadInfo> findRoadsConnectedToNode(Node node) {
-        Collection<RoadSegment> roadSegmentsForNode = findRoadSegmentsForNode(node);
-        return roadSegmentsForNode.stream()
-                .map(this::findRoadInfoForSegment)
-                .collect(Collectors.toSet());
-    }
-
     public RoadInfo findRoadInfoForSegment(RoadSegment segment) {
-        return this.getRoadInfos().stream()
-                .filter(roadInfo -> roadInfo.id == segment.roadId)
-                .findAny()
-                .orElse(null);
+        return this.getRoadInfos().get(segment.roadId);
     }
 
     public static class Factory {

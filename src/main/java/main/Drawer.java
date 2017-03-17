@@ -31,7 +31,7 @@ public class Drawer {
 
         // Road Segments
         graphics.setColor(ROADS_COLOR);
-        mapData.roadSegments.forEach(roadSegment ->
+        mapData.getRoadSegments().forEach(roadSegment ->
                 drawRoadSegment(graphics, roadSegment)
         );
         if (highlightData.highlightedRoadSegments != null) {

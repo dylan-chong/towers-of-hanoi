@@ -59,4 +59,9 @@ public class RoadSegment {
                 otherRoadSegment.node2ID == node2ID &&
                 otherRoadSegment.points.equals(points);
     }
+
+    @Override
+    public int hashCode() {
+        return (int) roadId;
+    }
 }

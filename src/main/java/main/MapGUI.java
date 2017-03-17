@@ -13,15 +13,20 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.*;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * Created by Dylan on 14/03/17.
  */
 @Singleton
 public class MapGUI extends GUI {
+
+    private static final int MAX_SEARCH_RESULTS = 10;
 
     private final MapDataParser dataParser;
     private final View view;
@@ -71,6 +76,7 @@ public class MapGUI extends GUI {
         );
 
         double maxDistance = view.getClickRadius();
+        // 'Node' means 'intersection' here
         Node highlightedNode = mapData.findNodeNearLocation(clickLocation, maxDistance);
         if (highlightedNode == null) {
             highlightData = new HighlightData(null, null);
@@ -80,26 +86,20 @@ public class MapGUI extends GUI {
 
         outputLine("Found an intersection: " + highlightedNode.latLong);
 
-        // Get RoadInfo objects for displaying info
-        Collection<RoadInfo> roadsConnectedToNode =
-                mapData.findRoadsConnectedToNode(highlightedNode);
-        roadsConnectedToNode.stream()
-                // Avoid printing duplicate names
+        // Find roadSegments (for highlighting) and roadInfos (for printing)
+        Collection<RoadSegment> roadSegments =
+                mapData.findRoadSegmentsForNode(highlightedNode);
+        Collection<RoadInfo> roadInfos = roadSegments.stream()
+                .map(segment -> mapData.findRoadInfoForSegment(segment))
+                .collect(Collectors.toList());
+
+        // Print road label/city (and avoid printing duplicate names)
+        roadInfos.stream()
                 .map(roadInfo -> new RoadInfoByName(roadInfo.label, roadInfo.city))
                 .distinct()
-                .forEach(roadInfo ->
-                        outputLine("- Connected to: " + roadInfo)
-                );
+                .forEach(roadInfo -> outputLine("- Connected to: " + roadInfo));
 
-        // Get RoadSegments for highlighting
-        Collection<RoadSegment> highlightedRoadSegments = new HashSet<>();
-        roadsConnectedToNode.forEach(roadInfo ->
-                highlightedRoadSegments.addAll(
-                        mapData.findRoadSegmentsForRoadInfo(roadInfo)
-                )
-        );
-
-        highlightData = new HighlightData(highlightedNode, highlightedRoadSegments);
+        highlightData = new HighlightData(highlightedNode, roadSegments);
     }
 
     @Override
@@ -112,14 +112,19 @@ public class MapGUI extends GUI {
 
         outputLine("Search results for '" + searchTerm + "':");
 
-        searchResults = mapData.findRoadSegmentsByString(searchTerm);
-        Collection<RoadSegment> highlightedRoadSegments = new ArrayList<>();
+        searchResults =
+                mapData.findRoadSegmentsByString(searchTerm, MAX_SEARCH_RESULTS);
         searchResults.entrySet()
                 .forEach(entry -> {
                     RoadInfo info = entry.getKey();
                     outputLine("- Found: " + info);
-                    highlightedRoadSegments.addAll(entry.getValue());
                 });
+
+        // Flatten values in searchResults into a list
+        Collection<RoadSegment> highlightedRoadSegments = searchResults.values()
+                .stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
 
         highlightData = new HighlightData(null, highlightedRoadSegments);
     }
@@ -160,9 +165,11 @@ public class MapGUI extends GUI {
 
                 long duration = System.currentTimeMillis() - loadStartTime;
                 outputLine("Loading finished (took " + duration + "ms)");
+
+                redraw();
             };
 
-            // Queue up bg threads
+            // Queue up tasks to work in parallel
             asyncTaskQueues.addTask(new AsyncTask(
                     () -> parsedNodes.set(dataParser.parseNodes(nodesScanner)),
                     onTaskCompletion
@@ -200,5 +207,4 @@ public class MapGUI extends GUI {
         t.append(info);
         t.append("\n");
     }
-
 }

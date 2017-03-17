@@ -2,6 +2,7 @@ package main.structures;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -9,20 +10,27 @@ import java.util.HashSet;
  * @param <EdgeInfoT> The type of info stored in an {@link Edge}
  */
 public class Graph<NodeInfoT, EdgeInfoT> {
-    // private HashMap<NodeInfoT, Node> nodesForNodeInfo = new HashMap<>();
-    // private HashMap<EdgeInfoT, Edge> edgesForEdgeInfo = new HashMap<>();
+    private HashMap<NodeInfoT, Node> nodesForNodeInfo = new HashMap<>();
 
     public Graph() {
     }
 
-    public Edge createEdge(Node node1,
-                           Node node2,
-                           EdgeInfoT info) {
+    public Edge createEdge(Node node1, Node node2, EdgeInfoT info) {
         return new Edge(node1, node2, info);
     }
 
     public Node createNode(NodeInfoT info) {
-        return new Node(info);
+        if (nodesForNodeInfo.containsKey(info)) {
+            throw new IllegalArgumentException();
+        }
+
+        Node node = new Node(info);
+        nodesForNodeInfo.put(info, node);
+        return node;
+    }
+
+    public Node getNodeForNodeInfo(NodeInfoT nodeInfo) {
+        return nodesForNodeInfo.get(nodeInfo);
     }
 
     public class Node {

@@ -1,6 +1,6 @@
 Minimum out of 30:
 - [x] The program reads the data and draws a map.
-- [ ] (15) It constructs a graph structure using collections of intersections, segments, and roads.
+- [x] (15) It constructs a graph structure using collections of intersections, segments, and roads.
 
 Core out of 35 (up to 65):
 - [x] (15) The map can be zoomed and panned, and the user can select intersections with the mouse,
@@ -9,7 +9,7 @@ and some details are shown.
 - [x] (10) Road names can be entered into the text box and all segments are highlighted on the map.
 Can be either exact or prefix matches, check that all segments highlighted.
 - [x] (5) The names of all roads joining the selected intersection are outputted, without duplicates.
-- [ ] (5) The graph (not exhaustive search) is used to find the roads joining a selected intersection.
+- [x] (5) The graph (not exhaustive search) is used to find the roads joining a selected intersection.
 Getting from node to segment to road should be constant time.
 
 Completion out of 20 (up to 85):
