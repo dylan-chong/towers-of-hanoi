@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @Singleton
 public class MapGUI extends GUI {
 
+    // TODO get rid of this?
     private static final int MAX_SEARCH_RESULTS = Integer.MAX_VALUE;//10;
 
     private final MapDataParser dataParser;
@@ -121,10 +122,10 @@ public class MapGUI extends GUI {
                 .forEach(infoByName -> {
                     outputLine("- Found: " + infoByName);
                 });
-        if (searchResults.size() == MAX_SEARCH_RESULTS) {
-            // Is a bit misleading when size actually equals MAX_SEARCH_RESULTS
-            outputLine("- ... too many results");
-        }
+        // if (searchResults.size() == MAX_SEARCH_RESULTS) {
+        //     // Is a bit misleading when size actually equals MAX_SEARCH_RESULTS
+        //     outputLine("- ... too many results");
+        // }
 
         // Flatten values in searchResults into a list
         Collection<RoadSegment> highlightedRoadSegments = searchResults.values()

@@ -15,7 +15,7 @@ Getting from node to segment to road should be constant time.
 Completion out of 20 (up to 85):
 - [x] (15) Correct code for a trie structure, with methods to add an element and find all elements
 with a given prefix.
-- [ ] (5) Trie is used to output the names of all roads which match a prefix in the search box, as well
+- [x] (5) Trie is used to output the names of all roads which match a prefix in the search box, as well
 as highlighting them on the map. If the prefix exactly matches a road name, only output and
 highlight road(s) of that name.
 

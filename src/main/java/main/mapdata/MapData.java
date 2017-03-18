@@ -8,10 +8,7 @@ import main.structures.Graph;
 import main.structures.Trie;
 import slightlymodifiedtemplate.Location;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -213,7 +210,6 @@ public class MapData {
 
     public Map<RoadInfo, Collection<RoadSegment>> findRoadSegmentsByString(
             String searchTerm, int maxResults) {
-
         Trie<RoadInfo> matchingTrie = getRoadInfoLabelsTrie()
                 .getSubTrieForChars(searchTerm);
         if (matchingTrie == null) {

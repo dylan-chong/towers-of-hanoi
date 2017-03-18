@@ -2,10 +2,7 @@ package junit;
 
 import main.LatLong;
 import main.View;
-import main.mapdata.MapDataParser;
-import main.mapdata.Node;
-import main.mapdata.RoadInfo;
-import main.mapdata.RoadSegment;
+import main.mapdata.*;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
