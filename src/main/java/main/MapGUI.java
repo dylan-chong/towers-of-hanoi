@@ -2,8 +2,6 @@ package main;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import main.async.AsyncTask;
-import main.async.AsyncTaskQueues;
 import main.mapdata.*;
 import slightlymodifiedtemplate.GUI;
 import slightlymodifiedtemplate.Location;
@@ -17,7 +15,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -32,7 +29,6 @@ public class MapGUI extends GUI {
     private final View view;
     private final MapData.Factory mapDataFactory;
     private final Drawer.Factory drawerFactory;
-    private final AsyncTaskQueues asyncTaskQueues;
 
     private Drawer drawer;
     private MapData mapData;
@@ -47,13 +43,11 @@ public class MapGUI extends GUI {
     public MapGUI(MapDataParser dataParser,
                   View view,
                   MapData.Factory mapDataFactory,
-                  Drawer.Factory drawerFactory,
-                  AsyncTaskQueues asyncTaskQueues) {
+                  Drawer.Factory drawerFactory) {
         this.dataParser = dataParser;
         this.view = view;
         this.mapDataFactory = mapDataFactory;
         this.drawerFactory = drawerFactory;
-        this.asyncTaskQueues = asyncTaskQueues;
     }
 
     @Override
@@ -147,58 +141,27 @@ public class MapGUI extends GUI {
             Scanner segmentsScanner = new Scanner(segments);
             Scanner roadInfoScanner = new Scanner(roads);
 
-            // Use atomic to allow assigning the values from within lambdas
-            AtomicReference<Collection<Node>> parsedNodes
-                    = new AtomicReference<>();
-            AtomicReference<Collection<RoadSegment>> parsedRoadSegments
-                    = new AtomicReference<>();
+            AtomicReference<MapData> mapDataRef = new AtomicReference<>();
 
-            // Called when any task has completed
-            Runnable onTaskCompletion = () -> {
-                if (parsedNodes.get() == null) return;
-                if (parsedRoadSegments.get() == null) return;
-
-                // All tasks have been completed
-                onParse(parsedNodes.get(),
-                        parsedRoadSegments.get(),
-                        () -> dataParser.parseRoadInfo(roadInfoScanner));
-
-                long duration = System.currentTimeMillis() - loadStartTime;
-                outputLine("Loading finished (took " + duration + "ms)");
-
-                redraw();
-            };
-
-            // Queue up tasks to work in parallel
-            asyncTaskQueues.addTask(new AsyncTask(
-                    () -> parsedRoadSegments.set(
-                            dataParser.parseRoadSegments(segmentsScanner)
-                    ),
-                    onTaskCompletion,
-                    "Parse road segments"
-            ));
-            asyncTaskQueues.addTask(new AsyncTask(
-                    () -> parsedNodes.set(dataParser.parseNodes(nodesScanner)),
-                    onTaskCompletion,
-                    "Parse nodes"
+            mapDataRef.set(mapDataFactory.create(
+                    () -> onFinishLoad(mapDataRef.get(), loadStartTime),
+                    () -> dataParser.parseNodes(nodesScanner),
+                    () -> dataParser.parseRoadSegments(segmentsScanner),
+                    () -> dataParser.parseRoadInfo(roadInfoScanner)
             ));
         } catch (FileNotFoundException e) {
             throw new AssertionError(e);
         }
     }
 
-    /**
-     * Call this to collect data about what has been parsed from files
-     */
-    private void onParse(Collection<Node> nodes,
-                         Collection<RoadSegment> roadSegments,
-                         Supplier<Collection<RoadInfo>> roadInfoSupplier) {
-        mapData = mapDataFactory.create(
-                nodes,
-                roadSegments,
-                roadInfoSupplier
-        );
-        drawer = drawerFactory.create(mapData, view);
+    private void onFinishLoad(MapData mapData, long loadStartTime) {
+        this.mapData = mapData;
+        this.highlightData = new HighlightData(null, null);
+        this.drawer = drawerFactory.create(this.mapData, view);
+        this.redraw();
+
+        long duration = System.currentTimeMillis() - loadStartTime;
+        outputLine("Loading finished (took " + duration + " ms)");
     }
 
     /**

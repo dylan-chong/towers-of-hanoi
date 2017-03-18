@@ -29,7 +29,6 @@ public class AsyncWorker {
                 long startTime = System.currentTimeMillis();
 
                 task.doTask.run();
-                task.onCompletion.run();
 
                 long duration = System.currentTimeMillis() - startTime;
                 System.out.println("Task '" + task.name + "' completed " +

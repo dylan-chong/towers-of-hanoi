@@ -8,7 +8,10 @@ import main.structures.Graph;
 import main.structures.Trie;
 import slightlymodifiedtemplate.Location;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -19,15 +22,16 @@ import java.util.stream.Stream;
  * For storing data about the map and finding data
  */
 public class MapData {
+
+    // Don't access any of these variables directly. Use the getter, because
+    // these are loaded in a separate thread. The getters should block the
+    // thread until it is loaded.
     /**
      * Node id to Node (intersection/nodeInfo). It is called nodeInfos to avoid
      * confusion with {@link main.structures.Graph.Node}
      */
-    private final Map<Long, Node> nodeInfos;
-    private final Collection<RoadSegment> roadSegments;
-
-    // Don't access any of these variables directly. Use the getter, because
-    // these are loaded in a separate thread
+    private Map<Long, Node> nodeInfos;
+    private Collection<RoadSegment> roadSegments;
     /**
      * RoadId to RoadInfo
      */
@@ -37,41 +41,63 @@ public class MapData {
 
     @Inject
     private MapData(AsyncTaskQueues asyncTaskQueues,
-                    @Assisted Collection<Node> nodes,
-                    @Assisted Collection<RoadSegment> roadSegments,
+                    @Assisted Runnable finishLoadingCallback,
+                    @Assisted Supplier<Collection<Node>> nodeInfosSupplier,
+                    @Assisted Supplier<Collection<RoadSegment>> roadSegmentsSupplier,
                     @Assisted Supplier<Collection<RoadInfo>> roadInfosSupplier) {
-        nodeInfos = nodes.stream()
-                .collect(Collectors.toMap(
-                        node -> node.id,
-                        node -> node
-                ));
-
-        this.roadSegments = Collections.unmodifiableCollection(roadSegments);
-
         // Load data in a new thread to prevent blocking user input
         asyncTaskQueues.addTask(new AsyncTask(
-                () -> setRoadInfos(roadInfosSupplier.get()),
-                () -> {}, // No callback required
-                "Parse road infos"
-        ));
-        asyncTaskQueues.addTask(new AsyncTask(
-                this::setMapGraph,
-                () -> {},
-                "Create graph"
-        ));
-        asyncTaskQueues.addTask(new AsyncTask(
-                () -> setRoadInfoLabelsTrie(getRoadInfos().values()),
-                () -> {},
-                "Create Trie"
+                () -> {
+                    setRoadSegments(roadSegmentsSupplier.get());
+                    finishLoadingCallback.run();
+
+                    asyncTaskQueues.addTask(new AsyncTask(
+                            () -> {
+                                setNodeInfos(nodeInfosSupplier.get());
+                                asyncTaskQueues.addTask(new AsyncTask(
+                                        this::setMapGraph,
+                                        "Create graph"
+                                ));
+                            },
+                            "Parse node infos"
+                    ));
+                    asyncTaskQueues.addTask(new AsyncTask(
+                            () -> {
+                                setRoadInfos(roadInfosSupplier.get());
+                                asyncTaskQueues.addTask(new AsyncTask(
+                                        () -> setRoadInfoLabelsTrie(getRoadInfos().values()),
+                                        "Create Trie"
+                                ));
+                            },
+                            "Parse road infos"
+                    ));
+                },
+                "Parse road segments"
         ));
     }
 
+    public void setRoadSegments(Collection<RoadSegment> roadSegments) {
+        this.roadSegments = roadSegments;
+    }
+
+    private void setNodeInfos(Collection<Node> nodes) {
+        this.nodeInfos = Collections.unmodifiableMap(
+                nodes.stream()
+                        .collect(Collectors.toMap(
+                                node -> node.id,
+                                node -> node
+                        ))
+        );
+    }
+
     private void setRoadInfos(Collection<RoadInfo> roadInfosCollection) {
-        this.roadInfos = roadInfosCollection.stream()
-            .collect(Collectors.toMap(
-                    roadInfo -> roadInfo.id,
-                    roadInfo -> roadInfo
-            ));
+        this.roadInfos = Collections.unmodifiableMap(
+                roadInfosCollection.stream()
+                        .collect(Collectors.toMap(
+                                roadInfo -> roadInfo.id,
+                                roadInfo -> roadInfo
+                        ))
+        );
     }
 
     private void setMapGraph() {
@@ -216,10 +242,11 @@ public class MapData {
     public interface Factory {
         /**
          * Should have the same parameter names as the MapData constructor (this
-         * is used by Guice)
+         * is used by Guice). This calls the constructor for {@link MapData}.
          */
-        MapData create(Collection<Node> nodes,
-                       Collection<RoadSegment> roadSegments,
+        MapData create(Runnable finishLoadingCallback,
+                       Supplier<Collection<Node>> nodes,
+                       Supplier<Collection<RoadSegment>> roadSegments,
                        Supplier<Collection<RoadInfo>> roadInfosSupplier);
     }
 }

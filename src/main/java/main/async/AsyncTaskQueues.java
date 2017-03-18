@@ -16,7 +16,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 @Singleton
 public class AsyncTaskQueues {
-
     private static final int NUMBER_OF_THREADS =
             Runtime.getRuntime().availableProcessors();
 
