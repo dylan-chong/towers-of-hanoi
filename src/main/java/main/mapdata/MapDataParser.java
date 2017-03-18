@@ -2,59 +2,64 @@ package main.mapdata;
 
 import main.LatLong;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Dylan on 14/03/17.
  */
 public class MapDataParser {
-    public Collection<Node> parseNodes(Scanner scanner) {
-        return new ScannerParser<Node>() {
-            @Override
-            protected boolean hasHeaderLine() {
-                return false;
-            }
-
-            @Override
-            protected Node parseLine(Scanner lineScanner) {
-                long id = lineScanner.nextLong();
-                double lat = lineScanner.nextDouble();
-                double lon = lineScanner.nextDouble();
-                return new Node(id, new LatLong(lat, lon));
-            }
-
-        }.parse(scanner);
+    public Collection<Node> parseNodes(BufferedReader reader) {
+        return reader.lines()
+                .parallel()
+                .map(line -> {
+                    String[] tokens = line.split("\t");
+                    long id = Long.parseLong(tokens[0]);
+                    double lat = Double.parseDouble(tokens[1]);
+                    double lon = Double.parseDouble(tokens[2]);
+                    return new Node(id, new LatLong(lat, lon));
+                })
+                .collect(Collectors.toList());
     }
 
-    public Collection<RoadSegment> parseRoadSegments(Scanner scanner) {
-        return new ScannerParser<RoadSegment>() {
-            @Override
-            protected RoadSegment parseLine(Scanner lineScanner) {
-                long roadId = lineScanner.nextLong();
-                double length = lineScanner.nextDouble();
-                long node1ID = lineScanner.nextLong();
-                long node2ID = lineScanner.nextLong();
+    public Collection<RoadSegment> parseRoadSegments(BufferedReader reader) {
+        try {
+            // Get rid of header line
+            reader.readLine();
+        } catch (IOException e) {
+            throw new AssertionError(e);
+        }
+        return reader.lines()
+                .parallel()
+                .map(line -> {
+                    String[] tokens = line.split("\t");
 
-                List<LatLong> points = new ArrayList<>();
-                while (lineScanner.hasNext()) {
-                    points.add(new LatLong(
-                            lineScanner.nextDouble(),
-                            lineScanner.nextDouble()
-                    ));
-                }
+                    int next = 0; // Next token index
 
-                return new RoadSegment(
-                        roadId,
-                        length,
-                        node1ID,
-                        node2ID,
-                        points
-                );
-            }
-        }.parse(scanner);
+                    long roadId = Long.parseLong(tokens[next++]);
+                    double length = Double.parseDouble(tokens[next++]);
+                    long node1ID = Long.parseLong(tokens[next++]);
+                    long node2ID = Long.parseLong(tokens[next++]);
+
+                    List<LatLong> points = new ArrayList<>();
+                    while (next < tokens.length) {
+                        points.add(new LatLong(
+                                Double.parseDouble(tokens[next++]),
+                                Double.parseDouble(tokens[next++])
+                        ));
+                    }
+
+                    return new RoadSegment(
+                            roadId,
+                            length,
+                            node1ID,
+                            node2ID,
+                            points
+                    );
+                })
+                .collect(Collectors.toList());
     }
 
     public Collection<RoadInfo> parseRoadInfo(Scanner scanner) {
@@ -97,8 +102,11 @@ public class MapDataParser {
     }
 
     /**
+     * Don't use this anymore, use a {@link BufferedReader} instead for speed,
+     *
      * @param <T> The type of object to return
      */
+    @Deprecated
     private abstract class ScannerParser<T> {
         /**
          * @param scanner A scanner that has one item per line

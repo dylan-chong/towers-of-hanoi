@@ -9,8 +9,10 @@ import slightlymodifiedtemplate.Location;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Scanner;
@@ -150,16 +152,16 @@ public class MapGUI extends GUI {
             outputLine("Loading data");
             long loadStartTime = System.currentTimeMillis();
 
-            Scanner nodesScanner = new Scanner(nodes);
-            Scanner segmentsScanner = new Scanner(segments);
+            BufferedReader nodesReader = new BufferedReader(new FileReader(nodes));
+            BufferedReader segmentsReader = new BufferedReader(new FileReader(segments));
             Scanner roadInfoScanner = new Scanner(roads);
 
             AtomicReference<MapData> mapDataRef = new AtomicReference<>();
 
             mapDataRef.set(mapDataFactory.create(
                     () -> onFinishLoad(mapDataRef.get(), loadStartTime),
-                    () -> dataParser.parseNodes(nodesScanner),
-                    () -> dataParser.parseRoadSegments(segmentsScanner),
+                    () -> dataParser.parseNodes(nodesReader),
+                    () -> dataParser.parseRoadSegments(segmentsReader),
                     () -> dataParser.parseRoadInfo(roadInfoScanner)
             ));
         } catch (FileNotFoundException e) {

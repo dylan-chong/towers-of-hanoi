@@ -4,6 +4,8 @@ import main.LatLong;
 import main.View;
 import main.mapdata.*;
 
+import java.io.BufferedReader;
+import java.io.StringReader;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +18,15 @@ import java.util.Scanner;
  */
 public class TestUtils {
     public static List<Node> getNodesFromString(String input) {
-        Scanner scanner = new Scanner(input);
+        BufferedReader reader = new BufferedReader(new StringReader(input));
         MapDataParser parser = new MapDataParser();
-        return new ArrayList<>(parser.parseNodes(scanner));
+        return new ArrayList<>(parser.parseNodes(reader));
     }
 
     public static List<RoadSegment> getRoadSegmentsFromString(String input) {
-        Scanner scanner = new Scanner(input);
+        BufferedReader reader = new BufferedReader(new StringReader(input));
         MapDataParser parser = new MapDataParser();
-        return new ArrayList<>(parser.parseRoadSegments(scanner));
+        return new ArrayList<>(parser.parseRoadSegments(reader));
     }
 
     public static List<RoadInfo> getRoadInfoFromString(String input) {
