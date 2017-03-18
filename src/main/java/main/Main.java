@@ -4,6 +4,8 @@ import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
+import main.mapdata.MapData;
 import slightlymodifiedtemplate.GUI;
 
 /**
@@ -19,6 +21,9 @@ public class Main {
         @Override
         public void configure(Binder binder) {
             binder.bind(GUI.class).to(MapGUI.class);
+            binder.install(new FactoryModuleBuilder()
+                    .implement(MapData.class, MapData.class)
+                    .build(MapData.Factory.class));
         }
     }
 }

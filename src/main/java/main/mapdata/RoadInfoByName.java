@@ -6,6 +6,9 @@ package main.mapdata;
  * Adapter to allow filtering {@link RoadInfo} duplicates by name
  */
 public class RoadInfoByName {
+    /**
+     * The road name
+     */
     public final String label;
     public final String city;
 
@@ -29,7 +32,7 @@ public class RoadInfoByName {
 
     @Override
     public String toString() {
-        return city + ", " + label;
+        return label + ", " + city;
     }
 
     @Override

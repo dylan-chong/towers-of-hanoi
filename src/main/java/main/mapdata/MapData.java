@@ -1,15 +1,14 @@
 package main.mapdata;
 
 import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import main.async.AsyncTask;
 import main.async.AsyncTaskQueues;
 import main.structures.Graph;
+import main.structures.Trie;
 import slightlymodifiedtemplate.Location;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -34,15 +33,17 @@ public class MapData {
      */
     private Map<Long, RoadInfo> roadInfos;
     private MapGraph mapGraph;
+    private Trie<RoadInfo> roadInfoLabelsTrie;
 
+    @Inject
     private MapData(AsyncTaskQueues asyncTaskQueues,
-                    Collection<Node> nodes,
-                    Collection<RoadSegment> roadSegments,
-                    Supplier<Collection<RoadInfo>> roadInfosSupplier) {
+                    @Assisted Collection<Node> nodes,
+                    @Assisted Collection<RoadSegment> roadSegments,
+                    @Assisted Supplier<Collection<RoadInfo>> roadInfosSupplier) {
         nodeInfos = nodes.stream()
                 .collect(Collectors.toMap(
-                        (node) -> node.id,
-                        (node) -> node
+                        node -> node.id,
+                        node -> node
                 ));
 
         this.roadSegments = Collections.unmodifiableCollection(roadSegments);
@@ -50,19 +51,26 @@ public class MapData {
         // Load data in a new thread to prevent blocking user input
         asyncTaskQueues.addTask(new AsyncTask(
                 () -> setRoadInfos(roadInfosSupplier.get()),
-                () -> {} // No callback required
+                () -> {}, // No callback required
+                "Parse road infos"
         ));
         asyncTaskQueues.addTask(new AsyncTask(
                 this::setMapGraph,
-                () -> {}
+                () -> {},
+                "Create graph"
+        ));
+        asyncTaskQueues.addTask(new AsyncTask(
+                () -> setRoadInfoLabelsTrie(getRoadInfos().values()),
+                () -> {},
+                "Create Trie"
         ));
     }
 
     private void setRoadInfos(Collection<RoadInfo> roadInfosCollection) {
         this.roadInfos = roadInfosCollection.stream()
             .collect(Collectors.toMap(
-                    (roadInfo) -> roadInfo.id,
-                    (roadInfo) -> roadInfo
+                    roadInfo -> roadInfo.id,
+                    roadInfo -> roadInfo
             ));
     }
 
@@ -79,6 +87,30 @@ public class MapData {
         this.mapGraph = mapGraph;
     }
 
+    public void setRoadInfoLabelsTrie(Collection<RoadInfo> roadInfos) {
+        Trie<RoadInfo> rootTrie = new Trie<>();
+
+        roadInfos.forEach(roadInfo -> {
+            String label = roadInfo.label;
+            // label = label.trim(); // TODO
+            Trie<RoadInfo> nextTrieToUse = rootTrie;
+
+            for (int c = 0; c < label.length(); c++) {
+                char character = label.charAt(c);
+                boolean isLastChar = c == label.length() - 1;
+                // Set next Trie to sub-Trie
+                nextTrieToUse.addNextChar(
+                        character,
+                        // Only save data at the end of the string
+                        isLastChar ? roadInfo : null
+                );
+                nextTrieToUse = nextTrieToUse.getTrieForNextChar(character);
+            }
+        });
+
+        this.roadInfoLabelsTrie = rootTrie;
+    }
+
     /**
      * @return roadInfos when ready
      */
@@ -90,10 +122,17 @@ public class MapData {
     }
 
     private MapGraph getMapGraph() {
-        while (roadInfos == null) {
+        while (mapGraph == null) {
             waitForLoad();
         }
         return mapGraph;
+    }
+
+    private Trie<RoadInfo> getRoadInfoLabelsTrie() {
+        while (roadInfoLabelsTrie == null) {
+            waitForLoad();
+        }
+        return roadInfoLabelsTrie;
     }
 
     private void waitForLoad() {
@@ -140,13 +179,10 @@ public class MapData {
     public Map<RoadInfo, Collection<RoadSegment>> findRoadSegmentsByString(
             String searchTerm, int maxResults) {
 
-        // TODO trie
-        Collection<RoadInfo> matchingRoadInfos = getRoadInfos().values()
-                .stream()
-                .filter(roadInfo -> searchMatches(roadInfo.label, searchTerm) ||
-                        searchMatches(roadInfo.city, searchTerm))
-                .limit(maxResults)
-                .collect(Collectors.toList());
+        Trie<RoadInfo> matchingTrie = getRoadInfoLabelsTrie()
+                .getSubTrieForChars(searchTerm);
+        Collection<RoadInfo> matchingRoadInfos =
+                matchingTrie.getDatasRecursive(maxResults);
 
         Map<RoadInfo, Collection<RoadSegment>> result = new HashMap<>();
         matchingRoadInfos.forEach(roadInfo ->
@@ -163,10 +199,6 @@ public class MapData {
                 .collect(Collectors.toList());
     }
 
-    private boolean searchMatches(String stringToCheck, String searchTerm) {
-        return stringToCheck.toLowerCase().startsWith(searchTerm.toLowerCase());
-    }
-
     /**
      * Selects roads segments connected to node
      */
@@ -181,27 +213,13 @@ public class MapData {
         return this.getRoadInfos().get(segment.roadId);
     }
 
-    public static class Factory {
-        private final AsyncTaskQueues asyncTaskQueues;
-
-        @Inject
-        public Factory(AsyncTaskQueues asyncTaskQueues) {
-            this.asyncTaskQueues = asyncTaskQueues;
-        }
-
+    public interface Factory {
         /**
-         * Must have the same parameter names as the MapData constructor (this
+         * Should have the same parameter names as the MapData constructor (this
          * is used by Guice)
          */
-        public MapData create(Collection<Node> nodes,
+        MapData create(Collection<Node> nodes,
                        Collection<RoadSegment> roadSegments,
-                       Supplier<Collection<RoadInfo>> roadInfosSupplier) {
-            return new MapData(
-                    asyncTaskQueues,
-                    nodes,
-                    roadSegments,
-                    roadInfosSupplier
-            );
-        }
+                       Supplier<Collection<RoadInfo>> roadInfosSupplier);
     }
 }

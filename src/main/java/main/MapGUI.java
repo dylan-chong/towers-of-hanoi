@@ -171,14 +171,16 @@ public class MapGUI extends GUI {
 
             // Queue up tasks to work in parallel
             asyncTaskQueues.addTask(new AsyncTask(
-                    () -> parsedNodes.set(dataParser.parseNodes(nodesScanner)),
-                    onTaskCompletion
-            ));
-            asyncTaskQueues.addTask(new AsyncTask(
                     () -> parsedRoadSegments.set(
                             dataParser.parseRoadSegments(segmentsScanner)
                     ),
-                    onTaskCompletion
+                    onTaskCompletion,
+                    "Parse road segments"
+            ));
+            asyncTaskQueues.addTask(new AsyncTask(
+                    () -> parsedNodes.set(dataParser.parseNodes(nodesScanner)),
+                    onTaskCompletion,
+                    "Parse nodes"
             ));
         } catch (FileNotFoundException e) {
             throw new AssertionError(e);

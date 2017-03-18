@@ -48,16 +48,16 @@ public class AsyncTaskQueues {
     public void keepQueuingTasks() {
         // noinspection InfiniteLoopStatement
         while (true) {
-            if (tasksToAdd.isEmpty()) {
+            if (tasksToAdd.isEmpty() || mainTasksQueue.remainingCapacity() == 0) {
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     throw new AssertionError(e);
                 }
                 continue;
             }
 
-            mainTasksQueue.offer(tasksToAdd.poll());
+            mainTasksQueue.add(tasksToAdd.poll());
         }
     }
 }
