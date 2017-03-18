@@ -46,34 +46,33 @@ public class MapData {
                     @Assisted Supplier<Collection<RoadSegment>> roadSegmentsSupplier,
                     @Assisted Supplier<Collection<RoadInfo>> roadInfosSupplier) {
         // Load data in a new thread to prevent blocking user input
-        asyncTaskQueues.addTask(new AsyncTask(
-                () -> {
-                    setRoadSegments(roadSegmentsSupplier.get());
-                    finishLoadingCallback.run();
+        asyncTaskQueues.addTask(new AsyncTask(() -> {
+            setRoadSegments(roadSegmentsSupplier.get());
+            finishLoadingCallback.run();
 
-                    asyncTaskQueues.addTask(new AsyncTask(
-                            () -> {
-                                setNodeInfos(nodeInfosSupplier.get());
-                                asyncTaskQueues.addTask(new AsyncTask(
-                                        this::setMapGraph,
-                                        "Create graph"
-                                ));
-                            },
-                            "Parse node infos"
-                    ));
-                    asyncTaskQueues.addTask(new AsyncTask(
-                            () -> {
-                                setRoadInfos(roadInfosSupplier.get());
-                                asyncTaskQueues.addTask(new AsyncTask(
-                                        () -> setRoadInfoLabelsTrie(getRoadInfos().values()),
-                                        "Create Trie"
-                                ));
-                            },
-                            "Parse road infos"
-                    ));
-                },
-                "Parse road segments"
-        ));
+            // Only load other stuff when when segments are loaded
+            asyncTaskQueues.addTask(new AsyncTask(
+                    () -> {
+                        setNodeInfos(nodeInfosSupplier.get());
+
+                        asyncTaskQueues.addTask(new AsyncTask(
+                                this::setMapGraph,
+                                "Create graph"
+                        ));
+                    },
+                    "Parse node infos"
+            ));
+            asyncTaskQueues.addTask(new AsyncTask(
+                    () -> {
+                        setRoadInfos(roadInfosSupplier.get());
+
+                        asyncTaskQueues.addTask(new AsyncTask(
+                                this::setRoadInfoLabelsTrie,
+                                "Create Trie"
+                        ));
+                    }, "Parse road infos"
+            ));
+        }, "Parse road segments"));
     }
 
     public void setRoadSegments(Collection<RoadSegment> roadSegments) {
@@ -103,17 +102,18 @@ public class MapData {
     private void setMapGraph() {
         MapGraph mapGraph = new MapGraph();
         // Create nodes
-        nodeInfos.values().forEach(mapGraph::createNode);
+        getNodeInfos().values().forEach(mapGraph::createNode);
         // Create edges
-        roadSegments.forEach(segment -> mapGraph.createEdge(
-                mapGraph.getNodeForNodeInfo(nodeInfos.get(segment.node1ID)),
-                mapGraph.getNodeForNodeInfo(nodeInfos.get(segment.node2ID)),
+        getRoadSegments().forEach(segment -> mapGraph.createEdge(
+                mapGraph.getNodeForNodeInfo(getNodeInfos().get(segment.node1ID)),
+                mapGraph.getNodeForNodeInfo(getNodeInfos().get(segment.node2ID)),
                 segment
         ));
         this.mapGraph = mapGraph;
     }
 
-    public void setRoadInfoLabelsTrie(Collection<RoadInfo> roadInfos) {
+    public void setRoadInfoLabelsTrie() {
+        Collection<RoadInfo> roadInfos = getRoadInfos().values();
         Trie<RoadInfo> rootTrie = new Trie<>();
 
         roadInfos.forEach(roadInfo -> {
@@ -161,6 +161,13 @@ public class MapData {
         return roadInfoLabelsTrie;
     }
 
+    public Map<Long, Node> getNodeInfos() {
+        while (nodeInfos == null) {
+            waitForLoad();
+        }
+        return nodeInfos;
+    }
+
     private void waitForLoad() {
         try {
             Thread.sleep(100);
@@ -181,7 +188,9 @@ public class MapData {
      *                      coordinate system.
      */
     public Node findNodeNearLocation(Location location, double locationUnits) {
-        Stream<Node> stream = nodeInfos.values().stream();
+        Stream<Node> stream = getNodeInfos()
+                .values()
+                .stream();
 
         // Find all nodeInfos within range
         stream = stream.filter(node -> node.latLong
@@ -207,8 +216,18 @@ public class MapData {
 
         Trie<RoadInfo> matchingTrie = getRoadInfoLabelsTrie()
                 .getSubTrieForChars(searchTerm);
-        Collection<RoadInfo> matchingRoadInfos =
-                matchingTrie.getDatasRecursive(maxResults);
+        if (matchingTrie == null) {
+            return Collections.emptyMap(); // No matches
+        }
+
+        Collection<RoadInfo> matchingRoadInfos;
+        if (matchingTrie.getDatas().isEmpty()) {
+            // Look for prefix matches
+            matchingRoadInfos = matchingTrie.getDatasRecursive(maxResults);
+        } else {
+            // We have exact matches, so use those instead
+            matchingRoadInfos = matchingTrie.getDatas();
+        }
 
         Map<RoadInfo, Collection<RoadSegment>> result = new HashMap<>();
         matchingRoadInfos.forEach(roadInfo ->
@@ -218,7 +237,7 @@ public class MapData {
     }
 
     public Collection<RoadSegment> findRoadSegmentsForRoadInfo(RoadInfo roadInfo) {
-        return roadSegments.stream()
+        return getRoadSegments().stream()
                 .filter(segment ->
                         segment.roadId == roadInfo.id
                 )

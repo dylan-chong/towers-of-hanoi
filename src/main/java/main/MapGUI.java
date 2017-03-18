@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Singleton
 public class MapGUI extends GUI {
 
-    private static final int MAX_SEARCH_RESULTS = 10;
+    private static final int MAX_SEARCH_RESULTS = Integer.MAX_VALUE;//10;
 
     private final MapDataParser dataParser;
     private final View view;
@@ -106,13 +106,25 @@ public class MapGUI extends GUI {
 
         outputLine("Search results for '" + searchTerm + "':");
 
-        searchResults =
-                mapData.findRoadSegmentsByString(searchTerm, MAX_SEARCH_RESULTS);
-        searchResults.entrySet()
-                .forEach(entry -> {
-                    RoadInfo info = entry.getKey();
-                    outputLine("- Found: " + info);
+        searchResults = mapData.findRoadSegmentsByString(
+                searchTerm,
+                MAX_SEARCH_RESULTS
+        );
+        if (searchResults.isEmpty()) {
+            outputLine("No matches");
+            return;
+        }
+        searchResults.keySet()
+                .stream()
+                .map(roadInfo -> new RoadInfoByName(roadInfo.label, roadInfo.city))
+                .distinct()
+                .forEach(infoByName -> {
+                    outputLine("- Found: " + infoByName);
                 });
+        if (searchResults.size() == MAX_SEARCH_RESULTS) {
+            // Is a bit misleading when size actually equals MAX_SEARCH_RESULTS
+            outputLine("- ... too many results");
+        }
 
         // Flatten values in searchResults into a list
         Collection<RoadSegment> highlightedRoadSegments = searchResults.values()

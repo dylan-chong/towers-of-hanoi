@@ -90,6 +90,8 @@ public class MapDataParser {
         }.parse(scanner);
     }
 
+    // public Collection<Polygon>
+
     private static boolean toBool(int integer) {
         return integer != 0;
     }
