@@ -22,7 +22,7 @@ highlight road(s) of that name.
 Challenge out of 15 (up to 100 max, with 5 spare marks here):
 - [ ] (5) A quad-tree structure is used to quickly find intersections near a mouse click.
 - [ ] (5) The quad-tree retrieves the closest intersection in all cases.
-- [ ] (5) The polygon data is used to draw a nice map with lakes, parks, airports, a coastline, etc.
+- [x] (5) The polygon data is used to draw a nice map with lakes, parks, airports, a coastline, etc.
 - [ ] (5) The GUI is improved, with one of mouse-based panning and zooming or adding a drop-down
 suggestion box to the search bar.
 

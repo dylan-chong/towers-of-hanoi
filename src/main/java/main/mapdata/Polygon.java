@@ -21,9 +21,6 @@ public class Polygon {
     public final Integer endLevel;
     public final Integer cityIdx;
 
-    private int[] xPoints, yPoints;
-    private Color color;
-
     public Polygon(String type,
                    String label,
                    List<LatLong> points,
@@ -65,6 +62,25 @@ public class Polygon {
         float r = ((color8Bit & 0b11100000) >> 5) / 7f;
         float g = ((color8Bit & 0b00011100) >> 2) / 7f;
         float b = (color8Bit & 0b00000011) / 3f;
+
         return new Color(r, g, b);
+    }
+
+    /**
+     * Hack to make the sea look blue (because the type is not meant to
+     * be used as a color)
+     */
+    public Color getMorphedColor() {
+        Color color = getColor();
+        int r = morph(color.getBlue());
+        int g = morph(color.getRed());
+        int b = morph(color.getGreen());
+        return new Color(r, g, b);
+    }
+
+    private int morph(int colorElement) {
+        colorElement *= 1.5f;
+        colorElement = colorElement % 255;
+        return colorElement;
     }
 }

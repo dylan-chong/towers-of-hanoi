@@ -5,8 +5,10 @@ import main.mapdata.Node;
 import main.mapdata.Polygon;
 import main.mapdata.RoadSegment;
 
+import java.util.Comparator;
 import java.util.List;
 import java.awt.*;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -34,9 +36,15 @@ public class Drawer {
         // - Clipping area (avoid drawing unnecessarily)
 
         // Polygons
-        mapData.getPolygons().forEach(polygon ->
-                drawPolygon(graphics, polygon)
-        );
+        mapData.getPolygons()
+                .entrySet()
+                .stream()
+                .sorted(Comparator.comparingInt(Map.Entry::getKey))
+                .forEachOrdered(entry ->
+                        entry.getValue().forEach(polygon ->
+                                drawPolygon(graphics, polygon)
+                        )
+                );
 
         // RoadSegments
         graphics.setColor(ROADS_COLOR);
@@ -91,7 +99,7 @@ public class Drawer {
     }
 
     private void drawPolygon(Graphics graphics, Polygon polygon) {
-        graphics.setColor(polygon.getColor());
+        graphics.setColor(polygon.getMorphedColor());
 
         List<Point> points = polygon.latLongs
                 .stream()

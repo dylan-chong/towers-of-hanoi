@@ -8,10 +8,7 @@ import main.structures.Graph;
 import main.structures.Trie;
 import slightlymodifiedtemplate.Location;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -39,7 +36,10 @@ public class MapData {
     private Map<Long, RoadInfo> roadInfos;
     private MapGraph mapGraph;
     private Trie<RoadInfo> roadInfoLabelsTrie;
-    private Collection<Polygon> polygons;
+    /**
+     * endLevel to polygons
+     */
+    private Map<Integer, List<Polygon>> polygons;
 
     @Inject
     private MapData(AsyncTaskQueues asyncTaskQueues,
@@ -162,7 +162,17 @@ public class MapData {
     }
 
     private void setPolygons(Collection<Polygon> polygons) {
-        this.polygons = polygons;
+        this.polygons = polygons.stream()
+                .collect(Collectors.groupingBy(
+                        polygon -> {
+                            if (polygon.endLevel == null) {
+                                return Integer.MIN_VALUE;
+                            }
+                            return polygon.endLevel;
+                        },
+                        HashMap::new,
+                        Collectors.toList()
+                ));
     }
 
     /**
@@ -200,7 +210,7 @@ public class MapData {
         return roadSegments;
     }
 
-    public Collection<Polygon> getPolygons() {
+    public Map<Integer, List<Polygon>> getPolygons() {
         return polygons;
     }
 
