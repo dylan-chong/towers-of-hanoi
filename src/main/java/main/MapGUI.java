@@ -9,11 +9,9 @@ import slightlymodifiedtemplate.Location;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicReference;
@@ -155,6 +153,9 @@ public class MapGUI extends GUI {
             BufferedReader nodesReader = new BufferedReader(new FileReader(nodes));
             BufferedReader segmentsReader = new BufferedReader(new FileReader(segments));
             Scanner roadInfoScanner = new Scanner(roads);
+            BufferedReader polysReader = (polygons == null) ? null :
+                new BufferedReader(new FileReader(polygons));
+
 
             AtomicReference<MapData> mapDataRef = new AtomicReference<>();
 
@@ -162,7 +163,14 @@ public class MapGUI extends GUI {
                     () -> onFinishLoad(mapDataRef.get(), loadStartTime),
                     () -> dataParser.parseNodes(nodesReader),
                     () -> dataParser.parseRoadSegments(segmentsReader),
-                    () -> dataParser.parseRoadInfo(roadInfoScanner)
+                    () -> dataParser.parseRoadInfo(roadInfoScanner),
+                    () -> {
+                        if (polysReader != null) {
+                            return dataParser.parsePolygons(polysReader);
+                        } else {
+                            return Collections.emptyList();
+                        }
+                    }
             ));
         } catch (FileNotFoundException e) {
             throw new AssertionError(e);

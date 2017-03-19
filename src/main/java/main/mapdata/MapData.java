@@ -8,7 +8,11 @@ import main.structures.Graph;
 import main.structures.Trie;
 import slightlymodifiedtemplate.Location;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -35,17 +39,32 @@ public class MapData {
     private Map<Long, RoadInfo> roadInfos;
     private MapGraph mapGraph;
     private Trie<RoadInfo> roadInfoLabelsTrie;
+    private Collection<Polygon> polygons;
 
     @Inject
     private MapData(AsyncTaskQueues asyncTaskQueues,
                     @Assisted Runnable finishLoadingCallback,
                     @Assisted Supplier<Collection<Node>> nodeInfosSupplier,
                     @Assisted Supplier<Collection<RoadSegment>> roadSegmentsSupplier,
-                    @Assisted Supplier<Collection<RoadInfo>> roadInfosSupplier) {
+                    @Assisted Supplier<Collection<RoadInfo>> roadInfosSupplier,
+                    @Assisted Supplier<Collection<Polygon>> polygonsSupplier) {
+
+        // Load segments and polygons first
+        AtomicInteger criticalTasksLeft = new AtomicInteger(2);
+
+        Runnable onCompleteCriticalTask = () -> {
+            if (criticalTasksLeft.decrementAndGet() > 0) return;
+            finishLoadingCallback.run();
+        };
+
         // Load data in a new thread to prevent blocking user input
+
+        // The 'top-level' addTask calls are the first tasks to be run. The
+        // inner tasks are started after a top-level one is completed
+
         asyncTaskQueues.addTask(new AsyncTask(() -> {
             setRoadSegments(roadSegmentsSupplier.get());
-            finishLoadingCallback.run();
+            onCompleteCriticalTask.run();
 
             // Only load other stuff when when segments are loaded
             asyncTaskQueues.addTask(new AsyncTask(
@@ -57,7 +76,7 @@ public class MapData {
                                 "Create graph"
                         ));
                     },
-                    "Parse node infos"
+                    "Parse node infos" // Critical task
             ));
             asyncTaskQueues.addTask(new AsyncTask(
                     () -> {
@@ -70,9 +89,17 @@ public class MapData {
                     }, "Parse road infos"
             ));
         }, "Parse road segments"));
+
+        asyncTaskQueues.addTask(new AsyncTask(
+                () -> {
+                    setPolygons(polygonsSupplier.get());
+                    onCompleteCriticalTask.run();
+                },
+                "Parse polygons" // Critical task
+        ));
     }
 
-    public void setRoadSegments(Collection<RoadSegment> roadSegments) {
+    private void setRoadSegments(Collection<RoadSegment> roadSegments) {
         this.roadSegments = roadSegments;
     }
 
@@ -109,7 +136,7 @@ public class MapData {
         this.mapGraph = mapGraph;
     }
 
-    public void setRoadInfoLabelsTrie() {
+    private void setRoadInfoLabelsTrie() {
         Collection<RoadInfo> roadInfos = getRoadInfos().values();
         Trie<RoadInfo> rootTrie = new Trie<>();
 
@@ -134,24 +161,28 @@ public class MapData {
         this.roadInfoLabelsTrie = rootTrie;
     }
 
+    private void setPolygons(Collection<Polygon> polygons) {
+        this.polygons = polygons;
+    }
+
     /**
      * @return roadInfos when ready
      */
-    private Map<Long, RoadInfo> getRoadInfos() {
+    public Map<Long, RoadInfo> getRoadInfos() {
         while (roadInfos == null) {
             waitForLoad();
         }
         return roadInfos;
     }
 
-    private MapGraph getMapGraph() {
+    public MapGraph getMapGraph() {
         while (mapGraph == null) {
             waitForLoad();
         }
         return mapGraph;
     }
 
-    private Trie<RoadInfo> getRoadInfoLabelsTrie() {
+    public Trie<RoadInfo> getRoadInfoLabelsTrie() {
         while (roadInfoLabelsTrie == null) {
             waitForLoad();
         }
@@ -165,16 +196,20 @@ public class MapData {
         return nodeInfos;
     }
 
+    public Collection<RoadSegment> getRoadSegments() {
+        return roadSegments;
+    }
+
+    public Collection<Polygon> getPolygons() {
+        return polygons;
+    }
+
     private void waitForLoad() {
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
             throw new AssertionError(e);
         }
-    }
-
-    public Collection<RoadSegment> getRoadSegments() {
-        return roadSegments;
     }
 
     /**
@@ -262,6 +297,7 @@ public class MapData {
         MapData create(Runnable finishLoadingCallback,
                        Supplier<Collection<Node>> nodes,
                        Supplier<Collection<RoadSegment>> roadSegments,
-                       Supplier<Collection<RoadInfo>> roadInfosSupplier);
+                       Supplier<Collection<RoadInfo>> roadInfosSupplier,
+                       Supplier<Collection<Polygon>> polygonsSupplier);
     }
 }

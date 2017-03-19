@@ -35,6 +35,12 @@ public class TestUtils {
         return new ArrayList<>(parser.parseRoadInfo(scanner));
     }
 
+    public static List<Polygon> getPolygonsFromString(String input) {
+        BufferedReader reader = new BufferedReader(new StringReader(input));
+        MapDataParser parser = new MapDataParser();
+        return new ArrayList<>(parser.parsePolygons(reader));
+    }
+
     public static double getScale(View view)
             throws IllegalAccessException, NoSuchFieldException {
         Field scaleField = view.getClass().getDeclaredField("scale");

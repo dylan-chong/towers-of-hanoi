@@ -1,9 +1,5 @@
 package main;
 
-/**
- * Created by Dylan on 16/03/17.
- */
-
 import main.mapdata.Node;
 import main.mapdata.RoadSegment;
 

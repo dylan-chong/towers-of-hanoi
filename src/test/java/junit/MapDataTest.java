@@ -46,6 +46,7 @@ public class MapDataTest {
                         new Node(1, expectedLatLong)
                 ),
                 Collections::emptyList,
+                Collections::emptyList,
                 Collections::emptyList
         );
         Node foundNode = mapData.findNodeNearLocation(
@@ -63,6 +64,7 @@ public class MapDataTest {
                         new Node(1, new LatLong(4, 7))
                 ),
                 Collections::emptyList,
+                Collections::emptyList,
                 Collections::emptyList
         );
         Node foundNode = mapData.findNodeNearLocation(
@@ -79,7 +81,9 @@ public class MapDataTest {
                 () -> Collections.singletonList(
                         new Node(1, new LatLong(4, 7))
                 ),
-                Collections::emptyList, Collections::emptyList
+                Collections::emptyList,
+                Collections::emptyList,
+                Collections::emptyList
         );
         Node foundNode = mapData.findNodeNearLocation(
                 new LatLong(50, 80).asLocation(),
@@ -96,7 +100,9 @@ public class MapDataTest {
                         new Node(1, new LatLong(4, 7)),
                         new Node(2, new LatLong(15, 15))
                 ),
-                Collections::emptyList, Collections::emptyList
+                Collections::emptyList,
+                Collections::emptyList,
+                Collections::emptyList
         );
         Node foundNode = mapData.findNodeNearLocation(
                 new LatLong(14, 15).asLocation(),
@@ -113,7 +119,9 @@ public class MapDataTest {
                         new Node(1, new LatLong(4, 7)),
                         new Node(2, new LatLong(15, 15))
                 ),
-                Collections::emptyList, Collections::emptyList
+                Collections::emptyList,
+                Collections::emptyList,
+                Collections::emptyList
         );
         Node foundNode = mapData.findNodeNearLocation(
                 new LatLong(12, 14).asLocation(),
@@ -130,7 +138,9 @@ public class MapDataTest {
                         new Node(2, new LatLong(15, 15)),
                         new Node(1, new LatLong(4, 7))
                 ),
-                Collections::emptyList, Collections::emptyList
+                Collections::emptyList,
+                Collections::emptyList,
+                Collections::emptyList
         );
         Node foundNode = mapData.findNodeNearLocation(
                 new LatLong(12, 14).asLocation(),
@@ -143,6 +153,7 @@ public class MapDataTest {
     public void findRoadSegmentsByString_emptyData_returnsEmpty() {
         MapData mapData = mapDataFactory.create(
                 noop,
+                Collections::emptyList,
                 Collections::emptyList,
                 Collections::emptyList,
                 Collections::emptyList

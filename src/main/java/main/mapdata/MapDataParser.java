@@ -95,7 +95,84 @@ public class MapDataParser {
         }.parse(scanner);
     }
 
-    // public Collection<Polygon>
+    public Collection<Polygon> parsePolygons(BufferedReader reader) {
+        try {
+            List<Polygon> polygons = new ArrayList<>();
+
+            // For every polygon in the file
+            while (true) {
+                String line = reader.readLine();
+                if (line == null) return polygons;
+
+                if (line.trim().isEmpty()) continue;
+                assert line.equals("[POLYGON]"); // start of new polygon
+
+                polygons.add(parseOnePolygon(reader));
+            }
+
+        } catch (IOException e) {
+            throw new AssertionError(e);
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                throw new AssertionError(e);
+            }
+        }
+    }
+
+    /**
+     * Oh god who wrote this mess?
+     */
+    private Polygon parseOnePolygon(BufferedReader reader) throws IOException {
+        String type = null;
+        String label = null;
+        List<LatLong> points = new ArrayList<>();
+        Integer endLevel = null;
+        Integer cityIdx = null;
+
+        // Get data from fields
+        while (true) {
+            String infoLine = reader.readLine();
+            if (infoLine.equals("[END]")) {
+                return new Polygon(type, label, points, endLevel, cityIdx);
+            }
+            String key = infoLine.split("=")[0].toLowerCase();
+            String value = infoLine.split("=")[1];
+
+            // Put data in fields
+            switch (key) {
+                case "type":
+                    type = value;
+                    break;
+                case "label":
+                    label = value;
+                    break;
+                case "endlevel":
+                    endLevel = Integer.parseInt(value);
+                    break;
+                case "cityidx":
+                    cityIdx = Integer.parseInt(value);
+                    break;
+                case "data0":
+                case "data1":
+                    List<Double> ordinates = Arrays
+                            .stream(value.split("[(),]"))
+                            .filter(ordinate -> !ordinate.isEmpty())
+                            .map(Double::parseDouble)
+                            .collect(Collectors.toList());
+                    for (Iterator<Double> iterator = ordinates.iterator();
+                         iterator.hasNext(); ) {
+                        double lat = iterator.next();
+                        double lon = iterator.next();
+                        points.add(new LatLong(lat, lon));
+                    }
+                    break;
+                default:
+                    throw new IOException("Bad file format");
+            }
+        }
+    }
 
     private static boolean toBool(int integer) {
         return integer != 0;
@@ -106,7 +183,6 @@ public class MapDataParser {
      *
      * @param <T> The type of object to return
      */
-    @Deprecated
     private abstract class ScannerParser<T> {
         /**
          * @param scanner A scanner that has one item per line

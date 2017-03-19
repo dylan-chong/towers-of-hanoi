@@ -27,7 +27,7 @@ public class RoadSegment {
     public final long node1ID, node2ID; // TODO point to actual nodes?
 
     /**
-     * The road makes up straight lines between these points
+     * The road makes up straight lines between these latLongs
      */
     public final List<LatLong> points;
 
