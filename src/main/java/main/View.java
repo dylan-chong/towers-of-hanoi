@@ -24,6 +24,8 @@ public class View {
      */
     private static final int CLICK_RADIUS_PX = 14;
 
+    private static final double ZOOM_CHANGE_FACTOR = 1.1;
+
     /**
      * Adjust this so that the map can be panned around.
      */
@@ -36,7 +38,7 @@ public class View {
 
     public void applyMove(GUI.Move move) {
         if (move == GUI.Move.ZOOM_IN || move == GUI.Move.ZOOM_OUT) {
-            double zoomChangeFactor = 1.3; // Greater than 1 for zooming in
+            double zoomChangeFactor = ZOOM_CHANGE_FACTOR; // Greater than 1 for zooming in
             if (move == GUI.Move.ZOOM_OUT) zoomChangeFactor = 1 / zoomChangeFactor;
             scale *= zoomChangeFactor;
             return;
@@ -59,6 +61,35 @@ public class View {
         }
 
         originOnScreen = originOnScreen.moveBy(dx, dy);
+    }
+
+    /**
+     * @param dxPointCoord How far the mouse moved in the {@link Point}
+     *                     coordinate system
+     * @param dyPointCoord In the {@link Point} coordinate system
+     */
+    public void applyDrag(int dxPointCoord, int dyPointCoord) {
+        // Checks how far in the Location coordinate system the map should be
+        // dragged
+        Location fakeDragStart = Location.newFromPoint(
+                new Point(0, 0),
+                originOnScreen,
+                scale
+        );
+        Location fakeDragEnd = Location.newFromPoint(
+                new Point(dxPointCoord, dyPointCoord),
+                originOnScreen,
+                scale
+        );
+        double locationCoordDistance = fakeDragStart.distance(fakeDragEnd);
+        double pointCoordDistance = Math.hypot(dxPointCoord, dyPointCoord);
+
+        double distanceRatio = locationCoordDistance / pointCoordDistance;
+
+        originOnScreen = originOnScreen.moveBy(
+                -dxPointCoord * distanceRatio,
+                dyPointCoord * distanceRatio
+        );
     }
 
     public Point getPointFromLatLong(LatLong latLong) {

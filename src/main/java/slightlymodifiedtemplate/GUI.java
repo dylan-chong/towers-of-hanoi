@@ -343,23 +343,15 @@ public abstract class GUI {
                 redraw(g);
             }
         };
+        drawing.addMouseListener(getMouseMotionListener());
+        drawing.addMouseMotionListener(getMouseMotionListener());
+        drawing.addMouseWheelListener(getMouseMotionListener());
+
         drawing.setPreferredSize(new Dimension(DEFAULT_DRAWING_WIDTH,
                 DEFAULT_DRAWING_HEIGHT));
         // this prevents a bug where the component won't be
         // drawn until it is resized.
         drawing.setVisible(true);
-
-        drawing.addMouseListener(new MouseAdapter() {
-            public void mouseReleased(MouseEvent e) {
-                onClick(e);
-                redraw();
-            }
-        });
-
-        drawing.addMouseWheelListener(new MouseAdapter() {
-            public void mouseWheelMoved(MouseWheelEvent e) {
-            }
-        });
 
 		/*
 		 * then make the JTextArea that goes down the bottom. we put this in a
@@ -405,6 +397,8 @@ public abstract class GUI {
         frame.pack();
         frame.setVisible(true);
     }
+
+    protected abstract MouseAdapter getMouseMotionListener();
 }
 
 // code for COMP261 assignments

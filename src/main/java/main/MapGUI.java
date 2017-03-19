@@ -8,8 +8,13 @@ import slightlymodifiedtemplate.Location;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.*;
+import java.awt.event.MouseWheelEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -39,6 +44,7 @@ public class MapGUI extends GUI {
     private HighlightData highlightData = new HighlightData(null, null);
 
     private Map<RoadInfo, Collection<RoadSegment>> searchResults;
+    private MouseAdapter drawingMouseListener;
 
     @Inject
     public MapGUI(MapDataParser dataParser,
@@ -177,6 +183,14 @@ public class MapGUI extends GUI {
         }
     }
 
+    @Override
+    protected MouseAdapter getMouseMotionListener() {
+        if (drawingMouseListener == null) {
+            drawingMouseListener = new DrawingMouseListener();
+        }
+        return drawingMouseListener;
+    }
+
     private void onFinishLoad(MapData mapData, long loadStartTime) {
         this.mapData = mapData;
         this.highlightData = new HighlightData(null, null);
@@ -194,5 +208,57 @@ public class MapGUI extends GUI {
         JTextArea t = getTextOutputArea();
         t.append(info);
         t.append("\n");
+    }
+
+    private class DrawingMouseListener extends MouseAdapter {
+        private MouseEvent mouseDownEvent, lastDragEvent;
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            mouseDownEvent = e;
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            mouseDownEvent = null;
+            lastDragEvent = null;
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            onClick(e);
+            redraw();
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            if (view == null) return;
+            if (mouseDownEvent == null) throw new AssertionError();
+
+            MouseEvent dragStart = lastDragEvent;
+            if (lastDragEvent == null) {
+                dragStart = mouseDownEvent;
+            }
+
+            int dx = e.getX() - dragStart.getX();
+            int dy = e.getY() - dragStart.getY();
+            view.applyDrag(dx, dy);
+
+            lastDragEvent = e;
+
+            redraw();
+        }
+
+        @Override
+        public void mouseWheelMoved(MouseWheelEvent e) {
+            Move move = Move.ZOOM_OUT;
+            int zooms = e.getUnitsToScroll();
+            if (zooms < 0) move = Move.ZOOM_IN;
+
+            for (int i = 0; i < Math.abs(zooms); i++) {
+                view.applyMove(move);
+            }
+            redraw();
+        }
     }
 }
