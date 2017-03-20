@@ -3,9 +3,12 @@ package swen221.lab2.rules;
 import swen221.lab2.model.Rule;
 import swen221.lab2.util.ConwayAbstractRule;
 
-
+/**
+ * Rule for making a live cell that has less than 2 live neighbours die
+ */
 public class ConwaysUnderpopulationRule extends ConwayAbstractRule {
-	
+
+    @Override
 	public int apply(int x, int y, int neighbours) {
 		if (neighbours < 2) {
 			// This rule was applied in this case
