@@ -1,5 +1,6 @@
 package swen221.lab2.rules;
 
+import swen221.lab2.model.BoardView;
 import swen221.lab2.model.Rule;
 import swen221.lab2.util.ConwayAbstractRule;
 
@@ -9,7 +10,7 @@ import swen221.lab2.util.ConwayAbstractRule;
 public class ConwaysUnderpopulationRule extends ConwayAbstractRule {
 
     @Override
-	public int apply(int x, int y, int neighbours) {
+	public int apply(int x, int y, int neighbours, BoardView board) {
 		if (neighbours < 2) {
 			// This rule was applied in this case
 			return ConwayAbstractRule.DEAD;

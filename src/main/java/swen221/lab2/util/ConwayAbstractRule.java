@@ -1,6 +1,7 @@
 package swen221.lab2.util;
 
-import swen221.lab2.model.*;
+import swen221.lab2.model.BoardView;
+import swen221.lab2.model.Rule;
 
 /**
  * Implements a standard class for implementing the standard rules for Conway's
@@ -28,8 +29,8 @@ public abstract class ConwayAbstractRule implements Rule{
 		count += getNumAlive(x,y+1,board);
 		count += getNumAlive(x+1,y+1,board);
 		//
-		return apply(x,y,count);
-	}
+        return apply(x, y, count, board);
+    }
 	
 	/**
 	 * Apply the actual rule having already calculated the number of alive
@@ -41,9 +42,10 @@ public abstract class ConwayAbstractRule implements Rule{
 	 *            Vertical position of cell on the board
 	 * @param neighbours
 	 *            Number of alive neighbours on the board.
-	 * @return
+	 * @param board
+     * @return
 	 */
-	public abstract int apply(int x, int y, int neighbours);
+	public abstract int apply(int x, int y, int neighbours, BoardView board);
 	
 	/**
 	 * Check the state of an adjancent cell, taking into account the edges of
