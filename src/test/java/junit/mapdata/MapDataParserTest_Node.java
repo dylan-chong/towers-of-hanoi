@@ -1,7 +1,9 @@
-package junit;
+package junit.mapdata;
 
+import junit.TestUtils;
 import main.LatLong;
 import main.mapdata.Node;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -16,7 +18,7 @@ public class MapDataParserTest_Node {
 
     @Test
     public void parseNodes_emptyScanner_returnsEmpty() {
-        assertEquals(Collections.emptyList(), TestUtils.getNodesFromString(""));
+        Assert.assertEquals(Collections.emptyList(), TestUtils.getNodesFromString(""));
     }
 
     @Test

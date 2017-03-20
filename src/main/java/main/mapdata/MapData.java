@@ -2,9 +2,11 @@ package main.mapdata;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import main.LatLong;
 import main.async.AsyncTask;
 import main.async.AsyncTaskQueues;
 import main.structures.Graph;
+import main.structures.QuadTree;
 import main.structures.Trie;
 import slightlymodifiedtemplate.Location;
 
@@ -12,7 +14,6 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by Dylan on 15/03/17.
@@ -36,6 +37,7 @@ public class MapData {
     private Map<Long, RoadInfo> roadInfos;
     private MapGraph mapGraph;
     private Trie<RoadInfo> roadInfoLabelsTrie;
+    private QuadTree<Node> nodeTree;
     /**
      * endLevel to polygons
      */
@@ -74,6 +76,11 @@ public class MapData {
                         asyncTaskQueues.addTask(new AsyncTask(
                                 this::setMapGraph,
                                 "Create graph"
+                        ));
+
+                        asyncTaskQueues.addTask(new AsyncTask(
+                                this::setNodeTree,
+                                "Create node quad tree"
                         ));
                     },
                     "Parse node infos" // Critical task
@@ -175,6 +182,16 @@ public class MapData {
                 ));
     }
 
+    private void setNodeTree() {
+        QuadTree<Node> nodeTree = new QuadTree<>(
+                (a, b) -> a.latLong.asLocation().y - b.latLong.asLocation().y,
+                (a, b) -> a.latLong.asLocation().x - b.latLong.asLocation().x
+        );
+        getNodeInfos().values()
+                .forEach(nodeTree::add);
+        this.nodeTree = nodeTree;
+    }
+
     /**
      * @return roadInfos when ready
      */
@@ -206,6 +223,13 @@ public class MapData {
         return nodeInfos;
     }
 
+    public QuadTree<Node> getNodeTree() {
+        while (nodeTree == null) {
+            waitForLoad();
+        }
+        return nodeTree;
+    }
+
     public Collection<RoadSegment> getRoadSegments() {
         return roadSegments;
     }
@@ -230,26 +254,36 @@ public class MapData {
      *                      coordinate system.
      */
     public Node findNodeNearLocation(Location location, double locationUnits) {
-        Stream<Node> stream = getNodeInfos()
-                .values()
-                .stream();
+        // Stream<Node> stream = getNodeInfos()
+        //         .values()
+        //         .stream();
+        //
+        // // Find all nodeInfos within range
+        // stream = stream.filter(node -> node.latLong
+        //         .asLocation().isCloseFast(location, locationUnits));
+        //
+        // // Find closest node within range
+        // Node closestNode = stream.reduce((node1, node2) -> {
+        //     double dist1 = node1.latLong.asLocation().distance(location);
+        //     double dist2 = node2.latLong.asLocation().distance(location);
+        //     if (dist1 < dist2) return node1;
+        //     return node2;
+        // }).orElse(null);
 
-        // Find all nodeInfos within range
-        stream = stream.filter(node -> node.latLong
-                .asLocation().isCloseFast(location, locationUnits));
-
-        // Find closest node within range
-        Node closestNode = stream.reduce((node1, node2) -> {
-            double dist1 = node1.latLong.asLocation().distance(location);
-            double dist2 = node2.latLong.asLocation().distance(location);
-            if (dist1 < dist2) return node1;
-            return node2;
-        }).orElse(null);
+        // Hack to avoid converting a Location to a LatLong
+        Node fakeNode = new Node(-1, new LatLong(-1 , -1) {
+            @Override
+            public Location asLocation() {
+                // Actual location
+                return location;
+            }
+        });
+        Node closestNode = getNodeTree().closestDataTo(fakeNode);
 
         if (closestNode == null) return null;
-        if (closestNode.latLong.asLocation().distance(location) > locationUnits) {
-            return null;
-        }
+        // if (closestNode.latLong.asLocation().distance(location) > locationUnits) {
+        //     return null;
+        // }
         return closestNode;
     }
 

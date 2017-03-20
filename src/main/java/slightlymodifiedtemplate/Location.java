@@ -77,7 +77,7 @@ public class Location {
      */
     public static Location newFromLatLong(LatLong latLong) {
         double y = (latLong.latitude - CITY_CENTER.latitude) * SCALE_LAT;
-        double x = (latLong.longitude - CITY_CENTER.longitude)
+        double x = (CITY_CENTER.longitude - latLong.longitude)
                 * (SCALE_LAT * Math.cos((latLong.latitude - CITY_CENTER.longitude) * DEG_TO_RAD));
         return new Location(x, y);
     }
@@ -118,6 +118,19 @@ public class Location {
 
     public String toString() {
         return String.format("(%.3f, %.3f)", x, y);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+
+        if (!(obj instanceof Location)) {
+            return false;
+        }
+
+        Location other = (Location) obj;
+        return other.x == x &&
+                other.y == y;
     }
 }
 

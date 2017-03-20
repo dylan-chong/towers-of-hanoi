@@ -26,3 +26,4 @@ Challenge out of 15 (up to 100 max, with 5 spare marks here):
 - [x] (5) The GUI is improved, with one of mouse-based panning and zooming or adding a drop-down
 suggestion box to the search bar.
 
+- [ ] (?) Report

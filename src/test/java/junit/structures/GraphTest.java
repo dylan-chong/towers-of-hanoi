@@ -1,4 +1,4 @@
-package junit;
+package junit.structures;
 
 import main.structures.Graph;
 import org.junit.Test;

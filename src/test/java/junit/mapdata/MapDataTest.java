@@ -1,8 +1,9 @@
-package junit;
+package junit.mapdata;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import junit.TestUtils;
 import main.LatLong;
 import main.mapdata.MapData;
 import main.mapdata.Node;

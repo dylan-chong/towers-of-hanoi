@@ -1,6 +1,8 @@
-package junit;
+package junit.mapdata;
 
+import junit.TestUtils;
 import main.mapdata.RoadInfo;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -15,7 +17,7 @@ public class MapDataParserTest_RoadInfo {
 
     @Test
     public void parseRoadInfo_emptyScanner_returnsEmpty() {
-        assertEquals(Collections.emptyList(), TestUtils.getRoadInfoFromString("" ));
+        Assert.assertEquals(Collections.emptyList(), TestUtils.getRoadInfoFromString("" ));
     }
 
     @Test

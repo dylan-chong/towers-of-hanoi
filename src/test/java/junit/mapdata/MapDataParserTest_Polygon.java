@@ -1,5 +1,6 @@
-package junit;
+package junit.mapdata;
 
+import junit.TestUtils;
 import main.LatLong;
 import main.mapdata.Polygon;
 import org.junit.Test;

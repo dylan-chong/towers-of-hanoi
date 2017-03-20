@@ -1,4 +1,4 @@
-package junit;
+package junit.mapdata;
 
 import main.mapdata.Polygon;
 import org.junit.Test;
@@ -10,6 +10,8 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Dylan on 19/03/17.
+ *
+ * Test loading 8 bit hexadecimal strings as colours
  */
 public class PolygonTest {
     @Test
