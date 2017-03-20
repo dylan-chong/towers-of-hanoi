@@ -18,12 +18,6 @@ public class View {
      */
     private static final int MOVE_DISTANCE = 60;
 
-    /**
-     * How close a user has to click to a {@link Point} (in screen pixels)
-     * in order to select whatever is at the Point.
-     */
-    private static final int CLICK_RADIUS_PX = 14;
-
     private static final double ZOOM_CHANGE_FACTOR = 1.1;
 
     /**
@@ -109,18 +103,5 @@ public class View {
 
     private double distanceToMoveBy() {
         return MOVE_DISTANCE / scale;
-    }
-
-    /**
-     *
-     * @return A value in the {@link Location} coordinate system.
-     */
-    public double getClickRadius() {
-        // Convert CLICK_RADIUS_PX into Location units
-        Point pointA = new Point(0, 0);
-        Point pointB = new Point(0, CLICK_RADIUS_PX);
-        Location locationA = getLocationFromPoint(pointA);
-        Location locationB = getLocationFromPoint(pointB);
-        return locationA.distance(locationB);
     }
 }

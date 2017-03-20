@@ -196,38 +196,23 @@ public class MapData {
      * @return roadInfos when ready
      */
     public Map<Long, RoadInfo> getRoadInfos() {
-        while (roadInfos == null) {
-            waitForLoad();
-        }
-        return roadInfos;
+        return waitForLoad(() -> roadInfos);
     }
 
     public MapGraph getMapGraph() {
-        while (mapGraph == null) {
-            waitForLoad();
-        }
-        return mapGraph;
+        return waitForLoad(() -> mapGraph);
     }
 
     public Trie<RoadInfo> getRoadInfoLabelsTrie() {
-        while (roadInfoLabelsTrie == null) {
-            waitForLoad();
-        }
-        return roadInfoLabelsTrie;
+        return waitForLoad(() -> roadInfoLabelsTrie);
     }
 
     public Map<Long, Node> getNodeInfos() {
-        while (nodeInfos == null) {
-            waitForLoad();
-        }
-        return nodeInfos;
+        return waitForLoad(() -> nodeInfos);
     }
 
     public QuadTree<Node> getNodeTree() {
-        while (nodeTree == null) {
-            waitForLoad();
-        }
-        return nodeTree;
+        return waitForLoad(() -> nodeTree);
     }
 
     public Collection<RoadSegment> getRoadSegments() {
@@ -235,41 +220,24 @@ public class MapData {
     }
 
     public Map<Integer, List<Polygon>> getPolygons() {
-        return polygons;
+        return waitForLoad(() -> polygons);
     }
 
-    private void waitForLoad() {
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            throw new AssertionError(e);
+    private <T> T waitForLoad(Supplier<T> fieldWithLoadingInProgress) {
+        while (fieldWithLoadingInProgress.get() == null) {
+            try {
+                Thread.sleep(150);
+            } catch (InterruptedException e) {
+                throw new AssertionError(e);
+            }
         }
+        return fieldWithLoadingInProgress.get();
     }
 
     /**
-     * Find the nearest {@link Node} near the given location, within a circle
-     * with a radius defined by locationUnits.
-     *
-     * @param locationUnits The number of units in the {@link Location}
-     *                      coordinate system.
+     * Find the nearest {@link Node} near the given location
      */
-    public Node findNodeNearLocation(Location location, double locationUnits) {
-        // Stream<Node> stream = getNodeInfos()
-        //         .values()
-        //         .stream();
-        //
-        // // Find all nodeInfos within range
-        // stream = stream.filter(node -> node.latLong
-        //         .asLocation().isCloseFast(location, locationUnits));
-        //
-        // // Find closest node within range
-        // Node closestNode = stream.reduce((node1, node2) -> {
-        //     double dist1 = node1.latLong.asLocation().distance(location);
-        //     double dist2 = node2.latLong.asLocation().distance(location);
-        //     if (dist1 < dist2) return node1;
-        //     return node2;
-        // }).orElse(null);
-
+    public Node findNodeNearLocation(Location location) {
         // Hack to avoid converting a Location to a LatLong
         Node fakeNode = new Node(-1, new LatLong(-1 , -1) {
             @Override
@@ -281,9 +249,6 @@ public class MapData {
         Node closestNode = getNodeTree().closestDataTo(fakeNode);
 
         if (closestNode == null) return null;
-        // if (closestNode.latLong.asLocation().distance(location) > locationUnits) {
-        //     return null;
-        // }
         return closestNode;
     }
 

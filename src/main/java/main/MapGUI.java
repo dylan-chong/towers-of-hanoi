@@ -76,12 +76,11 @@ public class MapGUI extends GUI {
                 new Point(e.getX(), e.getY())
         );
 
-        double maxDistance = view.getClickRadius();
         // 'Node' means 'intersection' here
-        Node highlightedNode = mapData.findNodeNearLocation(clickLocation, maxDistance);
+        Node highlightedNode = mapData.findNodeNearLocation(clickLocation);
         if (highlightedNode == null) {
             highlightData = new HighlightData(null, null);
-            outputLine("There are no nodes close to where you clicked");
+            outputLine("There are no nodes");
             return;
         }
 
@@ -183,14 +182,6 @@ public class MapGUI extends GUI {
         }
     }
 
-    @Override
-    protected MouseAdapter getMouseMotionListener() {
-        if (drawingMouseListener == null) {
-            drawingMouseListener = new DrawingMouseListener();
-        }
-        return drawingMouseListener;
-    }
-
     private void onFinishLoad(MapData mapData, long loadStartTime) {
         this.mapData = mapData;
         this.highlightData = new HighlightData(null, null);
@@ -208,6 +199,14 @@ public class MapGUI extends GUI {
         JTextArea t = getTextOutputArea();
         t.append(info);
         t.append("\n");
+    }
+
+    @Override
+    protected MouseAdapter getMouseMotionListener() {
+        if (drawingMouseListener == null) {
+            drawingMouseListener = new DrawingMouseListener();
+        }
+        return drawingMouseListener;
     }
 
     private class DrawingMouseListener extends MouseAdapter {

@@ -156,6 +156,9 @@ public class MapDataParser {
                     break;
                 case "data0":
                 case "data1":
+                    // For some reason some a few polygons overlap themselves,
+                    // even though this code should work (and most polygons
+                    // work)
                     List<Double> ordinates = Arrays
                             .stream(value.split("[(),]"))
                             .filter(ordinate -> !ordinate.isEmpty())

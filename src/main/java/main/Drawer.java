@@ -105,7 +105,7 @@ public class Drawer {
                 .stream()
                 .map(view::getPointFromLatLong)
                 .collect(Collectors.toList());
-        points.add(points.get(0));
+        // points.add(points.get(0));
         int[] xPoints = points.stream()
                 .mapToInt(p -> p.x)
                 .toArray();
