@@ -17,103 +17,33 @@ IMPORTANT NOTES:
 
 
 
-## What the code does and doesn't do ##
+Minimum out of 40:
+* [ ] (5) Has a way of specifying the start and end of a route.
+* [ ] (5) Has a priority queue of appropriate elements (node, parent, costToHere, totEstCost).
+* [ ] (5) Uses an appropriate cost measure (sum of segment lengths).
+* [ ] (5) Uses an appropriate heuristic.
+* [ ] (5) Uses the appropriate graph structure of segments from a node.
+* [ ] (5) Prints out the roads on the route. (Duplicates OK.)
+* [ ] (10) Correctly selects shortest paths.
 
-The [x] symbols are a ticked checkbox.
-This list is copied from the marking schedule page
+Core out of 35 (up to 75):
+* [ ] (10) Finds articulation points in one part of the graph.
+* [ ] (5) Uses the correct graph structure, i.e. ignores one way. (Articulation points should use an undirected graph.)
+* [ ] (5) Displays the selected nodes. (i.e. displays art pts)
+* [ ] (5) Finds articulation points in all components of the graph.
+* [ ] (5) Uses the iterative version of the algorithm
+* [ ] (5) Do they have a report with pseudocode of their algorithms in it?
 
-Minimum out of 30:
-- [x] The program reads the data and draws a map.
-- [x] (15) It constructs a graph structure using collections of intersections, segments, and roads.
+Completion out of 10 (up to 85):
+* [ ] (3) Uses one-way roads correctly in the route-finding.
+* [ ] (3) Highlights the route on the map as well as printing it.
+* [ ] (4) Removes duplicate roads from the printout, and give the right lengths and total length. (3 for removing duplicates, 1 for doing the lengths.)
 
-Core out of 35 (up to 65):
-- [x] (15) The map can be zoomed and panned, and the user can select intersections with the mouse,
-and some details are shown.
-    - [x] Show location and roads that go through this intersection
-- [x] (10) Road names can be entered into the text box and all segments are highlighted on the map.
-Can be either exact or prefix matches, check that all segments highlighted.
-- [x] (5) The names of all roads joining the selected intersection are outputted, without duplicates.
-- [x] (5) The graph (not exhaustive search) is used to find the roads joining a selected intersection.
-Getting from node to segment to road should be constant time.
-
-Completion out of 20 (up to 85):
-- [x] (15) Correct code for a trie structure, with methods to add an element and find all elements
-with a given prefix.
-- [x] (5) Trie is used to output the names of all roads which match a prefix in the search box, as well
-as highlighting them on the map. If the prefix exactly matches a road name, only output and
-highlight road(s) of that name.
-
-Challenge out of 15 (up to 100 max, with 5 spare marks here):
-- [x] (5) A quad-tree structure is used to quickly find intersections near a mouse click.
-- [x] (5) The quad-tree retrieves the closest intersection in all cases.
-- [x] (5) The polygon data is used to draw a nice map with lakes, parks, airports, a coastline, etc.
-    - Some of the polygons look weird for some unknown reason, even though most
-    of the polygons are fine
-- [x] (5) The GUI is improved, with one of mouse-based panning and zooming or adding a drop-down
-suggestion box to the search bar.
-    - I added mouse panning and zooming, not the drop-down suggestions
-
-## Data structures used ##
-
-I started by storing the RoadInfo, Node (intersections) and RoadSegment objects
-in ArrayLists (and each type is basically used as a struct), and then optimised
-things a little bit - I used a lot of HashMaps for things like looking up a
-RoadInfo by its id.
-
-The Graph contains a HashMap of a generic NodeInfoT type to Node (to maintain a
-strong reference to the nodes, and to provide fast lookup of the nodes assuming
-that the data stored in each node is unique). A Node can be created without
-being connected to anything (so that edges can be added to it later) but the
-edges have to be connected to nodes while it is instantiated (to avoid
-mutability).
-
-The Trie for the looking up RoadInfo objects by their label (street name) was a
-tree structure (each Trie node had a HashMap of the next character to another
-Trie node) and each Trie node had a Collection of RoadInfo. The absence of
-RoadInfo data in a Trie meant that that Trie represents the middle of a string.
-I kept this Trie as generic as I could just for fun, so any CharSequence could
-be used as "keys" and any type of data could be stored in the Trie. I could
-have made Trie implement Map<CharSequence,RoadInfo>, but the implementation
-would have to be a bit more complex to make the implementation transparent to
-the outside. Getting a list of the results with a custom limit could also be
-tricky.
-
-The QuadTree was used for finding a Node nearest to an arbitrary point (where
-the user clicked). I implemented it similar to a binary search tree where each
-Section (I called the nodes sections because they divide data into subsections)
-has 4 subsections (rather than 2 in a binary search tree) and a piece of data
-itself. I kept this structure generic also (just in case I might need to use it
-in some other situation) so used a generic data type and comparators to figure
-out which subsection a new piece of data should belong to. Finding the nearest
-point was trickier because it required some recursive and non-recursive logic
-to work. What I did was have an imaginary bounding box around the location you
-clicked. I then excluded the sections (out of the 4 within the current section)
-which had no overlap with the bounding box. If the data of the current section
-is within the bounding box, that is added to the closeNodes list. I then
-recursively ask each remaining section to do all of of this, and add the
-results to closeNodes list. I then take the closest section out of the
-closestNodes list and return it. If there were no results, this method would
-try again with a bounding box of 4 times the area.
-
-Basically all of the data structures can be found as a field in the
-main.mapdata.MapData class.
-
-## Testing ##
-
-I tested the program by doing a semi-Test-Driven Development style. I wrote a
-test for parsing the data (and some other tasks) followed by an implementation
-to pass the test. I then repeated this. I only did this TDD style for places
-where there can be quite a bit uncertainty: parsing files, (it would be
-difficult to find bugs when parsing a large file because it would be hard to
-find what part was causing the problem); and potentially complex-to-debug data
-structures like a QuadTree or a Trie. I had a problem with the QuadTree and I
-wrote additional tests to help me debug.
-
-I used thorough, manual testing to make sure every feature I wrote worked - I
-wrote small features and then tested them to make sure it worked, rather than
-writing a large amount of stuff.
-
-There is one occasional bug that is pretty untestable because it happens so
-rarely. The map ocassionally disappears when moving around the map. I guess
-this could be due to multithreading and mouse-event handling (which could cause
-the program to think the mouse was dragged really far away).
+Challenge out of 20 (up to 100, with 5 spare marks):
+* [ ] (8) Allows user to select distance or time, and find fastest route, using road class and speed
+limit data, and using an admissible heuristic.
+* [ ] (2) Can they explain and justify their cost function and heuristic?
+Heuristic must be admissible.
+* [ ] (5) Takes into account restriction information.
+* [ ] (5) Takes into account intersection constraints such as traffic lights to prefer routes with fewer
+lights.
