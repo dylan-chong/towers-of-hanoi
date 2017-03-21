@@ -46,24 +46,26 @@ public class LeftWalker extends Walker {
                         .map(DirectionUseful::fromDirection)
                         .collect(Collectors.toList());
 
+        if (possibleUsefulDirs.size() == 3 &&
+                !possibleUsefulDirs.contains(currentDirection) &&
+                currentDirection == DirectionUseful.SOUTH) {
+            // If we go directly up to a wall, we should turn right, not left
+            currentDirection = currentDirection.turnRight90();
+            positionRecorder.move(currentDirection);
+            return currentDirection.asDirection();
+        }
+
         // Try to avoid infinite loop by avoiding going the same way we have
         // gone before
         Collection<DirectionUseful> usedDirs = positionRecorder.getUsedDirs();
-        if (!usedDirs.isEmpty() && !possibleUsefulDirs.isEmpty()) {
+        if (!usedDirs.isEmpty() &&
+                possibleUsefulDirs.size() - usedDirs.size() > 0) {
             // Only do this when not empty because the LeftWalker may run out
             // of directions use, but running out of directions may be a
             // required consequence of the memorisation trick
             // possibleUsefulDirs = unusedDirs;
 
             possibleUsefulDirs.removeAll(usedDirs);
-        }
-
-        if (possibleUsefulDirs.size() == 3 &&
-                !possibleUsefulDirs.contains(currentDirection)) {
-            // If we go directly up to a wall, we should turn right, not left
-            currentDirection = currentDirection.turnRight90();
-            positionRecorder.move(currentDirection);
-            return currentDirection.asDirection();
         }
 
         // Otherwise, prefer turning left, then forward, then right, then backwards
