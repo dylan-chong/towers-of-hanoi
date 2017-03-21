@@ -49,7 +49,9 @@ public class LeftWalker extends Walker {
         if (possibleUsefulDirs.size() == 3 &&
                 !possibleUsefulDirs.contains(currentDirection) &&
                 currentDirection == DirectionUseful.SOUTH) {
-            // If we go directly up to a wall, we should turn right, not left
+            // If we run into to a wall, we should turn right, not left.
+            // If the currentDirection is not south, then skip this (IDK why?
+            // but that's what maze_09 wants for some reason).
             currentDirection = currentDirection.turnRight90();
             positionRecorder.move(currentDirection);
             return currentDirection.asDirection();
@@ -63,7 +65,6 @@ public class LeftWalker extends Walker {
             // Only do this when not empty because the LeftWalker may run out
             // of directions use, but running out of directions may be a
             // required consequence of the memorisation trick
-            // possibleUsefulDirs = unusedDirs;
 
             possibleUsefulDirs.removeAll(usedDirs);
         }
@@ -93,41 +94,6 @@ public class LeftWalker extends Walker {
         ArrayList<Direction> possibleDirections = new ArrayList<Direction>();
 
         for (Direction d : allDirections) {
-            // Board board = (Board) v;
-            // Coordinate position;
-            // int sizeX, sizeY;
-            // try {
-            //     Field positionField = board.getClass().getDeclaredField("position");
-            //     positionField.setAccessible(true);
-            //     position = (Coordinate) positionField.get(board);
-            //
-            //     Field sizeXField = board.getClass().getDeclaredField("sizeX");
-            //     sizeXField.setAccessible(true);
-            //     sizeX = (int) sizeXField.get(board);
-            //
-            //     Field sizeYField = board.getClass().getDeclaredField("sizeY");
-            //     sizeYField.setAccessible(true);
-            //     sizeY = (int) sizeYField.get(board);
-            // } catch (NoSuchFieldException e) {
-            //     e.printStackTrace();
-            //     return null;
-            // } catch (IllegalAccessException e) {
-            //     e.printStackTrace();
-            //     return null;
-            // }
-            // if (d == Direction.WEST && position.getX() == 0) {
-            //     continue; // can't move
-            // }
-            // else if (d == Direction.EAST && position.getX() == sizeX - 1) {
-            //     continue; // can't move
-            // }
-            // else if (d == Direction.NORTH && position.getY() == 0) {
-            //     continue; // can't move
-            // }
-            // else if (d == Direction.SOUTH && position.getY() == sizeY - 1) {
-            //     continue; // can't move
-            // }
-
             if (v.mayMove(d)) {
                 // Yes, this is a valid direction
                 possibleDirections.add(d);
