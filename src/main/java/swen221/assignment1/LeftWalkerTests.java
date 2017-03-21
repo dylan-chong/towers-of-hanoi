@@ -102,9 +102,32 @@ public class LeftWalkerTests {
     @Test
     public void maze07_requiresMemorisation() {
         // This maze is a trickier one, since it requires memorisation to solve.
-        int[][] path = {{2, 3}, {3, 3}, {3, 2}, {3, 1}, {2, 1}, {1, 1}, {1, 2}, {1, 3}, {2, 3},
-                {2, 4}, {1, 4}, {0, 4}, {0, 3}, {0, 2}, {0, 1}, {0, 0}, {1, 0}, {2, 0}, {3, 0},
-                {4, 0}};
+        int[][] path = {{2, 3}
+                , {3, 3}
+                , {3, 2}
+                , {3, 1}
+                , {2, 1}
+
+                , {1, 1}
+                , {1, 2}
+                , {1, 3}
+                , {2, 3}
+                ,
+                {2, 4}
+                , {1, 4}
+                , {0, 4}
+                , {0, 3}
+                , {0, 2}
+
+                , {0, 1}
+                , {0, 0}
+                , {1, 0}
+                , {2, 0}
+
+                , {3, 0}
+                ,
+                {4, 0}
+        };
 
         String maze = "5,5\n" +
                 "9,1,1,1,5\n" +
@@ -142,7 +165,7 @@ public class LeftWalkerTests {
     }
 
     @Test
-    public void maze0_requiresMemorisation9() {
+    public void maze09_requiresMemorisation9() {
         // This maze is a trickier one, since it requires memorisation to solve.
         int[][] path = {{2, 4}, {2, 3}, {2, 4}, {3, 4}, {4, 4},
                 {4, 3}, {4, 2}, {4, 1}, {3, 1}, {2, 1}, {1, 1},
