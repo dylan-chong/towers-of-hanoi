@@ -103,25 +103,26 @@ public class LeftWalkerTests {
     public void maze07_requiresMemorisation() {
         // This maze is a trickier one, since it requires memorisation to solve.
         int[][] path = {{2, 3}
+                //up the right side
                 , {3, 3}
                 , {3, 2}
                 , {3, 1}
-                , {2, 1}
+                , {2, 1}// start left on top
 
                 , {1, 1}
-                , {1, 2}
+                , {1, 2} // start moving down on left
                 , {1, 3}
-                , {2, 3}
+                , {2, 3}// start moving right on bottom
                 ,
                 {2, 4}
-                , {1, 4}
+                , {1, 4} // start moving left
                 , {0, 4}
-                , {0, 3}
+                , {0, 3}// start moving up left wall
                 , {0, 2}
 
                 , {0, 1}
                 , {0, 0}
-                , {1, 0}
+                , {1, 0} // moving right on top wall
                 , {2, 0}
 
                 , {3, 0}
@@ -224,9 +225,16 @@ public class LeftWalkerTests {
             MazeWindow.getWindowAndShow(board);
 
             try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            try {
                 Field frame = MazeWindow.class.getDeclaredField("frame");
                 frame.setAccessible(true);
                 jFrame = (JFrame) frame.get(MazeWindow.mainWindow);
+                jFrame.setVisible(true);
             } catch (NoSuchFieldException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {

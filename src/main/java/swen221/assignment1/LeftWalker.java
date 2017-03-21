@@ -28,14 +28,15 @@ public class LeftWalker extends Walker {
 
     @Override
     protected Direction move(View v) {
-        try {
-            Thread.sleep(300);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         List<Direction> possibleDirs = determinePossibleDirections(v);
 
         if (currentDirection == null) {
+            if (possibleDirs.size() == 4) {
+                // Just go NORTH if there are no walls
+                currentDirection = DirectionUseful.NORTH;
+                positionRecorder.move(currentDirection);
+                return currentDirection.asDirection();
+            }
             currentDirection = DirectionUseful.fromDirection(possibleDirs.get(0));
         }
 
@@ -43,22 +44,29 @@ public class LeftWalker extends Walker {
         Collection<DirectionUseful> possibleUsefulDirs = possibleDirs
                         .stream()
                         .map(DirectionUseful::fromDirection)
-                        .collect(Collectors.toSet());
-        // Try to avoid infinite loop
-        Collection<DirectionUseful> unusedDirs = possibleUsefulDirs.stream()
-                .filter(dir -> !positionRecorder
-                        .getUsedDirs()
-                        .contains(dir))
-                .collect(Collectors.toSet());
-        if (!unusedDirs.isEmpty()) {
+                        .collect(Collectors.toList());
+
+        // Try to avoid infinite loop by avoiding going the same way we have
+        // gone before
+        Collection<DirectionUseful> usedDirs = positionRecorder.getUsedDirs();
+        if (!usedDirs.isEmpty() && !possibleUsefulDirs.isEmpty()) {
             // Only do this when not empty because the LeftWalker may run out
             // of directions use, but running out of directions may be a
             // required consequence of the memorisation trick
-            possibleUsefulDirs = unusedDirs;
+            // possibleUsefulDirs = unusedDirs;
+
+            possibleUsefulDirs.removeAll(usedDirs);
         }
 
+        if (possibleUsefulDirs.size() == 3 &&
+                !possibleUsefulDirs.contains(currentDirection)) {
+            // If we go directly up to a wall, we should turn right, not left
+            currentDirection = currentDirection.turnRight90();
+            positionRecorder.move(currentDirection);
+            return currentDirection.asDirection();
+        }
 
-        // Prefer turning left, then forward, then right, then backwards
+        // Otherwise, prefer turning left, then forward, then right, then backwards
         currentDirection = currentDirection
                 .turnLeft90()
                 // Turn right 0 or more times
