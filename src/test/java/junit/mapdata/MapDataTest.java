@@ -3,7 +3,6 @@ package junit.mapdata;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
-import junit.TestUtils;
 import main.LatLong;
 import main.mapdata.MapData;
 import main.mapdata.Node;
@@ -18,7 +17,6 @@ import java.util.Collections;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 /**
  * Created by Dylan on 15/03/17.
@@ -51,8 +49,7 @@ public class MapDataTest {
                 Collections::emptyList
         );
         Node foundNode = mapData.findNodeNearLocation(
-                expectedLatLong.asLocation(),
-                TestUtils.roughLocationDistance(0)
+                expectedLatLong.asLocation()
         );
         assertEquals(1, foundNode.id);
     }
@@ -69,14 +66,13 @@ public class MapDataTest {
                 Collections::emptyList
         );
         Node foundNode = mapData.findNodeNearLocation(
-                new LatLong(5, 8).asLocation(),
-                TestUtils.roughLocationDistance(2)
+                new LatLong(5, 8).asLocation()
         );
         assertEquals(1, foundNode.id);
     }
 
     @Test
-    public void findNodeNearLocation_oneNodeFarFromClick_returnsNull() {
+    public void findNodeNearLocation_oneNodeFarFromClick_returnsNodeAnyway() {
         MapData mapData = mapDataFactory.create(
                 noop,
                 () -> Collections.singletonList(
@@ -87,10 +83,9 @@ public class MapDataTest {
                 Collections::emptyList
         );
         Node foundNode = mapData.findNodeNearLocation(
-                new LatLong(50, 80).asLocation(),
-                TestUtils.roughLocationDistance(2)
+                new LatLong(50, 80).asLocation()
         );
-        assertNull(foundNode);
+        assertEquals(1, foundNode.id);
     }
 
     @Test
@@ -106,33 +101,13 @@ public class MapDataTest {
                 Collections::emptyList
         );
         Node foundNode = mapData.findNodeNearLocation(
-                new LatLong(14, 15).asLocation(),
-                TestUtils.roughLocationDistance(2)
+                new LatLong(14, 15).asLocation()
         );
         assertEquals(2, foundNode.id);
     }
 
     @Test
-    public void findNodeNearLocation_twoCloseNodes_returnsClosest() {
-        MapData mapData = mapDataFactory.create(
-                noop,
-                () -> Arrays.asList(
-                        new Node(1, new LatLong(4, 7)),
-                        new Node(2, new LatLong(15, 15))
-                ),
-                Collections::emptyList,
-                Collections::emptyList,
-                Collections::emptyList
-        );
-        Node foundNode = mapData.findNodeNearLocation(
-                new LatLong(12, 14).asLocation(),
-                TestUtils.roughLocationDistance(50)
-        );
-        assertEquals(2, foundNode.id);
-    }
-
-    @Test
-    public void findNodeNearLocation_twoCloseNodesInDifferentOrder_returnsClosest() {
+    public void findNodeNearLocation_oneFarOneClose_returnsClosest() {
         MapData mapData = mapDataFactory.create(
                 noop,
                 () -> Arrays.asList(
@@ -144,8 +119,7 @@ public class MapDataTest {
                 Collections::emptyList
         );
         Node foundNode = mapData.findNodeNearLocation(
-                new LatLong(12, 14).asLocation(),
-                TestUtils.roughLocationDistance(50)
+                new LatLong(12, 14).asLocation()
         );
         assertEquals(2, foundNode.id);
     }
