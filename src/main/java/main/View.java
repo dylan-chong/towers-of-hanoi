@@ -30,14 +30,31 @@ public class View {
      */
     private double scale = 60;
 
-    public void applyMove(GUI.Move move) {
+    public void applyMove(GUI.Move move, Dimension componentDimension) {
         if (move == GUI.Move.ZOOM_IN || move == GUI.Move.ZOOM_OUT) {
+            double oldScale = scale;
+
             double zoomChangeFactor = ZOOM_CHANGE_FACTOR; // Greater than 1 for zooming in
             if (move == GUI.Move.ZOOM_OUT) zoomChangeFactor = 1 / zoomChangeFactor;
             scale *= zoomChangeFactor;
-            return;
 
-            // TODO SOMETIME zoom in center
+            // Make the zoom from the center by shifting the origin
+
+            // Convert from Point coordinate system to Location
+            double componentLWidth = convertFromPointSystemToLocationSystem(
+                    componentDimension.width
+            );
+            double componentLHeight = convertFromPointSystemToLocationSystem(
+                    componentDimension.height
+            );
+
+            originOnScreen = new Location(
+                    originOnScreen.x -
+                            (componentLWidth / 2.0 * (1 - scale / oldScale)),
+                    originOnScreen.y +
+                            (componentLHeight / 2.0 * (1 - scale / oldScale))
+            );
+            return;
         }
 
         double dx = 0;
@@ -63,27 +80,10 @@ public class View {
      * @param dyPointCoord In the {@link Point} coordinate system
      */
     public void applyDrag(int dxPointCoord, int dyPointCoord) {
-        // Checks how far in the Location coordinate system the map should be
-        // dragged
-        Location fakeDragStart = Location.newFromPoint(
-                new Point(0, 0),
-                originOnScreen,
-                scale
-        );
-        Location fakeDragEnd = Location.newFromPoint(
-                new Point(dxPointCoord, dyPointCoord),
-                originOnScreen,
-                scale
-        );
-        double locationCoordDistance = fakeDragStart.distance(fakeDragEnd);
-        double pointCoordDistance = Math.hypot(dxPointCoord, dyPointCoord);
-
-        double distanceRatio = locationCoordDistance / pointCoordDistance;
-
-        originOnScreen = originOnScreen.moveBy(
-                -dxPointCoord * distanceRatio,
-                dyPointCoord * distanceRatio
-        );
+        // Convert the Location coordinate system
+        double dxLocation = convertFromPointSystemToLocationSystem(dxPointCoord);
+        double dyLocation = convertFromPointSystemToLocationSystem(dyPointCoord);
+        originOnScreen = originOnScreen.moveBy(-dxLocation, dyLocation);
     }
 
     public Point getPointFromLatLong(LatLong latLong) {
@@ -99,6 +99,22 @@ public class View {
                 originOnScreen,
                 scale
         );
+    }
+
+    private double convertFromPointSystemToLocationSystem(int points) {
+        Location fakeStart = Location.newFromPoint(
+                new Point(0, 0),
+                originOnScreen,
+                scale
+        );
+        Location fakeEnd = Location.newFromPoint(
+                new Point(points, 0),
+                originOnScreen,
+                scale
+        );
+        double distance = fakeStart.distance(fakeEnd);
+        if (points < 0) distance *= -1;
+        return distance;
     }
 
     private double distanceToMoveBy() {

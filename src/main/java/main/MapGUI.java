@@ -143,7 +143,7 @@ public class MapGUI extends GUI {
 
     @Override
     protected void onMove(Move m) {
-        view.applyMove(m);
+        view.applyMove(m, getDrawingAreaDimension());
     }
 
     /**
@@ -255,7 +255,7 @@ public class MapGUI extends GUI {
             if (zooms < 0) move = Move.ZOOM_IN;
 
             for (int i = 0; i < Math.abs(zooms); i++) {
-                view.applyMove(move);
+                view.applyMove(move, getDrawingAreaDimension());
             }
             redraw();
         }
