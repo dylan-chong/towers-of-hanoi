@@ -18,6 +18,7 @@ public class LeftWalker extends Walker {
 
     private DirectionUseful currentDirection;
     private PositionRecorder positionRecorder = new PositionRecorder();
+    private boolean lastMoveHadWallToLeft = false;
 
     public static void main(String[] args) {
     }
@@ -28,45 +29,58 @@ public class LeftWalker extends Walker {
 
     @Override
     protected Direction move(View v) {
-        List<Direction> possibleDirs = determinePossibleDirections(v);
+        DirectionUseful newDirection = moveReturnUseful(v);
+        positionRecorder.move(newDirection);
+        lastMoveHadWallToLeft = hasWallToLeft(v);
+        return newDirection.asDirection();
+    }
+
+    private boolean hasWallToLeft(View v) {
+        List<DirectionUseful> possibleDirs =
+                determinePossibleDirections(v)
+                        .stream()
+                        .map(DirectionUseful::fromDirection)
+                        .collect(Collectors.toList());
+        DirectionUseful left = currentDirection.turnLeft90();
+        return !possibleDirs.contains(left);
+    }
+
+    private DirectionUseful moveReturnUseful(View v) {
+        // Convert Direction to DirectionUseful
+        List<DirectionUseful> possibleDirs =
+                determinePossibleDirections(v)
+                        .stream()
+                        .map(DirectionUseful::fromDirection)
+                        .collect(Collectors.toList());
 
         if (currentDirection == null) {
             if (possibleDirs.size() == 4) {
                 // Just go NORTH if there are no walls
                 currentDirection = DirectionUseful.NORTH;
-                positionRecorder.move(currentDirection);
-                return currentDirection.asDirection();
+                return currentDirection;
             }
-            currentDirection = DirectionUseful.fromDirection(possibleDirs.get(0));
+            currentDirection = possibleDirs.get(0);
         }
 
-        // Convert Direction to DirectionUseful
-        Collection<DirectionUseful> possibleUsefulDirs = possibleDirs
-                        .stream()
-                        .map(DirectionUseful::fromDirection)
-                        .collect(Collectors.toList());
-
-        if (possibleUsefulDirs.size() == 3 &&
-                !possibleUsefulDirs.contains(currentDirection) &&
-                currentDirection == DirectionUseful.SOUTH) {
-            // If we run into to a wall, we should turn right, not left.
-            // If the currentDirection is not south, then skip this (IDK why?
-            // but that's what maze_09 wants for some reason).
+        // If the only way you can't go is forwards, then turn right, but only
+        // if there was no left wall on the previous move
+        if (possibleDirs.size() == 3 &&
+                !possibleDirs.contains(currentDirection) &&
+                !lastMoveHadWallToLeft) {
             currentDirection = currentDirection.turnRight90();
-            positionRecorder.move(currentDirection);
-            return currentDirection.asDirection();
+            return currentDirection;
         }
 
         // Try to avoid infinite loop by avoiding going the same way we have
         // gone before
         Collection<DirectionUseful> usedDirs = positionRecorder.getUsedDirs();
         if (!usedDirs.isEmpty() &&
-                possibleUsefulDirs.size() - usedDirs.size() > 0) {
+                possibleDirs.size() - usedDirs.size() > 0) {
             // Only do this when not empty because the LeftWalker may run out
             // of directions use, but running out of directions may be a
             // required consequence of the memorisation trick
 
-            possibleUsefulDirs.removeAll(usedDirs);
+            possibleDirs.removeAll(usedDirs);
         }
 
         // Otherwise, prefer turning left, then forward, then right, then backwards
@@ -74,10 +88,9 @@ public class LeftWalker extends Walker {
                 .turnLeft90()
                 // Turn right 0 or more times
                 .turnLeft90()
-                .turnRight90(possibleUsefulDirs);
+                .turnRight90(possibleDirs);
 
-        positionRecorder.move(currentDirection);
-        return currentDirection.asDirection();
+        return currentDirection;
     }
 
     /**
