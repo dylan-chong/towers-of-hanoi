@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 public class MapDataParser {
     public Collection<Node> parseNodes(BufferedReader reader) {
         return reader.lines()
-                .parallel()
                 .map(line -> {
                     String[] tokens = line.split("\t");
                     long id = Long.parseLong(tokens[0]);
@@ -156,19 +155,29 @@ public class MapDataParser {
                     break;
                 case "data0":
                 case "data1":
-                    // For some reason some a few polygons overlap themselves,
-                    // even though this code should work (and most polygons
-                    // work)
                     List<Double> ordinates = Arrays
                             .stream(value.split("[(),]"))
                             .filter(ordinate -> !ordinate.isEmpty())
                             .map(Double::parseDouble)
                             .collect(Collectors.toList());
+                    // If a piece of data has multiple Data0 tags, it is a
+                    // multipolygon
+                    List<LatLong> currentPolygonPoints = new ArrayList<>();
                     for (Iterator<Double> iterator = ordinates.iterator();
                          iterator.hasNext(); ) {
                         double lat = iterator.next();
                         double lon = iterator.next();
-                        points.add(new LatLong(lat, lon));
+                        currentPolygonPoints.add(new LatLong(lat, lon));
+                    }
+                    if (currentPolygonPoints.size() > 1) {
+                        // Close off this polygon, so that other polygons can
+                        // be appended
+                        currentPolygonPoints.add(currentPolygonPoints.get(0));
+                    }
+                    // Make this a multipolygon
+                    points.addAll(currentPolygonPoints);
+                    if (points.size() > currentPolygonPoints.size()) {
+                        points.add(points.get(0));
                     }
                     break;
                 default:

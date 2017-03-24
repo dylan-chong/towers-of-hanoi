@@ -102,7 +102,8 @@ public class MapDataParserTest_Polygon {
                         "International stuff",
                         Arrays.asList(
                                 new LatLong(1, 2),
-                                new LatLong(3, 4)
+                                new LatLong(3, 4),
+                                new LatLong(1, 2)
                         ),
                         2,
                         32
@@ -146,6 +147,32 @@ public class MapDataParserTest_Polygon {
                                 7
                         )
                 ),
+                polygonsFromString
+        );
+    }
+
+    @Test
+    public void parsePolygons_oneMultipolygonWith_returnsOne() {
+        String input = "[POLYGON]\n" +
+                "Type=0x7\n" +
+                "EndLevel=2\n" +
+                "Label=International stuff\n" +
+                "CityIdx=32\n" +
+                "Data0=(1,2),(3,4)\n" +
+                "[END]\n";
+        List<Polygon> polygonsFromString = TestUtils.getPolygonsFromString(input);
+        assertEquals(
+                Collections.singletonList(new Polygon(
+                        "0x7",
+                        "International stuff",
+                        Arrays.asList(
+                                new LatLong(1, 2),
+                                new LatLong(3, 4),
+                                new LatLong(1, 2)
+                        ),
+                        2,
+                        32
+                )),
                 polygonsFromString
         );
     }
