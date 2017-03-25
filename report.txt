@@ -98,12 +98,7 @@ I used thorough, manual testing to make sure every feature I wrote worked - I
 wrote small features and then tested them to make sure it worked, rather than
 writing a large amount of stuff.
 
-There are 2 bugs difficult-to-debug that I know about. The first is that some
-polygons appear to have points that cause the area to overlap itself (causing
-some strange visual effects). My data parsing works fine (passes my tests, and
-manual checking, and works fine for most polygons), but for some reason it
-happens on the odd polygon. I have no idea why this happens. Secondly, the map
-sometimes disappears when moving around the map. This doesn't happen often at
-all so it is even harder to debug. I guess this is due to multithreading and
-mouse-event handling (which could cause the program to think the mouse was
-dragged really far away).
+There is one occasional bug that is pretty untestable because it happens so
+rarely. The map ocassionally disappears when moving around the map. I guess
+this could be due to multithreading and mouse-event handling (which could cause
+the program to think the mouse was dragged really far away).
