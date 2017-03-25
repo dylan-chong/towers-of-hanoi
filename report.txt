@@ -70,12 +70,15 @@ has 4 subsections (rather than 2 in a binary search tree) and a piece of data
 itself. I kept this structure generic also (just in case I might need to use it
 in some other situation) so used a generic data type and comparators to figure
 out which subsection a new piece of data should belong to. Finding the nearest
-point was trickier because it required some recursive thinking, but it ended up
-being O(n) because it compares the shortest distance to the closest node in all
-subsections (which requires comparing against every single data point). I
-should have made it more efficient by checking whether a point within a section
-exists, then I know not to check the other sections. That would hopefully make
-it closer to O(log n).
+point was trickier because it required some recursive and non-recursive logic
+to work. What I did was have an imaginary bounding box around the location you
+clicked. I then excluded the sections (out of the 4 within the current section)
+which had no overlap with the bounding box. If the data of the current section
+is within the bounding box, that is added to the closeNodes list. I then
+recursively ask each remaining section to do all of of this, and add the
+results to closeNodes list. I then take the closest section out of the
+closestNodes list and return it. If there were no results, this method would
+try again with a bounding box of 4 times the area.
 
 Basically all of the data structures can be found as a field in the
 main.mapdata.MapData class.

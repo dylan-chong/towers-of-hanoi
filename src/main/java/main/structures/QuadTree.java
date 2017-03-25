@@ -1,12 +1,9 @@
 package main.structures;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by Dylan on 20/03/17.
@@ -14,8 +11,9 @@ import java.util.stream.Stream;
  * @param <DataT> The type of data to store
  */
 public class QuadTree<DataT> {
+    private static final double MIN_SEARCH_RADIUS = 0.01;
+    private static final double SEARCH_RADIUS_INCREASE_FACTOR = 2;
 
-    // TODO use custom comparator
     private final PreciseComparator<DataT> verticalComparator, horizontalComparator;
     private Section rootSection;
 
@@ -90,41 +88,63 @@ public class QuadTree<DataT> {
         }
 
         public DataT closestDataTo(DataT compareData) {
-            if (verticalComparator.compare(compareData, data) == 0 &&
-                    horizontalComparator.compare(data, data) == 0) {
-                return data;
+            double searchRadius = MIN_SEARCH_RADIUS;
+
+            List<DataT> closeDatas;
+            do {
+                closeDatas = datasNear(compareData, searchRadius);
+                searchRadius *= SEARCH_RADIUS_INCREASE_FACTOR;
+            } while (closeDatas.isEmpty());
+
+            // Find closest item
+            closeDatas.sort(Comparator.comparingDouble(dataA ->
+                    distanceBetween(compareData, dataA)
+            ));
+            return closeDatas.get(0);
+        }
+
+        private List<DataT> datasNear(DataT compareData,
+                                      double maxDistance) {
+            double verticalComparison =
+                    verticalComparator.compare(compareData, data);
+            double horizontalComparison =
+                    horizontalComparator.compare(compareData, data);
+
+            // Sections that could contain close data points (a section could
+            // contain close data points if it has some area within the bounding
+            // box. The box has width and height {@code 2 * maxDistance} and the
+            // center at compareData.
+            List<Section> possibleSections = new ArrayList<>();
+            if (verticalComparison - maxDistance <= 0) {
+                if (horizontalComparison - maxDistance <= 0) {
+                    possibleSections.add(topLeft);
+                }
+                if (horizontalComparison + maxDistance > 0) {
+                    possibleSections.add(topRight);
+                }
             }
-
-            List<DataT> dataForSections =
-                    Stream.of(topLeft, topRight, bottomLeft, bottomRight, this)
-                            .filter(Objects::nonNull)
-                            .map(section -> {
-                                // Avoid stack overflow
-                                if (section == Section.this) return data;
-                                // Recursion is here
-                                return section.closestDataTo(compareData);
-                            })
-                            .collect(Collectors.toList());
-            List<Double> distancesForSections = dataForSections.stream()
-                    .map(sectionData -> {
-                        if (sectionData == null) return Double.MAX_VALUE;
-                        return distanceBetween(sectionData, compareData);
-                    })
-                    .collect(Collectors.toList());
-
-            double shortestDistance = Double.MAX_VALUE;
-            int shortestDistanceIndex = -1;
-            for (int i = 0; i < distancesForSections.size(); i++) {
-                if (distancesForSections.get(i) < shortestDistance) {
-                    shortestDistance = distancesForSections.get(i);
-                    shortestDistanceIndex = i;
+            if (verticalComparison + maxDistance > 0) {
+                if (horizontalComparison - maxDistance <= 0) {
+                    possibleSections.add(bottomLeft);
+                }
+                if (horizontalComparison + maxDistance > 0) {
+                    possibleSections.add(bottomRight);
                 }
             }
 
-            assert shortestDistanceIndex != -1;
+            List<DataT> closeDatas = possibleSections.stream()
+                    .filter(Objects::nonNull)
+                    .map(section -> section.datasNear(compareData, maxDistance))
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList());
 
-            return dataForSections.get(shortestDistanceIndex);
+            if (Math.hypot(verticalComparison, horizontalComparison) <= maxDistance) {
+                closeDatas.add(data);
+            }
+
+            return closeDatas;
         }
+
 
         private double distanceBetween(DataT a, DataT b) {
             return Math.hypot(
