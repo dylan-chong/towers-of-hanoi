@@ -1,4 +1,4 @@
-List of files
+List of files 
 ==============
 All files are tab separated, and have one line describing each item.
 
@@ -8,20 +8,20 @@ nodeID-lat-lon.tab
 Nodes are intersections, or ends of roads, or points where two roads join.
 
 The file has one line for each node, specifying the ID of
-the node, and the latitude and longitude of the node.
+the node, and the latitude and longitude of the node.  
 
 Note that latitude and longitude are specified in degrees, not distances. One
 degree of latitude corresponds to 111.0 kilometers. One degree of longitude
 varies, depending on the latitude, but it is reasonable to assume that for the
 whole region of Auckland, one degree of longitude is 88.649 kilometers.  This
 means that when you are computing distances between two points, you must scale
-the latitude difference by 111.0 and scale the longitude difference by 88.649.
+the latitude difference by 111.0 and scale the longitude difference by 88.649. 
 
 -----------------------------------------------------------------------------
 roadSeg-roadID-length-nodeID-nodeID-coords.tab
 ========================================
 A road segment is a part of a road between two nodes. The only intersections on
-a road segment are at its ends.
+a road segment are at its ends.  
 
 The file has one line for each road segment, specifying the
 ID of the road object this segment belongs to, the length of the segment and
@@ -38,7 +38,7 @@ roadID-roadInfo.tab
 A road is a sequences of segments, with a name and other properties.  These
 need not be an entire road - a real road that has different properties for some
 parts will be represented in the data by several road objects, all with the
-same name.
+same name.  
 
 The file has one line for each road. The columns are specified at the
 top of the file. The first column is the ID of the road, and the 3rd
@@ -57,16 +57,16 @@ Speed limit categories:
   with a slower speed limit
 (Note, these are not accurate representations of the real Auckland speed
 limits, but they are the best we have. You may use them as if they were
-correct.)
+correct.) 
 
-   0 = 5km/h
-   1 = 20km/h
-   2 = 40km/h
-   3 = 60km/h
-   4 = 80km/h
-   5 = 100km/h
-   6 = 110km/h
-   7 = no limit
+   0 = 5km/h    
+   1 = 20km/h   
+   2 = 40km/h   
+   3 = 60km/h   
+   4 = 80km/h   
+   5 = 100km/h  
+   6 = 110km/h  
+   7 = no limit 
 
 
 Road class:
@@ -76,9 +76,9 @@ Road class:
 
    0 = Residential
    1 = Collector
-   2 = Arterial
+   2 = Arterial 
    3 = Principal HW
-   4 = Major HW
+   4 = Major HW 
 
 
 One_way:

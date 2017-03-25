@@ -1,4 +1,4 @@
-roadid	type	label    	city    	isOneWay	speed	roadclass	notforcar	notforpede	notforbicy
+roadid	type	label    	city    	oneway	speed	roadclass	notforcar	notforpede	notforbicy
 100	6	airedale st	auckland	0	2	0	0	0	0
 9787	1	northwestern motorway	auckland	1	6	4	0	1	1
 13107	1	northwestern motorway	auckland	0	6	4	0	1	1
