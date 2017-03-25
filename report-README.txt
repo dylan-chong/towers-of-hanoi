@@ -1,8 +1,23 @@
 # Report #
 
-## What the code does and doesn't do ##
 
-NOTE: I used the framework Google Guice
+
+
+
+
+IMPORTANT NOTES:
+- I used the dependency injection framework called Google Guice
+- The java code can be found inside the full-project zip
+    - The main java is under src/main/java
+    - The test java is under src/test/java
+- You can run the program just by executing the jar file
+
+
+
+
+
+
+## What the code does and doesn't do ##
 
 The [x] symbols are a ticked checkbox.
 This list is copied from the marking schedule page
