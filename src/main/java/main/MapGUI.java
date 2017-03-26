@@ -61,7 +61,7 @@ public class MapGUI extends GUI {
     protected void redraw(Graphics graphics) {
         if (drawer == null) return;
 
-        drawer.draw(graphics, highlightData);
+        drawer.draw(graphics, highlightData, getDrawingAreaDimension());
     }
 
     /**
@@ -202,7 +202,7 @@ public class MapGUI extends GUI {
     }
 
     @Override
-    protected MouseAdapter getMouseMotionListener() {
+    protected MouseAdapter getMouseListener() {
         if (drawingMouseListener == null) {
             drawingMouseListener = new DrawingMouseListener();
         }

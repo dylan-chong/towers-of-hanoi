@@ -4,12 +4,14 @@ import main.mapdata.MapData;
 import main.mapdata.Node;
 import main.mapdata.Polygon;
 import main.mapdata.RoadSegment;
+import slightlymodifiedtemplate.Location;
 
+import java.awt.*;
 import java.util.Comparator;
 import java.util.List;
-import java.awt.*;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by Dylan on 15/03/17.
@@ -31,9 +33,9 @@ public class Drawer {
     }
 
     public void draw(Graphics graphics,
-                     HighlightData highlightData) {
-        // Optimisation ideas (TODO):
-        // - Clipping area (avoid drawing unnecessarily)
+                     HighlightData highlightData,
+                     Dimension drawAreaPixels) {
+        Rectangle drawArea = view.getDrawingArea(drawAreaPixels);
 
         // Polygons
         mapData.getPolygons()
@@ -42,21 +44,21 @@ public class Drawer {
                 .sorted(Comparator.comparingInt(Map.Entry::getKey))
                 .forEachOrdered(entry ->
                         entry.getValue().forEach(polygon ->
-                                drawPolygon(graphics, polygon)
+                                drawPolygon(graphics, polygon, drawArea)
                         )
                 );
 
         // RoadSegments
         graphics.setColor(ROADS_COLOR);
         mapData.getRoadSegments().forEach(roadSegment ->
-                drawRoadSegment(graphics, roadSegment)
+                drawRoadSegment(graphics, roadSegment, drawArea)
         );
 
         // Highlighted RoadSegments
         if (highlightData.highlightedRoadSegments != null) {
             graphics.setColor(ROADS_HIGHLIGHT_COLOR);
             highlightData.highlightedRoadSegments.forEach(roadSegment ->
-                    drawRoadSegment(graphics, roadSegment)
+                    drawRoadSegment(graphics, roadSegment, drawArea)
             );
         }
 
@@ -77,12 +79,23 @@ public class Drawer {
         );
     }
 
-    private void drawRoadSegment(Graphics graphics, RoadSegment roadSegment) {
+    private void drawRoadSegment(Graphics graphics,
+                                 RoadSegment roadSegment,
+                                 Rectangle drawArea) {
+
         // Draw pairs of latLongs
         LatLong previousPoint = null;
         for (LatLong point : roadSegment.points) {
             if (previousPoint == null) {
                 previousPoint = point;
+                continue;
+            }
+
+            if (!drawArea.couldPolygonBeInside(
+                    Stream.of(point, previousPoint)
+                            .map(LatLong::asLocation)
+                            .collect(Collectors.toList()))
+                    ) {
                 continue;
             }
 
@@ -98,14 +111,23 @@ public class Drawer {
         }
     }
 
-    private void drawPolygon(Graphics graphics, Polygon polygon) {
+    private void drawPolygon(Graphics graphics,
+                             Polygon polygon,
+                             Rectangle drawArea) {
         graphics.setColor(polygon.getMorphedColor());
+
+        List<Location> locations = polygon.latLongs.stream()
+                .map(LatLong::asLocation)
+                .collect(Collectors.toList());
+        if (!drawArea.couldPolygonBeInside(locations)) {
+            // All points are outside the draw area
+            return;
+        }
 
         List<Point> points = polygon.latLongs
                 .stream()
                 .map(view::getPointFromLatLong)
                 .collect(Collectors.toList());
-        // points.add(points.get(0));
         int[] xPoints = points.stream()
                 .mapToInt(p -> p.x)
                 .toArray();

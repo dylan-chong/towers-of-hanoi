@@ -343,9 +343,9 @@ public abstract class GUI {
                 redraw(g);
             }
         };
-        drawing.addMouseListener(getMouseMotionListener());
-        drawing.addMouseMotionListener(getMouseMotionListener());
-        drawing.addMouseWheelListener(getMouseMotionListener());
+        drawing.addMouseListener(getMouseListener());
+        drawing.addMouseMotionListener(getMouseListener());
+        drawing.addMouseWheelListener(getMouseListener());
 
         drawing.setPreferredSize(new Dimension(DEFAULT_DRAWING_WIDTH,
                 DEFAULT_DRAWING_HEIGHT));
@@ -398,7 +398,7 @@ public abstract class GUI {
         frame.setVisible(true);
     }
 
-    protected abstract MouseAdapter getMouseMotionListener();
+    protected abstract MouseAdapter getMouseListener();
 }
 
 // code for COMP261 assignments

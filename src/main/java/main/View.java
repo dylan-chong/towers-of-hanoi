@@ -101,6 +101,24 @@ public class View {
         );
     }
 
+    public Point getPointFromLocation(Location location) {
+        return location.asPoint(originOnScreen, scale);
+    }
+
+    public Rectangle getDrawingArea(Dimension drawAreaPixels) {
+        double width =
+                convertFromPointSystemToLocationSystem(drawAreaPixels.width);
+        double height =
+                convertFromPointSystemToLocationSystem(drawAreaPixels.height);
+
+        Location bottomLeft = originOnScreen;
+        Location topRight = new Location(
+                bottomLeft.x + width,
+                bottomLeft.y - height
+        );
+        return new Rectangle(bottomLeft, topRight);
+    }
+
     private double convertFromPointSystemToLocationSystem(int points) {
         Location fakeStart = Location.newFromPoint(
                 new Point(0, 0),
