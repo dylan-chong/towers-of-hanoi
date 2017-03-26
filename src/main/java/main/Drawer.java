@@ -19,10 +19,13 @@ import java.util.stream.Stream;
 public class Drawer {
 
     private static final int NODE_RADIUS_PX = 5;
+    private static final int ROUTE_START_NODE_RADIUS_PX = 8;
+    private static final int ROUTE_END_NODE_RADIUS_PX = 10;
 
     private static final Color ROADS_COLOR = Color.DARK_GRAY;
     private static final Color ROADS_HIGHLIGHT_COLOR = Color.RED;
     private static final Color NODE_HIGHLIGHT_COLOR = Color.RED;
+    private static final Color ROUTE_COLOR = new Color(70, 170, 230);
 
     private final MapData mapData;
     private final View view;
@@ -62,20 +65,30 @@ public class Drawer {
             );
         }
 
-        // Node
-        if (highlightData.highlightedNode != null) {
-            drawNode(graphics, highlightData.highlightedNode);
+        // Nodes
+        if (highlightData.highlightedNode != null &&
+                highlightData.routeStart == null &&
+                highlightData.routeEnd == null) {
+            graphics.setColor(NODE_HIGHLIGHT_COLOR);
+            drawNode(graphics, highlightData.highlightedNode, NODE_RADIUS_PX);
+        }
+        if (highlightData.routeStart != null) {
+            graphics.setColor(ROUTE_COLOR);
+            drawNode(graphics, highlightData.routeStart, ROUTE_START_NODE_RADIUS_PX);
+        }
+        if (highlightData.routeEnd != null) {
+            graphics.setColor(ROUTE_COLOR);
+            drawNode(graphics, highlightData.routeEnd, ROUTE_END_NODE_RADIUS_PX);
         }
     }
 
-    private void drawNode(Graphics graphics, Node node) {
+    private void drawNode(Graphics graphics, Node node, int radius) {
         Point p = view.getPointFromLatLong(node.latLong);
-        graphics.setColor(NODE_HIGHLIGHT_COLOR);
         graphics.drawOval(
-                p.x - NODE_RADIUS_PX,
-                p.y - NODE_RADIUS_PX,
-                NODE_RADIUS_PX * 2,
-                NODE_RADIUS_PX * 2
+                p.x - radius,
+                p.y - radius,
+                radius * 2,
+                radius * 2
         );
     }
 

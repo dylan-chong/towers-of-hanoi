@@ -18,16 +18,36 @@ public class HighlightData {
      * For when the user clicks on a Node
      */
     public final Collection<RoadSegment> highlightedRoadSegments;
+    public final Node routeStart;
+    public final Node routeEnd;
 
     /**
      * Any parameter can be null
      */
     public HighlightData(Node highlightedNode,
-                         Collection<RoadSegment> highlightedRoadSegments) {
+                         Collection<RoadSegment> highlightedRoadSegments,
+                         Node routeStart,
+                         Node routeEnd) {
         this.highlightedNode = highlightedNode;
-        this.highlightedRoadSegments =
-                (highlightedRoadSegments == null) ? null :
-                        Collections.unmodifiableCollection(highlightedRoadSegments);
+        this.routeStart = routeStart;
+        this.routeEnd = routeEnd;
+
+        if (highlightedRoadSegments == null) {
+            this.highlightedRoadSegments = null;
+        } else {
+            this.highlightedRoadSegments = Collections.unmodifiableCollection(
+                    highlightedRoadSegments
+            );
+        }
+    }
+
+    public HighlightData getNewWithRoute(Node routeStart, Node routeEnd) {
+        return new HighlightData(
+                highlightedNode,
+                highlightedRoadSegments,
+                routeStart,
+                routeEnd
+        );
     }
 }
 

@@ -38,12 +38,6 @@ public abstract class GUI {
     protected abstract void redraw(Graphics g);
 
     /**
-     * Is called when the mouse is clicked (actually, when the mouse is
-     * released), and is passed the MouseEvent object for that click.
-     */
-    protected abstract void onClick(MouseEvent e);
-
-    /**
      * Is called whenever the search box is updated. Use getSearchBox to get the
      * JTextField object that is the search box itself.
      */
@@ -256,6 +250,11 @@ public abstract class GUI {
             }
         });
 
+        JButton enterDirections = new JButton("Enter directions");
+        enterDirections.addActionListener((event) -> {
+            onEnterDirectionsClick();
+        });
+
         // next, make the search box at the top-right. we manually fix
         // it's size, and add an action listener to call your code when
         // the user presses enter.
@@ -323,6 +322,7 @@ public abstract class GUI {
         navigation.add(south);
         navigation.add(east);
         controls.add(navigation);
+        controls.add(enterDirections);
         controls.add(Box.createRigidArea(new Dimension(15, 0)));
         // glue is another invisible component that grows to take up all the
         // space it can on resize.
@@ -397,6 +397,8 @@ public abstract class GUI {
         frame.pack();
         frame.setVisible(true);
     }
+
+    protected abstract void onEnterDirectionsClick();
 
     protected abstract MouseAdapter getMouseListener();
 }
