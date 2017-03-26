@@ -1,6 +1,6 @@
 package main;
 
-import main.mapdata.MapData;
+import main.mapdata.MapDataModel;
 import main.mapdata.Node;
 import main.mapdata.Polygon;
 import main.mapdata.RoadSegment;
@@ -27,11 +27,11 @@ public class Drawer {
     private static final Color NODE_HIGHLIGHT_COLOR = Color.RED;
     private static final Color ROUTE_COLOR = new Color(70, 170, 230);
 
-    private final MapData mapData;
+    private final MapDataModel mapModel;
     private final View view;
 
-    private Drawer(MapData mapData, View view) {
-        this.mapData = mapData;
+    private Drawer(MapDataModel mapModel, View view) {
+        this.mapModel = mapModel;
         this.view = view;
     }
 
@@ -41,7 +41,7 @@ public class Drawer {
         Rectangle drawArea = view.getDrawingArea(drawAreaPixels);
 
         // Polygons
-        mapData.getPolygons()
+        mapModel.data.getPolygons()
                 .entrySet()
                 .stream()
                 .sorted(Comparator.comparingInt(Map.Entry::getKey))
@@ -53,7 +53,7 @@ public class Drawer {
 
         // RoadSegments
         graphics.setColor(ROADS_COLOR);
-        mapData.getRoadSegments().forEach(roadSegment ->
+        mapModel.data.getRoadSegments().forEach(roadSegment ->
                 drawRoadSegment(graphics, roadSegment, drawArea)
         );
 
@@ -152,8 +152,8 @@ public class Drawer {
     }
 
     public static class Factory {
-        public Drawer create(MapData mapData, View view) {
-            return new Drawer(mapData, view);
+        public Drawer create(MapDataModel mapModel, View view) {
+            return new Drawer(mapModel, view);
         }
     }
 }

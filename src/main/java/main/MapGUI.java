@@ -29,11 +29,12 @@ public class MapGUI extends GUI {
 
     private final MapDataParser dataParser;
     private final View view;
-    private final MapData.Factory mapDataFactory;
+    private final MapDataModel.Factory mapModelFactory;
+    private final MapDataContainer.Factory mapDataContainerFactory;
     private final Drawer.Factory drawerFactory;
 
     private Drawer drawer;
-    private MapData mapData;
+    private MapDataModel mapModel;
     /**
      * Should never be null. Stuff to highlight
      */
@@ -49,11 +50,13 @@ public class MapGUI extends GUI {
     @Inject
     public MapGUI(MapDataParser dataParser,
                   View view,
-                  MapData.Factory mapDataFactory,
+                  MapDataModel.Factory mapModelFactory,
+                  MapDataContainer.Factory mapDataContainerFactory,
                   Drawer.Factory drawerFactory) {
         this.dataParser = dataParser;
         this.view = view;
-        this.mapDataFactory = mapDataFactory;
+        this.mapModelFactory = mapModelFactory;
+        this.mapDataContainerFactory = mapDataContainerFactory;
         this.drawerFactory = drawerFactory;
     }
 
@@ -69,7 +72,7 @@ public class MapGUI extends GUI {
      * released.
      */
     protected void onClick(MouseEvent e) {
-        if (mapData == null) return;
+        if (mapModel == null) return;
 
         Location clickLocation = view.getLocationFromPoint(
                 new Point(e.getX(), e.getY())
@@ -113,7 +116,7 @@ public class MapGUI extends GUI {
 
         outputLine("Search results for '" + searchTerm + "':");
 
-        searchResults = mapData.findRoadSegmentsByString(
+        searchResults = mapModel.findRoadSegmentsByString(
                 searchTerm,
                 MAX_SEARCH_RESULTS
         );
@@ -161,9 +164,9 @@ public class MapGUI extends GUI {
                 new BufferedReader(new FileReader(polygons));
 
 
-            AtomicReference<MapData> mapDataRef = new AtomicReference<>();
+            AtomicReference<MapDataModel> mapDataRef = new AtomicReference<>();
 
-            mapDataRef.set(mapDataFactory.create(
+            MapDataContainer mapDataContainer = mapDataContainerFactory.create(
                     () -> onFinishLoad(mapDataRef.get(), loadStartTime),
                     () -> dataParser.parseNodes(nodesReader),
                     () -> dataParser.parseRoadSegments(segmentsReader),
@@ -175,7 +178,8 @@ public class MapGUI extends GUI {
                             return Collections.emptyList();
                         }
                     }
-            ));
+            );
+            mapDataRef.set(mapModelFactory.create(mapDataContainer));
         } catch (FileNotFoundException e) {
             throw new AssertionError(e);
         }
@@ -187,10 +191,10 @@ public class MapGUI extends GUI {
         outputLine("Click on an intersection to define the start");
     }
 
-    private void onFinishLoad(MapData mapData, long loadStartTime) {
-        this.mapData = mapData;
+    private void onFinishLoad(MapDataModel mapModel, long loadStartTime) {
+        this.mapModel = mapModel;
         this.highlightData = new HighlightData(null, null, null, null);
-        this.drawer = drawerFactory.create(this.mapData, view);
+        this.drawer = drawerFactory.create(this.mapModel, view);
         this.redraw();
 
         long duration = System.currentTimeMillis() - loadStartTime;
@@ -227,7 +231,7 @@ public class MapGUI extends GUI {
 
     private ClickSelection selectClosestNodeTo(Location location) {
         // 'Node' means 'intersection' here
-        Node selectedNode = mapData.findNodeNearLocation(location);
+        Node selectedNode = mapModel.findNodeNearLocation(location);
         if (selectedNode == null) {
             return new ClickSelection(null, null, null, null);
         }
@@ -236,9 +240,9 @@ public class MapGUI extends GUI {
 
         // Find roadSegments (for highlighting) and roadInfos (for printing)
         Collection<RoadSegment> roadSegments =
-                mapData.findRoadSegmentsForNode(selectedNode);
+                mapModel.findRoadSegmentsForNode(selectedNode);
         Collection<RoadInfo> roadInfos = roadSegments.stream()
-                .map(segment -> mapData.findRoadInfoForSegment(segment))
+                .map(segment -> mapModel.findRoadInfoForSegment(segment))
                 .collect(Collectors.toList());
 
         // Print road label/city (and avoid printing duplicate names)

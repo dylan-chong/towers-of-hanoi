@@ -5,7 +5,8 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
-import main.mapdata.MapData;
+import main.mapdata.MapDataContainer;
+import main.mapdata.MapDataModel;
 import slightlymodifiedtemplate.GUI;
 
 /**
@@ -22,8 +23,11 @@ public class Main {
         public void configure(Binder binder) {
             binder.bind(GUI.class).to(MapGUI.class);
             binder.install(new FactoryModuleBuilder()
-                    .implement(MapData.class, MapData.class)
-                    .build(MapData.Factory.class));
+                    .implement(MapDataModel.class, MapDataModel.class)
+                    .build(MapDataModel.Factory.class));
+            binder.install(new FactoryModuleBuilder()
+                    .implement(MapDataContainer.class, MapDataContainer.class)
+                    .build(MapDataContainer.Factory.class));
         }
     }
 }
