@@ -12,6 +12,7 @@ import swen221.lab3.view.GraphicalUserInterface;
  *
  */
 public class AdventureGame {
+	public static AdventureGame instance;
 	/**
 	 * Represents the player playing the game.
 	 */
@@ -61,6 +62,7 @@ public class AdventureGame {
 		switch (item.name()) {
 		case "Room":
 			return createRoomObject(item);
+        case "LockedDoor":
 		case "Door":
 			return createDoorObject(item);			
 		case "Coin":
@@ -79,7 +81,7 @@ public class AdventureGame {
 		}	
 	}
 
-    /**
+	/**
 	 * Create a Room within the game.
 	 *
 	 * @param item
@@ -102,6 +104,9 @@ public class AdventureGame {
 		Room oneSide = (Room) objects[from];
 		Room otherSide = (Room) objects[to];
 		Door d = new Door(oneSide, otherSide);
+		if (item.name().contains("Locked")) {
+			d = new LockableDoor(oneSide, otherSide, (int) item.field("code"));
+		}
 		oneSide.addItem(d);
 		otherSide.addItem(d);
 		return d;
@@ -146,6 +151,12 @@ public class AdventureGame {
         return addItemToRoom((Integer) item.field("location"), book);
     }
 
+	private Item createLockedDoorObject(GameFile.Item item) {
+		Door doorObject = createDoorObject(item);
+		int code = (int) item.field("code");
+		return new LockableDoor(doorObject.oneSide(), doorObject.otherSide(), code);
+	}
+
 	/**
 	 * Add a given item into a room.
 	 *
@@ -173,10 +184,13 @@ public class AdventureGame {
 				"Coin { location: 0 }",
 				"Obelisk { location: 0 }",
 				"Key { location: 1, code: 123 }",
-                "Book { location: 1, title: \"Great Expectations\" }"
+                "Book { location: 1, title: \"Great Expectations\" }",
+				"Room { description: \"Hall\" }",
+				"LockedDoor { from: 0, to: 1, code: 123 }"
 		};
 		// Create the game model
 		AdventureGame game = new AdventureGame(GameFile.parseItems(items));
+		instance = game;
 		// Create the window showing the game
 		GraphicalUserInterface gui = new GraphicalUserInterface(game);
 
