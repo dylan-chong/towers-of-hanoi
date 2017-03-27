@@ -355,8 +355,11 @@ public class MapGUI extends GUI {
             int zooms = e.getUnitsToScroll();
             if (zooms < 0) move = Move.ZOOM_IN;
 
+            // Allow zooming at the mouse position
+            Dimension fakeDimension = new Dimension(e.getX() * 2, e.getY() * 2);
+
             for (int i = 0; i < Math.abs(zooms); i++) {
-                view.applyMove(move, getDrawingAreaDimension());
+                view.applyMove(move, fakeDimension);
             }
             redraw();
         }

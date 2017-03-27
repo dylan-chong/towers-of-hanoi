@@ -9,6 +9,10 @@ import java.util.List;
  * Created by Dylan on 18/03/17.
  */
 public class Polygon {
+    private final static int MIN_BRIGHTNESS = 220;
+    private final static int MAX_BRIGHTNESS = 255;
+    private static final int RED_REDUCTION = 10;
+
     /**
      * Also represents the colour
      */
@@ -72,15 +76,21 @@ public class Polygon {
      */
     public Color getMorphedColor() {
         Color color = getColor();
-        int r = morph(color.getBlue());
-        int g = morph(color.getRed());
-        int b = morph(color.getGreen());
+        int r = morph(color.getBlue(),
+                MIN_BRIGHTNESS - RED_REDUCTION,
+                MAX_BRIGHTNESS - RED_REDUCTION);
+        int g = morph(color.getRed(), MIN_BRIGHTNESS, MAX_BRIGHTNESS);
+        int b = morph(color.getGreen(), MIN_BRIGHTNESS, MAX_BRIGHTNESS);
         return new Color(r, g, b);
     }
 
-    private int morph(int colorElement) {
+    private int morph(int colorElement, int minBrightness, int maxBrightness) {
         colorElement *= 1.5f;
         colorElement = colorElement % 255;
+
+        float gradient = (maxBrightness - minBrightness) / 255f;
+        colorElement = (int) (gradient * colorElement + minBrightness);
+
         return colorElement;
     }
 }
