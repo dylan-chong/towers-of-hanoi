@@ -104,30 +104,32 @@ public class MapDataModel {
         }
 
         while (!nodesToCheck.isEmpty()) {
-            NodeState nodeState = nodesToCheck.pollFirst();
+            NodeState currentNodeState = nodesToCheck.pollFirst();
 
-            assert !nodeState.hasCheckedChildren();
-            nodeState.setHasCheckedChildren(true);
+            assert !currentNodeState.hasCheckedChildren();
+            currentNodeState.setHasCheckedChildren(true);
 
             // Segments leaving nodeState
-            List<RoadSegment> segments = findRoadSegmentsForNode(
-                    nodeState.getNode()
+            List<RoadSegment> currentSegments = findRoadSegmentsForNode(
+                    currentNodeState.getNode()
             );
-            List<Node> neighbourNodes = segments.stream()
-                    .map(segment -> getOtherNode(segment, nodeState.getNode()))
+            List<Node> neighbourNodes = currentSegments.stream()
+                    .map(segment ->
+                            getOtherNode(segment, currentNodeState.getNode())
+                    )
                     .collect(Collectors.toList());
 
             for (int i = 0; i < neighbourNodes.size(); i++) {
                 Node neighbourNode = neighbourNodes.get(i);
                 NodeState neighbourState = nodeStateMap.get(neighbourNode);
                 // Connects neighbourNode and nodeState.node
-                RoadSegment connectingSegment = segments.get(i);
+                RoadSegment connectingSegment = currentSegments.get(i);
 
                 if (neighbourState == null) {
                     neighbourState = new NodeState(
                             neighbourNode,
                             connectingSegment,
-                            nodeState,
+                            currentNodeState,
                             Double.POSITIVE_INFINITY
                     );
                     nodeStateMap.put(neighbourNode, neighbourState);
@@ -137,8 +139,8 @@ public class MapDataModel {
                 nodesToCheck.add(neighbourState);
 
                 // Distance up to neighbourNode
-                double newDistanceFromStart = nodeState.getDistanceFromStart()
-                        + connectingSegment.length;
+                double newDistanceFromStart = currentNodeState
+                        .getDistanceFromStart() + connectingSegment.length;
                 if (newDistanceFromStart >= neighbourState.getDistanceFromStart()) {
                     continue;
                 }
@@ -148,7 +150,7 @@ public class MapDataModel {
 
                 neighbourState.setDistanceFromStart(newDistanceFromStart);
                 neighbourState.setSegmentToPreviousNode(connectingSegment);
-                neighbourState.setPreviousNodeState(nodeState);
+                neighbourState.setPreviousNodeState(currentNodeState);
 
                 // Add back with new priority
                 nodesToCheck.add(neighbourState);
@@ -157,9 +159,9 @@ public class MapDataModel {
             // Check if priority queue is in order
             assert isSorted(nodesToCheck, comparator);
 
-            // TODO Break if last node
-            // TODO Refactor code
-            // TODO ?
+            if (currentNodeState.getNode().equals(routeEndNode)) {
+                break;
+            }
         }
 
         NodeState lastNodeState = nodeStateMap.get(routeEndNode);

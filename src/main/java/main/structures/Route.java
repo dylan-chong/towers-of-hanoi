@@ -21,7 +21,7 @@ public class Route {
     }
 
     /**
-     * @param lastNodeState Essentially a linked list of node states
+     * @param lastNodeState Essentially a linked list of nodes and segments
      */
     public static Route newFromNodeState(NodeState lastNodeState) {
         LinkedList<Node> nodes = new LinkedList<>();

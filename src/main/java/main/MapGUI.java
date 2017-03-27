@@ -68,53 +68,6 @@ public class MapGUI extends GUI {
         drawer.draw(graphics, highlightData, getDrawingAreaDimension());
     }
 
-    /**
-     * Called after the mouse has been clicked on the graphics pane and then
-     * released.
-     */
-    protected void onClick(MouseEvent e) {
-        if (mapModel == null) return;
-
-        Location clickLocation = view.getLocationFromPoint(
-                new Point(e.getX(), e.getY())
-        );
-        ClickSelection selection = selectClosestNodeTo(clickLocation);
-        // Show information and set highlightData
-        applyClickSelection(selection, state);
-
-        if (state == UserState.NORMAL) return;
-        if (selection.selectedNode == null) return;
-
-        if (state == UserState.ENTER_ROUTE_START_NODE) {
-            routeStartNode = selection.selectedNode;
-            state = UserState.ENTER_ROUTE_LAST_NODE;
-            highlightData = highlightData.getNewWithRoute(new Route(
-                    Collections.singletonList(routeStartNode),
-                    Collections.emptyList()
-            ));
-            outputLine("Now select the node for the end of your route");
-
-        } else if (state == UserState.ENTER_ROUTE_LAST_NODE) {
-            routeEndNode = selection.selectedNode;
-            outputLine("Finding route from " + routeStartNode.id +
-                    " to " + routeEndNode.id + " ...");
-            highlightData = highlightData.getNewWithRoute(new Route(
-                    // Fake route
-                    Arrays.asList(
-                            routeStartNode, routeEndNode
-                    ),
-                    // Don't draw segments because we don't know the route
-                    Collections.emptyList()
-            ));
-            redraw(); // Show the selection before searching for better UX
-
-            Route route = mapModel.findRouteBetween(routeStartNode, routeEndNode);
-            highlightData = highlightData.getNewWithRoute(route);
-
-            state = UserState.NORMAL;
-        }
-    }
-
     @Override
     protected void onSearch() {
         String searchTerm = getSearchBox().getText();
@@ -204,6 +157,59 @@ public class MapGUI extends GUI {
         redraw();
     }
 
+    /**
+     * Called after the mouse has been clicked on the graphics pane and then
+     * released.
+     */
+    private void onClick(MouseEvent e) {
+        if (mapModel == null) return;
+
+        Location clickLocation = view.getLocationFromPoint(
+                new Point(e.getX(), e.getY())
+        );
+        ClickSelection selection = selectClosestNodeTo(clickLocation);
+        // Show information and set highlightData
+        applyClickSelection(selection);
+
+        if (state == UserState.NORMAL) return;
+        if (selection.selectedNode == null) return;
+
+        if (state == UserState.ENTER_ROUTE_START_NODE) {
+            routeStartNode = selection.selectedNode;
+            state = UserState.ENTER_ROUTE_LAST_NODE;
+            highlightData = highlightData.getNewWithRoute(new Route(
+                    Collections.singletonList(routeStartNode),
+                    Collections.emptyList()
+            ));
+            outputLine("Now select the node for the end of your route");
+
+        } else if (state == UserState.ENTER_ROUTE_LAST_NODE) {
+            routeEndNode = selection.selectedNode;
+            outputLine("Finding route from " + routeStartNode.id +
+                    " to " + routeEndNode.id + " ...");
+            highlightData = highlightData.getNewWithRoute(new Route(
+                    // Fake route
+                    Arrays.asList(
+                            routeStartNode, routeEndNode
+                    ),
+                    // Don't draw segments because we don't know the route
+                    Collections.emptyList()
+            ));
+            redraw(); // Show the selection before searching for better UX
+
+            Route route = mapModel.findRouteBetween(routeStartNode, routeEndNode);
+            highlightData = highlightData.getNewWithRoute(route);
+            if (route == null) {
+                outputLine("No route found");
+            } else {
+                outputLine("Route found");
+                // TODO output route
+            }
+
+            state = UserState.NORMAL;
+        }
+    }
+
     private void clearHighlightingData() {
         highlightData = new HighlightData(null, null, null);
     }
@@ -231,7 +237,7 @@ public class MapGUI extends GUI {
      * Display information, and store the node and segments to be highlighted
      * on draw
      */
-    private void applyClickSelection(ClickSelection selection, UserState state) {
+    private void applyClickSelection(ClickSelection selection) {
         highlightData = new HighlightData(
                 selection.selectedNode, // these fields may be null
                 selection.connectedSegments,
