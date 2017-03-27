@@ -3,6 +3,7 @@ package main;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import main.mapdata.*;
+import main.structures.Route;
 import slightlymodifiedtemplate.GUI;
 import slightlymodifiedtemplate.Location;
 
@@ -38,7 +39,7 @@ public class MapGUI extends GUI {
     /**
      * Should never be null. Stuff to highlight
      */
-    private HighlightData highlightData = new HighlightData(null, null, null, null);
+    private HighlightData highlightData;
 
     private Map<RoadInfo, Collection<RoadSegment>> searchResults;
     private MouseAdapter drawingMouseListener;
@@ -79,7 +80,7 @@ public class MapGUI extends GUI {
         );
         ClickSelection selection = selectClosestNodeTo(clickLocation);
         // Show information and set highlightData
-        applyClickSelection(selection);
+        applyClickSelection(selection, state);
 
         if (state == UserState.NORMAL) return;
         if (selection.selectedNode == null) return;
@@ -87,20 +88,28 @@ public class MapGUI extends GUI {
         if (state == UserState.ENTER_ROUTE_START_NODE) {
             routeStartNode = selection.selectedNode;
             state = UserState.ENTER_ROUTE_LAST_NODE;
-            highlightData = highlightData.getNewWithRoute(routeStartNode, null);
+            highlightData = highlightData.getNewWithRoute(new Route(
+                    Collections.singletonList(routeStartNode),
+                    Collections.emptyList()
+            ));
             outputLine("Now select the node for the end of your route");
 
         } else if (state == UserState.ENTER_ROUTE_LAST_NODE) {
             routeEndNode = selection.selectedNode;
             outputLine("Finding route from " + routeStartNode.id +
                     " to " + routeEndNode.id + " ...");
-            highlightData = highlightData.getNewWithRoute(
-                    routeStartNode, routeEndNode
-            );
-            redraw(); // Show the selection before searching
+            highlightData = highlightData.getNewWithRoute(new Route(
+                    // Fake route
+                    Arrays.asList(
+                            routeStartNode, routeEndNode
+                    ),
+                    // Don't draw segments because we don't know the route
+                    Collections.emptyList()
+            ));
+            redraw(); // Show the selection before searching for better UX
 
-            // TODO NEXT find route
-            outputLine("*** TODO FIND ROUTE ***");
+            Route route = mapModel.findRouteBetween(routeStartNode, routeEndNode);
+            highlightData = highlightData.getNewWithRoute(route);
 
             state = UserState.NORMAL;
         }
@@ -110,7 +119,7 @@ public class MapGUI extends GUI {
     protected void onSearch() {
         String searchTerm = getSearchBox().getText();
         if (searchTerm.isEmpty()) {
-            highlightData = new HighlightData(null, null, null, null);
+            clearHighlightingData();
             return;
         }
 
@@ -139,7 +148,7 @@ public class MapGUI extends GUI {
                 .collect(Collectors.toList());
 
         highlightData = new HighlightData(
-                null, highlightedRoadSegments, null, null
+                null, highlightedRoadSegments, null
         );
     }
 
@@ -160,8 +169,8 @@ public class MapGUI extends GUI {
             BufferedReader nodesReader = new BufferedReader(new FileReader(nodes));
             BufferedReader segmentsReader = new BufferedReader(new FileReader(segments));
             Scanner roadInfoScanner = new Scanner(roads);
-            BufferedReader polysReader = (polygons == null) ? null :
-                new BufferedReader(new FileReader(polygons));
+            BufferedReader polygonsReader = (polygons == null) ? null :
+                    new BufferedReader(new FileReader(polygons));
 
 
             AtomicReference<MapDataModel> mapDataRef = new AtomicReference<>();
@@ -172,8 +181,8 @@ public class MapGUI extends GUI {
                     () -> dataParser.parseRoadSegments(segmentsReader),
                     () -> dataParser.parseRoadInfo(roadInfoScanner),
                     () -> {
-                        if (polysReader != null) {
-                            return dataParser.parsePolygons(polysReader);
+                        if (polygonsReader != null) {
+                            return dataParser.parsePolygons(polygonsReader);
                         } else {
                             return Collections.emptyList();
                         }
@@ -189,11 +198,19 @@ public class MapGUI extends GUI {
     protected void onEnterDirectionsClick() {
         state = UserState.ENTER_ROUTE_START_NODE;
         outputLine("Click on an intersection to define the start");
+
+        // Clear route
+        clearHighlightingData();
+        redraw();
+    }
+
+    private void clearHighlightingData() {
+        highlightData = new HighlightData(null, null, null);
     }
 
     private void onFinishLoad(MapDataModel mapModel, long loadStartTime) {
         this.mapModel = mapModel;
-        this.highlightData = new HighlightData(null, null, null, null);
+        clearHighlightingData();
         this.drawer = drawerFactory.create(this.mapModel, view);
         this.redraw();
 
@@ -214,11 +231,11 @@ public class MapGUI extends GUI {
      * Display information, and store the node and segments to be highlighted
      * on draw
      */
-    private void applyClickSelection(ClickSelection selection) {
+    private void applyClickSelection(ClickSelection selection, UserState state) {
         highlightData = new HighlightData(
                 selection.selectedNode, // these fields may be null
                 selection.connectedSegments,
-                null, null
+                null
         );
         if (selection.selectedNode == null) {
             outputLine("There are no nodes there");

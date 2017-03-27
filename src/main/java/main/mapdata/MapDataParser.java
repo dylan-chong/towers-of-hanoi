@@ -31,7 +31,6 @@ public class MapDataParser {
             throw new AssertionError(e);
         }
         return reader.lines()
-                .parallel()
                 .map(line -> {
                     String[] tokens = line.split("\t");
 

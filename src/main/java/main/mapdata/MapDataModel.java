@@ -4,11 +4,13 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import main.LatLong;
 import main.structures.Graph;
+import main.structures.Route;
 import main.structures.Trie;
 import slightlymodifiedtemplate.Location;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by Dylan on 15/03/17.
@@ -29,7 +31,7 @@ public class MapDataModel {
      */
     public Node findNodeNearLocation(Location location) {
         // Hack to avoid converting a Location to a LatLong
-        Node fakeNode = new Node(-1, new LatLong(-1 , -1) {
+        Node fakeNode = new Node(-1, new LatLong(-1, -1) {
             @Override
             public Location asLocation() {
                 // Actual location
@@ -84,6 +86,40 @@ public class MapDataModel {
 
     public RoadInfo findRoadInfoForSegment(RoadSegment segment) {
         return data.getRoadInfos().get(segment.roadId);
+    }
+
+    public Route findRouteBetween(Node routeStartNode,
+                                  Node routeEndNode) {
+        LinkedList<Node> routeNodes = new LinkedList<>();
+        LinkedList<RoadSegment> routeSegments = new LinkedList<>();
+        routeNodes.add(routeStartNode);
+
+        while (!routeNodes.getLast().equals(routeEndNode)) {
+            List<RoadSegment> segmentsForNode = new ArrayList<>(
+                    findRoadSegmentsForNode(routeNodes.getLast())
+            );
+            RoadSegment nextSegment = segmentsForNode.get(
+                    (int) (Math.random() * segmentsForNode.size())
+            );
+            Node nextNode = getOtherNode(nextSegment, routeNodes.getLast());
+
+            routeNodes.add(nextNode);
+            routeSegments.add(nextSegment);
+        }
+
+        return new Route(routeNodes, routeSegments);
+    }
+
+    /**
+     * Useful function for getting the {@link Node} at the opposite end of
+     * a {@link RoadSegment}.
+     */
+    private Node getOtherNode(RoadSegment segment, Node oneEnd) {
+        return Stream.of(segment.node1ID, segment.node2ID)
+                .map(nodeId -> data.getNodeInfos().get(nodeId))
+                .filter(node -> !oneEnd.equals(node))
+                .findFirst()
+                .orElse(null);
     }
 
     public interface Factory {

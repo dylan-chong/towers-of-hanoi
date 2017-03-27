@@ -5,23 +5,23 @@ import com.google.inject.Injector;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import main.LatLong;
 import main.mapdata.*;
+import main.structures.Route;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Dylan on 15/03/17.
  */
-public class MapDataTest {
+public class MapDataModelTest {
 
-    private final Runnable noop = () -> {
+    private static final Runnable noop = () -> {
     };
 
     /**
@@ -165,6 +165,104 @@ public class MapDataTest {
         assertEquals(Collections.emptyMap(), roadSegments);
     }
 
+    @Test
+    public void findRouteBetween_sameNode_returnsEmptySegmentsAndOneNode() {
+        testFindRouteBetweenOnDefaultData(
+                Collections.singletonList(nodeWithId(1)),
+                Collections.emptyList(),
+                nodeWithId(1),
+                nodeWithId(1)
+        );
+    }
+
+    @Test
+    public void findRouteBetween_oneEdgeApart_findsTheEnd() {
+        testFindRouteBetweenOnDefaultData(
+                Arrays.asList(
+                        nodeWithId(1),
+                        nodeWithId(2)
+                ),
+                Collections.singletonList(segmentWithIdConnectedToNodes(101, 1, 2)),
+                nodeWithId(1),
+                nodeWithId(2)
+        );
+    }
+
+    @Test
+    public void findRouteBetween_twoEdgesApart_findsTheEnd() {
+        testFindRouteBetweenOnDefaultData(
+                null,
+                null,
+                nodeWithId(1),
+                nodeWithId(3)
+        );
+    }
+
+    @Test
+    public void findRouteBetween_twoEdgesApart_findsEndWithoutReversing() {
+        testFindRouteBetweenOnDefaultData(
+                Arrays.asList(
+                        nodeWithId(1),
+                        nodeWithId(2),
+                        nodeWithId(3)
+                ),
+                Arrays.asList(
+                        segmentWithIdConnectedToNodes(101, 1, 2),
+                        segmentWithIdConnectedToNodes(102, 2, 3)
+                ),
+                nodeWithId(1),
+                nodeWithId(3)
+        );
+    }
+
+    /**
+     * @param expectedNodes Set to null if you only care about the start and end
+     * @param expectedSegments Set to null if you only care about the start and
+     *                         end
+     */
+    private void testFindRouteBetweenOnDefaultData(List<Node> expectedNodes,
+                                                   List<RoadSegment> expectedSegments,
+                                                   Node routeStart,
+                                                   Node routeEnd) {
+        MapDataModel mapModel = mapDataFactory.create(
+                noop,
+                () -> IntStream.range(1, 4) // generate nodes by incrementing ids
+                        .mapToObj(this::nodeWithId)
+                        .collect(Collectors.toList()),
+                () -> Arrays.asList(
+                        // Be careful with changing these as it may break
+                        // multiple tests
+                        segmentWithIdConnectedToNodes(101, 1, 2),
+                        segmentWithIdConnectedToNodes(102, 2, 3)
+                ),
+                Collections::emptyList,
+                Collections::emptyList
+        );
+        Route route = mapModel.findRouteBetween(routeStart, routeEnd);
+
+        if (expectedNodes != null) assertEquals(expectedNodes, route.nodes);
+        if (expectedSegments != null) assertEquals(expectedSegments, route.segments);
+
+        assertEquals(route.nodes.get(0), routeStart);
+        assertEquals(route.nodes.get(route.nodes.size() - 1), routeEnd);
+    }
+
+    /**
+     * Creates a {@link Node} with a default location, so that nodes with the
+     * same id can be {@link Node#equals(Object)} to each other.
+     */
+    private Node nodeWithId(int id) {
+        return new Node(id, new LatLong(0, 0));
+    }
+
+    /**
+     * Similar to nodeWithId
+     */
+    private RoadSegment segmentWithIdConnectedToNodes(int id,
+                                                      int nodeId1,
+                                                      int nodeId2) {
+        return new RoadSegment(id, 1, nodeId1, nodeId2, Collections.emptyList());
+    }
 
     private interface ModelFacadeFactory {
         MapDataModel create(

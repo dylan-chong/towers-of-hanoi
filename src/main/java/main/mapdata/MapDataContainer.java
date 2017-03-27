@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 /**
  * Wraps the data and loads and indexes it asynchronously to prevent blocking
- * the UI.
+ * the UI. Blocks any threads until data is loaded
  */
 public class MapDataContainer {
 

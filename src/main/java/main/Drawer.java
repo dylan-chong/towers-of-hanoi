@@ -7,6 +7,7 @@ import main.mapdata.RoadSegment;
 import slightlymodifiedtemplate.Location;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +59,8 @@ public class Drawer {
         );
 
         // Highlighted RoadSegments
-        if (highlightData.highlightedRoadSegments != null) {
+        if (highlightData.highlightedRoadSegments != null &&
+                highlightData.route == null) {
             graphics.setColor(ROADS_HIGHLIGHT_COLOR);
             highlightData.highlightedRoadSegments.forEach(roadSegment ->
                     drawRoadSegment(graphics, roadSegment, drawArea)
@@ -66,19 +68,23 @@ public class Drawer {
         }
 
         // Nodes
-        if (highlightData.highlightedNode != null &&
-                highlightData.routeStart == null &&
-                highlightData.routeEnd == null) {
+        if (highlightData.highlightedNode != null) {
             graphics.setColor(NODE_HIGHLIGHT_COLOR);
             drawNode(graphics, highlightData.highlightedNode, NODE_RADIUS_PX);
         }
-        if (highlightData.routeStart != null) {
+        if (highlightData.route != null) {
             graphics.setColor(ROUTE_COLOR);
-            drawNode(graphics, highlightData.routeStart, ROUTE_START_NODE_RADIUS_PX);
-        }
-        if (highlightData.routeEnd != null) {
-            graphics.setColor(ROUTE_COLOR);
-            drawNode(graphics, highlightData.routeEnd, ROUTE_END_NODE_RADIUS_PX);
+            List<Node> nodes = highlightData.route.nodes;
+
+            // Only draw first and last node
+            Arrays.asList(
+                    nodes.get(0),
+                    nodes.get(nodes.size() - 1)
+            ).forEach(node -> drawNode(graphics, node, ROUTE_START_NODE_RADIUS_PX));
+
+            highlightData.route.segments.forEach(roadSegment ->
+                    drawRoadSegment(graphics, roadSegment, drawArea)
+            );
         }
     }
 

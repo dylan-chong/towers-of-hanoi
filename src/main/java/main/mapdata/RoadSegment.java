@@ -24,7 +24,7 @@ public class RoadSegment {
     /**
      * Start and end nodes
      */
-    public final long node1ID, node2ID; // TODO point to actual nodes?
+    public final long node1ID, node2ID;
 
     /**
      * The road makes up straight lines between these latLongs

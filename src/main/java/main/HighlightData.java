@@ -2,12 +2,14 @@ package main;
 
 import main.mapdata.Node;
 import main.mapdata.RoadSegment;
+import main.structures.Route;
 
 import java.util.Collection;
 import java.util.Collections;
 
 /**
- * Struct for information about what should be highlighted
+ * Struct for information about what should be highlighted. Any of the fields
+ * can be null
  */
 public class HighlightData {
     /**
@@ -18,19 +20,16 @@ public class HighlightData {
      * For when the user clicks on a Node
      */
     public final Collection<RoadSegment> highlightedRoadSegments;
-    public final Node routeStart;
-    public final Node routeEnd;
+    public final Route route;
 
     /**
      * Any parameter can be null
      */
     public HighlightData(Node highlightedNode,
                          Collection<RoadSegment> highlightedRoadSegments,
-                         Node routeStart,
-                         Node routeEnd) {
+                         Route route) {
         this.highlightedNode = highlightedNode;
-        this.routeStart = routeStart;
-        this.routeEnd = routeEnd;
+        this.route = route;
 
         if (highlightedRoadSegments == null) {
             this.highlightedRoadSegments = null;
@@ -41,12 +40,11 @@ public class HighlightData {
         }
     }
 
-    public HighlightData getNewWithRoute(Node routeStart, Node routeEnd) {
+    public HighlightData getNewWithRoute(Route route) {
         return new HighlightData(
                 highlightedNode,
                 highlightedRoadSegments,
-                routeStart,
-                routeEnd
+                route
         );
     }
 }
