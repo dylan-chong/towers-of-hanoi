@@ -1,19 +1,18 @@
 package swen221.lab3.view;
 
-import java.awt.BorderLayout;
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.event.*;
-import java.util.List;
-
-import javax.swing.*;
-import javax.swing.border.Border;
-
 import swen221.lab3.AdventureGame;
 import swen221.lab3.model.Item;
 import swen221.lab3.model.Player;
 import swen221.lab3.model.Room;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.List;
 
 /**
  * Provides a simple Graphical User Interface for the AdventureGame.
@@ -37,21 +36,22 @@ public class GraphicalUserInterface extends JFrame {
 	public GraphicalUserInterface(AdventureGame game) {
 		super("Adventure Game");
 
-		this.game = game;	
+		this.game = game;
 		this.mainDisplay = new MainDisplay();
 		this.inventoryDisplay = new InventoryDisplay();
 		this.locationText = new JLabel(game.getPlayer().getLocation().getDescription());
-		
-		add(createTopPanel(),BorderLayout.NORTH);
-		add(createCenterPanel(),BorderLayout.CENTER);		
-		add(createBottomPanel(),BorderLayout.SOUTH);
 
-		setFocusable(true);		
+		add(createTopPanel(), BorderLayout.NORTH);
+		add(createCenterPanel(), BorderLayout.CENTER);
+		add(createBottomPanel(), BorderLayout.SOUTH);
+
+		setFocusable(true);
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
-		setVisible(true);		
-	}	
+		setVisible(true);
+		toFront();
+	}
 
 	@Override
 	public void repaint() {

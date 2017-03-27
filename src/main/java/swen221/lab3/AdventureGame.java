@@ -1,7 +1,5 @@
 package swen221.lab3;
 
-import java.util.*;
-
 import swen221.lab3.model.*;
 import swen221.lab3.util.GameFile;
 import swen221.lab3.view.GraphicalUserInterface;
@@ -70,7 +68,9 @@ public class AdventureGame {
 		case "Key":
 			return  createKeyObject(item);	
 		case "Obelisk":
-			return  createObeliskObject(item);	
+			return  createObeliskObject(item);
+        case "Book":
+            return  createBookObject(item);
 		default:
 			// If we get here, then we've encountered an object kind we don't
 			// know
@@ -78,21 +78,21 @@ public class AdventureGame {
 			throw new IllegalArgumentException("Unknown GameFile.Item name");
 		}	
 	}
-	
-	/**
+
+    /**
 	 * Create a Room within the game.
-	 * 
+	 *
 	 * @param item
 	 * @return
 	 */
 	private Room createRoomObject(GameFile.Item item) {
-		String description = (String) item.field("description"); 
+		String description = (String) item.field("description");
 		return new Room(description);
 	}
-	
+
 	/**
 	 * Create a Door within the game. A door connects two rooms within the game.
-	 * 
+	 *
 	 * @param item
 	 * @return
 	 */
@@ -101,49 +101,54 @@ public class AdventureGame {
 		int to = (Integer) item.field("to");
 		Room oneSide = (Room) objects[from];
 		Room otherSide = (Room) objects[to];
-		Door d = new Door(oneSide, otherSide);				
+		Door d = new Door(oneSide, otherSide);
 		oneSide.addItem(d);
 		otherSide.addItem(d);
 		return d;
 	}
-	
+
 	/**
 	 * Create a Coin within the game.
-	 * 
+	 *
 	 * @param item
 	 * @return
 	 */
 	private Item createCoinObject(GameFile.Item item) {
 		Coin c = new Coin();
-		return addItemToRoom((Integer) item.field("location"),c);		
+		return addItemToRoom((Integer) item.field("location"),c);
 	}
-	
+
 	/**
 	 * Create a key within the game.
-	 * 
+	 *
 	 * @param item
 	 * @return
 	 */
 	private Item createKeyObject(GameFile.Item item) {
 		int code = (Integer) item.field("code");
 		Key k = new Key(code);
-		return addItemToRoom((Integer) item.field("location"),k);		
+		return addItemToRoom((Integer) item.field("location"),k);
 	}
-	
+
 	/**
 	 * Create a Coin within the game.
-	 * 
+	 *
 	 * @param item
 	 * @return
 	 */
 	private Item createObeliskObject(GameFile.Item item) {
 		Obelisk c = new Obelisk();
-		return addItemToRoom((Integer) item.field("location"),c);		
+		return addItemToRoom((Integer) item.field("location"),c);
 	}
-	
+
+    private Item createBookObject(GameFile.Item item) {
+	    Book book = new Book((String) item.field("title"));
+        return addItemToRoom((Integer) item.field("location"), book);
+    }
+
 	/**
 	 * Add a given item into a room.
-	 * 
+	 *
 	 * @param room
 	 * @param item
 	 */
@@ -152,7 +157,7 @@ public class AdventureGame {
 		r.addItem(item);
 		return item;
 	}
-	
+
 	/**
 	 * Run a stand-alone version of the adventure game.
 	 * 
@@ -167,11 +172,25 @@ public class AdventureGame {
 				"Door { from: 0, to: 1 }",
 				"Coin { location: 0 }",
 				"Obelisk { location: 0 }",
-				"Key { location: 1, code: 123 }"
+				"Key { location: 1, code: 123 }",
+                "Book { location: 1, title: \"Great Expectations\" }"
 		};
 		// Create the game model
 		AdventureGame game = new AdventureGame(GameFile.parseItems(items));
 		// Create the window showing the game
-		new GraphicalUserInterface(game);
+		GraphicalUserInterface gui = new GraphicalUserInterface(game);
+
+		new Thread(() -> {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			if (gui.getSize().height < 200) {
+				gui.setVisible(false);
+				main(args);
+			}
+		}).start();
 	}
 }
