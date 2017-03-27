@@ -91,7 +91,7 @@ public class MapDataModel {
     public Route findRouteBetween(Node routeStartNode,
                                   Node routeEndNode) {
         Comparator<NodeState> comparator = Comparator.comparingDouble(
-                NodeState::getDistanceFromStart
+                NodeState::getDistanceFromStart // todo A*
         );
         NavigableSet<NodeState> nodesToCheck = new TreeSet<>(comparator);
         // For fast lookup
@@ -121,19 +121,18 @@ public class MapDataModel {
 
             for (int i = 0; i < neighbourNodes.size(); i++) {
                 Node neighbourNode = neighbourNodes.get(i);
-                NodeState neighbourState = nodeStateMap.get(neighbourNode);
                 // Connects neighbourNode and nodeState.node
                 RoadSegment connectingSegment = currentSegments.get(i);
 
-                if (neighbourState == null) {
-                    neighbourState = new NodeState(
-                            neighbourNode,
-                            connectingSegment,
-                            currentNodeState,
-                            Double.POSITIVE_INFINITY
-                    );
-                    nodeStateMap.put(neighbourNode, neighbourState);
-                }
+                NodeState neighbourState = nodeStateMap.computeIfAbsent(
+                        neighbourNode,
+                        key -> new NodeState(
+                                neighbourNode,
+                                connectingSegment,
+                                currentNodeState,
+                                Double.POSITIVE_INFINITY
+                        )
+                );
 
                 if (neighbourState.hasCheckedChildren()) continue;
                 nodesToCheck.add(neighbourState);

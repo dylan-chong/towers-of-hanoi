@@ -1,5 +1,9 @@
 package main.mapdata;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Created by Dylan on 15/03/17.
  * <p>
@@ -71,6 +75,14 @@ public class RoadInfo {
     @Override
     public String toString() {
         return new RoadInfoByName(label, city).toString();
+    }
+
+    public static List<RoadInfoByName> getDistinctByName(
+            Collection<RoadInfo> roadInfos) {
+        return roadInfos.stream()
+                .map(roadInfo -> new RoadInfoByName(roadInfo.label, roadInfo.city))
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     /**

@@ -144,7 +144,6 @@ public class MapDataContainer {
 
         roadInfos.forEach(roadInfo -> {
             String label = roadInfo.label;
-            // label = label.trim(); // TODO
             Trie<RoadInfo> nextTrieToUse = rootTrie;
 
             for (int c = 0; c < label.length(); c++) {

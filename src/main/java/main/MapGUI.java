@@ -86,13 +86,8 @@ public class MapGUI extends GUI {
             outputLine("No matches");
             return;
         }
-        searchResults.keySet()
-                .stream()
-                .map(roadInfo -> new RoadInfoByName(roadInfo.label, roadInfo.city))
-                .distinct()
-                .forEach(infoByName -> {
-                    outputLine("- Found: " + infoByName);
-                });
+        RoadInfo.getDistinctByName(searchResults.keySet())
+                .forEach(infoByName -> outputLine("- Found: " + infoByName));
 
         // Flatten values in searchResults into a list
         Collection<RoadSegment> highlightedRoadSegments = searchResults.values()
@@ -157,6 +152,14 @@ public class MapGUI extends GUI {
         redraw();
     }
 
+    @Override
+    protected MouseAdapter getMouseListener() {
+        if (drawingMouseListener == null) {
+            drawingMouseListener = new DrawingMouseListener();
+        }
+        return drawingMouseListener;
+    }
+
     /**
      * Called after the mouse has been clicked on the graphics pane and then
      * released.
@@ -175,39 +178,66 @@ public class MapGUI extends GUI {
         if (selection.selectedNode == null) return;
 
         if (state == UserState.ENTER_ROUTE_START_NODE) {
-            routeStartNode = selection.selectedNode;
-            state = UserState.ENTER_ROUTE_LAST_NODE;
-            highlightData = highlightData.getNewWithRoute(new Route(
-                    Collections.singletonList(routeStartNode),
-                    Collections.emptyList()
-            ));
-            outputLine("Now select the node for the end of your route");
-
+            setRouteStartNode(selection.selectedNode);
         } else if (state == UserState.ENTER_ROUTE_LAST_NODE) {
-            routeEndNode = selection.selectedNode;
-            outputLine("Finding route from " + routeStartNode.id +
-                    " to " + routeEndNode.id + " ...");
-            highlightData = highlightData.getNewWithRoute(new Route(
-                    // Fake route
-                    Arrays.asList(
-                            routeStartNode, routeEndNode
-                    ),
-                    // Don't draw segments because we don't know the route
-                    Collections.emptyList()
-            ));
-            redraw(); // Show the selection before searching for better UX
-
-            Route route = mapModel.findRouteBetween(routeStartNode, routeEndNode);
-            highlightData = highlightData.getNewWithRoute(route);
-            if (route == null) {
-                outputLine("No route found");
-            } else {
-                outputLine("Route found");
-                // TODO output route
-            }
-
+            setRouteEndNode(selection.selectedNode);
             state = UserState.NORMAL;
         }
+    }
+
+    private void setRouteStartNode(Node routeStartNode) {
+        this.routeStartNode = routeStartNode;
+        state = UserState.ENTER_ROUTE_LAST_NODE;
+        // Hack to show just one circle (for the route start)
+        highlightData = highlightData.getNewWithRoute(new Route(
+                Collections.singletonList(routeStartNode),
+                Collections.emptyList()
+        ));
+        outputLine("Now select the node for the end of your route");
+    }
+
+    private void setRouteEndNode(Node routeEndNode) {
+        this.routeEndNode = routeEndNode;
+
+        outputLine("Finding route from " + routeStartNode.id +
+                " to " + routeEndNode.id + " ...");
+        highlightData = highlightData.getNewWithRoute(new Route(
+                // Fake route
+                Arrays.asList(routeStartNode, routeEndNode),
+                // Don't draw segments because we don't know the route yet
+                Collections.emptyList()
+        ));
+        redraw(); // Show the selection before searching for better UX
+
+        Route route = mapModel.findRouteBetween(routeStartNode, routeEndNode);
+        showRoute(route);
+        // redraw will be called automatically
+    }
+
+    private void showRoute(Route route) {
+        highlightData = highlightData.getNewWithRoute(route);
+
+        if (route == null) {
+            outputLine("No route found");
+            return;
+        }
+
+        outputLine("Route found");
+        outputLine("Instructions:");
+
+        for (int i = 0; i < route.segments.size(); i++) {
+            Node node = route.nodes.get(i);
+            RoadSegment segment = route.segments.get(i);
+            RoadInfo roadInfo = mapModel.findRoadInfoForSegment(segment);
+
+            // TODO check last for duplicate names
+            // TODO node street intersections?
+
+            outputLine("\t- Go from intersection " + node + "\n" +
+                    "\t  to " + roadInfo);
+        }
+        // There is one more node than segment
+        outputLine("\t- Then end your journey at " + routeEndNode);
     }
 
     private void clearHighlightingData() {
@@ -259,7 +289,7 @@ public class MapGUI extends GUI {
             return new ClickSelection(null, null, null, null);
         }
 
-        outputLine("Found an intersection: " + selectedNode.latLong);
+        outputLine("Found an intersection: " + selectedNode);
 
         // Find roadSegments (for highlighting) and roadInfos (for printing)
         Collection<RoadSegment> roadSegments =
@@ -269,10 +299,8 @@ public class MapGUI extends GUI {
                 .collect(Collectors.toList());
 
         // Print road label/city (and avoid printing duplicate names)
-        Collection<RoadInfoByName> roadInfosByName = roadInfos.stream()
-                .map(roadInfo -> new RoadInfoByName(roadInfo.label, roadInfo.city))
-                .distinct()
-                .collect(Collectors.toList());
+        Collection<RoadInfoByName> roadInfosByName =
+                RoadInfo.getDistinctByName(roadInfos);
 
         return new ClickSelection(
                 selectedNode,
@@ -280,14 +308,6 @@ public class MapGUI extends GUI {
                 roadInfos,
                 roadInfosByName
         );
-    }
-
-    @Override
-    protected MouseAdapter getMouseListener() {
-        if (drawingMouseListener == null) {
-            drawingMouseListener = new DrawingMouseListener();
-        }
-        return drawingMouseListener;
     }
 
     private class DrawingMouseListener extends MouseAdapter {

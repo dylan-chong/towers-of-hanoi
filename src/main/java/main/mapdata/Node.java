@@ -34,5 +34,10 @@ public class Node {
     public int hashCode() {
         return (int) id;
     }
+
+    @Override
+    public String toString() {
+        return latLong.toString();
+    }
 }
 
