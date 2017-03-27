@@ -156,6 +156,10 @@ public class MapDataModel {
 
             // Check if priority queue is in order
             assert isSorted(nodesToCheck, comparator);
+
+            // TODO Break if last node
+            // TODO Refactor code
+            // TODO ?
         }
 
         NodeState lastNodeState = nodeStateMap.get(routeEndNode);

@@ -11,8 +11,6 @@ import org.junit.Test;
 
 import java.util.*;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
 
@@ -167,51 +165,76 @@ public class MapDataModelTest {
 
     @Test
     public void findRouteBetween_sameNode_returnsEmptySegmentsAndOneNode() {
+        GraphDataSet dataSet = GraphDataSet.A_SHORT_LINEAR_GRAPH;
         testFindRouteBetweenOnDefaultData(
-                Collections.singletonList(nodeWithId(1)),
+                Collections.singletonList(dataSet.getNodeById(1)),
                 Collections.emptyList(),
-                nodeWithId(1),
-                nodeWithId(1)
+                dataSet.getNodeById(1),
+                dataSet.getNodeById(1),
+                dataSet
         );
     }
 
     @Test
     public void findRouteBetween_oneEdgeApart_findsTheEnd() {
+        GraphDataSet dataSet = GraphDataSet.A_SHORT_LINEAR_GRAPH;
         testFindRouteBetweenOnDefaultData(
                 Arrays.asList(
-                        nodeWithId(1),
-                        nodeWithId(2)
+                        dataSet.getNodeById(1),
+                        dataSet.getNodeById(2)
                 ),
-                Collections.singletonList(segmentWithIdConnectedToNodes(101, 1, 2)),
-                nodeWithId(1),
-                nodeWithId(2)
+                Collections.singletonList(dataSet.getSegmentById(101)),
+                dataSet.getNodeById(1),
+                dataSet.getNodeById(2),
+                dataSet
         );
     }
 
     @Test
     public void findRouteBetween_twoEdgesApart_findsTheEnd() {
+        GraphDataSet dataSet = GraphDataSet.A_SHORT_LINEAR_GRAPH;
         testFindRouteBetweenOnDefaultData(
                 null,
                 null,
-                nodeWithId(1),
-                nodeWithId(3)
+                dataSet.getNodeById(1),
+                dataSet.getNodeById(3),
+                dataSet
         );
     }
 
     @Test
     public void findRouteBetween_twoEdgesApart_findsEndWithoutReversing() {
+        GraphDataSet dataSet = GraphDataSet.A_SHORT_LINEAR_GRAPH;
         testFindRouteBetweenOnDefaultData(
                 Arrays.asList(
-                        nodeWithId(1),
-                        nodeWithId(2),
-                        nodeWithId(3)
+                        dataSet.getNodeById(1),
+                        dataSet.getNodeById(2),
+                        dataSet.getNodeById(3)
                 ),
                 Arrays.asList(
-                        segmentWithIdConnectedToNodes(101, 1, 2),
-                        segmentWithIdConnectedToNodes(102, 2, 3)
+                        dataSet.getSegmentById(101),
+                        dataSet.getSegmentById(102)
                 ),
-                nodeWithId(1),
-                nodeWithId(3)
+                dataSet.getNodeById(1),
+                dataSet.getNodeById(3),
+                dataSet
+        );
+    }
+
+    @Test
+    public void findRouteBetween_triangleGraph_findsShortestRoute() {
+        GraphDataSet dataSet = GraphDataSet.B_TRIANGLE_GRAPH;
+        testFindRouteBetweenOnDefaultData(
+                Arrays.asList(
+                        dataSet.getNodeById(1),
+                        dataSet.getNodeById(3)
+                ),
+                Arrays.asList(
+                        dataSet.getSegmentById(103)
+                ),
+                dataSet.getNodeById(1),
+                dataSet.getNodeById(3),
+                dataSet
         );
     }
 
@@ -223,18 +246,12 @@ public class MapDataModelTest {
     private void testFindRouteBetweenOnDefaultData(List<Node> expectedNodes,
                                                    List<RoadSegment> expectedSegments,
                                                    Node routeStart,
-                                                   Node routeEnd) {
+                                                   Node routeEnd,
+                                                   GraphDataSet graphDataSet) {
         MapDataModel mapModel = mapDataFactory.create(
                 noop,
-                () -> IntStream.range(1, 4) // generate nodes by incrementing ids
-                        .mapToObj(this::nodeWithId)
-                        .collect(Collectors.toList()),
-                () -> Arrays.asList(
-                        // Be careful with changing these as it may break
-                        // multiple tests
-                        segmentWithIdConnectedToNodes(101, 1, 2),
-                        segmentWithIdConnectedToNodes(102, 2, 3)
-                ),
+                () -> graphDataSet.modelNodes,
+                () -> graphDataSet.modelRoadSegments,
                 Collections::emptyList,
                 Collections::emptyList
         );
@@ -245,23 +262,6 @@ public class MapDataModelTest {
 
         assertEquals(route.nodes.get(0), routeStart);
         assertEquals(route.nodes.get(route.nodes.size() - 1), routeEnd);
-    }
-
-    /**
-     * Creates a {@link Node} with a default location, so that nodes with the
-     * same id can be {@link Node#equals(Object)} to each other.
-     */
-    private Node nodeWithId(int id) {
-        return new Node(id, new LatLong(0, 0));
-    }
-
-    /**
-     * Similar to nodeWithId
-     */
-    private RoadSegment segmentWithIdConnectedToNodes(int id,
-                                                      int nodeId1,
-                                                      int nodeId2) {
-        return new RoadSegment(id, 1, nodeId1, nodeId2, Collections.emptyList());
     }
 
     private interface ModelFacadeFactory {
