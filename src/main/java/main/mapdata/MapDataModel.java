@@ -77,7 +77,7 @@ public class MapDataModel {
     /**
      * Selects roads segments connected to node
      */
-    public Collection<RoadSegment> findRoadSegmentsForNode(Node nodeInfo) {
+    public List<RoadSegment> findRoadSegmentsForNode(Node nodeInfo) {
         MapGraph.Node graphNode = data.getMapGraph().getNodeForNodeInfo(nodeInfo);
         return graphNode.getEdges().stream()
                 .map(Graph.Edge::getInfo)
@@ -90,24 +90,88 @@ public class MapDataModel {
 
     public Route findRouteBetween(Node routeStartNode,
                                   Node routeEndNode) {
-        LinkedList<Node> routeNodes = new LinkedList<>();
-        LinkedList<RoadSegment> routeSegments = new LinkedList<>();
-        routeNodes.add(routeStartNode);
+        Comparator<NodeState> comparator = Comparator.comparingDouble(
+                NodeState::getDistanceFromStart
+        );
+        NavigableSet<NodeState> nodesToCheck = new TreeSet<>(comparator);
+        // For fast lookup
+        Map<Node, NodeState> nodeStateMap = new HashMap<>();
 
-        while (!routeNodes.getLast().equals(routeEndNode)) {
-            List<RoadSegment> segmentsForNode = new ArrayList<>(
-                    findRoadSegmentsForNode(routeNodes.getLast())
-            );
-            RoadSegment nextSegment = segmentsForNode.get(
-                    (int) (Math.random() * segmentsForNode.size())
-            );
-            Node nextNode = getOtherNode(nextSegment, routeNodes.getLast());
-
-            routeNodes.add(nextNode);
-            routeSegments.add(nextSegment);
+        { // Add routeStartNode
+            NodeState startState = new NodeState(routeStartNode, null, null, 0);
+            nodesToCheck.add(startState);
+            nodeStateMap.put(routeStartNode, startState);
         }
 
-        return new Route(routeNodes, routeSegments);
+        while (!nodesToCheck.isEmpty()) {
+            NodeState nodeState = nodesToCheck.pollFirst();
+
+            assert !nodeState.hasCheckedChildren();
+            nodeState.setHasCheckedChildren(true);
+
+            // Segments leaving nodeState
+            List<RoadSegment> segments = findRoadSegmentsForNode(
+                    nodeState.getNode()
+            );
+            List<Node> neighbourNodes = segments.stream()
+                    .map(segment -> getOtherNode(segment, nodeState.getNode()))
+                    .collect(Collectors.toList());
+
+            for (int i = 0; i < neighbourNodes.size(); i++) {
+                Node neighbourNode = neighbourNodes.get(i);
+                NodeState neighbourState = nodeStateMap.get(neighbourNode);
+                // Connects neighbourNode and nodeState.node
+                RoadSegment connectingSegment = segments.get(i);
+
+                if (neighbourState == null) {
+                    neighbourState = new NodeState(
+                            neighbourNode,
+                            connectingSegment,
+                            nodeState,
+                            Double.POSITIVE_INFINITY
+                    );
+                    nodeStateMap.put(neighbourNode, neighbourState);
+                }
+
+                if (neighbourState.hasCheckedChildren()) continue;
+                nodesToCheck.add(neighbourState);
+
+                // Distance up to neighbourNode
+                double newDistanceFromStart = nodeState.getDistanceFromStart()
+                        + connectingSegment.length;
+                if (newDistanceFromStart >= neighbourState.getDistanceFromStart()) {
+                    continue;
+                }
+
+                // Remove (if necessary) before changing priority
+                nodesToCheck.remove(neighbourState);
+
+                neighbourState.setDistanceFromStart(newDistanceFromStart);
+                neighbourState.setSegmentToPreviousNode(connectingSegment);
+                neighbourState.setPreviousNodeState(nodeState);
+
+                // Add back with new priority
+                nodesToCheck.add(neighbourState);
+            }
+
+            // Check if priority queue is in order
+            assert isSorted(nodesToCheck, comparator);
+        }
+
+        NodeState lastNodeState = nodeStateMap.get(routeEndNode);
+        if (lastNodeState == null) return null; // No route
+        return Route.newFromNodeState(lastNodeState);
+    }
+
+    private <T> boolean isSorted(Collection<? extends T> data,
+                                 Comparator<? super T> comparator) {
+        @SuppressWarnings("unchecked")
+        T[] dataArray = data.toArray((T[]) new Object[data.size()]);
+        T[] dataSorted = Arrays.copyOf(
+                dataArray, dataArray.length
+        );
+        Arrays.sort(dataSorted, comparator);
+        return Arrays.equals(dataArray, dataSorted);
     }
 
     /**

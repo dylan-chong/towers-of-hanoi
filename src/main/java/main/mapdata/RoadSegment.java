@@ -64,4 +64,5 @@ public class RoadSegment {
     public int hashCode() {
         return (int) roadId;
     }
+
 }
