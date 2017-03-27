@@ -9,10 +9,8 @@ import main.mapdata.RoadSegment;
 import slightlymodifiedtemplate.Location;
 
 import java.awt.*;
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,6 +22,8 @@ public class Drawer {
     private static final int NODE_RADIUS_PX = 5;
     private static final int ROUTE_NODE_RADIUS_PX = 8;
 
+    private static final int MAX_FRAMES_PER_AVERAGE = 10;
+
     private static final Color ROADS_COLOR = Color.DARK_GRAY;
     private static final Color ROADS_HIGHLIGHT_COLOR = Color.RED;
     private static final Color NODE_HIGHLIGHT_COLOR = ROADS_HIGHLIGHT_COLOR;
@@ -32,8 +32,11 @@ public class Drawer {
     private final MapDataModel mapModel;
     private final View view;
 
+    private List<Long> frameDurations = new ArrayList<>();
+
     @Inject
-    private Drawer(@Assisted MapDataModel mapModel, @Assisted View view) {
+    private Drawer(@Assisted MapDataModel mapModel,
+                   @Assisted View view) {
         this.mapModel = mapModel;
         this.view = view;
     }
@@ -41,6 +44,8 @@ public class Drawer {
     public void draw(Graphics graphics,
                      HighlightData highlightData,
                      Dimension drawAreaPixels) {
+        long frameStart = System.currentTimeMillis();
+
         Rectangle drawArea = view.getDrawingArea(drawAreaPixels);
 
         // Polygons
@@ -87,6 +92,16 @@ public class Drawer {
             highlightData.route.segments.forEach(roadSegment ->
                     drawRoadSegment(graphics, roadSegment, drawArea)
             );
+        }
+
+        long frameEnd = System.currentTimeMillis();
+        frameDurations.add(frameEnd - frameStart);
+        if (frameDurations.size() == MAX_FRAMES_PER_AVERAGE) {
+            long averageFrameDuration = frameDurations.stream()
+                    .mapToLong(l -> l)
+                    .sum() / frameDurations.size();
+            System.out.println("Frames took: " + averageFrameDuration + " ms");
+            frameDurations.clear();
         }
     }
 
