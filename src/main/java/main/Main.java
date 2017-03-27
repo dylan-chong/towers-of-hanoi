@@ -22,12 +22,18 @@ public class Main {
         @Override
         public void configure(Binder binder) {
             binder.bind(GUI.class).to(MapGUI.class);
+
             binder.install(new FactoryModuleBuilder()
                     .implement(MapDataModel.class, MapDataModel.class)
                     .build(MapDataModel.Factory.class));
+
             binder.install(new FactoryModuleBuilder()
                     .implement(MapDataContainer.class, MapDataContainer.class)
                     .build(MapDataContainer.Factory.class));
+
+            binder.install(new FactoryModuleBuilder()
+                    .implement(Drawer.class, Drawer.class)
+                    .build(Drawer.Factory.class));
         }
     }
 }

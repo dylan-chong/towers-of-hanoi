@@ -1,5 +1,7 @@
 package main;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import main.mapdata.MapDataModel;
 import main.mapdata.Node;
 import main.mapdata.Polygon;
@@ -20,18 +22,18 @@ import java.util.stream.Stream;
 public class Drawer {
 
     private static final int NODE_RADIUS_PX = 5;
-    private static final int ROUTE_START_NODE_RADIUS_PX = 8;
-    private static final int ROUTE_END_NODE_RADIUS_PX = 10;
+    private static final int ROUTE_NODE_RADIUS_PX = 8;
 
     private static final Color ROADS_COLOR = Color.DARK_GRAY;
     private static final Color ROADS_HIGHLIGHT_COLOR = Color.RED;
-    private static final Color NODE_HIGHLIGHT_COLOR = Color.RED;
-    private static final Color ROUTE_COLOR = new Color(70, 170, 230);
+    private static final Color NODE_HIGHLIGHT_COLOR = ROADS_HIGHLIGHT_COLOR;
+    private static final Color ROUTE_COLOR = ROADS_HIGHLIGHT_COLOR;
 
     private final MapDataModel mapModel;
     private final View view;
 
-    private Drawer(MapDataModel mapModel, View view) {
+    @Inject
+    private Drawer(@Assisted MapDataModel mapModel, @Assisted View view) {
         this.mapModel = mapModel;
         this.view = view;
     }
@@ -80,7 +82,7 @@ public class Drawer {
             Arrays.asList(
                     nodes.get(0),
                     nodes.get(nodes.size() - 1)
-            ).forEach(node -> drawNode(graphics, node, ROUTE_START_NODE_RADIUS_PX));
+            ).forEach(node -> drawNode(graphics, node, ROUTE_NODE_RADIUS_PX));
 
             highlightData.route.segments.forEach(roadSegment ->
                     drawRoadSegment(graphics, roadSegment, drawArea)
@@ -157,9 +159,7 @@ public class Drawer {
         graphics.fillPolygon(xPoints, yPoints, points.size());
     }
 
-    public static class Factory {
-        public Drawer create(MapDataModel mapModel, View view) {
-            return new Drawer(mapModel, view);
-        }
+    public interface Factory {
+        Drawer create(MapDataModel mapModel, View view);
     }
 }
