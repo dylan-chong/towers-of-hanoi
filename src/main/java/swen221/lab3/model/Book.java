@@ -52,7 +52,7 @@ public class Book extends PickupableItem {
 		switch (action) {
 			case "Read": {
 				if (!player.getInventory().contains(this)) {
-					break;
+					return false;
 				}
 				hasBeenRead = true;
 				return true;

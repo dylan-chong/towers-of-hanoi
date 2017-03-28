@@ -73,6 +73,8 @@ public class AdventureGame {
 			return  createObeliskObject(item);
         case "Book":
             return  createBookObject(item);
+        case "SecretButton":
+        	return  createSecretButtonObject(item);
 		default:
 			// If we get here, then we've encountered an object kind we don't
 			// know
@@ -151,10 +153,10 @@ public class AdventureGame {
         return addItemToRoom((Integer) item.field("location"), book);
     }
 
-	private Item createLockedDoorObject(GameFile.Item item) {
-		Door doorObject = createDoorObject(item);
+	private Item createSecretButtonObject(GameFile.Item item) {
 		int code = (int) item.field("code");
-		return new LockableDoor(doorObject.oneSide(), doorObject.otherSide(), code);
+		SecretButton secretButton = new SecretButton(code);
+		return addItemToRoom((Integer) item.field("location"), secretButton);
 	}
 
 	/**
@@ -186,7 +188,8 @@ public class AdventureGame {
 				"Key { location: 1, code: 123 }",
                 "Book { location: 1, title: \"Great Expectations\" }",
 				"Room { description: \"Hall\" }",
-				"LockedDoor { from: 0, to: 1, code: 123 }"
+				"LockedDoor { from: 0, to: 1, code: 123 }",
+				"SecretButton { location: 0, code: 123 }"
 		};
 		// Create the game model
 		AdventureGame game = new AdventureGame(GameFile.parseItems(items));

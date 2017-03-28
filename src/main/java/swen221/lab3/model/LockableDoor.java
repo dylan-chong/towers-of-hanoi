@@ -25,6 +25,10 @@ public class LockableDoor extends Door {
 		return actions.toArray(new String[actions.size()]);
 	}
 
+	public int getCode() {
+		return code;
+	}
+
 	@Override
 	public boolean performAction(String action, Player player) {
 		if (action.toLowerCase().endsWith("lock")) {
@@ -38,12 +42,16 @@ public class LockableDoor extends Door {
 			if (key == null) {
 				return false;
 			}
-			isLocked = action.equals("Lock");
+			setLocked(action.equals("Lock"));
 			return true;
 		}
 		if (action.equals("Enter")) {
 			if (isLocked) return false;
 		}
 		return super.performAction(action, player);
+	}
+
+	public void setLocked(boolean locked) {
+		isLocked = locked;
 	}
 }

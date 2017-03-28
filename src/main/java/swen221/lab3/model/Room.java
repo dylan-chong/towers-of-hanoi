@@ -1,5 +1,7 @@
 package swen221.lab3.model;
 
+import java.util.Arrays;
+
 /**
  * This class represents a room in the adventure game.
  * 
@@ -40,7 +42,11 @@ public class Room {
 	 */
 	public Item getItem(Location location) {
 		return items[location.ordinal()];
-	}	
+	}
+
+	public Item[] getItems() {
+		return Arrays.copyOf(items, items.length);
+	}
 	
 	/**
 	 * Set the item at a given location in the room. If null, then the item at
