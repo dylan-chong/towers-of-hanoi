@@ -25,6 +25,8 @@ public class Polygon {
     public final Integer endLevel;
     public final Integer cityIdx;
 
+    private Color morphedColor;
+
     public Polygon(String type,
                    String label,
                    List<LatLong> points,
@@ -75,13 +77,16 @@ public class Polygon {
      * be used as a color)
      */
     public Color getMorphedColor() {
+        if (morphedColor != null) return morphedColor;
+
         Color color = getColor();
         int r = morph(color.getBlue(),
                 MIN_BRIGHTNESS - RED_REDUCTION,
                 MAX_BRIGHTNESS - RED_REDUCTION);
         int g = morph(color.getRed(), MIN_BRIGHTNESS, MAX_BRIGHTNESS);
         int b = morph(color.getGreen(), MIN_BRIGHTNESS, MAX_BRIGHTNESS);
-        return new Color(r, g, b);
+        morphedColor = new Color(r, g, b);
+        return morphedColor;
     }
 
     private int morph(int colorElement, int minBrightness, int maxBrightness) {
