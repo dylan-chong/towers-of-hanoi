@@ -10,6 +10,11 @@ import java.awt.*;
 public class LatLong {
     public final double latitude, longitude;
 
+    /**
+     * Assume the earth has a constant radius everywhere
+     */
+    private static final double EARTH_CIRCUMFERENCE_KM = 40_007.86 ;
+
     // Conversions
     private Location location;
 
@@ -49,5 +54,13 @@ public class LatLong {
                 "{ latitude: %f, longitude: %f }",
                 latitude, longitude
         );
+    }
+
+    public double estimatedDistanceInKmTo(LatLong target) {
+        double distanceDegrees = Math.hypot(
+                target.latitude - latitude,
+                target.longitude - longitude
+        );
+        return (distanceDegrees / 360) * EARTH_CIRCUMFERENCE_KM;
     }
 }

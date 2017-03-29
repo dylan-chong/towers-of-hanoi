@@ -91,7 +91,11 @@ public class MapDataModel {
     public Route findRouteBetween(Node routeStartNode,
                                   Node routeEndNode) {
         Comparator<NodeState> comparator = Comparator.comparingDouble(
-                NodeState::getDistanceFromStart // todo A*
+                (nodeState) -> {
+                    double estimate = nodeState.getNode()
+                            .latLong.estimatedDistanceInKmTo(routeEndNode.latLong);
+                    return nodeState.getDistanceFromStart() + estimate;
+                }
         );
         NavigableSet<NodeState> nodesToCheck = new TreeSet<>(comparator);
         // For fast lookup
