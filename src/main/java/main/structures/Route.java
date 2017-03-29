@@ -4,6 +4,7 @@ import main.mapdata.Node;
 import main.mapdata.NodeState;
 import main.mapdata.RoadSegment;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,5 +40,16 @@ public class Route {
         }
 
         return new Route(nodes, segments);
+    }
+
+    /**
+     * Fake route so start and end can be drawn on the map before knowing the
+     * actual {@link Route}
+     */
+    public static Route makeFakeRoute(Node start, Node end) {
+        return new Route(
+                Arrays.asList(start, end),
+                Collections.emptyList()
+        );
     }
 }

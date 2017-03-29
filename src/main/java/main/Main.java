@@ -21,7 +21,7 @@ public class Main {
     private static class MainModule implements Module {
         @Override
         public void configure(Binder binder) {
-            binder.bind(GUI.class).to(MapGUI.class);
+            binder.bind(GUI.class).to(MapGUIController.class);
 
             binder.install(new FactoryModuleBuilder()
                     .implement(MapDataModel.class, MapDataModel.class)

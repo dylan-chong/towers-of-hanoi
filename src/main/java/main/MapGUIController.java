@@ -16,15 +16,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.io.File;
-import java.util.*;
-import java.util.List;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * Created by Dylan on 14/03/17.
  */
 @Singleton
-public class MapGUI extends GUI
+public class MapGUIController extends GUI
         implements MapMouseListener.CallbackReceiver {
 
     private static final int MAX_SEARCH_RESULTS = Integer.MAX_VALUE;
@@ -33,6 +34,7 @@ public class MapGUI extends GUI
     private final Drawer.Factory drawerFactory;
     private final MapDataLoader mapDataLoader;
     private final MapMouseListener.Factory mouseListenerFactory;
+    private final RouteOutputter routeOutputter;
 
     private Drawer drawer;
     private MapDataModel mapModel;
@@ -46,17 +48,18 @@ public class MapGUI extends GUI
 
     private MapGUIState state = MapGUIState.NORMAL;
     private Node routeStartNode;
-    private Node routeEndNode;
 
     @Inject
-    public MapGUI(View view,
-                  Drawer.Factory drawerFactory,
-                  MapDataLoader mapDataLoader,
-                  MapMouseListener.Factory mouseListenerFactory) {
+    public MapGUIController(View view,
+                            Drawer.Factory drawerFactory,
+                            MapDataLoader mapDataLoader,
+                            MapMouseListener.Factory mouseListenerFactory,
+                            RouteOutputter routeOutputter) {
         this.view = view;
         this.drawerFactory = drawerFactory;
         this.mapDataLoader = mapDataLoader;
         this.mouseListenerFactory = mouseListenerFactory;
+        this.routeOutputter = routeOutputter;
 
         initialise();
     }
@@ -199,16 +202,12 @@ public class MapGUI extends GUI
     }
 
     private void setRouteEndNode(Node routeEndNode) {
-        this.routeEndNode = routeEndNode;
-
         outputLine("Finding route from " + routeStartNode.id +
                 " to " + routeEndNode.id + " ...");
-        highlightData = highlightData.getNewWithRoute(new Route(
-                // Fake route
-                Arrays.asList(routeStartNode, routeEndNode),
-                // Don't draw segments because we don't know the route yet
-                Collections.emptyList()
-        ));
+        highlightData = highlightData.getNewWithRoute(
+                // Make fake so we an draw without knowing the route
+                Route.makeFakeRoute(routeStartNode, routeEndNode)
+        );
         redraw(); // Show the selection before searching for better UX
 
         Route route = mapModel.findRouteBetween(routeStartNode, routeEndNode);
@@ -225,34 +224,7 @@ public class MapGUI extends GUI
         }
 
         outputLine("Route found");
-        outputLine("Instructions:");
-
-        RoadInfo previousRoadInfo = null;
-        for (int i = 0; i < route.segments.size(); i++) {
-            Node node = route.nodes.get(i);
-            RoadSegment segment = route.segments.get(i);
-            RoadInfo roadInfo = mapModel.findRoadInfoForSegment(segment);
-
-            if (previousRoadInfo != null) {
-                List<RoadInfo> roadInfos = Arrays.asList(
-                        roadInfo, previousRoadInfo
-                );
-                if (RoadInfo.getDistinctByName(roadInfos).size() != 2) {
-                    // The previous had the same name, so don't bother printing
-                    // the name again
-                    previousRoadInfo = roadInfo;
-                    continue;
-                }
-            }
-
-            String distance = String.format("%.2f", segment.length);
-            outputLine("\t- Go from intersection " + node + "\n" +
-                    "\t  on " + roadInfo + " for " + distance + " km");
-            previousRoadInfo = roadInfo;
-        }
-
-        // There is one more node than segment
-        outputLine("\t- Then end your journey at " + routeEndNode);
+        routeOutputter.outputRoute(route, mapModel, this::outputLine);
     }
 
     private void clearHighlightingData() {

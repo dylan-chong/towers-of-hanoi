@@ -3,7 +3,7 @@ package main.mapdata.model;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import main.LatLong;
-import main.MapGUI;
+import main.MapGUIController;
 import main.mapdata.*;
 import main.structures.Graph;
 import main.structures.Route;
@@ -175,7 +175,7 @@ public class MapDataModel {
         return Route.newFromNodeState(lastNodeState);
     }
 
-    public MapGUI.ClickSelection getClickSelection(Node selectedNode) {
+    public MapGUIController.ClickSelection getClickSelection(Node selectedNode) {
         // Find roadSegments (for highlighting) and roadInfos (for printing)
         Collection<RoadSegment> roadSegments =
                 findRoadSegmentsForNode(selectedNode);
@@ -187,7 +187,7 @@ public class MapDataModel {
         Collection<RoadInfoByName> roadInfosByName =
                 RoadInfo.getDistinctByName(roadInfos);
 
-        return new MapGUI.ClickSelection(
+        return new MapGUIController.ClickSelection(
                 selectedNode,
                 roadSegments,
                 roadInfos,
