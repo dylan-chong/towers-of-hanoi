@@ -1,6 +1,6 @@
 package main.mapdata;
 
-import main.LatLong;
+import main.mapdata.location.LatLong;
 
 import java.awt.*;
 import java.util.List;

@@ -5,8 +5,11 @@ import com.google.inject.assistedinject.Assisted;
 import main.async.AsyncTask;
 import main.async.AsyncTaskQueues;
 import main.mapdata.*;
-import main.structures.QuadTree;
-import main.structures.Trie;
+import main.mapdata.roads.Node;
+import main.mapdata.roads.RoadInfo;
+import main.mapdata.roads.RoadSegment;
+import main.datastructures.QuadTree;
+import main.datastructures.Trie;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -21,7 +24,7 @@ public class MapDataContainer {
 
     /**
      * Node id to Node (intersection/nodeInfo). It is called nodeInfos to avoid
-     * confusion with {@link main.structures.Graph.Node}
+     * confusion with {@link main.datastructures.Graph.Node}
      */
     private Map<Long, Node> nodeInfos;
     private Collection<RoadSegment> roadSegments;

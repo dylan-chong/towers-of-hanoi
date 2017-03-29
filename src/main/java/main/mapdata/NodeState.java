@@ -1,5 +1,8 @@
 package main.mapdata;
 
+import main.mapdata.roads.Node;
+import main.mapdata.roads.RoadSegment;
+
 /**
  * Used for route-finding using Djikstra/A* algorithm. This represents
  * one item in the {@link java.util.PriorityQueue}

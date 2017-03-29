@@ -1,6 +1,8 @@
 package main.mapdata;
 
-import main.structures.Graph;
+import main.mapdata.roads.Node;
+import main.mapdata.roads.RoadSegment;
+import main.datastructures.Graph;
 
 /**
  * Created by Dylan on 17/03/17.

@@ -2,13 +2,17 @@ package main.mapdata.model;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import main.LatLong;
-import main.MapGUIController;
+import main.mapdata.location.LatLong;
+import main.gui.MapController;
 import main.mapdata.*;
-import main.structures.Graph;
-import main.structures.Route;
-import main.structures.Trie;
-import slightlymodifiedtemplate.Location;
+import main.mapdata.roads.Node;
+import main.mapdata.roads.RoadInfo;
+import main.mapdata.roads.RoadInfoByName;
+import main.mapdata.roads.RoadSegment;
+import main.datastructures.Graph;
+import main.mapdata.Route;
+import main.datastructures.Trie;
+import main.mapdata.location.Location;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -175,7 +179,7 @@ public class MapDataModel {
         return Route.newFromNodeState(lastNodeState);
     }
 
-    public MapGUIController.ClickSelection getClickSelection(Node selectedNode) {
+    public MapController.ClickSelection getClickSelection(Node selectedNode) {
         // Find roadSegments (for highlighting) and roadInfos (for printing)
         Collection<RoadSegment> roadSegments =
                 findRoadSegmentsForNode(selectedNode);
@@ -187,7 +191,7 @@ public class MapDataModel {
         Collection<RoadInfoByName> roadInfosByName =
                 RoadInfo.getDistinctByName(roadInfos);
 
-        return new MapGUIController.ClickSelection(
+        return new MapController.ClickSelection(
                 selectedNode,
                 roadSegments,
                 roadInfos,

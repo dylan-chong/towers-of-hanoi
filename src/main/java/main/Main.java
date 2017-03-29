@@ -5,9 +5,11 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import main.gui.helpers.Drawer;
+import main.gui.MapController;
+import main.gui.helpers.MapMouseListener;
 import main.mapdata.model.MapDataContainer;
 import main.mapdata.model.MapDataModel;
-import slightlymodifiedtemplate.GUI;
 
 /**
  * Created by Dylan on 14/03/17.
@@ -15,14 +17,12 @@ import slightlymodifiedtemplate.GUI;
 public class Main {
     public static void main(String[] args) {
         Injector mainInjector = Guice.createInjector(new MainModule());
-        GUI gui = mainInjector.getInstance(GUI.class);
+        MapController controller = mainInjector.getInstance(MapController.class);
     }
 
     private static class MainModule implements Module {
         @Override
         public void configure(Binder binder) {
-            binder.bind(GUI.class).to(MapGUIController.class);
-
             binder.install(new FactoryModuleBuilder()
                     .implement(MapDataModel.class, MapDataModel.class)
                     .build(MapDataModel.Factory.class));
