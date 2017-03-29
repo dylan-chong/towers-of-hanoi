@@ -1,5 +1,6 @@
 package main.async;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 @Singleton
 public class AsyncTaskQueues {
-    private static final int NUMBER_OF_THREADS =
+    private static final int DEFAULT_NUMBER_OF_THREADS =
             Runtime.getRuntime().availableProcessors();
 
     /**
@@ -26,13 +27,19 @@ public class AsyncTaskQueues {
     private Queue<AsyncTask> tasksToAdd = new ConcurrentLinkedQueue<>();
     private Thread queuingThread;
 
-    private BlockingQueue<AsyncTask> mainTasksQueue =
-            new ArrayBlockingQueue<>(NUMBER_OF_THREADS);
+    private BlockingQueue<AsyncTask> mainTasksQueue;
     private Collection<AsyncWorker> workers;
 
+    @Inject
     public AsyncTaskQueues() {
+        this(DEFAULT_NUMBER_OF_THREADS);
+    }
+
+    public AsyncTaskQueues(int numberOfWorkerThreads) {
+        mainTasksQueue = new ArrayBlockingQueue<>(numberOfWorkerThreads);
+
         workers = new ArrayList<>();
-        for (int i = 0; i < NUMBER_OF_THREADS; i++) {
+        for (int i = 0; i < numberOfWorkerThreads; i++) {
             workers.add(new AsyncWorker(mainTasksQueue));
         }
 

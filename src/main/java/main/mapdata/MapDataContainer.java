@@ -38,7 +38,7 @@ public class MapDataContainer {
 
 
     @Inject
-    private MapDataContainer(
+    public MapDataContainer(
             AsyncTaskQueues asyncTaskQueues,
             @Assisted Runnable finishLoadingCallback,
             @Assisted Supplier<Collection<Node>> nodeInfosSupplier,

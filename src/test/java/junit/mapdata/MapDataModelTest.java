@@ -1,9 +1,7 @@
 package junit.mapdata;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.assistedinject.FactoryModuleBuilder;
 import main.LatLong;
+import main.async.AsyncTaskQueues;
 import main.mapdata.*;
 import main.structures.Route;
 import org.junit.Before;
@@ -19,9 +17,6 @@ import static org.junit.Assert.assertEquals;
  */
 public class MapDataModelTest {
 
-    private static final Runnable noop = () -> {
-    };
-
     /**
      * This is required because I refactored the MapModel into 2 classes:
      * {@link MapDataModel} and {@link MapDataContainer}, so I used a facade
@@ -31,33 +26,16 @@ public class MapDataModelTest {
 
     @Before
     public void setup() {
-        Injector injector = Guice.createInjector(binder -> {
-            binder.install(new FactoryModuleBuilder()
-                    .implement(MapDataModel.class, MapDataModel.class)
-                    .build(MapDataModel.Factory.class));
-            binder.install(new FactoryModuleBuilder()
-                    .implement(MapDataContainer.class, MapDataContainer.class)
-                    .build(MapDataContainer.Factory.class));
-        });
-
-        MapDataModel.Factory modelFactory = injector.getInstance(
-                MapDataModel.Factory.class
-        );
-        MapDataContainer.Factory containerFactory = injector.getInstance(
-                MapDataContainer.Factory.class
-        );
-
-        mapDataFactory = (finishLoadingCallback,
-                          nodes,
+        mapDataFactory = (nodes,
                           roadSegments,
-                          roadInfosSupplier,
-                          polygonsSupplier) ->
-                modelFactory.create(containerFactory.create(
-                        finishLoadingCallback,
+                          roadInfosSupplier) ->
+                new MapDataModel(new MapDataContainer(
+                        new AsyncTaskQueues(),
+                        () -> {},
                         nodes,
                         roadSegments,
                         roadInfosSupplier,
-                        polygonsSupplier
+                        Collections::emptyList
                 ));
     }
 
@@ -65,11 +43,9 @@ public class MapDataModelTest {
     public void findNodeNearLocation_withOneNodeAtExactLocation_returnsLocation() {
         LatLong expectedLatLong = new LatLong(0, 1);
         MapDataModel mapModel = mapDataFactory.create(
-                noop,
                 () -> Collections.singletonList(
                         new Node(1, expectedLatLong)
                 ),
-                Collections::emptyList,
                 Collections::emptyList,
                 Collections::emptyList
         );
@@ -82,11 +58,9 @@ public class MapDataModelTest {
     @Test
     public void findNodeNearLocation_oneNodeCloseToClick_returnsLocation() {
         MapDataModel mapModel = mapDataFactory.create(
-                noop,
                 () -> Collections.singletonList(
                         new Node(1, new LatLong(4, 7))
                 ),
-                Collections::emptyList,
                 Collections::emptyList,
                 Collections::emptyList
         );
@@ -99,11 +73,9 @@ public class MapDataModelTest {
     @Test
     public void findNodeNearLocation_oneNodeFarFromClick_returnsNodeAnyway() {
         MapDataModel mapModel = mapDataFactory.create(
-                noop,
                 () -> Collections.singletonList(
                         new Node(1, new LatLong(4, 7))
                 ),
-                Collections::emptyList,
                 Collections::emptyList,
                 Collections::emptyList
         );
@@ -116,12 +88,10 @@ public class MapDataModelTest {
     @Test
     public void findNodeNearLocation_oneCloseNodeOneFarNode_returnsClose() {
         MapDataModel mapModel = mapDataFactory.create(
-                noop,
                 () -> Arrays.asList(
                         new Node(1, new LatLong(4, 7)),
                         new Node(2, new LatLong(15, 15))
                 ),
-                Collections::emptyList,
                 Collections::emptyList,
                 Collections::emptyList
         );
@@ -134,12 +104,10 @@ public class MapDataModelTest {
     @Test
     public void findNodeNearLocation_oneFarOneClose_returnsClosest() {
         MapDataModel mapModel = mapDataFactory.create(
-                noop,
                 () -> Arrays.asList(
                         new Node(2, new LatLong(15, 15)),
                         new Node(1, new LatLong(4, 7))
                 ),
-                Collections::emptyList,
                 Collections::emptyList,
                 Collections::emptyList
         );
@@ -152,8 +120,6 @@ public class MapDataModelTest {
     @Test
     public void findRoadSegmentsByString_emptyData_returnsEmpty() {
         MapDataModel mapModel = mapDataFactory.create(
-                noop,
-                Collections::emptyList,
                 Collections::emptyList,
                 Collections::emptyList,
                 Collections::emptyList
@@ -249,10 +215,8 @@ public class MapDataModelTest {
                                                Node routeEnd,
                                                GraphDataSet graphDataSet) {
         MapDataModel mapModel = mapDataFactory.create(
-                noop,
                 () -> graphDataSet.modelNodes,
                 () -> graphDataSet.modelRoadSegments,
-                Collections::emptyList,
                 Collections::emptyList
         );
         Route route = mapModel.findRouteBetween(routeStart, routeEnd);
@@ -266,10 +230,8 @@ public class MapDataModelTest {
 
     private interface ModelFacadeFactory {
         MapDataModel create(
-                Runnable finishLoadingCallback,
                 Supplier<Collection<Node>> nodes,
                 Supplier<Collection<RoadSegment>> roadSegments,
-                Supplier<Collection<RoadInfo>> roadInfosSupplier,
-                Supplier<Collection<Polygon>> polygonsSupplier);
+                Supplier<Collection<RoadInfo>> roadInfosSupplier);
     }
 }
