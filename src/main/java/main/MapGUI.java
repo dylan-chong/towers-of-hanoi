@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -225,17 +226,30 @@ public class MapGUI extends GUI {
         outputLine("Route found");
         outputLine("Instructions:");
 
+        RoadInfo previousRoadInfo = null;
         for (int i = 0; i < route.segments.size(); i++) {
             Node node = route.nodes.get(i);
             RoadSegment segment = route.segments.get(i);
             RoadInfo roadInfo = mapModel.findRoadInfoForSegment(segment);
 
-            // TODO check last for duplicate names
-            // TODO node street intersections?
+            if (previousRoadInfo != null) {
+                List<RoadInfo> roadInfos = Arrays.asList(
+                        roadInfo, previousRoadInfo
+                );
+                if (RoadInfo.getDistinctByName(roadInfos).size() != 2) {
+                    // The previous had the same name, so don't bother printing
+                    // the name again
+                    previousRoadInfo = roadInfo;
+                    continue;
+                }
+            }
 
+            String distance = String.format("%.2f", segment.length);
             outputLine("\t- Go from intersection " + node + "\n" +
-                    "\t  to " + roadInfo);
+                    "\t  on " + roadInfo + " for " + distance + " km");
+            previousRoadInfo = roadInfo;
         }
+
         // There is one more node than segment
         outputLine("\t- Then end your journey at " + routeEndNode);
     }
