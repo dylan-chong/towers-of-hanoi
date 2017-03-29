@@ -11,6 +11,7 @@ import main.mapdata.roads.RoadSegment;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -70,6 +71,17 @@ public class MapDataModelTestUtils {
 
         assertEquals(route.nodes.get(0), routeStart);
         assertEquals(route.nodes.get(route.nodes.size() - 1), routeEnd);
+    }
+
+    public static void testFindArticulationPoints(GraphDataSet dataSet,
+                                                  Set<Node> expectedPoints) {
+        MapDataModel model = MAP_DATA_FACTORY.create(
+                () -> dataSet.nodes,
+                () -> dataSet.roadSegments,
+                () -> dataSet.roadInfos
+        );
+        Set<Node> articulationPoints = model.findArticulationPoints();
+        assertEquals(expectedPoints, articulationPoints);
     }
 
     public interface ModelFacadeFactory {

@@ -112,7 +112,7 @@ public class MapDataModelTest {
 
     @Test
     public void findRouteBetween_sameNode_returnsEmptySegmentsAndOneNode() {
-        GraphDataSet dataSet = GraphDataSet.A_SHORT_LINEAR_GRAPH;
+        GraphDataSet dataSet = GraphDataSet.SHORT_LINEAR_GRAPH;
         MapDataModelTestUtils.testFindRouteBetweenOnDataSet(
                 Collections.singletonList(dataSet.getNodeById(1)),
                 Collections.emptyList(),
@@ -125,7 +125,7 @@ public class MapDataModelTest {
 
     @Test
     public void findRouteBetween_oneEdgeApart_findsTheEnd() {
-        GraphDataSet dataSet = GraphDataSet.A_SHORT_LINEAR_GRAPH;
+        GraphDataSet dataSet = GraphDataSet.SHORT_LINEAR_GRAPH;
         MapDataModelTestUtils.testFindRouteBetweenOnDataSet(
                 Arrays.asList(
                         dataSet.getNodeById(1),
@@ -141,7 +141,7 @@ public class MapDataModelTest {
 
     @Test
     public void findRouteBetween_twoEdgesApart_findsTheEnd() {
-        GraphDataSet dataSet = GraphDataSet.A_SHORT_LINEAR_GRAPH;
+        GraphDataSet dataSet = GraphDataSet.SHORT_LINEAR_GRAPH;
         MapDataModelTestUtils.testFindRouteBetweenOnDataSet(
                 null,
                 null,
@@ -154,7 +154,7 @@ public class MapDataModelTest {
 
     @Test
     public void findRouteBetween_twoEdgesApart_findsEndWithoutReversing() {
-        GraphDataSet dataSet = GraphDataSet.A_SHORT_LINEAR_GRAPH;
+        GraphDataSet dataSet = GraphDataSet.SHORT_LINEAR_GRAPH;
         MapDataModelTestUtils.testFindRouteBetweenOnDataSet(
                 Arrays.asList(
                         dataSet.getNodeById(1),
@@ -174,7 +174,7 @@ public class MapDataModelTest {
 
     @Test
     public void findRouteBetween_triangleGraph_findsShortestRoute() {
-        GraphDataSet dataSet = GraphDataSet.B_TRIANGLE_GRAPH;
+        GraphDataSet dataSet = GraphDataSet.TRIANGLE_GRAPH;
         MapDataModelTestUtils.testFindRouteBetweenOnDataSet(
                 Arrays.asList(
                         dataSet.getNodeById(1),
@@ -192,7 +192,7 @@ public class MapDataModelTest {
 
     @Test
     public void findRouteBetween_triangleGraphWithAOneWay_findsOnlyRoute() {
-        GraphDataSet dataSet = GraphDataSet.C_TRIANGLE_GRAPH_WITH_A_ONE_WAY_ROUTE;
+        GraphDataSet dataSet = GraphDataSet.TRIANGLE_GRAPH_WITH_A_ONE_WAY_ROUTE;
         MapDataModelTestUtils.testFindRouteBetweenOnDataSet(
                 Arrays.asList(
                         dataSet.getNodeById(1),
@@ -212,7 +212,7 @@ public class MapDataModelTest {
 
     @Test
     public void findRouteBetween_oneWayBlocksAllRoutes_returnsNull() {
-        GraphDataSet dataSet = GraphDataSet.D_ONE_WAY_PATHS_ONLY;
+        GraphDataSet dataSet = GraphDataSet.ONE_WAY_PATHS_ONLY;
         MapDataModelTestUtils.testFindRouteBetweenOnDataSet(
                 null,
                 null,
@@ -223,4 +223,41 @@ public class MapDataModelTest {
         );
     }
 
+    @Test
+    public void findArticulationPoints_emptyData_returnsEmpty() {
+        MapDataModelTestUtils.testFindArticulationPoints(
+                GraphDataSet.EMPTY,
+                Collections.emptySet()
+        );
+    }
+
+    @Test
+    public void findArticulationPoints_triangleGraph_returnsEmpty() {
+        MapDataModelTestUtils.testFindArticulationPoints(
+                GraphDataSet.TRIANGLE_GRAPH,
+                Collections.emptySet()
+        );
+    }
+
+    @Test
+    public void findArticulationPoints_linearWithThreeNodes_returnsMiddleNode() {
+        GraphDataSet dataSet = GraphDataSet.SHORT_LINEAR_GRAPH;
+        MapDataModelTestUtils.testFindArticulationPoints(
+                dataSet,
+                Collections.singleton(dataSet.getNodeById(2))
+        );
+    }
+
+    @Test
+    public void findArticulationPoints_ethaneStructure_returnsMiddleNode() {
+        // See Enum definition for diagram
+        GraphDataSet dataSet = GraphDataSet.ETHANE_STRUCTURE;
+        MapDataModelTestUtils.testFindArticulationPoints(
+                dataSet,
+                new HashSet<>(Arrays.asList(
+                        dataSet.getNodeById(4),
+                        dataSet.getNodeById(5)
+                ))
+        );
+    }
 }

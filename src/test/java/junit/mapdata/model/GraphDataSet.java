@@ -20,7 +20,13 @@ import java.util.stream.IntStream;
  * segment ids
  */
 public enum GraphDataSet {
-    A_SHORT_LINEAR_GRAPH(
+    EMPTY(
+            0,
+            0,
+            Collections.emptyList(),
+            Collections.emptyList()
+    ),
+    SHORT_LINEAR_GRAPH(
             1,
             3,
             Arrays.asList(
@@ -29,7 +35,7 @@ public enum GraphDataSet {
             ),
             null
     ),
-    B_TRIANGLE_GRAPH(
+    TRIANGLE_GRAPH(
             1,
             3,
             Arrays.asList(
@@ -39,7 +45,7 @@ public enum GraphDataSet {
             ),
             null
     ),
-    C_TRIANGLE_GRAPH_WITH_A_ONE_WAY_ROUTE(
+    TRIANGLE_GRAPH_WITH_A_ONE_WAY_ROUTE(
             1,
             3,
             Arrays.asList(
@@ -53,7 +59,7 @@ public enum GraphDataSet {
                     roadInfoForSegmentId(103, true)
             )
     ),
-    D_ONE_WAY_PATHS_ONLY(
+    ONE_WAY_PATHS_ONLY(
             1,
             3,
             Arrays.asList(
@@ -66,6 +72,29 @@ public enum GraphDataSet {
                     roadInfoForSegmentId(102, true),
                     roadInfoForSegmentId(103, true)
             )
+    ),
+    ETHANE_STRUCTURE(
+            // Diagram of node ids
+            //     1   2
+            //     |   |
+            // 3 - 4 - 5 - 6
+            //     |   |
+            //     7   8
+            1,
+            8,
+            Arrays.asList(
+                    // Top vertical segments (see diagram)
+                    segmentWithIdConnectedToNodes(101, 1, 4),
+                    segmentWithIdConnectedToNodes(101, 2, 5),
+                    // Horizontal segments
+                    segmentWithIdConnectedToNodes(101, 3, 4),
+                    segmentWithIdConnectedToNodes(101, 4, 5),
+                    segmentWithIdConnectedToNodes(101, 5, 6),
+                    // Bottom vertical segments
+                    segmentWithIdConnectedToNodes(101, 4, 7),
+                    segmentWithIdConnectedToNodes(101, 5, 8)
+            ),
+            null
     );
 
     public final List<RoadSegment> roadSegments;

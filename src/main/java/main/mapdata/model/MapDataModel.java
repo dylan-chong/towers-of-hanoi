@@ -210,6 +210,10 @@ public class MapDataModel {
         );
     }
 
+    public Set<Node> findArticulationPoints() {
+        return new HashSet<>();
+    }
+
     private <T> boolean isSorted(Collection<? extends T> data,
                                  Comparator<? super T> comparator) {
         @SuppressWarnings("unchecked")
