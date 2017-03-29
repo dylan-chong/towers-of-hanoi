@@ -45,7 +45,7 @@ public class MapGUI extends GUI {
     private Map<RoadInfo, Collection<RoadSegment>> searchResults;
     private MouseAdapter drawingMouseListener;
 
-    private UserState state = UserState.NORMAL;
+    private UIState state = UIState.NORMAL;
     private Node routeStartNode;
     private Node routeEndNode;
 
@@ -145,7 +145,7 @@ public class MapGUI extends GUI {
 
     @Override
     protected void onEnterDirectionsClick() {
-        state = UserState.ENTER_ROUTE_START_NODE;
+        state = UIState.ENTER_ROUTE_START_NODE;
         outputLine("Click on an intersection to define the start");
 
         // Clear route
@@ -173,22 +173,22 @@ public class MapGUI extends GUI {
         );
         ClickSelection selection = selectClosestNodeTo(clickLocation);
         // Show information and set highlightData
-        applyClickSelection(selection);
+        applyClickSelection(selection, state);
 
-        if (state == UserState.NORMAL) return;
+        if (state == UIState.NORMAL) return;
         if (selection.selectedNode == null) return;
 
-        if (state == UserState.ENTER_ROUTE_START_NODE) {
+        if (state == UIState.ENTER_ROUTE_START_NODE) {
             setRouteStartNode(selection.selectedNode);
-        } else if (state == UserState.ENTER_ROUTE_LAST_NODE) {
+        } else if (state == UIState.ENTER_ROUTE_LAST_NODE) {
             setRouteEndNode(selection.selectedNode);
-            state = UserState.NORMAL;
+            state = UIState.NORMAL;
         }
     }
 
     private void setRouteStartNode(Node routeStartNode) {
         this.routeStartNode = routeStartNode;
-        state = UserState.ENTER_ROUTE_LAST_NODE;
+        state = UIState.ENTER_ROUTE_LAST_NODE;
         // Hack to show just one circle (for the route start)
         highlightData = highlightData.getNewWithRoute(new Route(
                 Collections.singletonList(routeStartNode),
@@ -281,7 +281,7 @@ public class MapGUI extends GUI {
      * Display information, and store the node and segments to be highlighted
      * on draw
      */
-    private void applyClickSelection(ClickSelection selection) {
+    private void applyClickSelection(ClickSelection selection, UIState state) {
         highlightData = new HighlightData(
                 selection.selectedNode, // these fields may be null
                 selection.connectedSegments,
@@ -291,8 +291,13 @@ public class MapGUI extends GUI {
             outputLine("There are no nodes there");
             return;
         }
-        selection.segmentInfosByName.forEach(roadInfoByName ->
-                outputLine("- Connected to: " + roadInfoByName)
+
+        if (state != UIState.NORMAL) return;
+
+        // Show selected node details
+        outputLine("Found an intersection: " + selection.selectedNode);
+        selection.segmentInfosByName.forEach(
+                roadInfoByName -> outputLine("- Connected to: " + roadInfoByName)
         );
     }
 
@@ -302,8 +307,6 @@ public class MapGUI extends GUI {
         if (selectedNode == null) {
             return new ClickSelection(null, null, null, null);
         }
-
-        outputLine("Found an intersection: " + selectedNode);
 
         // Find roadSegments (for highlighting) and roadInfos (for printing)
         Collection<RoadSegment> roadSegments =
