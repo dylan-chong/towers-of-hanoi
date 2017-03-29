@@ -1,17 +1,19 @@
 package junit.mapdata.model;
 
-import main.mapdata.location.LatLong;
 import main.async.AsyncTaskQueues;
+import main.mapdata.Route;
+import main.mapdata.location.LatLong;
 import main.mapdata.model.MapDataContainer;
 import main.mapdata.model.MapDataModel;
 import main.mapdata.roads.Node;
 import main.mapdata.roads.RoadInfo;
 import main.mapdata.roads.RoadSegment;
-import main.mapdata.Route;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static org.junit.Assert.assertEquals;
@@ -141,7 +143,8 @@ public class MapDataModelTest {
                 Collections.emptyList(),
                 dataSet.getNodeById(1),
                 dataSet.getNodeById(1),
-                dataSet
+                dataSet,
+                null
         );
     }
 
@@ -156,7 +159,8 @@ public class MapDataModelTest {
                 Collections.singletonList(dataSet.getSegmentById(101)),
                 dataSet.getNodeById(1),
                 dataSet.getNodeById(2),
-                dataSet
+                dataSet,
+                null
         );
     }
 
@@ -168,7 +172,8 @@ public class MapDataModelTest {
                 null,
                 dataSet.getNodeById(1),
                 dataSet.getNodeById(3),
-                dataSet
+                dataSet,
+                null
         );
     }
 
@@ -187,7 +192,8 @@ public class MapDataModelTest {
                 ),
                 dataSet.getNodeById(1),
                 dataSet.getNodeById(3),
-                dataSet
+                dataSet,
+                null
         );
     }
 
@@ -204,7 +210,41 @@ public class MapDataModelTest {
                 ),
                 dataSet.getNodeById(1),
                 dataSet.getNodeById(3),
-                dataSet
+                dataSet,
+                null
+        );
+    }
+
+    @Test
+    public void findRouteBetween_triangleGraphWithAOneWay_findsOnlyRoute() {
+        GraphDataSet dataSet = GraphDataSet.C_TRIANGLE_GRAPH_WITH_A_ONE_WAY_ROUTE;
+        testFindRouteBetweenOnDataSet(
+                Arrays.asList(
+                        dataSet.getNodeById(1),
+                        dataSet.getNodeById(2),
+                        dataSet.getNodeById(3)
+                ),
+                Arrays.asList(
+                        dataSet.getSegmentById(101),
+                        dataSet.getSegmentById(102)
+                ),
+                dataSet.getNodeById(1),
+                dataSet.getNodeById(3),
+                dataSet,
+                null
+        );
+    }
+
+    @Test
+    public void findRouteBetween_oneWayBlocksAllRoutes_returnsNull() {
+        GraphDataSet dataSet = GraphDataSet.D_ONE_WAY_PATHS_ONLY;
+        testFindRouteBetweenOnDataSet(
+                null,
+                null,
+                dataSet.getNodeById(3),
+                dataSet.getNodeById(1),
+                dataSet,
+                Assert::assertNull
         );
     }
 
@@ -212,18 +252,25 @@ public class MapDataModelTest {
      * @param expectedNodes Set to null if you only care about the start and end
      * @param expectedSegments Set to null if you only care about the start and
      *                         end
+     * @param routeMatcher nullable. Use for custom asserts for route
      */
     private void testFindRouteBetweenOnDataSet(List<Node> expectedNodes,
                                                List<RoadSegment> expectedSegments,
                                                Node routeStart,
                                                Node routeEnd,
-                                               GraphDataSet graphDataSet) {
+                                               GraphDataSet graphDataSet,
+                                               Consumer<Route> routeMatcher) {
         MapDataModel mapModel = mapDataFactory.create(
-                () -> graphDataSet.modelNodes,
-                () -> graphDataSet.modelRoadSegments,
-                Collections::emptyList
+                () -> graphDataSet.nodes,
+                () -> graphDataSet.roadSegments,
+                () -> graphDataSet.roadInfos
         );
         Route route = mapModel.findRouteBetween(routeStart, routeEnd);
+
+        if (routeMatcher != null) {
+            routeMatcher.accept(route);
+            return;
+        }
 
         if (expectedNodes != null) assertEquals(expectedNodes, route.nodes);
         if (expectedSegments != null) assertEquals(expectedSegments, route.segments);

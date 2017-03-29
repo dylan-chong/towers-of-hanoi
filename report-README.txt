@@ -27,7 +27,7 @@ Minimum out of 40:
       priorities (which change as you find a shorter path), so it must be
       removed before the data is modified, then re-added.
 * [x] (5) Uses an appropriate cost measure (sum of segment lengths).
-* [ ] (5) Uses an appropriate heuristic.
+* [x] (5) Uses an appropriate heuristic.
 * [x] (5) Uses the appropriate graph structure of segments from a node.
     - It isn't immediately obvious that a graph is being used. The method
       {@link MapDataModel#findRoadSegmentsForNode} was used, which accesses the
@@ -45,7 +45,7 @@ Core out of 35 (up to 75):
 * [ ] (5) Do they have a report with pseudocode of their algorithms in it?
 
 Completion out of 10 (up to 85):
-* [ ] (3) Uses one-way roads correctly in the route-finding.
+* [x] (3) Uses one-way roads correctly in the route-finding.
 * [x] (3) Highlights the route on the map as well as printing it.
 * [x] (4) Removes duplicate roads from the printout, and give the right lengths
   and total length. (3 for removing duplicates, 1 for doing the lengths.)

@@ -135,6 +135,14 @@ public class MapDataModel {
                 // Connects neighbourNode and nodeState.node
                 RoadSegment connectingSegment = currentSegments.get(i);
 
+                if (findRoadInfoForSegment(connectingSegment).isOneWay) {
+                    Node currentNode = currentNodeState.getNode();
+                    if (connectingSegment.node1ID != currentNode.id) {
+                        // Wrong way
+                        continue;
+                    }
+                }
+
                 NodeState neighbourState = nodeStateMap.computeIfAbsent(
                         neighbourNode,
                         key -> new NodeState(
@@ -146,6 +154,7 @@ public class MapDataModel {
                 );
 
                 if (neighbourState.hasCheckedChildren()) continue;
+
                 nodesToCheck.add(neighbourState);
 
                 // Distance up to neighbourNode
@@ -176,7 +185,9 @@ public class MapDataModel {
 
         NodeState lastNodeState = nodeStateMap.get(routeEndNode);
         if (lastNodeState == null) return null; // No route
-        return Route.newFromNodeState(lastNodeState);
+        Route route = Route.newFromNodeState(lastNodeState);
+        if (route.nodes.get(0) != routeStartNode) return null;
+        return route;
     }
 
     public MapController.ClickSelection getClickSelection(Node selectedNode) {

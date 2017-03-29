@@ -37,7 +37,7 @@ public class Node {
 
     @Override
     public String toString() {
-        return latLong.toString();
+        return "{id: " + id + ", latLong: " + latLong.toString() + "}";
     }
 }
 
