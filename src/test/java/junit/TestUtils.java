@@ -3,6 +3,7 @@ package junit;
 import main.LatLong;
 import main.View;
 import main.mapdata.*;
+import main.mapdata.model.MapDataParser;
 
 import java.io.BufferedReader;
 import java.io.StringReader;

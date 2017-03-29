@@ -2,7 +2,7 @@ package main;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import main.mapdata.MapDataModel;
+import main.mapdata.model.MapDataModel;
 import main.mapdata.Node;
 import main.mapdata.Polygon;
 import main.mapdata.RoadSegment;

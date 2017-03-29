@@ -5,8 +5,8 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
-import main.mapdata.MapDataContainer;
-import main.mapdata.MapDataModel;
+import main.mapdata.model.MapDataContainer;
+import main.mapdata.model.MapDataModel;
 import slightlymodifiedtemplate.GUI;
 
 /**

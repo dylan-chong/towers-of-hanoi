@@ -1,8 +1,9 @@
-package main.mapdata;
+package main.mapdata.model;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import main.LatLong;
+import main.mapdata.*;
 import main.structures.Graph;
 import main.structures.Route;
 import main.structures.Trie;
@@ -79,7 +80,8 @@ public class MapDataModel {
      */
     public List<RoadSegment> findRoadSegmentsForNode(Node nodeInfo) {
         MapGraph.Node graphNode = data.getMapGraph().getNodeForNodeInfo(nodeInfo);
-        return graphNode.getEdges().stream()
+        return graphNode.getEdges()
+                .stream()
                 .map(Graph.Edge::getInfo)
                 .collect(Collectors.toList());
     }

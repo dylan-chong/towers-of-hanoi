@@ -1,6 +1,10 @@
-package main.mapdata;
+package main.mapdata.model;
 
 import main.LatLong;
+import main.mapdata.Node;
+import main.mapdata.Polygon;
+import main.mapdata.RoadInfo;
+import main.mapdata.RoadSegment;
 
 import java.io.BufferedReader;
 import java.io.IOException;

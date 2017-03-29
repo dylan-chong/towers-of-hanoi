@@ -3,6 +3,8 @@ package main;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import main.mapdata.*;
+import main.mapdata.model.MapDataLoader;
+import main.mapdata.model.MapDataModel;
 import main.structures.Route;
 import slightlymodifiedtemplate.GUI;
 import slightlymodifiedtemplate.Location;
@@ -12,13 +14,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -29,11 +27,9 @@ public class MapGUI extends GUI {
 
     private static final int MAX_SEARCH_RESULTS = Integer.MAX_VALUE;
 
-    private final MapDataParser dataParser;
     private final View view;
-    private final MapDataModel.Factory mapModelFactory;
-    private final MapDataContainer.Factory mapDataContainerFactory;
     private final Drawer.Factory drawerFactory;
+    private final MapDataLoader mapDataLoader;
 
     private Drawer drawer;
     private MapDataModel mapModel;
@@ -45,21 +41,17 @@ public class MapGUI extends GUI {
     private Map<RoadInfo, Collection<RoadSegment>> searchResults;
     private MouseAdapter drawingMouseListener;
 
-    private UIState state = UIState.NORMAL;
+    private MapGUIState state = MapGUIState.NORMAL;
     private Node routeStartNode;
     private Node routeEndNode;
 
     @Inject
-    public MapGUI(MapDataParser dataParser,
-                  View view,
-                  MapDataModel.Factory mapModelFactory,
-                  MapDataContainer.Factory mapDataContainerFactory,
-                  Drawer.Factory drawerFactory) {
-        this.dataParser = dataParser;
+    public MapGUI(View view,
+                  Drawer.Factory drawerFactory,
+                  MapDataLoader mapDataLoader) {
         this.view = view;
-        this.mapModelFactory = mapModelFactory;
-        this.mapDataContainerFactory = mapDataContainerFactory;
         this.drawerFactory = drawerFactory;
+        this.mapDataLoader = mapDataLoader;
     }
 
     @Override
@@ -111,41 +103,22 @@ public class MapGUI extends GUI {
      */
     @Override
     protected void onLoad(File nodes, File roads, File segments, File polygons) {
-        try {
-            outputLine("Loading data");
-            long loadStartTime = System.currentTimeMillis();
+        outputLine("Loading data");
 
-            BufferedReader nodesReader = new BufferedReader(new FileReader(nodes));
-            BufferedReader segmentsReader = new BufferedReader(new FileReader(segments));
-            Scanner roadInfoScanner = new Scanner(roads);
-            BufferedReader polygonsReader = (polygons == null) ? null :
-                    new BufferedReader(new FileReader(polygons));
+        MapDataLoader.OnFinishLoad onFinishLoad = (mapModel, loadDuration) -> {
+            this.mapModel = mapModel;
+            clearHighlightingData();
+            this.drawer = drawerFactory.create(this.mapModel, view);
+            this.redraw();
 
-
-            AtomicReference<MapDataModel> mapDataRef = new AtomicReference<>();
-
-            MapDataContainer mapDataContainer = mapDataContainerFactory.create(
-                    () -> onFinishLoad(mapDataRef.get(), loadStartTime),
-                    () -> dataParser.parseNodes(nodesReader),
-                    () -> dataParser.parseRoadSegments(segmentsReader),
-                    () -> dataParser.parseRoadInfo(roadInfoScanner),
-                    () -> {
-                        if (polygonsReader != null) {
-                            return dataParser.parsePolygons(polygonsReader);
-                        } else {
-                            return Collections.emptyList();
-                        }
-                    }
-            );
-            mapDataRef.set(mapModelFactory.create(mapDataContainer));
-        } catch (FileNotFoundException e) {
-            throw new AssertionError(e);
-        }
+            outputLine("Loading finished (took " + loadDuration + " ms)");
+        };
+        mapDataLoader.load(nodes, roads, segments, polygons, onFinishLoad);
     }
 
     @Override
     protected void onEnterDirectionsClick() {
-        state = UIState.ENTER_ROUTE_START_NODE;
+        state = MapGUIState.ENTER_ROUTE_START_NODE;
         outputLine("Click on an intersection to define the start");
 
         // Clear route
@@ -175,20 +148,20 @@ public class MapGUI extends GUI {
         // Show information and set highlightData
         applyClickSelection(selection, state);
 
-        if (state == UIState.NORMAL) return;
+        if (state == MapGUIState.NORMAL) return;
         if (selection.selectedNode == null) return;
 
-        if (state == UIState.ENTER_ROUTE_START_NODE) {
+        if (state == MapGUIState.ENTER_ROUTE_START_NODE) {
             setRouteStartNode(selection.selectedNode);
-        } else if (state == UIState.ENTER_ROUTE_LAST_NODE) {
+        } else if (state == MapGUIState.ENTER_ROUTE_LAST_NODE) {
             setRouteEndNode(selection.selectedNode);
-            state = UIState.NORMAL;
+            state = MapGUIState.NORMAL;
         }
     }
 
     private void setRouteStartNode(Node routeStartNode) {
         this.routeStartNode = routeStartNode;
-        state = UIState.ENTER_ROUTE_LAST_NODE;
+        state = MapGUIState.ENTER_ROUTE_LAST_NODE;
         // Hack to show just one circle (for the route start)
         highlightData = highlightData.getNewWithRoute(new Route(
                 Collections.singletonList(routeStartNode),
@@ -258,16 +231,6 @@ public class MapGUI extends GUI {
         highlightData = new HighlightData(null, null, null);
     }
 
-    private void onFinishLoad(MapDataModel mapModel, long loadStartTime) {
-        this.mapModel = mapModel;
-        clearHighlightingData();
-        this.drawer = drawerFactory.create(this.mapModel, view);
-        this.redraw();
-
-        long duration = System.currentTimeMillis() - loadStartTime;
-        outputLine("Loading finished (took " + duration + " ms)");
-    }
-
     /**
      * @param info Text to put in the text area
      */
@@ -281,7 +244,7 @@ public class MapGUI extends GUI {
      * Display information, and store the node and segments to be highlighted
      * on draw
      */
-    private void applyClickSelection(ClickSelection selection, UIState state) {
+    private void applyClickSelection(ClickSelection selection, MapGUIState state) {
         highlightData = new HighlightData(
                 selection.selectedNode, // these fields may be null
                 selection.connectedSegments,
@@ -292,7 +255,7 @@ public class MapGUI extends GUI {
             return;
         }
 
-        if (state != UIState.NORMAL) return;
+        if (state != MapGUIState.NORMAL) return;
 
         // Show selected node details
         outputLine("Found an intersection: " + selection.selectedNode);

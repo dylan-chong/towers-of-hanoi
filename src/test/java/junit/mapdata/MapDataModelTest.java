@@ -3,6 +3,8 @@ package junit.mapdata;
 import main.LatLong;
 import main.async.AsyncTaskQueues;
 import main.mapdata.*;
+import main.mapdata.model.MapDataContainer;
+import main.mapdata.model.MapDataModel;
 import main.structures.Route;
 import org.junit.Before;
 import org.junit.Test;

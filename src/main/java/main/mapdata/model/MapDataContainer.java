@@ -1,9 +1,10 @@
-package main.mapdata;
+package main.mapdata.model;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import main.async.AsyncTask;
 import main.async.AsyncTaskQueues;
+import main.mapdata.*;
 import main.structures.QuadTree;
 import main.structures.Trie;
 
