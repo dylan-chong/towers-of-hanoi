@@ -34,6 +34,10 @@ public class Main {
             binder.install(new FactoryModuleBuilder()
                     .implement(Drawer.class, Drawer.class)
                     .build(Drawer.Factory.class));
+
+            binder.install(new FactoryModuleBuilder()
+                    .implement(MapMouseListener.class, MapMouseListener.class)
+                    .build(MapMouseListener.Factory.class));
         }
     }
 }

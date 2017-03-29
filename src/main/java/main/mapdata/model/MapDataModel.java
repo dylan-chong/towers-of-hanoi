@@ -3,6 +3,7 @@ package main.mapdata.model;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import main.LatLong;
+import main.MapGUI;
 import main.mapdata.*;
 import main.structures.Graph;
 import main.structures.Route;
@@ -172,6 +173,26 @@ public class MapDataModel {
         NodeState lastNodeState = nodeStateMap.get(routeEndNode);
         if (lastNodeState == null) return null; // No route
         return Route.newFromNodeState(lastNodeState);
+    }
+
+    public MapGUI.ClickSelection getClickSelection(Node selectedNode) {
+        // Find roadSegments (for highlighting) and roadInfos (for printing)
+        Collection<RoadSegment> roadSegments =
+                findRoadSegmentsForNode(selectedNode);
+        Collection<RoadInfo> roadInfos = roadSegments.stream()
+                .map(this::findRoadInfoForSegment)
+                .collect(Collectors.toList());
+
+        // Print road label/city (and avoid printing duplicate names)
+        Collection<RoadInfoByName> roadInfosByName =
+                RoadInfo.getDistinctByName(roadInfos);
+
+        return new MapGUI.ClickSelection(
+                selectedNode,
+                roadSegments,
+                roadInfos,
+                roadInfosByName
+        );
     }
 
     private <T> boolean isSorted(Collection<? extends T> data,

@@ -2,7 +2,10 @@ package main;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import main.mapdata.*;
+import main.mapdata.Node;
+import main.mapdata.RoadInfo;
+import main.mapdata.RoadInfoByName;
+import main.mapdata.RoadSegment;
 import main.mapdata.model.MapDataLoader;
 import main.mapdata.model.MapDataModel;
 import main.structures.Route;
@@ -12,8 +15,6 @@ import slightlymodifiedtemplate.Location;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
 import java.io.File;
 import java.util.*;
 import java.util.List;
@@ -23,13 +24,15 @@ import java.util.stream.Collectors;
  * Created by Dylan on 14/03/17.
  */
 @Singleton
-public class MapGUI extends GUI {
+public class MapGUI extends GUI
+        implements MapMouseListener.CallbackReceiver {
 
     private static final int MAX_SEARCH_RESULTS = Integer.MAX_VALUE;
 
     private final View view;
     private final Drawer.Factory drawerFactory;
     private final MapDataLoader mapDataLoader;
+    private final MapMouseListener.Factory mouseListenerFactory;
 
     private Drawer drawer;
     private MapDataModel mapModel;
@@ -39,7 +42,7 @@ public class MapGUI extends GUI {
     private HighlightData highlightData;
 
     private Map<RoadInfo, Collection<RoadSegment>> searchResults;
-    private MouseAdapter drawingMouseListener;
+    private MapMouseListener mouseListener;
 
     private MapGUIState state = MapGUIState.NORMAL;
     private Node routeStartNode;
@@ -48,10 +51,14 @@ public class MapGUI extends GUI {
     @Inject
     public MapGUI(View view,
                   Drawer.Factory drawerFactory,
-                  MapDataLoader mapDataLoader) {
+                  MapDataLoader mapDataLoader,
+                  MapMouseListener.Factory mouseListenerFactory) {
         this.view = view;
         this.drawerFactory = drawerFactory;
         this.mapDataLoader = mapDataLoader;
+        this.mouseListenerFactory = mouseListenerFactory;
+
+        initialise();
     }
 
     @Override
@@ -99,6 +106,52 @@ public class MapGUI extends GUI {
     }
 
     /**
+     * Called after the mouse has been clicked on the graphics pane and then
+     * released.
+     */
+    @Override
+    public void onClick(Point point) {
+        if (mapModel == null) return;
+        reactToOnClick(point);
+        redraw();
+    }
+
+    /**
+     * To be called from onClick
+     */
+    private void reactToOnClick(Point point) {
+        Location clickLocation = view.getLocationFromPoint(point);
+        ClickSelection selection = selectClosestNodeTo(clickLocation);
+        // Show information and set highlightData
+        applyClickSelection(selection, state);
+
+        if (state == MapGUIState.NORMAL) return;
+        if (selection.selectedNode == null) return;
+
+        if (state == MapGUIState.ENTER_ROUTE_START_NODE) {
+            setRouteStartNode(selection.selectedNode);
+        } else if (state == MapGUIState.ENTER_ROUTE_LAST_NODE) {
+            setRouteEndNode(selection.selectedNode);
+            state = MapGUIState.NORMAL;
+        }
+    }
+
+    @Override
+    public void onDrag(int dx, int dy) {
+        if (view == null) return;
+        view.applyDrag(dx, dy);
+        redraw();
+    }
+
+    @Override
+    public void onScroll(boolean isZoomIn, Point mousePosition) {
+        // Allow zooming at the mouse position
+        Dimension fakeDimension = new Dimension(mousePosition.x, mousePosition.y);
+        view.applyMove(isZoomIn ? Move.ZOOM_IN : Move.ZOOM_OUT, fakeDimension);
+        redraw();
+    }
+
+    /**
      * @param polygons a File for polygon-shapes.mp (map be null)
      */
     @Override
@@ -128,35 +181,10 @@ public class MapGUI extends GUI {
 
     @Override
     protected MouseAdapter getMouseListener() {
-        if (drawingMouseListener == null) {
-            drawingMouseListener = new DrawingMouseListener();
+        if (mouseListener == null) {
+            mouseListener = mouseListenerFactory.create(this);
         }
-        return drawingMouseListener;
-    }
-
-    /**
-     * Called after the mouse has been clicked on the graphics pane and then
-     * released.
-     */
-    private void onClick(MouseEvent e) {
-        if (mapModel == null) return;
-
-        Location clickLocation = view.getLocationFromPoint(
-                new Point(e.getX(), e.getY())
-        );
-        ClickSelection selection = selectClosestNodeTo(clickLocation);
-        // Show information and set highlightData
-        applyClickSelection(selection, state);
-
-        if (state == MapGUIState.NORMAL) return;
-        if (selection.selectedNode == null) return;
-
-        if (state == MapGUIState.ENTER_ROUTE_START_NODE) {
-            setRouteStartNode(selection.selectedNode);
-        } else if (state == MapGUIState.ENTER_ROUTE_LAST_NODE) {
-            setRouteEndNode(selection.selectedNode);
-            state = MapGUIState.NORMAL;
-        }
+        return mouseListener;
     }
 
     private void setRouteStartNode(Node routeStartNode) {
@@ -270,86 +298,14 @@ public class MapGUI extends GUI {
         if (selectedNode == null) {
             return new ClickSelection(null, null, null, null);
         }
-
-        // Find roadSegments (for highlighting) and roadInfos (for printing)
-        Collection<RoadSegment> roadSegments =
-                mapModel.findRoadSegmentsForNode(selectedNode);
-        Collection<RoadInfo> roadInfos = roadSegments.stream()
-                .map(segment -> mapModel.findRoadInfoForSegment(segment))
-                .collect(Collectors.toList());
-
-        // Print road label/city (and avoid printing duplicate names)
-        Collection<RoadInfoByName> roadInfosByName =
-                RoadInfo.getDistinctByName(roadInfos);
-
-        return new ClickSelection(
-                selectedNode,
-                roadSegments,
-                roadInfos,
-                roadInfosByName
-        );
-    }
-
-    private class DrawingMouseListener extends MouseAdapter {
-        private MouseEvent mouseDownEvent, lastDragEvent;
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            mouseDownEvent = e;
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            mouseDownEvent = null;
-            lastDragEvent = null;
-        }
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            onClick(e);
-            redraw();
-        }
-
-        @Override
-        public void mouseDragged(MouseEvent e) {
-            if (view == null) return;
-            if (mouseDownEvent == null) throw new AssertionError();
-
-            MouseEvent dragStart = lastDragEvent;
-            if (lastDragEvent == null) {
-                dragStart = mouseDownEvent;
-            }
-
-            int dx = e.getX() - dragStart.getX();
-            int dy = e.getY() - dragStart.getY();
-            view.applyDrag(dx, dy);
-
-            lastDragEvent = e;
-
-            redraw();
-        }
-
-        @Override
-        public void mouseWheelMoved(MouseWheelEvent e) {
-            Move move = Move.ZOOM_OUT;
-            int zooms = e.getUnitsToScroll();
-            if (zooms < 0) move = Move.ZOOM_IN;
-
-            // Allow zooming at the mouse position
-            Dimension fakeDimension = new Dimension(e.getX() * 2, e.getY() * 2);
-
-            for (int i = 0; i < Math.abs(zooms); i++) {
-                view.applyMove(move, fakeDimension);
-            }
-            redraw();
-        }
+        return mapModel.getClickSelection(selectedNode);
     }
 
     /**
      * Stores information that is found when finding the node that was
      * clicked
      */
-    private static class ClickSelection {
+    public static class ClickSelection {
         public final Node selectedNode;
         public final Collection<RoadSegment> connectedSegments;
         public final Collection<RoadInfo> segmentInfos;

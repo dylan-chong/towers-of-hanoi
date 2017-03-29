@@ -135,12 +135,8 @@ public abstract class GUI {
     private JTextField search;
     private JFileChooser fileChooser;
 
-    public GUI() {
-        initialise();
-    }
-
     @SuppressWarnings("serial")
-    private void initialise() {
+    protected void initialise() {
 
 		/*
 		 * first, we make the buttons etc. that go along the top bar.
