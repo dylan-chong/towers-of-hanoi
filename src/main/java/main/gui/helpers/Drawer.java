@@ -116,12 +116,12 @@ public class Drawer {
                           Node node,
                           int radiusPixels,
                           Rectangle drawArea) {
-        // boolean couldBeDrawArea = drawArea.couldCircleBeInside(
-        //         node.latLong.asLocation(),
-        //         view.convertFromPointSystemToLocationSystem(radiusPixels));
-        // if (!couldBeDrawArea) {
-        //     return;
-        // }
+        boolean couldBeDrawArea = drawArea.couldCircleBeInside(
+                node.latLong.asLocation(),
+                view.convertFromPointSystemToLocationSystem(radiusPixels));
+        if (!couldBeDrawArea) {
+            return;
+        }
 
         Point p = view.getPointFromLatLong(node.latLong);
         graphics.drawOval(

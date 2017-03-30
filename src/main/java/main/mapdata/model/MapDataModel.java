@@ -240,7 +240,7 @@ public class MapDataModel {
 
             subTreesOfStart++;
 
-            addArticulationPointsITERATIVE(
+            addArticulationPoints(
                     neighbour, startNode, articulationPoints, lastCount, counts
             );
         }
@@ -254,45 +254,12 @@ public class MapDataModel {
 
     /**
      * To be called from {@link MapDataModel#findArticulationPoints()}
-     * @return The smallest reachBack for this node (refers to a node with a
-     *         count)
      */
-    private int addArticulationPoints(Node node,
-                                      Node previousNode,
-                                      Set<Node> articulationPoints,
-                                      AtomicInteger lastCount,
-                                      Map<Node, Integer> counts) {
-        counts.put(node, lastCount.incrementAndGet());
-        int reachBack = counts.get(node);
-        for (Node neighbour : getNeighbours(node)) {
-            if (neighbour == previousNode) continue;
-
-            if (counts.get(neighbour) != null) {
-                reachBack = Math.min(reachBack, counts.get(neighbour));
-                continue;
-            }
-
-            counts.put(neighbour, lastCount.incrementAndGet());
-
-            int neighbourReachBack = addArticulationPoints(
-                    neighbour, node, articulationPoints, lastCount, counts
-            );
-            if (neighbourReachBack <= counts.get(node)) {
-                reachBack = Math.min(neighbourReachBack, reachBack);
-                continue;
-            }
-
-            articulationPoints.add(node);
-        }
-
-        return reachBack;
-    }
-
-    private void addArticulationPointsITERATIVE(Node node,
-                                                Node root,
-                                                Set<Node> articulationPoints,
-                                                AtomicInteger lastCount,
-                                                Map<Node, Integer> counts) {
+    private void addArticulationPoints(Node node,
+                                       Node root,
+                                       Set<Node> articulationPoints,
+                                       AtomicInteger lastCount,
+                                       Map<Node, Integer> counts) {
         Deque<ArticulationPointsState> stateStack = new ArrayDeque<>();
         stateStack.add(new ArticulationPointsState(
                 node, root)
@@ -302,7 +269,7 @@ public class MapDataModel {
 
         while (!stateStack.isEmpty()) {
             ArticulationPointsState currentState = stateStack.peek();
-            Node currentNode = currentState.getNode();
+            Node currentNode = currentState.node;
 
             if (counts.get(currentNode) == null) {
                 counts.put(currentNode, lastCount.incrementAndGet());
@@ -340,35 +307,6 @@ public class MapDataModel {
         }
     }
 
-    /**
-     * Essentially represents an item on the call stack for the articulation
-     * points algorithm. This is necessary for making the algorithm iterative.
-     */
-    private static class ArticulationPointsState {
-        private Node node, previousNode; // todo make final
-
-        public ArticulationPointsState(Node node, Node previousNode) {
-            this.node = node;
-            this.previousNode = previousNode;
-        }
-
-        public Node getNode() {
-            return node;
-        }
-
-        public void setNode(Node node) {
-            this.node = node;
-        }
-
-        public Node getPreviousNode() {
-            return previousNode;
-        }
-
-        public void setPreviousNode(Node previousNode) {
-            this.previousNode = previousNode;
-        }
-    }
-
     private <T> boolean isSorted(Collection<? extends T> data,
                                  Comparator<? super T> comparator) {
         @SuppressWarnings("unchecked")
@@ -395,4 +333,18 @@ public class MapDataModel {
     public interface Factory {
         MapDataModel create(MapDataContainer mapDataContainer);
     }
+
+    /**
+     * Essentially represents an item on the call stack for the articulation
+     * points algorithm. This is necessary for making the algorithm iterative.
+     */
+    private static class ArticulationPointsState {
+        public final Node node, previousNode;
+
+        public ArticulationPointsState(Node node, Node previousNode) {
+            this.node = node;
+            this.previousNode = previousNode;
+        }
+    }
+
 }
