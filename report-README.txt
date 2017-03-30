@@ -58,3 +58,90 @@ Challenge out of 20 (up to 100, with 5 spare marks):
 * [ ] (5) Takes into account restriction information.
 * [ ] (5) Takes into account intersection constraints such as traffic lights to
   prefer routes with fewer lights.
+
+# Pseudocode and Notes #
+
+## Djikstra / A* ##
+
+    start.shortestDistanceSoFar = 0 // appear first in pq
+    pq = new PriorityQueue([start,allOtherNodes...], sorted by shortestDistanceSoFar)
+
+    while !pq.empty? {
+
+      let n:Node = pq.poll() // n has the shortest shortestDistanceSoFar
+
+      assert !n.hasCheckedChildren
+      n.hasCheckedChildren = true
+
+      foreach c in n.childnodes {
+        // don't check again because if we have visited before, then that was the fastest route
+        if c.hasCheckedChildren, continue
+        pq.add c
+
+        let nodeDist = n.shortestDistanceSoFar
+        let distFromNToC = n.distTo c
+        let pathDistSoFar = nodeDist + distFromNToC
+
+        // Is pathDistSoFar better than the current best for this node c?
+        if (c.shortestDistanceSoFar || Infinity) < pathDistSoFar
+          continue
+
+        c.shortestDistanceSoFar = pathDistSoFar
+        c.previousNode = n
+
+      }
+
+      if c == end, break
+    }
+
+    shortestPath:LinkedList(node -> node.previousNode) = goalNode
+
+### Notes ###
+
+Word redefinitions = {
+  "visited" => "hasCheckedChildren"
+  "fringe" => "priority queue" // Don't use a stack fringe
+}
+
+- If you visit node N, then you want to visit N again later, it will always be
+  a longer path the second time around.
+  - This is because, at any time (except in the foreach loop), the
+    highest-prority node has the shortest path between the start and that node.
+    Therefore, you will never find a faster route if you check again.
+
+## Articulation Points ##
+
+    Set<Node> getArticulationPoints(startNode)
+      articulationPoints = []
+      startNode.count = 0
+      *lastCount = 0
+      startSubTrees = 0
+
+      startNode.neighbours.foreach n ->
+        if n.count // note: 0 is truthy (ruby style)
+          continue
+        n.count = ++*lastCount
+        startSubTrees++
+        addArticulationPoints(n, startNode, articulationPoints, lastCount)
+
+      if startSubTrees > 1
+        add startNode -> articulationPoints // mutable
+
+      return articulationPoints
+
+    void addArticulationPoints(node, previousNode, articulationPoints, *lastCount)
+      node.reachBack = node.count
+      node.neighbours.foreach neigh ->
+        if neigh == previousNode
+          continue
+        if neigh.count
+          node.reachBack = min(node.reachBack, neigh.count)
+          continue
+
+        *lastCount++
+        addArticulationPoints(neigh, node, articulationPoints, lastCount)
+        if neigh.reachBack < node.count
+          node.reachBack = min(node.reachBack, neigh.reachBack)
+          continue
+        add node -> articulationPoints
+
