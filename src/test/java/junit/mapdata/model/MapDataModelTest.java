@@ -274,4 +274,14 @@ public class MapDataModelTest {
                 ))
         );
     }
+
+    @Test
+    public void findArticulationPoints_circleStructure_returnsEmpty() {
+        // See Enum definition for diagram
+        GraphDataSet dataSet = GraphDataSet.CIRCLE_STRUCTURE;
+        MapDataModelTestUtils.testFindArticulationPoints(
+                dataSet,
+                new HashSet<>()
+        );
+    }
 }

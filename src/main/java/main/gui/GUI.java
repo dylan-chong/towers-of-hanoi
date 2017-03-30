@@ -251,6 +251,11 @@ public abstract class GUI {
             onEnterDirectionsClick();
         });
 
+        JButton articulationPoints = new JButton("Find Articulation Points");
+        articulationPoints.addActionListener((event) -> {
+            onArticulationPointsClick();
+        });
+
         // next, make the search box at the top-right. we manually fix
         // it's size, and add an action listener to call your code when
         // the user presses enter.
@@ -319,6 +324,7 @@ public abstract class GUI {
         navigation.add(east);
         controls.add(navigation);
         controls.add(enterDirections);
+        controls.add(articulationPoints);
         controls.add(Box.createRigidArea(new Dimension(15, 0)));
         // glue is another invisible component that grows to take up all the
         // space it can on resize.
@@ -393,6 +399,8 @@ public abstract class GUI {
         frame.pack();
         frame.setVisible(true);
     }
+
+    protected abstract void onArticulationPointsClick();
 
     protected abstract void onEnterDirectionsClick();
 

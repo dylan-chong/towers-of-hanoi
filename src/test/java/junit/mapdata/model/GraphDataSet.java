@@ -119,7 +119,20 @@ public enum GraphDataSet {
                     segmentWithIdConnectedToNodes(108, 5, 9)
             ),
             null
+    ),
+    CIRCLE_STRUCTURE(
+            1,
+            5,
+            Arrays.asList(
+                    segmentWithIdConnectedToNodes(101, 1, 2),
+                    segmentWithIdConnectedToNodes(102, 2, 3),
+                    segmentWithIdConnectedToNodes(103, 3, 4),
+                    segmentWithIdConnectedToNodes(104, 4, 5),
+                    segmentWithIdConnectedToNodes(105, 5, 1)
+            ),
+            null
     );
+
 
     public final List<RoadSegment> roadSegments;
     public final List<Node> nodes;

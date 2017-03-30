@@ -5,6 +5,7 @@ import main.gui.helpers.Drawer;
 import main.gui.helpers.MapMouseListener;
 import main.gui.helpers.RouteOutputter;
 import main.gui.helpers.View;
+import main.mapdata.Route;
 import main.mapdata.location.Location;
 import main.mapdata.model.MapDataLoader;
 import main.mapdata.model.MapDataModel;
@@ -12,7 +13,6 @@ import main.mapdata.roads.Node;
 import main.mapdata.roads.RoadInfo;
 import main.mapdata.roads.RoadInfoByName;
 import main.mapdata.roads.RoadSegment;
-import main.mapdata.Route;
 
 import javax.swing.*;
 import java.awt.*;
@@ -67,13 +67,15 @@ public class MapController extends GUI
 
     @Override
     protected void redraw(Graphics graphics) {
-        if (drawer == null) return;
+        if (!isLoaded()) return;
 
         drawer.draw(graphics, highlightData, getDrawingAreaDimension());
     }
 
     @Override
     protected void onSearch() {
+        if (!isLoaded()) return;
+
         String searchTerm = getSearchBox().getText();
         if (searchTerm.isEmpty()) {
             clearHighlightingData();
@@ -115,7 +117,7 @@ public class MapController extends GUI
      */
     @Override
     public void onClick(Point point) {
-        if (mapModel == null) return;
+        if (!isLoaded()) return;
         reactToOnClick(point);
         redraw();
     }
@@ -142,13 +144,14 @@ public class MapController extends GUI
 
     @Override
     public void onDrag(int dx, int dy) {
-        if (view == null) return;
+        if (!isLoaded()) return;
         view.applyDrag(dx, dy);
         redraw();
     }
 
     @Override
     public void onScroll(boolean isZoomIn, Point mousePosition) {
+        if (!isLoaded()) return;
         // Allow zooming at the mouse position
         Dimension fakeDimension = new Dimension(
                 mousePosition.x * 2, mousePosition.y * 2
@@ -162,6 +165,7 @@ public class MapController extends GUI
      */
     @Override
     protected void onLoad(File nodes, File roads, File segments, File polygons) {
+        this.mapModel = null;
         outputLine("Loading data");
 
         MapDataLoader.OnFinishLoad onFinishLoad = (mapModel, loadDuration) -> {
@@ -176,7 +180,19 @@ public class MapController extends GUI
     }
 
     @Override
+    protected void onArticulationPointsClick() {
+        if (!isLoaded()) return;
+
+        Collection<Node> articulationPoints = mapModel.findArticulationPoints();
+        highlightData = new HighlightData(articulationPoints, null, null);
+
+        redraw();
+    }
+
+    @Override
     protected void onEnterDirectionsClick() {
+        if (!isLoaded()) return;
+
         state = MapState.ENTER_ROUTE_START_NODE;
         outputLine("Click on an intersection to define the start");
 
@@ -191,6 +207,10 @@ public class MapController extends GUI
             mouseListener = mouseListenerFactory.create(this);
         }
         return mouseListener;
+    }
+
+    private boolean isLoaded() {
+        return mapModel != null;
     }
 
     private void setRouteStartNode(Node routeStartNode) {
@@ -249,7 +269,8 @@ public class MapController extends GUI
      */
     private void applyClickSelection(ClickSelection selection, MapState state) {
         highlightData = new HighlightData(
-                selection.selectedNode, // these fields may be null
+                // these fields may be null
+                Collections.singleton(selection.selectedNode),
                 selection.connectedSegments,
                 null
         );

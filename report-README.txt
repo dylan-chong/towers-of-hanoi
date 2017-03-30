@@ -36,7 +36,7 @@ Minimum out of 40:
 * [x] (10) Correctly selects shortest paths.
 
 Core out of 35 (up to 75):
-* [ ] (10) Finds articulation points in one part of the graph.
+* [x] (10) Finds articulation points in one part of the graph.
 * [ ] (5) Uses the correct graph structure, i.e. ignores one way. (Articulation
   points should use an undirected graph.)
 * [ ] (5) Displays the selected nodes. (i.e. displays art pts)

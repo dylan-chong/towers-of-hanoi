@@ -71,7 +71,7 @@ public class Drawer {
                 );
 
         // Highlighted RoadSegments
-        if (highlightData.highlightedRoadSegments != null &&
+        if (!highlightData.highlightedRoadSegments.isEmpty() &&
                 highlightData.route == null) {
             graphics.setColor(ROADS_HIGHLIGHT_COLOR);
             highlightData.highlightedRoadSegments.forEach(roadSegment ->
@@ -80,9 +80,11 @@ public class Drawer {
         }
 
         // Nodes
-        if (highlightData.highlightedNode != null) {
+        if (!highlightData.highlightedNodes.isEmpty()) {
             graphics.setColor(NODE_HIGHLIGHT_COLOR);
-            drawNode(graphics, highlightData.highlightedNode, NODE_RADIUS_PX);
+            highlightData.highlightedNodes.forEach(node ->
+                    drawNode(graphics, node, NODE_RADIUS_PX)
+            );
         }
         if (highlightData.route != null) {
             graphics.setColor(ROUTE_COLOR);

@@ -9,13 +9,13 @@ import java.util.Collections;
 
 /**
  * Struct for information about what should be highlighted. Any of the fields
- * can be null
+ * can be null, unless it is a collection, then it is empty
  */
 public class HighlightData {
     /**
      * For when the user clicks on a Node
      */
-    public final Node highlightedNode;
+    public final Collection<Node> highlightedNodes;
     /**
      * For when the user clicks on a Node
      */
@@ -25,27 +25,28 @@ public class HighlightData {
     /**
      * Any parameter can be null
      */
-    public HighlightData(Node highlightedNode,
+    public HighlightData(Collection<Node> highlightedNodes,
                          Collection<RoadSegment> highlightedRoadSegments,
                          Route route) {
-        this.highlightedNode = highlightedNode;
+        this.highlightedNodes = emptyOrUnmodifiable(highlightedNodes);
+        this.highlightedRoadSegments = emptyOrUnmodifiable(highlightedRoadSegments);
         this.route = route;
-
-        if (highlightedRoadSegments == null) {
-            this.highlightedRoadSegments = null;
-        } else {
-            this.highlightedRoadSegments = Collections.unmodifiableCollection(
-                    highlightedRoadSegments
-            );
-        }
     }
 
     public HighlightData getNewWithRoute(Route route) {
         return new HighlightData(
-                highlightedNode,
+                highlightedNodes,
                 highlightedRoadSegments,
                 route
         );
+    }
+
+    private static <T> Collection<T> emptyOrUnmodifiable(Collection<T> toWrap) {
+        if (toWrap == null) {
+            return Collections.emptyList();
+        }
+
+        return Collections.unmodifiableCollection(toWrap);
     }
 }
 
