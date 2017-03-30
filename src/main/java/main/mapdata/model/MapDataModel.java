@@ -15,6 +15,7 @@ import main.datastructures.Trie;
 import main.mapdata.location.Location;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -126,7 +127,7 @@ public class MapDataModel {
             );
             List<Node> neighbourNodes = currentSegments.stream()
                     .map(segment ->
-                            getOtherNode(segment, currentNodeState.getNode())
+                            findOtherNode(segment, currentNodeState.getNode())
                     )
                     .collect(Collectors.toList());
 
@@ -210,8 +211,81 @@ public class MapDataModel {
         );
     }
 
+    public Collection<Node> getNeighbours(Node node) {
+        return findRoadSegmentsForNode(node)
+                .stream()
+                .map(segment -> findOtherNode(segment, node))
+                .collect(Collectors.toList());
+    }
+
     public Set<Node> findArticulationPoints() {
-        return new HashSet<>();
+        Node startNode = data.getNodeInfos().values()
+                .stream()
+                .findFirst()
+                .orElse(null);
+        if (startNode == null) {
+            // No nodes exist
+            return new HashSet<>(); // empty
+        }
+
+        Set<Node> articulationPoints = new HashSet<>();
+
+        Map<Node, Integer> counts = new HashMap<>();
+        AtomicInteger lastCount = new AtomicInteger(0);
+        counts.put(startNode, lastCount.get());
+        int subTreesOfStart = 0;
+
+        for (Node neighbour : getNeighbours(startNode)) {
+            if (counts.get(neighbour) != null) continue;
+
+            counts.put(neighbour, lastCount.incrementAndGet());
+            subTreesOfStart++;
+
+            addArticulationPoints(
+                    neighbour, startNode, articulationPoints, lastCount, counts
+            );
+        }
+
+        if (subTreesOfStart > 1) {
+            articulationPoints.add(startNode);
+        }
+
+        return articulationPoints;
+    }
+
+    /**
+     * To be called from {@link MapDataModel#findArticulationPoints()}
+     * @return The smallest reachBack for this node (refers to a node with a
+     *         count)
+     */
+    private int addArticulationPoints(Node node,
+                                      Node previousNode,
+                                      Set<Node> articulationPoints,
+                                      AtomicInteger lastCount,
+                                      Map<Node, Integer> counts) {
+        int reachBack = counts.get(node);
+        for (Node neighbour : getNeighbours(node)) {
+            if (neighbour == previousNode) continue;
+
+            if (counts.get(neighbour) != null) {
+                reachBack = Math.min(reachBack, counts.get(neighbour));
+                continue;
+            }
+
+            counts.put(neighbour, lastCount.incrementAndGet());
+
+            int neighbourReachBack = addArticulationPoints(
+                    neighbour, node, articulationPoints, lastCount, counts
+            );
+            if (neighbourReachBack <= counts.get(node)) {
+                reachBack = Math.min(neighbourReachBack, reachBack);
+                continue;
+            }
+
+            articulationPoints.add(node);
+        }
+
+        return reachBack;
     }
 
     private <T> boolean isSorted(Collection<? extends T> data,
@@ -229,7 +303,7 @@ public class MapDataModel {
      * Useful function for getting the {@link Node} at the opposite end of
      * a {@link RoadSegment}.
      */
-    private Node getOtherNode(RoadSegment segment, Node oneEnd) {
+    private Node findOtherNode(RoadSegment segment, Node oneEnd) {
         return Stream.of(segment.node1ID, segment.node2ID)
                 .map(nodeId -> data.getNodeInfos().get(nodeId))
                 .filter(node -> !oneEnd.equals(node))

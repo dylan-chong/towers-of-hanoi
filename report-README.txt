@@ -111,37 +111,43 @@ Word redefinitions = {
 
 ## Articulation Points ##
 
-    Set<Node> getArticulationPoints(startNode)
+    Set<Node> findArticulationPoints()
       articulationPoints = []
+      startNode = getAnyNode()
       startNode.count = 0
       *lastCount = 0
-      startSubTrees = 0
+      subTreesOfStart = 0
 
       startNode.neighbours.foreach n ->
         if n.count // note: 0 is truthy (ruby style)
           continue
         n.count = ++*lastCount
-        startSubTrees++
+        subTreesOfStart++
         addArticulationPoints(n, startNode, articulationPoints, lastCount)
 
-      if startSubTrees > 1
-        add startNode -> articulationPoints // mutable
+      if subTreesOfStart > 1
+        add startNode -> articulationPoints
 
       return articulationPoints
 
-    void addArticulationPoints(node, previousNode, articulationPoints, *lastCount)
-      node.reachBack = node.count
+    int addArticulationPoints(node, previousNode, articulationPoints, *lastCount)
+      reachBack = node.count
       node.neighbours.foreach neigh ->
         if neigh == previousNode
           continue
         if neigh.count
-          node.reachBack = min(node.reachBack, neigh.count)
+          reachBack = min(reachBack, neigh.count)
           continue
 
-        *lastCount++
-        addArticulationPoints(neigh, node, articulationPoints, lastCount)
-        if neigh.reachBack < node.count
-          node.reachBack = min(node.reachBack, neigh.reachBack)
+        
+        neigh.count = ++*lastCount
+        neighReachBack = addArticulationPoints(
+          neigh, node, articulationPoints, lastCount
+        )
+        if neighReachBack < node.count
+          reachBack = min(reachBack, neighReachBack)
           continue
         add node -> articulationPoints
+
+      return reachBack
 
