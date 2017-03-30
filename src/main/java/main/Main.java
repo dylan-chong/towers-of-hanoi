@@ -5,6 +5,8 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import main.async.AsyncTaskQueue;
+import main.async.ParallelAsyncTaskQueue;
 import main.gui.helpers.Drawer;
 import main.gui.MapController;
 import main.gui.helpers.MapMouseListener;
@@ -23,6 +25,8 @@ public class Main {
     private static class MainModule implements Module {
         @Override
         public void configure(Binder binder) {
+            binder.bind(AsyncTaskQueue.class).to(ParallelAsyncTaskQueue.class);
+
             binder.install(new FactoryModuleBuilder()
                     .implement(MapDataModel.class, MapDataModel.class)
                     .build(MapDataModel.Factory.class));

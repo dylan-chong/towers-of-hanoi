@@ -85,14 +85,38 @@ public enum GraphDataSet {
             Arrays.asList(
                     // Top vertical segments (see diagram)
                     segmentWithIdConnectedToNodes(101, 1, 4),
-                    segmentWithIdConnectedToNodes(101, 2, 5),
+                    segmentWithIdConnectedToNodes(102, 2, 5),
                     // Horizontal segments
-                    segmentWithIdConnectedToNodes(101, 3, 4),
-                    segmentWithIdConnectedToNodes(101, 4, 5),
-                    segmentWithIdConnectedToNodes(101, 5, 6),
+                    segmentWithIdConnectedToNodes(103, 3, 4),
+                    segmentWithIdConnectedToNodes(104, 4, 5),
+                    segmentWithIdConnectedToNodes(105, 5, 6),
                     // Bottom vertical segments
-                    segmentWithIdConnectedToNodes(101, 4, 7),
-                    segmentWithIdConnectedToNodes(101, 5, 8)
+                    segmentWithIdConnectedToNodes(106, 4, 7),
+                    segmentWithIdConnectedToNodes(107, 5, 8)
+            ),
+            null
+    ),
+    ETHANOL_ALCOHOL_STRUCTURE(
+            // Diagram of node ids
+            //     1   2
+            //     |   |
+            // 3 - 4 - 5 - 6 - 7
+            //     |   |
+            //     8   9
+            1,
+            9,
+            Arrays.asList(
+                    // Top vertical segments (see diagram)
+                    segmentWithIdConnectedToNodes(101, 1, 4),
+                    segmentWithIdConnectedToNodes(102, 2, 5),
+                    // Horizontal segments
+                    segmentWithIdConnectedToNodes(103, 3, 4),
+                    segmentWithIdConnectedToNodes(104, 4, 5),
+                    segmentWithIdConnectedToNodes(105, 5, 6),
+                    segmentWithIdConnectedToNodes(106, 6, 7),
+                    // Bottom vertical segments
+                    segmentWithIdConnectedToNodes(107, 4, 8),
+                    segmentWithIdConnectedToNodes(108, 5, 9)
             ),
             null
     );

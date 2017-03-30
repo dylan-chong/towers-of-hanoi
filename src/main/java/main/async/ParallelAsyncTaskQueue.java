@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Use this for queuing up multiple {@link AsyncTask}
  */
 @Singleton
-public class AsyncTaskQueues {
+public class ParallelAsyncTaskQueue implements AsyncTaskQueue {
     private static final int DEFAULT_NUMBER_OF_THREADS =
             Runtime.getRuntime().availableProcessors();
 
@@ -31,11 +31,11 @@ public class AsyncTaskQueues {
     private Collection<AsyncWorker> workers;
 
     @Inject
-    public AsyncTaskQueues() {
+    public ParallelAsyncTaskQueue() {
         this(DEFAULT_NUMBER_OF_THREADS);
     }
 
-    public AsyncTaskQueues(int numberOfWorkerThreads) {
+    public ParallelAsyncTaskQueue(int numberOfWorkerThreads) {
         mainTasksQueue = new ArrayBlockingQueue<>(numberOfWorkerThreads);
 
         workers = new ArrayList<>();
@@ -47,6 +47,7 @@ public class AsyncTaskQueues {
         queuingThread.start();
     }
 
+    @Override
     public void addTask(AsyncTask task) {
         tasksToAdd.add(task);
     }

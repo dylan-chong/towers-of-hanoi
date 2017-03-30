@@ -260,4 +260,18 @@ public class MapDataModelTest {
                 ))
         );
     }
+
+    @Test
+    public void findArticulationPoints_ethanolStructure_returnsMiddleNode() {
+        // See Enum definition for diagram
+        GraphDataSet dataSet = GraphDataSet.ETHANOL_ALCOHOL_STRUCTURE;
+        MapDataModelTestUtils.testFindArticulationPoints(
+                dataSet,
+                new HashSet<>(Arrays.asList(
+                        dataSet.getNodeById(4),
+                        dataSet.getNodeById(5),
+                        dataSet.getNodeById(6)
+                ))
+        );
+    }
 }

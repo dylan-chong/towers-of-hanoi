@@ -1,6 +1,6 @@
 package junit.mapdata.model;
 
-import main.async.AsyncTaskQueues;
+import junit.async.StubTaskQueue;
 import main.mapdata.Route;
 import main.mapdata.model.MapDataContainer;
 import main.mapdata.model.MapDataModel;
@@ -32,7 +32,7 @@ public class MapDataModelTestUtils {
                               roadSegments,
                               roadInfosSupplier) ->
             new MapDataModel(new MapDataContainer(
-                    new AsyncTaskQueues(),
+                    new StubTaskQueue(),
                     () -> {},
                     nodes,
                     roadSegments,

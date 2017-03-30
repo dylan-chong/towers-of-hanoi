@@ -3,7 +3,7 @@ package main.mapdata.model;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import main.async.AsyncTask;
-import main.async.AsyncTaskQueues;
+import main.async.AsyncTaskQueue;
 import main.mapdata.*;
 import main.mapdata.roads.Node;
 import main.mapdata.roads.RoadInfo;
@@ -26,24 +26,24 @@ public class MapDataContainer {
      * Node id to Node (intersection/nodeInfo). It is called nodeInfos to avoid
      * confusion with {@link main.datastructures.Graph.Node}
      */
-    private Map<Long, Node> nodeInfos;
-    private Collection<RoadSegment> roadSegments;
+    private volatile Map<Long, Node> nodeInfos;
+    private volatile Collection<RoadSegment> roadSegments;
     /**
      * RoadId to RoadInfo
      */
-    private Map<Long, RoadInfo> roadInfos;
-    private MapGraph mapGraph;
-    private Trie<RoadInfo> roadInfoLabelsTrie;
-    private QuadTree<Node> nodeTree;
+    private volatile Map<Long, RoadInfo> roadInfos;
+    private volatile MapGraph mapGraph;
+    private volatile Trie<RoadInfo> roadInfoLabelsTrie;
+    private volatile QuadTree<Node> nodeTree;
     /**
      * endLevel to polygons
      */
-    private Map<Integer, List<Polygon>> polygons;
+    private volatile Map<Integer, List<Polygon>> polygons;
 
 
     @Inject
     public MapDataContainer(
-            AsyncTaskQueues asyncTaskQueues,
+            AsyncTaskQueue asyncTaskQueue,
             @Assisted Runnable finishLoadingCallback,
             @Assisted Supplier<Collection<Node>> nodeInfosSupplier,
             @Assisted Supplier<Collection<RoadSegment>> roadSegmentsSupplier,
@@ -63,32 +63,32 @@ public class MapDataContainer {
         // The 'top-level' addTask calls are the first tasks to be run. The
         // inner tasks are started after a top-level one is completed
 
-        asyncTaskQueues.addTask(new AsyncTask(() -> {
+        asyncTaskQueue.addTask(new AsyncTask(() -> {
             setRoadSegments(roadSegmentsSupplier.get());
             onCompleteCriticalTask.run();
 
             // Only load other stuff when when segments are loaded
-            asyncTaskQueues.addTask(new AsyncTask(
+            asyncTaskQueue.addTask(new AsyncTask(
                     () -> {
                         setNodeInfos(nodeInfosSupplier.get());
 
-                        asyncTaskQueues.addTask(new AsyncTask(
+                        asyncTaskQueue.addTask(new AsyncTask(
                                 this::setMapGraph,
                                 "Create graph"
                         ));
 
-                        asyncTaskQueues.addTask(new AsyncTask(
+                        asyncTaskQueue.addTask(new AsyncTask(
                                 this::setNodeTree,
                                 "Create node quad tree"
                         ));
                     },
                     "Parse node infos" // Critical task
             ));
-            asyncTaskQueues.addTask(new AsyncTask(
+            asyncTaskQueue.addTask(new AsyncTask(
                     () -> {
                         setRoadInfos(roadInfosSupplier.get());
 
-                        asyncTaskQueues.addTask(new AsyncTask(
+                        asyncTaskQueue.addTask(new AsyncTask(
                                 this::setRoadInfoLabelsTrie,
                                 "Create Trie"
                         ));
@@ -96,7 +96,7 @@ public class MapDataContainer {
             ));
         }, "Parse road segments"));
 
-        asyncTaskQueues.addTask(new AsyncTask(
+        asyncTaskQueue.addTask(new AsyncTask(
                 () -> {
                     setPolygons(polygonsSupplier.get());
                     onCompleteCriticalTask.run();
