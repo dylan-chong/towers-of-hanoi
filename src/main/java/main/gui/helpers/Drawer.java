@@ -83,7 +83,7 @@ public class Drawer {
         if (!highlightData.highlightedNodes.isEmpty()) {
             graphics.setColor(NODE_HIGHLIGHT_COLOR);
             highlightData.highlightedNodes.forEach(node ->
-                    drawNode(graphics, node, NODE_RADIUS_PX)
+                    drawNode(graphics, node, NODE_RADIUS_PX, drawArea)
             );
         }
         if (highlightData.route != null) {
@@ -94,7 +94,7 @@ public class Drawer {
             Arrays.asList(
                     nodes.get(0),
                     nodes.get(nodes.size() - 1)
-            ).forEach(node -> drawNode(graphics, node, ROUTE_NODE_RADIUS_PX));
+            ).forEach(node -> drawNode(graphics, node, ROUTE_NODE_RADIUS_PX, drawArea));
 
             highlightData.route.segments.forEach(roadSegment ->
                     drawRoadSegment(graphics, roadSegment, drawArea)
@@ -112,13 +112,23 @@ public class Drawer {
         }
     }
 
-    private void drawNode(Graphics graphics, Node node, int radius) {
+    private void drawNode(Graphics graphics,
+                          Node node,
+                          int radiusPixels,
+                          Rectangle drawArea) {
+        // boolean couldBeDrawArea = drawArea.couldCircleBeInside(
+        //         node.latLong.asLocation(),
+        //         view.convertFromPointSystemToLocationSystem(radiusPixels));
+        // if (!couldBeDrawArea) {
+        //     return;
+        // }
+
         Point p = view.getPointFromLatLong(node.latLong);
         graphics.drawOval(
-                p.x - radius,
-                p.y - radius,
-                radius * 2,
-                radius * 2
+                p.x - radiusPixels,
+                p.y - radiusPixels,
+                radiusPixels * 2,
+                radiusPixels * 2
         );
     }
 

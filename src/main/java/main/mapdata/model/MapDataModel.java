@@ -231,17 +231,16 @@ public class MapDataModel {
         Set<Node> articulationPoints = new HashSet<>();
 
         Map<Node, Integer> counts = new HashMap<>();
-        AtomicInteger lastCount = new AtomicInteger(0);
+        AtomicInteger lastCount = new AtomicInteger(1);
         counts.put(startNode, lastCount.get());
         int subTreesOfStart = 0;
 
         for (Node neighbour : getNeighbours(startNode)) {
             if (counts.get(neighbour) != null) continue;
 
-            counts.put(neighbour, lastCount.incrementAndGet());
             subTreesOfStart++;
 
-            addArticulationPoints(
+            addArticulationPointsITERATIVE(
                     neighbour, startNode, articulationPoints, lastCount, counts
             );
         }
@@ -263,6 +262,7 @@ public class MapDataModel {
                                       Set<Node> articulationPoints,
                                       AtomicInteger lastCount,
                                       Map<Node, Integer> counts) {
+        counts.put(node, lastCount.incrementAndGet());
         int reachBack = counts.get(node);
         for (Node neighbour : getNeighbours(node)) {
             if (neighbour == previousNode) continue;
@@ -286,6 +286,87 @@ public class MapDataModel {
         }
 
         return reachBack;
+    }
+
+    private void addArticulationPointsITERATIVE(Node node,
+                                                Node root,
+                                                Set<Node> articulationPoints,
+                                                AtomicInteger lastCount,
+                                                Map<Node, Integer> counts) {
+        Deque<ArticulationPointsState> stateStack = new ArrayDeque<>();
+        stateStack.add(new ArticulationPointsState(
+                node, root)
+        );
+        Map<Node, Integer> reachBacks = new HashMap<>();
+        reachBacks.put(root, counts.get(root));
+
+        while (!stateStack.isEmpty()) {
+            ArticulationPointsState currentState = stateStack.peek();
+            Node currentNode = currentState.getNode();
+
+            if (counts.get(currentNode) == null) {
+                counts.put(currentNode, lastCount.incrementAndGet());
+                reachBacks.put(currentNode, lastCount.get());
+
+                for (Node neighbour : getNeighbours(currentNode)) {
+                    if (neighbour == currentState.previousNode) continue;
+                    if (counts.get(neighbour) != null) {
+                        reachBacks.compute(currentNode, (currNode, currReach) ->
+                                Math.min(currReach, counts.get(neighbour))
+                        );
+                        continue;
+                    }
+                    stateStack.push(new ArticulationPointsState(
+                            neighbour, currentNode)
+                    );
+                }
+
+                continue;
+            }
+
+            for (Node neighbour : getNeighbours(currentNode)) {
+                if (neighbour == currentState.previousNode) continue;
+                if (reachBacks.get(neighbour) < counts.get(currentNode)) {
+                    reachBacks.compute(currentNode, (currNode, currReach) ->
+                            Math.min(currReach, reachBacks.get(neighbour))
+                    );
+                    continue;
+                }
+
+                articulationPoints.add(currentNode);
+            }
+
+            stateStack.pop();
+        }
+    }
+
+    /**
+     * Essentially represents an item on the call stack for the articulation
+     * points algorithm. This is necessary for making the algorithm iterative.
+     */
+    private static class ArticulationPointsState {
+        private Node node, previousNode; // todo make final
+
+        public ArticulationPointsState(Node node, Node previousNode) {
+            this.node = node;
+            this.previousNode = previousNode;
+        }
+
+        public Node getNode() {
+            return node;
+        }
+
+        public void setNode(Node node) {
+            this.node = node;
+        }
+
+        public Node getPreviousNode() {
+            return previousNode;
+        }
+
+        public void setPreviousNode(Node previousNode) {
+            this.previousNode = previousNode;
+        }
     }
 
     private <T> boolean isSorted(Collection<? extends T> data,

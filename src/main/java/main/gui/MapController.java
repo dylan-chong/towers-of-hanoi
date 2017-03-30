@@ -63,6 +63,7 @@ public class MapController extends GUI
         this.routeOutputter = routeOutputter;
 
         initialise();
+        view.setOriginalComponentSize(getDrawingAreaDimension());
     }
 
     @Override

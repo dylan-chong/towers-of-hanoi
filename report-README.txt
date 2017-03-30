@@ -41,7 +41,7 @@ Core out of 35 (up to 75):
   points should use an undirected graph.)
 * [x] (5) Displays the selected nodes. (i.e. displays art pts)
 * [x] (5) Finds articulation points in all components of the graph.
-* [ ] (5) Uses the iterative version of the algorithm
+* [x] (5) Uses the iterative version of the algorithm
 * [x] (5) Do they have a report with pseudocode of their algorithms in it?
 
 Completion out of 10 (up to 85):
@@ -121,7 +121,6 @@ Word redefinitions = {
       startNode.neighbours.foreach n ->
         if n.count // note: 0 is truthy (ruby style)
           continue
-        n.count = ++*lastCount
         subTreesOfStart++
         addArticulationPoints(n, startNode, articulationPoints, lastCount)
 
@@ -131,6 +130,7 @@ Word redefinitions = {
       return articulationPoints
 
     int addArticulationPoints(node, previousNode, articulationPoints, *lastCount)
+      node.count = ++*lastCount
       reachBack = node.count
       node.neighbours.foreach neigh ->
         if neigh == previousNode
@@ -186,8 +186,9 @@ Word redefinitions = {
         stack.pop()
 
 
-    int addArticulationPointsIterative(node, previousNode, articulationPoints, *lastCount)
-      stack = [[node: node, previousNode: previousNode]] // array of keyword map
+    int addArticulationPointsIterative(node, root, articulationPoints, *lastCount)
+      stack = [[node: node, previousNode: root]] // array of keyword map
+      root.reachBack = root.count
 
       while !stack.empty?
         state = stack.peek()
@@ -196,7 +197,7 @@ Word redefinitions = {
           state.node.count = ++*lastCount
           state.reachBack = state.node.count
           state.node.neighbours.foreach neigh ->
-            if neigh == state.node
+            if neigh == state.previousNode
               continue
             if neigh.count
               state.reachBack = min(state.reachBack, neigh.count)
@@ -205,8 +206,10 @@ Word redefinitions = {
           continue
 
         state.node.neighbours.foreach neigh ->
+          if neigh == state.previousNode
+            continue
           if neigh.reachBack < state.node.count
-            state.node.reachBack = min(reachBack, neighReachBack)
+            state.node.reachBack = min(state.reachBack, neigh.reachBack)
             continue
           add state.node -> articulationPoints
 

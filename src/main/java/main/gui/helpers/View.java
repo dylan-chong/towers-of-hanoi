@@ -31,7 +31,19 @@ public class View {
      */
     private double scale = 60;
 
-    public void applyMove(GUI.Move move, Dimension componentDimension) {
+    public void setOriginalComponentSize(Dimension componentSize) {
+        // Convert from Point coordinate system to Location
+        double componentLWidth = convertFromPointSystemToLocationSystem(
+                componentSize.width
+        );
+        // Move original origin to center of screen
+        originOnScreen = originOnScreen.moveBy(
+                -componentLWidth / 2,
+                0
+        );
+    }
+
+    public void applyMove(GUI.Move move, Dimension componentSize) {
         if (move == GUI.Move.ZOOM_IN || move == GUI.Move.ZOOM_OUT) {
             double oldScale = scale;
 
@@ -43,10 +55,10 @@ public class View {
 
             // Convert from Point coordinate system to Location
             double componentLWidth = convertFromPointSystemToLocationSystem(
-                    componentDimension.width
+                    componentSize.width
             );
             double componentLHeight = convertFromPointSystemToLocationSystem(
-                    componentDimension.height
+                    componentSize.height
             );
 
             originOnScreen = new Location(
@@ -120,7 +132,7 @@ public class View {
         return new Rectangle(bottomLeft, topRight);
     }
 
-    private double convertFromPointSystemToLocationSystem(int points) {
+    public double convertFromPointSystemToLocationSystem(int points) {
         Location fakeStart = Location.newFromPoint(
                 new Point(0, 0),
                 originOnScreen,

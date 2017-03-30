@@ -1,5 +1,6 @@
 package main.mapdata.location;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -45,4 +46,12 @@ public class Rectangle {
         return true;
     }
 
+    public boolean couldCircleBeInside(Location location, double radius) {
+        return couldPolygonBeInside(Arrays.asList(
+                new Location(location.x - radius, location.y - radius),
+                new Location(location.x + radius, location.y - radius),
+                new Location(location.x + radius, location.y + radius),
+                new Location(location.x - radius, location.y + radius)
+        ));
+    }
 }
