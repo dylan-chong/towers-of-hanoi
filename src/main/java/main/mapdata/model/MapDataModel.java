@@ -218,16 +218,7 @@ public class MapDataModel {
                 .collect(Collectors.toList());
     }
 
-    public Set<Node> findArticulationPoints() {
-        Node startNode = data.getNodeInfos().values()
-                .stream()
-                .findFirst()
-                .orElse(null);
-        if (startNode == null) {
-            // No nodes exist
-            return new HashSet<>(); // empty
-        }
-
+    public Set<Node> findArticulationPoints(Node startNode) {
         Set<Node> articulationPoints = new HashSet<>();
 
         Map<Node, Integer> counts = new HashMap<>();

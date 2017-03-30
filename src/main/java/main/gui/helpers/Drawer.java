@@ -21,7 +21,7 @@ import java.util.stream.Stream;
  */
 public class Drawer {
 
-    private static final int NODE_RADIUS_PX = 5;
+    private static final int NODE_RADIUS_PX = 3;
     private static final int ROUTE_NODE_RADIUS_PX = 8;
 
     private static final int MAX_FRAMES_PER_AVERAGE = 10;

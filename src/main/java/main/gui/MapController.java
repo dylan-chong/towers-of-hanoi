@@ -119,28 +119,36 @@ public class MapController extends GUI
     @Override
     public void onClick(Point point) {
         if (!isLoaded()) return;
-        reactToOnClick(point);
-        redraw();
-    }
-
-    /**
-     * To be called from onClick
-     */
-    private void reactToOnClick(Point point) {
         Location clickLocation = view.getLocationFromPoint(point);
-        ClickSelection selection = selectClosestNodeTo(clickLocation);
+        ClickSelection selection = getClickSelectionForClosestNodeTo(clickLocation);
+
         // Show information and set highlightData
         applyClickSelection(selection, state);
+        redraw();
 
         if (state == MapState.NORMAL) return;
         if (selection.selectedNode == null) return;
 
-        if (state == MapState.ENTER_ROUTE_START_NODE) {
-            setRouteStartNode(selection.selectedNode);
-        } else if (state == MapState.ENTER_ROUTE_LAST_NODE) {
-            setRouteEndNode(selection.selectedNode);
-            state = MapState.NORMAL;
-        }
+        // Give time to redraw
+        SwingUtilities.invokeLater(() -> {
+            if (state == MapState.CLICK_TO_SELECT_ARTICULATION_POINTS) {
+                Collection<Node> articulationPoints =
+                        mapModel.findArticulationPoints(selection.selectedNode);
+                highlightData = new HighlightData(articulationPoints, null, null);
+                state = MapState.NORMAL;
+                return;
+            }
+
+            if (state == MapState.ENTER_ROUTE_START_NODE) {
+                setRouteStartNode(selection.selectedNode);
+                state = MapState.ENTER_ROUTE_LAST_NODE;
+            } else if (state == MapState.ENTER_ROUTE_LAST_NODE) {
+                setRouteEndNode(selection.selectedNode);
+                state = MapState.NORMAL;
+            }
+        });
+        // Redraw after above runnable finishes
+        SwingUtilities.invokeLater(this::redraw);
     }
 
     @Override
@@ -184,10 +192,8 @@ public class MapController extends GUI
     protected void onArticulationPointsClick() {
         if (!isLoaded()) return;
 
-        Collection<Node> articulationPoints = mapModel.findArticulationPoints();
-        highlightData = new HighlightData(articulationPoints, null, null);
-
-        redraw();
+        state = MapState.CLICK_TO_SELECT_ARTICULATION_POINTS;
+        outputLine("Click on a Node to find articulation points");
     }
 
     @Override
@@ -216,7 +222,6 @@ public class MapController extends GUI
 
     private void setRouteStartNode(Node routeStartNode) {
         this.routeStartNode = routeStartNode;
-        state = MapState.ENTER_ROUTE_LAST_NODE;
         // Hack to show just one circle (for the route start)
         highlightData = highlightData.getNewWithRoute(new Route(
                 Collections.singletonList(routeStartNode),
@@ -234,21 +239,22 @@ public class MapController extends GUI
         );
         redraw(); // Show the selection before searching for better UX
 
-        Route route = mapModel.findRouteBetween(routeStartNode, routeEndNode);
-        showRoute(route);
-        // redraw will be called automatically
-    }
+        // Give time to redraw and update text area
+        SwingUtilities.invokeLater(() -> {
+            Route route = mapModel.findRouteBetween(routeStartNode, routeEndNode);
+            // redraw will be called automatically
 
-    private void showRoute(Route route) {
-        highlightData = highlightData.getNewWithRoute(route);
+            highlightData = highlightData.getNewWithRoute(route);
+            if (route == null) {
+                outputLine("No route found");
+                return;
+            }
 
-        if (route == null) {
-            outputLine("No route found");
-            return;
-        }
+            outputLine("Route found");
+            routeOutputter.outputRoute(route, mapModel, this::outputLine);
 
-        outputLine("Route found");
-        routeOutputter.outputRoute(route, mapModel, this::outputLine);
+            redraw();
+        });
     }
 
     private void clearHighlightingData() {
@@ -289,7 +295,7 @@ public class MapController extends GUI
         );
     }
 
-    private ClickSelection selectClosestNodeTo(Location location) {
+    private ClickSelection getClickSelectionForClosestNodeTo(Location location) {
         // 'Node' means 'intersection' here
         Node selectedNode = mapModel.findNodeNearLocation(location);
         if (selectedNode == null) {
