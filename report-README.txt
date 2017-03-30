@@ -37,12 +37,12 @@ Minimum out of 40:
 
 Core out of 35 (up to 75):
 * [x] (10) Finds articulation points in one part of the graph.
-* [ ] (5) Uses the correct graph structure, i.e. ignores one way. (Articulation
+* [x] (5) Uses the correct graph structure, i.e. ignores one way. (Articulation
   points should use an undirected graph.)
-* [ ] (5) Displays the selected nodes. (i.e. displays art pts)
-* [ ] (5) Finds articulation points in all components of the graph.
+* [x] (5) Displays the selected nodes. (i.e. displays art pts)
+* [x] (5) Finds articulation points in all components of the graph.
 * [ ] (5) Uses the iterative version of the algorithm
-* [ ] (5) Do they have a report with pseudocode of their algorithms in it?
+* [x] (5) Do they have a report with pseudocode of their algorithms in it?
 
 Completion out of 10 (up to 85):
 * [x] (3) Uses one-way roads correctly in the route-finding.
@@ -139,7 +139,6 @@ Word redefinitions = {
           reachBack = min(reachBack, neigh.count)
           continue
 
-        
         neigh.count = ++*lastCount
         neighReachBack = addArticulationPoints(
           neigh, node, articulationPoints, lastCount
@@ -150,4 +149,66 @@ Word redefinitions = {
         add node -> articulationPoints
 
       return reachBack
+
+### Iterative Version ###
+
+    // General version of addArticulationPoints
+    void depthFirstSearchRecursive(node, doStuffBefore, doStuffAfter)
+      node.setCount(whatever)
+      node.children.foreach c ->
+        if c.visited?
+          continue
+        doStuffBefore.run(node) // do stuff before recursion
+        depthFirstSearchRecursive(node)
+        doStuffAfter.run(node) // do stuff when recursion finishes
+      return minResultFromNeighbours
+
+    // Generalised version turned into iterative version
+    void depthFirstSearchIterative(node, root)
+      stack = [[node: node, previousNode: root]] // array of keyword map
+
+      while !stack.empty?
+        state = stack.peek()
+
+        if !state.node.visited?
+          node.setCount(whatever)
+          state.node.neighbours.foreach neigh ->
+            doStuffBefore.run(state.node)
+            if neigh.visited? || neigh == state.node
+              continue
+            add [node: neigh, previousNode: state.node] -> stack
+          state.node.visited? = true
+          continue
+
+        minResultFromNeighbours = state.node.neighbours.foreach neigh
+          whatever()
+        doStuffAfter.run(state.node)
+        stack.pop()
+
+
+    int addArticulationPointsIterative(node, previousNode, articulationPoints, *lastCount)
+      stack = [[node: node, previousNode: previousNode]] // array of keyword map
+
+      while !stack.empty?
+        state = stack.peek()
+
+        if !state.node.count
+          state.node.count = ++*lastCount
+          state.reachBack = state.node.count
+          state.node.neighbours.foreach neigh ->
+            if neigh == state.node
+              continue
+            if neigh.count
+              state.reachBack = min(state.reachBack, neigh.count)
+              continue
+            add [node: neigh, previousNode: state.node] -> stack
+          continue
+
+        state.node.neighbours.foreach neigh ->
+          if neigh.reachBack < state.node.count
+            state.node.reachBack = min(reachBack, neighReachBack)
+            continue
+          add state.node -> articulationPoints
+
+        stack.pop()
 
