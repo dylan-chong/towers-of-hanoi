@@ -80,7 +80,7 @@ public class MapDataModelTestUtils {
                 () -> dataSet.roadSegments,
                 () -> dataSet.roadInfos
         );
-        Set<Node> articulationPoints = model.findArticulationPoints();
+        Set<Node> articulationPoints = model.findAllArticulationPoints();
         assertEquals(expectedPoints, articulationPoints);
     }
 

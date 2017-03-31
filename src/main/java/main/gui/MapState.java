@@ -6,6 +6,5 @@ package main.gui;
 public enum MapState {
     NORMAL,
     ENTER_ROUTE_START_NODE,
-    ENTER_ROUTE_LAST_NODE,
-    CLICK_TO_SELECT_ARTICULATION_POINTS
+    ENTER_ROUTE_LAST_NODE
 }

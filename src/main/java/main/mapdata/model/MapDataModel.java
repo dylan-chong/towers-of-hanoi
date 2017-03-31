@@ -218,10 +218,32 @@ public class MapDataModel {
                 .collect(Collectors.toList());
     }
 
-    public Set<Node> findArticulationPoints(Node startNode) {
+    public Set<Node> findAllArticulationPoints() {
+        Set<Node> articulationPoints = new HashSet<>();
+        Set<Node> nodesLeft = new HashSet<>(data.getNodeInfos().values());
+        while (!nodesLeft.isEmpty()) {
+            Map<Node, Integer> counts = new HashMap<>();
+            articulationPoints.addAll(
+                    findArticulationPointsInASubGraph(nodesLeft, counts)
+            );
+            nodesLeft.removeAll(counts.keySet());
+        }
+        return articulationPoints;
+    }
+
+    /**
+     * @param nodes Nodes to search. The graph formed by these nodes does not
+     *              have to be connected
+     * @param counts A map that will be modified to figure out what nodes were
+     *               searched
+     * @return The articulation points for one sub-graph in nodes.
+     */
+    private Set<Node> findArticulationPointsInASubGraph(Set<Node> nodes,
+                                                        Map<Node, Integer> counts) {
+        Node startNode = nodes.stream().findFirst()
+                .orElseThrow(AssertionError::new);
         Set<Node> articulationPoints = new HashSet<>();
 
-        Map<Node, Integer> counts = new HashMap<>();
         AtomicInteger lastCount = new AtomicInteger(1);
         counts.put(startNode, lastCount.get());
         int subTreesOfStart = 0;
@@ -244,7 +266,7 @@ public class MapDataModel {
     }
 
     /**
-     * To be called from {@link MapDataModel#findArticulationPoints()}
+     * To be called from {@link MapDataModel#findAllArticulationPoints()}
      */
     private void addArticulationPoints(Node node,
                                        Node root,

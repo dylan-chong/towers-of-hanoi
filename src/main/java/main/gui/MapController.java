@@ -131,14 +131,6 @@ public class MapController extends GUI
 
         // Give time to redraw
         SwingUtilities.invokeLater(() -> {
-            if (state == MapState.CLICK_TO_SELECT_ARTICULATION_POINTS) {
-                Collection<Node> articulationPoints =
-                        mapModel.findArticulationPoints(selection.selectedNode);
-                highlightData = new HighlightData(articulationPoints, null, null);
-                state = MapState.NORMAL;
-                return;
-            }
-
             if (state == MapState.ENTER_ROUTE_START_NODE) {
                 setRouteStartNode(selection.selectedNode);
                 state = MapState.ENTER_ROUTE_LAST_NODE;
@@ -192,8 +184,15 @@ public class MapController extends GUI
     protected void onArticulationPointsClick() {
         if (!isLoaded()) return;
 
-        state = MapState.CLICK_TO_SELECT_ARTICULATION_POINTS;
-        outputLine("Click on a Node to find articulation points");
+        outputLine("Finding articulation points...");
+        SwingUtilities.invokeLater(() -> {
+            Collection<Node> articulationPoints =
+                    mapModel.findAllArticulationPoints();
+            highlightData = new HighlightData(articulationPoints, null, null);
+            outputLine("Found " + articulationPoints.size() +
+                    " articulation points");
+            redraw();
+        });
     }
 
     @Override
