@@ -19,28 +19,32 @@ public class RouteOutputter {
                             Output output) {
         output.outputLine("Instructions:");
 
-        RoadInfo previousRoadInfo = null;
+        RoadInfo lastUniqueRoadInfo = null;
+        double distanceSinceUnique = 0; // Distance since lastUniqueRoadInfo
         for (int i = 0; i < route.segments.size(); i++) {
             Node node = route.nodes.get(i);
             RoadSegment segment = route.segments.get(i);
             RoadInfo roadInfo = mapModel.findRoadInfoForSegment(segment);
 
-            if (previousRoadInfo != null) {
+            if (lastUniqueRoadInfo != null) {
                 List<RoadInfo> roadInfos = Arrays.asList(
-                        roadInfo, previousRoadInfo
+                        roadInfo, lastUniqueRoadInfo
                 );
                 if (RoadInfo.getDistinctByName(roadInfos).size() != 2) {
                     // The previous had the same name, so don't bother printing
                     // the name again
-                    previousRoadInfo = roadInfo;
+                    distanceSinceUnique += segment.length;
                     continue;
                 }
             }
 
-            String distance = String.format("%.2f", segment.length);
+            distanceSinceUnique += segment.length;
+            String distanceString = String.format("%.2f", distanceSinceUnique);
             output.outputLine("\t- Go from intersection " + node);
-            output.outputLine("\t  on " + roadInfo + " for " + distance + " km");
-            previousRoadInfo = roadInfo;
+            output.outputLine("\t  on " + roadInfo + " for " +
+                    distanceString + " km");
+            lastUniqueRoadInfo = roadInfo;
+            distanceSinceUnique = 0;
         }
 
         // There is one more node than segment
