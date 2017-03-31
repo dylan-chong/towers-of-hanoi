@@ -190,7 +190,7 @@ public enum GraphDataSet {
                 "label",
                 "city",
                 (isOneWay == null) ? false : isOneWay,
-                RoadInfo.SpeedLimit.SL_6,
+                RoadInfo.SpeedLimit.SL_110,
                 RoadInfo.RoadClass.MAJOR_HIGHWAY,
                 false,
                 false,

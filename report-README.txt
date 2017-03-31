@@ -16,6 +16,10 @@ IMPORTANT NOTES:
 
 
 
+## What was done ##
+
+Note: a '[x]' represents a completed task it is the markdown symbol for a
+ticked tickbox
 
 Minimum out of 40:
 * [x] (5) Has a way of specifying the start and end of a route.

@@ -1,6 +1,7 @@
 package main.mapdata;
 
 import main.mapdata.roads.Node;
+import main.mapdata.roads.RoadInfo;
 import main.mapdata.roads.RoadSegment;
 
 /**
@@ -11,21 +12,39 @@ public class NodeState {
     private final Node node;
 
     private RoadSegment segmentToPreviousNode;
+    private RoadInfo roadInfoForSegment;
     private NodeState previousNodeState; // Linked list as a path
 
     private boolean hasCheckedChildren = false;
-    private double distanceFromStart;
+    private double timeFromStart;
 
     // public final boolean hasCheckedChildren;
 
     public NodeState(Node node,
                      RoadSegment segmentToPreviousNode,
+                     RoadInfo roadInfoForSegment,
                      NodeState previousNodeState,
-                     double distanceFromStart) {
+                     double timeFromStart) {
         this.node = node;
         this.segmentToPreviousNode = segmentToPreviousNode;
+        this.roadInfoForSegment = roadInfoForSegment;
         this.previousNodeState = previousNodeState;
-        this.distanceFromStart = distanceFromStart;
+        this.timeFromStart = timeFromStart;
+    }
+
+    /**
+     * Takes into account the distance and speed so far, and the estimated
+     * best cost for getting to the end
+     */
+    public double getPriority(Node routeEndNode) {
+        double estimateDistanceToEnd = node.latLong.estimatedDistanceInKmTo(
+                routeEndNode.latLong
+        );
+
+        double speed = roadInfoForSegment == null ?
+                RoadInfo.SpeedLimit.getFastest().speedKMpH :
+               roadInfoForSegment.speedLimit.speedKMpH;
+        return timeFromStart + (estimateDistanceToEnd / speed);
     }
 
     public Node getNode() {
@@ -40,12 +59,12 @@ public class NodeState {
         return previousNodeState;
     }
 
-    public double getDistanceFromStart() {
-        return distanceFromStart;
+    public double getTimeFromStart() {
+        return timeFromStart;
     }
 
-    public void setDistanceFromStart(double distanceFromStart) {
-        this.distanceFromStart = distanceFromStart;
+    public void setTimeFromStart(double timeFromStart) {
+        this.timeFromStart = timeFromStart;
     }
 
     public boolean hasCheckedChildren() {

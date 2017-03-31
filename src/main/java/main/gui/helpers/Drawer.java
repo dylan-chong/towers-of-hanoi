@@ -3,18 +3,18 @@ package main.gui.helpers;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import main.gui.HighlightData;
-import main.mapdata.location.*;
+import main.mapdata.Polygon;
+import main.mapdata.location.LatLong;
+import main.mapdata.location.Location;
 import main.mapdata.location.Rectangle;
 import main.mapdata.model.MapDataModel;
 import main.mapdata.roads.Node;
-import main.mapdata.Polygon;
 import main.mapdata.roads.RoadSegment;
 
 import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by Dylan on 15/03/17.
@@ -136,19 +136,18 @@ public class Drawer {
                                  RoadSegment roadSegment,
                                  Rectangle drawArea) {
 
+        if (!drawArea.couldPolygonBeInside(
+                roadSegment.points.stream()
+                        .map(LatLong::asLocation)
+                        .collect(Collectors.toList()))) {
+            return;
+        }
+
         // Draw pairs of latLongs
         LatLong previousPoint = null;
         for (LatLong point : roadSegment.points) {
             if (previousPoint == null) {
                 previousPoint = point;
-                continue;
-            }
-
-            if (!drawArea.couldPolygonBeInside(
-                    Stream.of(point, previousPoint)
-                            .map(LatLong::asLocation)
-                            .collect(Collectors.toList()))
-                    ) {
                 continue;
             }
 

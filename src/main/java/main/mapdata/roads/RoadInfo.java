@@ -87,26 +87,28 @@ public class RoadInfo {
 
     /**
      * Speed limit categories (sorted from slowest to fastest)
-     * <p>
-     * 0 = 5km/h
-     * 1 = 20km/h
-     * 2 = 40km/h
-     * 3 = 60km/h
-     * 4 = 80km/h
-     * 5 = 100km/h
-     * 6 = 110km/h
-     * 7 = no limit
      */
     public enum SpeedLimit {
-        // The ordering of these must be maintained
-        SL_0,
-        SL_1,
-        SL_2,
-        SL_3,
-        SL_4,
-        SL_5,
-        SL_6,
-        SL_7;
+        // The ordering and position of these must be maintained
+        SL_005(5),
+        SL_020(20),
+        SL_040(40),
+        SL_060(60),
+        SL_080(80),
+        SL_100(100),
+        SL_110(110),
+        // Just use the fastest possible one for admissible estimates
+        SL_NOT_DEFINED(getFastest().speedKMpH);
+
+        public final double speedKMpH;
+
+        SpeedLimit(double speedKMpH) {
+            this.speedKMpH = speedKMpH;
+        }
+
+        public static SpeedLimit getFastest() {
+            return SL_110;
+        }
     }
 
     /**

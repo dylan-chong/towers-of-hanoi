@@ -2,17 +2,18 @@ package main.mapdata.model;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import main.mapdata.location.LatLong;
+import main.datastructures.Graph;
+import main.datastructures.Trie;
 import main.gui.MapController;
-import main.mapdata.*;
+import main.mapdata.MapGraph;
+import main.mapdata.NodeState;
+import main.mapdata.Route;
+import main.mapdata.location.LatLong;
+import main.mapdata.location.Location;
 import main.mapdata.roads.Node;
 import main.mapdata.roads.RoadInfo;
 import main.mapdata.roads.RoadInfoByName;
 import main.mapdata.roads.RoadSegment;
-import main.datastructures.Graph;
-import main.mapdata.Route;
-import main.datastructures.Trie;
-import main.mapdata.location.Location;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -99,18 +100,16 @@ public class MapDataModel {
     public Route findRouteBetween(Node routeStartNode,
                                   Node routeEndNode) {
         Comparator<NodeState> comparator = Comparator.comparingDouble(
-                (nodeState) -> {
-                    double estimate = nodeState.getNode()
-                            .latLong.estimatedDistanceInKmTo(routeEndNode.latLong);
-                    return nodeState.getDistanceFromStart() + estimate;
-                }
+                (nodeState) -> nodeState.getPriority(routeEndNode)
         );
         NavigableSet<NodeState> nodesToCheck = new TreeSet<>(comparator);
         // For fast lookup
         Map<Node, NodeState> nodeStateMap = new HashMap<>();
 
         { // Add routeStartNode
-            NodeState startState = new NodeState(routeStartNode, null, null, 0);
+            NodeState startState = new NodeState(
+                    routeStartNode, null, null, null, 0
+            );
             nodesToCheck.add(startState);
             nodeStateMap.put(routeStartNode, startState);
         }
@@ -135,8 +134,10 @@ public class MapDataModel {
                 Node neighbourNode = neighbourNodes.get(i);
                 // Connects neighbourNode and nodeState.node
                 RoadSegment connectingSegment = currentSegments.get(i);
+                RoadInfo roadInfoForSegment = findRoadInfoForSegment(
+                        connectingSegment);
 
-                if (findRoadInfoForSegment(connectingSegment).isOneWay) {
+                if (roadInfoForSegment.isOneWay) {
                     Node currentNode = currentNodeState.getNode();
                     if (connectingSegment.node1ID != currentNode.id) {
                         // Wrong way
@@ -149,6 +150,7 @@ public class MapDataModel {
                         key -> new NodeState(
                                 neighbourNode,
                                 connectingSegment,
+                                roadInfoForSegment,
                                 currentNodeState,
                                 Double.POSITIVE_INFINITY
                         )
@@ -159,16 +161,17 @@ public class MapDataModel {
                 nodesToCheck.add(neighbourState);
 
                 // Distance up to neighbourNode
-                double newDistanceFromStart = currentNodeState
-                        .getDistanceFromStart() + connectingSegment.length;
-                if (newDistanceFromStart >= neighbourState.getDistanceFromStart()) {
+                double speedLimit = roadInfoForSegment.speedLimit.speedKMpH;
+                double newTimeFromStart = currentNodeState.getTimeFromStart() +
+                        (connectingSegment.length / speedLimit);
+                if (newTimeFromStart >= neighbourState.getTimeFromStart()) {
                     continue;
                 }
 
                 // Remove (if necessary) before changing priority
                 nodesToCheck.remove(neighbourState);
 
-                neighbourState.setDistanceFromStart(newDistanceFromStart);
+                neighbourState.setTimeFromStart(newTimeFromStart);
                 neighbourState.setSegmentToPreviousNode(connectingSegment);
                 neighbourState.setPreviousNodeState(currentNodeState);
 
@@ -177,7 +180,7 @@ public class MapDataModel {
             }
 
             // Check if priority queue is in order
-            assert isSorted(nodesToCheck, comparator);
+            // assert isSorted(nodesToCheck, comparator);
 
             if (currentNodeState.getNode().equals(routeEndNode)) {
                 break;
