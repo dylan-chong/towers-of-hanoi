@@ -224,6 +224,68 @@ public class MapDataModelTest {
     }
 
     @Test
+    public void findRouteBetween_twoWeightedPaths_returnsShortest() {
+        GraphDataSet dataSet = GraphDataSet.WEIGHTED_TWO_DIFFERENT_LENGTH_PATHS;
+        MapDataModelTestUtils.testFindRouteBetweenOnDataSet(
+                Arrays.asList(
+                        dataSet.getNodeById(1),
+                        dataSet.getNodeById(3),
+                        dataSet.getNodeById(4)
+                ),
+                Arrays.asList(
+                        dataSet.getSegmentById(103),
+                        dataSet.getSegmentById(104)
+                ),
+                dataSet.getNodeById(1),
+                dataSet.getNodeById(4),
+                dataSet,
+                null
+        );
+    }
+
+    @Test
+    public void findRouteBetween_twoWeightedPathsSwapped_returnsShortest() {
+        // Same test as above with the short path swapped with the long one
+        GraphDataSet dataSet =
+                GraphDataSet.WEIGHTED_TWO_DIFFERENT_LENGTH_PATHS_SWAPPED;
+        MapDataModelTestUtils.testFindRouteBetweenOnDataSet(
+                Arrays.asList(
+                        dataSet.getNodeById(1),
+                        dataSet.getNodeById(2),
+                        dataSet.getNodeById(4)
+                ),
+                Arrays.asList(
+                        dataSet.getSegmentById(101),
+                        dataSet.getSegmentById(102)
+                ),
+                dataSet.getNodeById(1),
+                dataSet.getNodeById(4),
+                dataSet,
+                null
+        );
+    }
+
+    @Test
+    public void findRouteBetween_manyWeightedPaths_returnsShortest() {
+        GraphDataSet dataSet = GraphDataSet.WEIGHTED_MANY_PATHS;
+        MapDataModelTestUtils.testFindRouteBetweenOnDataSet(
+                Arrays.asList(
+                        dataSet.getNodeById(1),
+                        dataSet.getNodeById(4),
+                        dataSet.getNodeById(7)
+                ),
+                Arrays.asList(
+                        dataSet.getSegmentById(105),
+                        dataSet.getSegmentById(106)
+                ),
+                dataSet.getNodeById(1),
+                dataSet.getNodeById(7),
+                dataSet,
+                null
+        );
+    }
+
+    @Test
     public void findArticulationPoints_emptyData_returnsEmpty() {
         MapDataModelTestUtils.testFindArticulationPoints(
                 GraphDataSet.EMPTY,

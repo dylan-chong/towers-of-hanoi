@@ -14,31 +14,16 @@ public class NodeState {
 
     private RoadSegment segmentToPreviousNode;
     private NodeState previousNodeState; // Linked list as a path
-    private double costFromStart = Double.POSITIVE_INFINITY;
+    private double costFromStart;
 
     private boolean hasCheckedChildren = false;
 
-    /**
-     *
-     * @param segmentToPreviousNode Set to null if this is the start node
-     * @param roadInfoForSegment Set to null if this is the start node
-     * @param previousNodeState Set to null if this is the start node
-     */
     public NodeState(Node node,
-                     RoadSegment segmentToPreviousNode,
-                     RoadInfo roadInfoForSegment,
-                     NodeState previousNodeState,
+                     boolean isStartNode,
                      CostHeuristic heuristic) {
         this.node = node;
         this.heuristic = heuristic;
-
-        if (previousNodeState == null) {
-            costFromStart = 0;
-            return;
-        }
-        setPreviousNodeState(
-                previousNodeState, segmentToPreviousNode, roadInfoForSegment
-        );
+        this.costFromStart = isStartNode ? 0 : Double.POSITIVE_INFINITY;
     }
 
     public Node getNode() {
@@ -70,6 +55,15 @@ public class NodeState {
         costFromStart = heuristic.getCostFromStart(previousNodeState) +
                 heuristic.getCostForSegment(segmentToPreviousNode,
                         roadInfoForSegment);
+    }
+
+    public int compareTo(NodeState other, Node routeEndNode) {
+        if (this == other) return 0;
+
+        double costA = heuristic.getCostPlusEstimate(this, routeEndNode);
+        double costB = heuristic.getCostPlusEstimate(other, routeEndNode);
+        if (costA <= costB) return -1;
+        return 1;
     }
 
     /**

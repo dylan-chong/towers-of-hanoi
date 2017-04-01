@@ -100,16 +100,15 @@ public class MapDataModel {
     public Route findRouteBetween(Node routeStartNode,
                                   Node routeEndNode,
                                   NodeState.CostHeuristic heuristic) {
-        Comparator<NodeState> comparator = Comparator.comparingDouble(
-                state -> heuristic.getCostPlusEstimate(state, routeEndNode)
-        );
-        NavigableSet<NodeState> nodesToCheck = new TreeSet<>(comparator);
+        Comparator<NodeState> stateComparator = (stateA, stateB) ->
+            stateA.compareTo(stateB, routeEndNode);
+        Queue<NodeState> nodesToCheck = new PriorityQueue<>(stateComparator);
         // For fast lookup
         Map<Node, NodeState> nodeStateMap = new HashMap<>();
 
         { // Add routeStartNode
             NodeState startState = new NodeState(
-                    routeStartNode, null, null, null, heuristic
+                    routeStartNode, true, heuristic
             );
             nodesToCheck.add(startState);
             nodeStateMap.put(routeStartNode, startState);
@@ -117,10 +116,14 @@ public class MapDataModel {
         }
 
         while (!nodesToCheck.isEmpty()) {
-            NodeState currentState = nodesToCheck.pollFirst();
+            NodeState currentState = nodesToCheck.remove();
 
             assert !currentState.hasCheckedChildren();
             currentState.setHasCheckedChildren(true);
+
+            if (currentState.getNode() == routeEndNode) {
+                break;
+            }
 
             // Segments leaving nodeState
             List<RoadSegment> currentSegments = findRoadSegmentsForNode(
@@ -149,13 +152,7 @@ public class MapDataModel {
 
                 NodeState neighbourState = nodeStateMap.computeIfAbsent(
                         neighbourNode,
-                        key -> new NodeState(
-                                neighbourNode,
-                                connectingSegment,
-                                roadInfoForSegment,
-                                currentState,
-                                heuristic
-                        )
+                        key -> new NodeState(neighbourNode, false, heuristic)
                 );
 
                 if (neighbourState.hasCheckedChildren()) continue;
@@ -185,11 +182,7 @@ public class MapDataModel {
             }
 
             // Check if priority queue is in order
-            assert isSorted(nodesToCheck, comparator);
-
-            if (currentState.getNode().equals(routeEndNode)) {
-                break;
-            }
+            // assert isSorted(nodesToCheck, stateComparator);
         }
 
         NodeState lastNodeState = nodeStateMap.get(routeEndNode);
