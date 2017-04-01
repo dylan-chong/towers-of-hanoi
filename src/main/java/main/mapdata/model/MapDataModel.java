@@ -118,12 +118,9 @@ public class MapDataModel {
         while (!nodesToCheck.isEmpty()) {
             NodeState currentState = nodesToCheck.remove();
 
-            assert !currentState.hasCheckedChildren();
+            if (currentState.hasCheckedChildren()) continue;
+            if (currentState.getNode() == routeEndNode) continue;
             currentState.setHasCheckedChildren(true);
-
-            if (currentState.getNode() == routeEndNode) {
-                break;
-            }
 
             // Segments leaving nodeState
             List<RoadSegment> currentSegments = findRoadSegmentsForNode(
@@ -180,9 +177,6 @@ public class MapDataModel {
                 // Add back with new priority
                 nodesToCheck.add(neighbourState);
             }
-
-            // Check if priority queue is in order
-            // assert isSorted(nodesToCheck, stateComparator);
         }
 
         NodeState lastNodeState = nodeStateMap.get(routeEndNode);

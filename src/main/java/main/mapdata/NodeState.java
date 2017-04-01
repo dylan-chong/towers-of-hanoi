@@ -58,11 +58,10 @@ public class NodeState {
     }
 
     public int compareTo(NodeState other, Node routeEndNode) {
-        if (this == other) return 0;
-
         double costA = heuristic.getCostPlusEstimate(this, routeEndNode);
         double costB = heuristic.getCostPlusEstimate(other, routeEndNode);
-        if (costA <= costB) return -1;
+        if (costA < costB) return -1;
+        if (costA == costB) return 0;
         return 1;
     }
 
