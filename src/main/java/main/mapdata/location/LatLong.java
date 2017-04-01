@@ -54,6 +54,9 @@ public class LatLong {
         );
     }
 
+    /**
+     * Assumes the Earth is perfectly spherical
+     */
     public double estimatedDistanceInKmTo(LatLong target) {
         double distanceDegrees = Math.hypot(
                 target.latitude - latitude,

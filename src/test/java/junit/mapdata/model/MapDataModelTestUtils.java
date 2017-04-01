@@ -1,6 +1,7 @@
 package junit.mapdata.model;
 
 import junit.async.StubTaskQueue;
+import main.mapdata.NodeState;
 import main.mapdata.Route;
 import main.mapdata.model.MapDataContainer;
 import main.mapdata.model.MapDataModel;
@@ -59,7 +60,9 @@ public class MapDataModelTestUtils {
                 () -> graphDataSet.roadSegments,
                 () -> graphDataSet.roadInfos
         );
-        Route route = mapModel.findRouteBetween(routeStart, routeEnd);
+        Route route = mapModel.findRouteBetween(
+                routeStart, routeEnd, new NodeState.TimeHeuristic() //todo use distance
+        );
 
         if (routeMatcher != null) {
             routeMatcher.accept(route);

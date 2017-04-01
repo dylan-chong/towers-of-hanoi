@@ -57,7 +57,7 @@ Completion out of 10 (up to 85):
 Challenge out of 20 (up to 100, with 5 spare marks):
 * [ ] (8) Allows user to select distance or time, and find fastest route, using
   road class and speed limit data, and using an admissible heuristic.
-* [ ] (2) Can they explain and justify their cost function and heuristic?
+* [x] (2) Can they explain and justify their cost function and heuristic?
   Heuristic must be admissible.
 * [ ] (5) Takes into account restriction information.
 * [ ] (5) Takes into account intersection constraints such as traffic lights to

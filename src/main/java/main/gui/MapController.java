@@ -5,6 +5,7 @@ import main.gui.helpers.Drawer;
 import main.gui.helpers.MapMouseListener;
 import main.gui.helpers.RouteOutputter;
 import main.gui.helpers.View;
+import main.mapdata.NodeState;
 import main.mapdata.Route;
 import main.mapdata.location.Location;
 import main.mapdata.model.MapDataLoader;
@@ -240,7 +241,11 @@ public class MapController extends GUI
 
         // Give time to redraw and update text area
         SwingUtilities.invokeLater(() -> {
-            Route route = mapModel.findRouteBetween(routeStartNode, routeEndNode);
+            Route route = mapModel.findRouteBetween(
+                    routeStartNode,
+                    routeEndNode,
+                    new NodeState.TimeHeuristic()
+            );
             // redraw will be called automatically
 
             highlightData = highlightData.getNewWithRoute(route);

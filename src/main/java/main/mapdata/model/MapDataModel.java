@@ -98,9 +98,10 @@ public class MapDataModel {
     }
 
     public Route findRouteBetween(Node routeStartNode,
-                                  Node routeEndNode) {
+                                  Node routeEndNode,
+                                  NodeState.CostHeuristic heuristic) {
         Comparator<NodeState> comparator = Comparator.comparingDouble(
-                (nodeState) -> nodeState.getPriority(routeEndNode)
+                state -> heuristic.getCostPlusEstimate(state, routeEndNode)
         );
         NavigableSet<NodeState> nodesToCheck = new TreeSet<>(comparator);
         // For fast lookup
@@ -108,25 +109,26 @@ public class MapDataModel {
 
         { // Add routeStartNode
             NodeState startState = new NodeState(
-                    routeStartNode, null, null, null, 0
+                    routeStartNode, null, null, null, heuristic
             );
             nodesToCheck.add(startState);
             nodeStateMap.put(routeStartNode, startState);
+            assert heuristic.getCostFromStart(startState) == 0;
         }
 
         while (!nodesToCheck.isEmpty()) {
-            NodeState currentNodeState = nodesToCheck.pollFirst();
+            NodeState currentState = nodesToCheck.pollFirst();
 
-            assert !currentNodeState.hasCheckedChildren();
-            currentNodeState.setHasCheckedChildren(true);
+            assert !currentState.hasCheckedChildren();
+            currentState.setHasCheckedChildren(true);
 
             // Segments leaving nodeState
             List<RoadSegment> currentSegments = findRoadSegmentsForNode(
-                    currentNodeState.getNode()
+                    currentState.getNode()
             );
             List<Node> neighbourNodes = currentSegments.stream()
                     .map(segment ->
-                            findOtherNode(segment, currentNodeState.getNode())
+                            findOtherNode(segment, currentState.getNode())
                     )
                     .collect(Collectors.toList());
 
@@ -138,7 +140,7 @@ public class MapDataModel {
                         connectingSegment);
 
                 if (roadInfoForSegment.isOneWay) {
-                    Node currentNode = currentNodeState.getNode();
+                    Node currentNode = currentState.getNode();
                     if (connectingSegment.node1ID != currentNode.id) {
                         // Wrong way
                         continue;
@@ -151,8 +153,8 @@ public class MapDataModel {
                                 neighbourNode,
                                 connectingSegment,
                                 roadInfoForSegment,
-                                currentNodeState,
-                                Double.POSITIVE_INFINITY
+                                currentState,
+                                heuristic
                         )
                 );
 
@@ -161,28 +163,31 @@ public class MapDataModel {
                 nodesToCheck.add(neighbourState);
 
                 // Distance up to neighbourNode
-                double speedLimit = roadInfoForSegment.speedLimit.speedKMpH;
-                double newTimeFromStart = currentNodeState.getTimeFromStart() +
-                        (connectingSegment.length / speedLimit);
-                if (newTimeFromStart >= neighbourState.getTimeFromStart()) {
+                double newNeighbourCost =
+                        heuristic.getCostFromStart(currentState) +
+                        heuristic.getCostForSegment(
+                                connectingSegment, roadInfoForSegment
+                        );
+                double currentNeighbourCost = heuristic.getCostFromStart(neighbourState);
+                if (newNeighbourCost >= currentNeighbourCost) {
                     continue;
                 }
 
                 // Remove (if necessary) before changing priority
                 nodesToCheck.remove(neighbourState);
 
-                neighbourState.setTimeFromStart(newTimeFromStart);
-                neighbourState.setSegmentToPreviousNode(connectingSegment);
-                neighbourState.setPreviousNodeState(currentNodeState);
+                neighbourState.setPreviousNodeState(
+                        currentState, connectingSegment, roadInfoForSegment
+                );
 
                 // Add back with new priority
                 nodesToCheck.add(neighbourState);
             }
 
             // Check if priority queue is in order
-            // assert isSorted(nodesToCheck, comparator);
+            assert isSorted(nodesToCheck, comparator);
 
-            if (currentNodeState.getNode().equals(routeEndNode)) {
+            if (currentState.getNode().equals(routeEndNode)) {
                 break;
             }
         }
