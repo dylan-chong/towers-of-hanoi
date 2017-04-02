@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class MapDataModelTest {
 
-    private MapDataModelTestUtils.ModelFacadeFactory mapDataFactory =
+    private MapDataModelTestUtils.ModelFactoryFacade mapDataFactory =
             MapDataModelTestUtils.MAP_DATA_FACTORY;
 
     @Test

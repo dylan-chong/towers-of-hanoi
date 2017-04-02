@@ -28,7 +28,7 @@ public class MapDataModelTestUtils {
      * {@link MapDataModel} and {@link MapDataContainer}, so I used a facade
      * to avoid tediously the tests
      */
-    public static final MapDataModelTestUtils.ModelFacadeFactory
+    public static final ModelFactoryFacade
             MAP_DATA_FACTORY = (nodes,
                               roadSegments,
                               roadInfosSupplier) ->
@@ -38,6 +38,7 @@ public class MapDataModelTestUtils {
                     nodes,
                     roadSegments,
                     roadInfosSupplier,
+                    Collections::emptyList,
                     Collections::emptyList
             ));
 
@@ -87,7 +88,7 @@ public class MapDataModelTestUtils {
         assertEquals(expectedPoints, articulationPoints);
     }
 
-    public interface ModelFacadeFactory {
+    public interface ModelFactoryFacade {
         MapDataModel create(
                 Supplier<Collection<Node>> nodes,
                 Supplier<Collection<RoadSegment>> roadSegments,

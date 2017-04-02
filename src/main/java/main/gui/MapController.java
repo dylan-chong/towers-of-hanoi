@@ -166,7 +166,11 @@ public class MapController extends GUI
      * @param polygons a File for polygon-shapes.mp (map be null)
      */
     @Override
-    protected void onLoad(File nodes, File roads, File segments, File polygons) {
+    protected void onLoad(File nodes,
+                          File roads,
+                          File segments,
+                          File polygons,
+                          File restrictions) {
         this.mapModel = null;
         outputLine("Loading data");
 
@@ -178,7 +182,9 @@ public class MapController extends GUI
 
             outputLine("Loading finished (took " + loadDuration + " ms)");
         };
-        mapDataLoader.load(nodes, roads, segments, polygons, onFinishLoad);
+        mapDataLoader.load(
+                nodes, roads, segments, polygons, restrictions, onFinishLoad
+        );
     }
 
     @Override

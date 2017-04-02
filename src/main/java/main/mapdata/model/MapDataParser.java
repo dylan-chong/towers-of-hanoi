@@ -3,6 +3,7 @@ package main.mapdata.model;
 import main.mapdata.location.LatLong;
 import main.mapdata.roads.Node;
 import main.mapdata.Polygon;
+import main.mapdata.roads.Restriction;
 import main.mapdata.roads.RoadInfo;
 import main.mapdata.roads.RoadSegment;
 
@@ -187,6 +188,28 @@ public class MapDataParser {
                     throw new IOException("Bad file format");
             }
         }
+    }
+
+    public Collection<Restriction> parseRestrictions(BufferedReader reader) {
+        try {
+            // Get rid of header line
+            reader.readLine();
+        } catch (IOException e) {
+            throw new AssertionError(e);
+        }
+        return reader.lines()
+                .map(line -> {
+                    String[] tokens = line.split("\t");
+                    int next = 0; // next token index
+                    return new Restriction(
+                            Long.parseLong(tokens[next++]),
+                            Long.parseLong(tokens[next++]),
+                            Long.parseLong(tokens[next++]),
+                            Long.parseLong(tokens[next++]),
+                            Long.parseLong(tokens[next])
+                    );
+                })
+                .collect(Collectors.toList());
     }
 
     private static boolean toBool(int integer) {

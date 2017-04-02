@@ -7,8 +7,8 @@ public class AsyncTask {
     public final Runnable doTask;
     public final String name;
 
-    public AsyncTask(Runnable doTask,
-                     String name) {
+    public AsyncTask(String name,
+                     Runnable doTask) {
         this.doTask = doTask;
         this.name = name;
     }

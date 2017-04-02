@@ -34,6 +34,7 @@ public class MapDataLoader {
                      File roads,
                      File segments,
                      File polygons,
+                     File restrictions,
                      OnFinishLoad onFinishLoad) {
         try {
             long loadStartTime = System.currentTimeMillis();
@@ -43,6 +44,8 @@ public class MapDataLoader {
             Scanner roadInfoScanner = new Scanner(roads);
             BufferedReader polygonsReader = (polygons == null) ? null :
                     new BufferedReader(new FileReader(polygons));
+            BufferedReader restrictionsReader = (restrictions == null) ? null :
+                    new BufferedReader(new FileReader(restrictions));
 
 
             AtomicReference<MapDataModel> mapDataRef = new AtomicReference<>();
@@ -55,13 +58,10 @@ public class MapDataLoader {
                     () -> dataParser.parseNodes(nodesReader),
                     () -> dataParser.parseRoadSegments(segmentsReader),
                     () -> dataParser.parseRoadInfo(roadInfoScanner),
-                    () -> {
-                        if (polygonsReader != null) {
-                            return dataParser.parsePolygons(polygonsReader);
-                        } else {
-                            return Collections.emptyList();
-                        }
-                    }
+                    () -> polygonsReader == null ? Collections.emptyList() :
+                            dataParser.parsePolygons(polygonsReader),
+                    () -> polygonsReader == null ? Collections.emptyList() :
+                            dataParser.parseRestrictions(restrictionsReader)
             );
             mapDataRef.set(mapModelFactory.create(mapDataContainer));
         } catch (FileNotFoundException e) {

@@ -6,6 +6,7 @@ import main.async.AsyncTask;
 import main.async.AsyncTaskQueue;
 import main.mapdata.*;
 import main.mapdata.roads.Node;
+import main.mapdata.roads.Restriction;
 import main.mapdata.roads.RoadInfo;
 import main.mapdata.roads.RoadSegment;
 import main.datastructures.QuadTree;
@@ -39,6 +40,7 @@ public class MapDataContainer {
      * endLevel to polygons
      */
     private volatile Map<Integer, List<Polygon>> polygons;
+    private Set<Restriction> restrictions;
 
 
     @Inject
@@ -48,61 +50,68 @@ public class MapDataContainer {
             @Assisted Supplier<Collection<Node>> nodeInfosSupplier,
             @Assisted Supplier<Collection<RoadSegment>> roadSegmentsSupplier,
             @Assisted Supplier<Collection<RoadInfo>> roadInfosSupplier,
-            @Assisted Supplier<Collection<Polygon>> polygonsSupplier) {
+            @Assisted Supplier<Collection<Polygon>> polygonsSupplier,
+            @Assisted Supplier<Collection<Restriction>> restrictionsSupplier) {
 
         // Load segments and polygons first
         AtomicInteger criticalTasksLeft = new AtomicInteger(2);
 
-        Runnable onCompleteCriticalTask = () -> {
-            if (criticalTasksLeft.decrementAndGet() > 0) return;
-            finishLoadingCallback.run();
-        };
-
-        // Load data in a new thread to prevent blocking user input
-
-        // The 'top-level' addTask calls are the first tasks to be run. The
-        // inner tasks are started after a top-level one is completed
-
-        asyncTaskQueue.addTask(new AsyncTask(() -> {
-            setRoadSegments(roadSegmentsSupplier.get());
-            onCompleteCriticalTask.run();
-
-            // Only load other stuff when when segments are loaded
+        Runnable loadNonCriticalTasks = () -> {
             asyncTaskQueue.addTask(new AsyncTask(
+                    "Parse node infos",
                     () -> {
                         setNodeInfos(nodeInfosSupplier.get());
 
                         asyncTaskQueue.addTask(new AsyncTask(
-                                this::setMapGraph,
-                                "Create graph"
+                                "Create graph",
+                                this::setMapGraph
                         ));
 
                         asyncTaskQueue.addTask(new AsyncTask(
-                                this::setNodeTree,
-                                "Create node quad tree"
+                                "Create node quad tree",
+                                this::setNodeTree
                         ));
-                    },
-                    "Parse node infos" // Critical task
+
+                        asyncTaskQueue.addTask(new AsyncTask(
+                                "Parse restrictions",
+                                () -> setRestrictions(restrictionsSupplier.get())
+                        ));
+                    }
             ));
             asyncTaskQueue.addTask(new AsyncTask(
-                    () -> {
-                        setRoadInfos(roadInfosSupplier.get());
+                    "Parse road infos", () -> {
+                setRoadInfos(roadInfosSupplier.get());
 
-                        asyncTaskQueue.addTask(new AsyncTask(
-                                this::setRoadInfoLabelsTrie,
-                                "Create Trie"
-                        ));
-                    }, "Parse road infos"
+                asyncTaskQueue.addTask(new AsyncTask(
+                        "Create Trie",
+                        this::setRoadInfoLabelsTrie
+                ));
+            }
             ));
-        }, "Parse road segments"));
+        };
 
-        asyncTaskQueue.addTask(new AsyncTask(
-                () -> {
-                    setPolygons(polygonsSupplier.get());
-                    onCompleteCriticalTask.run();
-                },
-                "Parse polygons" // Critical task
-        ));
+        Runnable onCompleteCriticalTask = () -> {
+            if (criticalTasksLeft.decrementAndGet() > 0) return;
+            finishLoadingCallback.run();
+
+            // Load data in a new thread to prevent blocking user input
+            // The 'top-level' addTask calls are the first non-critical tasks
+            // to be run. the inner tasks are started after a top-level one is
+            // completed
+            loadNonCriticalTasks.run();
+        };
+
+        // Critical tasks
+
+        asyncTaskQueue.addTask(new AsyncTask("Parse road segments", () -> {
+            setRoadSegments(roadSegmentsSupplier.get());
+            onCompleteCriticalTask.run();
+        }));
+
+        asyncTaskQueue.addTask(new AsyncTask("Parse polygons", () -> {
+            setPolygons(polygonsSupplier.get());
+            onCompleteCriticalTask.run();
+        }));
     }
 
     private void setRoadSegments(Collection<RoadSegment> roadSegments) {
@@ -190,6 +199,10 @@ public class MapDataContainer {
         this.nodeTree = nodeTree;
     }
 
+    private void setRestrictions(Collection<Restriction> restrictions) {
+        this.restrictions = new HashSet<>(restrictions);
+    }
+
     /**
      * @return roadInfos when ready
      */
@@ -221,6 +234,10 @@ public class MapDataContainer {
         return waitForLoad(() -> polygons);
     }
 
+    public Set<Restriction> getRestrictions() {
+        return waitForLoad(() -> restrictions);
+    }
+
     private <T> T waitForLoad(Supplier<T> fieldWithLoadingInProgress) {
         while (fieldWithLoadingInProgress.get() == null) {
             try {
@@ -237,10 +254,12 @@ public class MapDataContainer {
          * Should have the same parameter names as the MapDataModel constructor (this
          * is used by Guice). This calls the constructor for {@link MapDataModel}.
          */
-        MapDataContainer create(Runnable finishLoadingCallback,
-                                Supplier<Collection<Node>> nodes,
-                                Supplier<Collection<RoadSegment>> roadSegments,
-                                Supplier<Collection<RoadInfo>> roadInfosSupplier,
-                                Supplier<Collection<Polygon>> polygonsSupplier);
+        MapDataContainer create(
+                Runnable finishLoadingCallback,
+                Supplier<Collection<Node>> nodes,
+                Supplier<Collection<RoadSegment>> roadSegments,
+                Supplier<Collection<RoadInfo>> roadInfosSupplier,
+                Supplier<Collection<Polygon>> polygonsSupplier,
+                Supplier<Collection<Restriction>> restrictionsSupplier);
     }
 }
