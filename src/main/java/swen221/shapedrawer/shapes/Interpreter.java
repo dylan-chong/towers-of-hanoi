@@ -99,9 +99,16 @@ public class Interpreter {
 			drawShape(color, shape, canvas);
 		} else if (!cmd.equals("")) {
 			// variable assignment
+			String variableName = cmd;
+			while (true) {
+				char nextChar = input.charAt(index);
+				if (nextChar == '=') break;
+				variableName = variableName + nextChar;
+				index++;
+			}
 			match("=");
 			Shape rhs = evaluateShapeExpression();
-			environment.put(cmd, rhs);
+			environment.put(variableName, rhs);
 		}
 	}
 
@@ -130,9 +137,9 @@ public class Interpreter {
 	 * @param canvas
 	 */
 	public void fillShape(Color color, Shape shape, Canvas canvas) {
-		Rectangle area = shape.boundingBox();
-		for (int y = area.y; y < area.y + area.height; y++) {
-			for (int x = area.x; x < area.x + area.width; x++) {
+		Rectangle box = shape.boundingBox();
+		for (int y = box.y; y < box.y + box.height; y++) {
+			for (int x = box.x; x < box.x + box.width; x++) {
 				if (!shape.contains(x, y)) continue;
 				canvas.draw(x, y, color);
 			}
@@ -147,7 +154,24 @@ public class Interpreter {
 	 * @param canvas
 	 */
 	public void drawShape(Color color, Shape shape, Canvas canvas) {
-		// TODO: For part 1 you'll need to complete this
+		Rectangle box = shape.boundingBox();
+		for (int y = box.y; y < box.y + box.height; y++) {
+
+			boolean isInsideShape = false;
+			for (int x = box.x; x < box.x + box.width; x++) {
+				if (!isInsideShape) {
+					if (!shape.contains(x, y)) continue;
+					canvas.draw(x, y, color);
+					isInsideShape = true;
+					continue;
+				}
+
+				if (!shape.contains(x, y)) continue;
+				canvas.draw(x, y, color);
+				isInsideShape = false;
+			}
+
+		}
 	}
 
 	/**
@@ -205,9 +229,6 @@ public class Interpreter {
 	 * @return
 	 */
 	private Shape evaluateRectangleExpression() {
-		// TODO: For part 1 you'll need to complete this. What it should do is
-		// match '[' at the beginning and ']' at the end. In between it needs to
-		// extract the four numbers which should be separated by commas.
 		match("[");
 		int x = readNumber();
 		match(",");
@@ -218,6 +239,7 @@ public class Interpreter {
 		int h = readNumber();
 		match("]");
 		return new Rectangle(x, y, w, h);
+		//todo whitepsace
 	}
 
 	/**

@@ -1,9 +1,9 @@
 package swen221.shapedrawer.shapes;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-
-import javax.swing.JFrame;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * A canvas represents a place on which one can draw points. A canvas will
@@ -149,14 +149,25 @@ public class Canvas {
 		JFrame window = new JFrame("Assignment 3, Canvas Viewer");
 		java.awt.Canvas c = new java.awt.Canvas() {
 			public void paint(Graphics g) {
-				g.drawImage(img,10,10,null);				
+				g.drawImage(img, 10, 10, width * 10, height * 10, null);
 			}
 		};
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setBounds(0, 0, width+30, height+50);
+		// window.setBounds(0, 0, width+30, height+50);
+		window.setMinimumSize(new Dimension(200, 200));
 		window.add(c);
 		window.pack();
-		window.setVisible(true);		
+		window.setVisible(true);
+		window.setBackground(new java.awt.Color(100, 100, 100));
+		c.setVisible(true);
+		try {
+			SwingUtilities.invokeAndWait(() -> window.repaint());
+			SwingUtilities.invokeAndWait(() -> c.repaint());
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
