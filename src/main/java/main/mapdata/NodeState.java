@@ -82,7 +82,9 @@ public class NodeState {
          * but this method is in this interface to be consistent with other
          * methods
          */
-        double getCostFromStart(NodeState toState);
+        default double getCostFromStart(NodeState toState) {
+            return toState.costFromStart;
+        }
 
         double getCostForSegment(RoadSegment roadSegment,
                                  RoadInfo roadInfoForSegment);
@@ -94,10 +96,6 @@ public class NodeState {
      * Takes into account distance and the speed limit
      */
     public static class TimeHeuristic implements CostHeuristic {
-        @Override
-        public double getCostFromStart(NodeState toState) {
-            return toState.costFromStart;
-        }
 
         @Override
         public double getCostForSegment(RoadSegment roadSegment,
@@ -117,5 +115,18 @@ public class NodeState {
         }
     }
 
+    public static class DistanceHeuristic implements CostHeuristic {
+
+        @Override
+        public double getCostForSegment(RoadSegment roadSegment,
+                                        RoadInfo roadInfoForSegment) {
+            return roadSegment.length;
+        }
+
+        @Override
+        public double getEstimate(Node from, Node to) {
+            return from.latLong.estimatedDistanceInKmTo(to.latLong);
+        }
+    }
 }
 

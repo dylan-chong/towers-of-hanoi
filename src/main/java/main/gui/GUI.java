@@ -1,5 +1,7 @@
 package main.gui;
 
+import main.mapdata.NodeState;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.text.DefaultCaret;
@@ -20,6 +22,10 @@ import java.io.File;
  * @author tony
  */
 public abstract class GUI {
+
+    public static final String DIRECTIONS_PRIORITY_BUTTON_TEXT =
+            "Route Mode: ";
+
     /**
      * defines the different types of movement the user can perform, the
      * appropriate one is passed to your code when the move(Move) method is
@@ -165,7 +171,6 @@ public abstract class GUI {
                 fileChooser.setDialogTitle("Select input directory");
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-                // run the file chooser and check the user didn't hit cancel
                 if (fileChooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
                     // get the files in the selected directory and match them to
                     // the files we need.
@@ -250,6 +255,15 @@ public abstract class GUI {
         enterDirections.addActionListener((event) -> {
             onEnterDirectionsClick();
         });
+        JButton directionsMode = new JButton(DIRECTIONS_PRIORITY_BUTTON_TEXT);
+        setDirectionsMode(directionsMode, DirectionsMode.SHORTEST_TIME);
+        directionsMode.addActionListener((event) -> {
+            onDirectionsModeClick(event, directionsMode);
+        });
+        JPanel directionsPanel = new JPanel();
+        directionsPanel.setLayout(new GridLayout(2, 1));
+        directionsPanel.add(enterDirections);
+        directionsPanel.add(directionsMode);
 
         JButton articulationPoints = new JButton("Find Articulation Points");
         articulationPoints.addActionListener((event) -> {
@@ -323,7 +337,7 @@ public abstract class GUI {
         navigation.add(south);
         navigation.add(east);
         controls.add(navigation);
-        controls.add(enterDirections);
+        controls.add(directionsPanel);
         controls.add(articulationPoints);
         controls.add(Box.createRigidArea(new Dimension(15, 0)));
         // glue is another invisible component that grows to take up all the
@@ -400,11 +414,39 @@ public abstract class GUI {
         frame.setVisible(true);
     }
 
+    protected abstract void setDirectionsMode(JButton directionsModeButton,
+                                              DirectionsMode mode);
+
+    protected abstract void onDirectionsModeClick(ActionEvent event,
+                                                  JButton directionsModeButton);
+
     protected abstract void onArticulationPointsClick();
 
     protected abstract void onEnterDirectionsClick();
 
     protected abstract MouseAdapter getMouseListener();
+
+    public enum DirectionsMode {
+        SHORTEST_DISTANCE("Shortest distance", new NodeState.DistanceHeuristic()),
+        SHORTEST_TIME("Shortest time", new NodeState.TimeHeuristic());
+
+        private final String title;
+        private final NodeState.CostHeuristic costHeuristic;
+
+        DirectionsMode(String title,
+                       NodeState.CostHeuristic costHeuristic) {
+            this.title = title;
+            this.costHeuristic = costHeuristic;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public NodeState.CostHeuristic getCostHeuristic() {
+            return costHeuristic;
+        }
+    }
 }
 
 // code for COMP261 assignments

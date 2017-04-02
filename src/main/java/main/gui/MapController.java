@@ -5,7 +5,6 @@ import main.gui.helpers.Drawer;
 import main.gui.helpers.MapMouseListener;
 import main.gui.helpers.RouteOutputter;
 import main.gui.helpers.View;
-import main.mapdata.NodeState;
 import main.mapdata.Route;
 import main.mapdata.location.Location;
 import main.mapdata.model.MapDataLoader;
@@ -17,11 +16,11 @@ import main.mapdata.roads.RoadSegment;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.io.File;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -50,6 +49,7 @@ public class MapController extends GUI
 
     private MapState state = MapState.NORMAL;
     private Node routeStartNode;
+    private DirectionsMode directionsMode;
 
     @Inject
     public MapController(View view,
@@ -209,6 +209,23 @@ public class MapController extends GUI
     }
 
     @Override
+    protected void onDirectionsModeClick(ActionEvent event,
+                                         JButton directionsModeButton) {
+        List<DirectionsMode> modes = Arrays.asList(DirectionsMode.values());
+        int currentIndex = (modes.indexOf(directionsMode) + 1) % modes.size();
+        setDirectionsMode(directionsModeButton, modes.get(currentIndex));
+    }
+
+    @Override
+    protected void setDirectionsMode(JButton directionsModeButton,
+                                     DirectionsMode mode) {
+        directionsMode = mode;
+        directionsModeButton.setText(
+                DIRECTIONS_PRIORITY_BUTTON_TEXT + mode.getTitle()
+        );
+    }
+
+    @Override
     protected MouseAdapter getMouseListener() {
         if (mouseListener == null) {
             mouseListener = mouseListenerFactory.create(this);
@@ -244,7 +261,7 @@ public class MapController extends GUI
             Route route = mapModel.findRouteBetween(
                     routeStartNode,
                     routeEndNode,
-                    new NodeState.TimeHeuristic()
+                    directionsMode.getCostHeuristic()
             );
             // redraw will be called automatically
 

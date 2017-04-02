@@ -55,7 +55,7 @@ Completion out of 10 (up to 85):
   and total length. (3 for removing duplicates, 1 for doing the lengths.)
 
 Challenge out of 20 (up to 100, with 5 spare marks):
-* [ ] (8) Allows user to select distance or time, and find fastest route, using
+* [x] (8) Allows user to select distance or time, and find fastest route, using
   road class and speed limit data, and using an admissible heuristic.
 * [x] (2) Can they explain and justify their cost function and heuristic?
   Heuristic must be admissible.
@@ -74,7 +74,8 @@ Challenge out of 20 (up to 100, with 5 spare marks):
 
       let n:Node = pq.poll() // n has the shortest shortestDistanceSoFar
 
-      assert !n.hasCheckedChildren
+      if !n.hasCheckedChildren
+        continue
       n.hasCheckedChildren = true
 
       foreach c in n.childnodes {
