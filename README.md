@@ -33,9 +33,6 @@ link](https://www.jetbrains.com/idea/download/#section=mac)
           that has this [Gradle icon](https://lh6.googleusercontent.com/-fvt5jz8KJ9E/AAAAAAAAAAI/AAAAAAAAAAc/-dxpnszHExs/photo.jpg)
     - Click the blue refresh button to make IntelliJ load the Gradle stuff
 
-You should see a "YAY, THE PROJECT RUNS!" error once everything has been
-downloaded and set up
-
 ## Structure ##
 
 Put your java code in `src/main/java/swen221/assignment1/` (or rename the
@@ -104,6 +101,9 @@ You don't need to do this if you only need to run stuff using JUnit tests
           'swen221.assignment1.Main'` (around about line 33)
         - Change the class to the class that the main needs to run
     - Run `./gradlew build run` (ignore the `./` if you are on Windows)
+
+You should see a "YAY, THE PROJECT RUNS!" error once everything has been
+downloaded and set up
 
 ### Changing the project structure ###
 
