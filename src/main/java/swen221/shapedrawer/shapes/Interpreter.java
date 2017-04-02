@@ -130,7 +130,13 @@ public class Interpreter {
 	 * @param canvas
 	 */
 	public void fillShape(Color color, Shape shape, Canvas canvas) {
-		// TODO: For part 1 you'll need to complete this
+		Rectangle area = shape.boundingBox();
+		for (int y = area.y; y < area.y + area.height; y++) {
+			for (int x = area.x; x < area.x + area.width; x++) {
+				if (!shape.contains(x, y)) continue;
+				canvas.draw(x, y, color);
+			}
+		}
 	}
 
 	/**
@@ -202,7 +208,16 @@ public class Interpreter {
 		// TODO: For part 1 you'll need to complete this. What it should do is
 		// match '[' at the beginning and ']' at the end. In between it needs to
 		// extract the four numbers which should be separated by commas.
-		return null;
+		match("[");
+		int x = readNumber();
+		match(",");
+		int y = readNumber();
+		match(",");
+		int w = readNumber();
+		match(",");
+		int h = readNumber();
+		match("]");
+		return new Rectangle(x, y, w, h);
 	}
 
 	/**
