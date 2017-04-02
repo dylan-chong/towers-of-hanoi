@@ -1,9 +1,5 @@
-plugins {
-    id "com.github.samueltbrown.cucumber" version "0.9"
-}
-
 apply plugin: 'java'
-apply plugin: 'eclipse'
+apply plugin: 'eclipse' // For generating Eclipse projects
 
 version '1.0-SNAPSHOT'
 
@@ -12,15 +8,16 @@ repositories {
 }
 
 dependencies {
-    // Normal compile dependencies
+    // Put any libraries here:
+	// for example, put this:
+	// compile group: 'com.google.code.gson', name: 'gson', version: '1.7.1'
+	// to include this library https://github.com/google/gson if you like ...
 
-    // Required dependencies for assignments
+    // Required dependencies for assignments:
+	// Include libraries in 'lib' directory
     compile fileTree(dir: 'lib', include: ['*.jar'])
+	// Tests are run in main module (which is unusual, but that's how SWEN221 is)
     compile group: 'junit', name: 'junit', version: '4.11'
-
-    // Normal test compile dependencies
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-    testCompile group: 'info.cukes', name: 'cucumber-java', version: '1.2.5'
 }
 
 sourceSets {
@@ -29,18 +26,11 @@ sourceSets {
     }
 }
 
-// Cucumber tests
-
-cucumber {
-    sourceSets = [project.sourceSets.test]
-}
-test.finalizedBy('cucumber')
-
 // Run application with 'run' task
 
 apply plugin: 'application'
 run {
-    mainClassName = 'swen221.assignment1.LeftWalker'
+    mainClassName = 'swen221.assignment1.Main' // The class that is run
     standardInput = System.in
     enableAssertions = true
 }
@@ -73,11 +63,8 @@ task fatJar(type: Jar) {
                 'Main-Class': mainClassName
     }
     baseName = project.name + withDependenciesTag
-    println 'From'
     from {
-        println 'Collect'
         configurations.compile.collect {
-            println it
             it.isDirectory() ? it : zipTree(it)
         }
     }
