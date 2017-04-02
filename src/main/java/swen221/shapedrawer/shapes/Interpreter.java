@@ -1,6 +1,8 @@
 package swen221.shapedrawer.shapes;
 
-import java.util.*;
+import java.awt.*;
+import java.util.HashMap;
+import java.util.stream.Stream;
 
 /**
  * Responsible for interpreting a shape program. The program is represented as a
@@ -99,13 +101,8 @@ public class Interpreter {
 			drawShape(color, shape, canvas);
 		} else if (!cmd.equals("")) {
 			// variable assignment
-			String variableName = cmd;
-			while (true) {
-				char nextChar = input.charAt(index);
-				if (nextChar == '=') break;
-				variableName = variableName + nextChar;
-				index++;
-			}
+			String variableName = cmd + readVariable();
+			skipWhiteSpace();
 			match("=");
 			Shape rhs = evaluateShapeExpression();
 			environment.put(variableName, rhs);
@@ -156,21 +153,20 @@ public class Interpreter {
 	public void drawShape(Color color, Shape shape, Canvas canvas) {
 		Rectangle box = shape.boundingBox();
 		for (int y = box.y; y < box.y + box.height; y++) {
-
-			boolean isInsideShape = false;
 			for (int x = box.x; x < box.x + box.width; x++) {
-				if (!isInsideShape) {
-					if (!shape.contains(x, y)) continue;
-					canvas.draw(x, y, color);
-					isInsideShape = true;
-					continue;
-				}
 
 				if (!shape.contains(x, y)) continue;
+				long nonDiagonalNeighbours = Stream.of(
+						new Point(x, y + 1),
+						new Point(x, y - 1),
+						new Point(x + 1, y),
+						new Point(x - 1, y))
+						.filter(point -> shape.contains(point.x, point.y))
+						.count();
+				if (nonDiagonalNeighbours == 4) continue;
 				canvas.draw(x, y, color);
-				isInsideShape = false;
-			}
 
+			}
 		}
 	}
 
