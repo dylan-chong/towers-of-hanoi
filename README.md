@@ -12,6 +12,14 @@ button on Github then `Download ZIP`, otherwise run this from the command line:
 
     git clone -b swen221-submittable-base https://github.com/dylan-chong/towers-of-hanoi
 
+The folder will be called `towers-of-hanoi` because I just happen to put this
+stuff in this 
+
+### Download IntelliJ ###
+
+Download the `Community Edition` from [this
+link](https://www.jetbrains.com/idea/download/#section=mac)
+
 ### Setup Gradle project ###
 
 - Open the project with IntelliJ

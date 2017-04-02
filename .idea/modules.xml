@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/towers-of-hanoi.iml" filepath="$PROJECT_DIR$/.idea/modules/towers-of-hanoi.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/towers-of-hanoi_main.iml" filepath="$PROJECT_DIR$/.idea/modules/towers-of-hanoi_main.iml" group="towers-of-hanoi" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/towers-of-hanoi_test.iml" filepath="$PROJECT_DIR$/.idea/modules/towers-of-hanoi_test.iml" group="towers-of-hanoi" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/swen221-assignment-template.iml" filepath="$PROJECT_DIR$/.idea/modules/swen221-assignment-template.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/swen221-assignment-template_main.iml" filepath="$PROJECT_DIR$/.idea/modules/swen221-assignment-template_main.iml" group="swen221-assignment-template" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/swen221-assignment-template_test.iml" filepath="$PROJECT_DIR$/.idea/modules/swen221-assignment-template_test.iml" group="swen221-assignment-template" />
     </modules>
   </component>
 </project>

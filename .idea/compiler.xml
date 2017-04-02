@@ -2,8 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.8">
-      <module name="towers-of-hanoi_main" target="1.8" />
-      <module name="towers-of-hanoi_test" target="1.8" />
+      <module name="swen221-assignment-template_main" target="1.8" />
+      <module name="swen221-assignment-template_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

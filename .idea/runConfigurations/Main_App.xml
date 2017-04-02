@@ -10,7 +10,7 @@
     <option name="ENABLE_SWING_INSPECTOR" value="false" />
     <option name="ENV_VARIABLES" />
     <option name="PASS_PARENT_ENVS" value="true" />
-    <module name="towers-of-hanoi_main" />
+    <module name="swen221-assignment-template_main" />
     <envs />
     <method />
   </configuration>
