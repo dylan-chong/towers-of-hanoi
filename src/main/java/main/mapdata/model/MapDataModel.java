@@ -10,13 +10,11 @@ import main.mapdata.NodeState;
 import main.mapdata.Route;
 import main.mapdata.location.LatLong;
 import main.mapdata.location.Location;
-import main.mapdata.roads.Node;
-import main.mapdata.roads.RoadInfo;
-import main.mapdata.roads.RoadInfoByName;
-import main.mapdata.roads.RoadSegment;
+import main.mapdata.roads.*;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -127,9 +125,7 @@ public class MapDataModel {
                     currentState.getNode()
             );
             List<Node> neighbourNodes = currentSegments.stream()
-                    .map(segment ->
-                            findOtherNode(segment, currentState.getNode())
-                    )
+                    .map(segment -> findOtherNode(segment, currentState.getNode()))
                     .collect(Collectors.toList());
 
             for (int i = 0; i < neighbourNodes.size(); i++) {
@@ -147,6 +143,17 @@ public class MapDataModel {
                     }
                 }
 
+                // Can't go this way
+                if (currentState.getPreviousNodeState() != null) {
+                    Restriction restriction = findRestriction(
+                            currentState.getPreviousNodeState().getNode(),
+                            currentState.getNode(),
+                            neighbourNode
+                    );
+                    if (restriction != null) continue;
+                }
+
+
                 NodeState neighbourState = nodeStateMap.computeIfAbsent(
                         neighbourNode,
                         key -> new NodeState(neighbourNode, false, heuristic)
@@ -162,20 +169,17 @@ public class MapDataModel {
                         heuristic.getCostForSegment(
                                 connectingSegment, roadInfoForSegment
                         );
-                double currentNeighbourCost = heuristic.getCostFromStart(neighbourState);
-                if (newNeighbourCost >= currentNeighbourCost) {
-                    continue;
-                }
+                double currentNeighbourCost =
+                        heuristic.getCostFromStart(neighbourState);
+                if (newNeighbourCost >= currentNeighbourCost) continue;
 
-                // Remove (if necessary) before changing priority
+                // Remove before changing priority (so it doesn't screw up
+                // the nodesToCheck data structure
                 nodesToCheck.remove(neighbourState);
-
                 neighbourState.setPreviousNodeState(
                         currentState, connectingSegment, roadInfoForSegment
                 );
-
-                // Add back with new priority
-                nodesToCheck.add(neighbourState);
+                nodesToCheck.add(neighbourState); // Add back with new priority
             }
         }
 
@@ -315,15 +319,26 @@ public class MapDataModel {
         }
     }
 
-    private <T> boolean isSorted(Collection<? extends T> data,
-                                 Comparator<? super T> comparator) {
-        @SuppressWarnings("unchecked")
-        T[] dataArray = data.toArray((T[]) new Object[data.size()]);
-        T[] dataSorted = Arrays.copyOf(
-                dataArray, dataArray.length
-        );
-        Arrays.sort(dataSorted, comparator);
-        return Arrays.equals(dataArray, dataSorted);
+    private Restriction findRestriction(Node beforeIntersection,
+                                                     Node intersection,
+                                                     Node afterIntersection) {
+        Function<Restriction, Boolean> doesMatch = restriction ->
+                restriction.startNodeId == beforeIntersection.id &&
+                        restriction.intersectionNodeId == intersection.id &&
+                        restriction.endNodeId == afterIntersection.id;
+
+        Set<Restriction> possibleMatches = data.getRestrictions()
+                .get(afterIntersection.id); // restrictions ending in this node
+        if (possibleMatches == null) return null;
+
+        List<Restriction> matches = possibleMatches.stream()
+                .filter(doesMatch::apply)
+                .collect(Collectors.toList());
+        assert matches.size() <= 1;
+
+        return matches.stream()
+                .findAny()
+                .orElse(null);
     }
 
     /**

@@ -59,7 +59,7 @@ Challenge out of 20 (up to 100, with 5 spare marks):
   road class and speed limit data, and using an admissible heuristic.
 * [x] (2) Can they explain and justify their cost function and heuristic?
   Heuristic must be admissible.
-* [ ] (5) Takes into account restriction information.
+* [x] (5) Takes into account restriction information.
 * [ ] (5) Takes into account intersection constraints such as traffic lights to
   prefer routes with fewer lights.
 

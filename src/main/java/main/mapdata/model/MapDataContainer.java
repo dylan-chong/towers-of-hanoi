@@ -30,17 +30,20 @@ public class MapDataContainer {
     private volatile Map<Long, Node> nodeInfos;
     private volatile Collection<RoadSegment> roadSegments;
     /**
-     * RoadId to RoadInfo
+     * roadId -> RoadInfo
      */
     private volatile Map<Long, RoadInfo> roadInfos;
     private volatile MapGraph mapGraph;
     private volatile Trie<RoadInfo> roadInfoLabelsTrie;
     private volatile QuadTree<Node> nodeTree;
     /**
-     * endLevel to polygons
+     * endLevel -> polygons
      */
     private volatile Map<Integer, List<Polygon>> polygons;
-    private Set<Restriction> restrictions;
+    /**
+     * endNodeId -> restrictions
+     */
+    private Map<Long, Set<Restriction>> restrictions;
 
 
     @Inject
@@ -199,8 +202,23 @@ public class MapDataContainer {
         this.nodeTree = nodeTree;
     }
 
-    private void setRestrictions(Collection<Restriction> restrictions) {
-        this.restrictions = new HashSet<>(restrictions);
+    private void setRestrictions(Collection<Restriction> restrictionsFlat) {
+        Map<Long, Set<Restriction>> restrictions = new HashMap<>();
+
+        restrictionsFlat.forEach(restriction -> {
+            Set<Restriction> restrictionsWithSameEndId =
+                    restrictions.computeIfAbsent(
+                            restriction.endNodeId,
+                            endNodeId -> new HashSet<>()
+                    );
+            boolean wasNewItem = restrictionsWithSameEndId.add(restriction);
+            if (wasNewItem) return;
+
+            System.out.println("WARNING: Duplicate restriction info '" +
+                    restriction + "'");
+        });
+
+        this.restrictions = Collections.unmodifiableMap(restrictions);
     }
 
     /**
@@ -234,7 +252,7 @@ public class MapDataContainer {
         return waitForLoad(() -> polygons);
     }
 
-    public Set<Restriction> getRestrictions() {
+    public Map<Long, Set<Restriction>> getRestrictions() {
         return waitForLoad(() -> restrictions);
     }
 
