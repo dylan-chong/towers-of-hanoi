@@ -4,6 +4,8 @@ import org.junit.Test;
 import swen221.shapedrawer.shapes.Canvas;
 import swen221.shapedrawer.shapes.Interpreter;
 
+import javax.swing.*;
+
 import static org.junit.Assert.fail;
 
 
@@ -100,7 +102,6 @@ public class InterpreterTests {
 	}
 
 	@Test public void invalidSyntaxTests() {
-		fail();
 		// This test makes sure that the interpreter throws an appropriate error message
 		String[] inputs = {
 				"x = [2,2,4,4]\nfill y #0000ff\n",
@@ -118,6 +119,7 @@ public class InterpreterTests {
 			};
 
 		for(int i=0;i!=inputs.length;++i) {
+			System.out.println("Trying input: " + i);
 			String input = inputs[i];
 			try {
 				Canvas canvas = new Interpreter(input).run();
@@ -131,13 +133,18 @@ public class InterpreterTests {
 	}
 
 	private void testValidInuts(String[][] inputs) {
+		JFrame jFrame = null;
 		for(int i=0;i!=inputs.length;++i) {
 			String[] input = inputs[i];
 			try {
 				Canvas canvas = new Interpreter(input[0]).run();
 				String output = canvas.toString();
 
-				canvas.show();
+				jFrame = canvas.show();
+				if (jFrame != null) {
+					// Force gui to update now
+					SwingUtilities.invokeAndWait(jFrame::repaint);
+				}
 
 				if(!input[1].equals(output)) {
 					System.out.println(output);
@@ -146,6 +153,7 @@ public class InterpreterTests {
 			} catch(Exception e) {
 				fail("Exception occurred on input " + i + ": " + e.getMessage());
 			}
+			if (jFrame != null) jFrame.setVisible(false);
 		}
 	}
 }

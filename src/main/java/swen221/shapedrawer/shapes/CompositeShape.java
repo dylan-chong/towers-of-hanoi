@@ -35,13 +35,26 @@ public abstract class CompositeShape implements Shape {
 		int minX = minOrdinateFinder.apply(box1.x, box2.x);
 		int minY = minOrdinateFinder.apply(box1.y, box2.y);
 
-		int maxX = maxOrdinateFinder.apply(box1.x + box1.width, box2.x + box2.width);
-		int maxY = maxOrdinateFinder.apply(box1.y + box1.height, box2.y + box2.height);
+		int maxX = maxOrdinateFinder.apply(
+				box1.x + box1.width - 1,
+				box2.x + box2.width - 1
+		);
+		int maxY = maxOrdinateFinder.apply(
+				box1.y + box1.height - 1,
+				box2.y + box2.height - 1
+		);
 
-		return new Rectangle(minX, minY, maxX - minX, maxY - minY);
+		if (maxX < minX) maxX = minX;
+		if (maxY < minY) maxY = minY;
+
+		return new Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1);
 	}
 
 	protected enum BoundingBoxStrategy {
+		/**
+		 * Requires only one of the shapes at a point to consider that point
+		 * part of the bounds
+		 */
 		REQUIRE_ONE, // default
 		REQUIRE_BOTH
 	}

@@ -131,11 +131,11 @@ public class Canvas {
 	 * Show the contents of the canvas using a simple GUI Window. This method is
 	 * for debugging purposes only.
 	 */
-	public void show() {		
+	public JFrame show() {
 		String env = System.getenv("AUTOMARK");
 		
-		if(env != null) { 
-			return; // this is to ensure the marking script will work, even if
+		if(env != null) {
+			return null;
 					// you leave in the canvas.show().
 		}
 		
@@ -161,13 +161,15 @@ public class Canvas {
 		window.setBackground(new java.awt.Color(100, 100, 100));
 		c.setVisible(true);
 		try {
-			SwingUtilities.invokeAndWait(() -> window.repaint());
-			SwingUtilities.invokeAndWait(() -> c.repaint());
+			SwingUtilities.invokeAndWait(window::repaint);
+			SwingUtilities.invokeAndWait(c::repaint);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		}
+
+		return window;
 	}
 
 	/**

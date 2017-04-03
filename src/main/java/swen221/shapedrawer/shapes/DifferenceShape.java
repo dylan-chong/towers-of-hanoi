@@ -11,11 +11,11 @@ public class DifferenceShape extends CompositeShape {
 
 	@Override
 	public boolean contains(int x, int y) {
-		return shape1.contains(x, y) != shape2.contains(x, y);
+		return shape1.contains(x, y) && !shape2.contains(x, y);
 	}
 
 	@Override
 	public Rectangle boundingBox() {
-		return findBoundingBox(BoundingBoxStrategy.REQUIRE_BOTH);
+		return shape1.boundingBox();
 	}
 }

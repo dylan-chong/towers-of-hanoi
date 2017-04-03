@@ -101,6 +101,9 @@ public class Interpreter {
 		skipWhiteSpace();
 		String cmd = readWord();
 		skipWhiteSpace();
+
+		if (index >= input.length()) return;
+
 		if (cmd.equals("fill")) {
 			Shape shape = evaluateShapeExpression();
 			Color color = readColor();
@@ -109,8 +112,16 @@ public class Interpreter {
 			Shape shape = evaluateShapeExpression();
 			Color color = readColor();
 			drawShape(color, shape, canvas);
-		} else if (!cmd.equals("")) {
+		} else if (cmd.equals("")) {
+			if (!Character.isAlphabetic(input.charAt(index))) {
+				error("Can't start a line with a non-alphabetic char");
+			}
+			// do nothing
+		} else {
 			// variable assignment
+			if (!Character.isAlphabetic(cmd.charAt(0))) {
+				error("Can't start variable with non-alphabetic char");
+			}
 			String variableName = cmd + readVariable();
 			skipWhiteSpace();
 			match("=");
