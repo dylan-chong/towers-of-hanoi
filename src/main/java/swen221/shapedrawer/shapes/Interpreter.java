@@ -40,12 +40,13 @@ import java.util.stream.Stream;
  */
 public class Interpreter {
 
-
 	private static final Map<Character, CompositeShape.Factory> COMPOSITE_FACTORIES;
 
 	static {
 		COMPOSITE_FACTORIES = new HashMap<>();
 		COMPOSITE_FACTORIES.put('+', UnionShape::new);
+		COMPOSITE_FACTORIES.put('&', IntersectionShape::new);
+		COMPOSITE_FACTORIES.put('-', DifferenceShape::new);
 	}
 	/**
 	 * The input program being interpreted by this class
@@ -235,9 +236,7 @@ public class Interpreter {
 
 		index++;
 		skipWhiteSpace();
-		String shape2Name = readVariable();
-		Shape shape2 = environment.get(shape2Name);
-		if (shape2 == null) error("shape not found: " + shape2Name);
+		Shape shape2 = evaluateShapeExpression();
 
 		return factory.create(shape1, shape2);
 	}

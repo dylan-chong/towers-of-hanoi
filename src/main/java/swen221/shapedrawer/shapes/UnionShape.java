@@ -15,14 +15,6 @@ public class UnionShape extends CompositeShape {
 
 	@Override
 	public Rectangle boundingBox() {
-		Rectangle box1 = shape1.boundingBox();
-		Rectangle box2 = shape2.boundingBox();
-		int minX = Math.min(box1.x, box2.x);
-		int minY = Math.min(box1.y, box2.y);
-
-		int maxX = Math.max(box1.x + box1.width, box2.x + box2.width);
-		int maxY = Math.max(box1.y + box1.height, box2.y + box2.height);
-
-		return new Rectangle(minX, minY, maxX - minX, maxY - minY);
+		return findBoundingBox(BoundingBoxStrategy.REQUIRE_ONE);
 	}
 }
