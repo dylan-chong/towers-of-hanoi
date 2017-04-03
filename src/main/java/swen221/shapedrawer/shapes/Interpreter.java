@@ -2,42 +2,51 @@ package swen221.shapedrawer.shapes;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
 /**
  * Responsible for interpreting a shape program. The program is represented as a
  * string, through which the interpreter moves. For example, consider this shape
  * program:
- * 
+ *
  * <pre>
  * x =[0,0,10,10]
  * fill x #000000
  * </pre>
- * 
+ *
  * This program will be represented in the input string as follows:
- * 
+ *
  * <pre>
  * --------------------------------------------------------------
  * | x |   | = | [ | 0 | , | 0 | , | 1 | 0 | , | 1 | 0 | ] | \n |
  * --------------------------------------------------------------
  *   0   1   2   3   4   5   6   7   8   9   10  11  12  13  14
- * 
+ *
  * (continued)
  * --------------------------------------------------------------
  * | f | i | l | l |   | x |   | # | 0 | 0 | 0 | 0 | 0 | 0 | \n |
  * --------------------------------------------------------------
  *   14  15  16  17  18  19  20  21  22  23  24  25  26  27  38
  * </pre>
- * 
+ *
  * The interpreter starts at index 0 and attempts to decide what kind of command
  * we have. If the first four characters are "fill" then it's a fill command. If
  * the first four characters are "draw" then it's a draw command. Otherwise, it
  * must be an assignment command.
- * 
+ *
  * @author David J. Pearce
  *
  */
 public class Interpreter {
+
+
+	private static final Map<Character, CompositeShape.Factory> COMPOSITE_FACTORIES;
+
+	static {
+		COMPOSITE_FACTORIES = new HashMap<>();
+		COMPOSITE_FACTORIES.put('+', UnionShape::new);
+	}
 	/**
 	 * The input program being interpreted by this class
 	 */
@@ -58,7 +67,7 @@ public class Interpreter {
 	/**
 	 * Construct an interpreter from a given input string representing a simple
 	 * shape program.
-	 * 
+	 *
 	 * @param input
 	 */
 	public Interpreter(String input) {
@@ -69,7 +78,7 @@ public class Interpreter {
 	/**
 	 * This method creates an empty canvas onto which it evaluates each command
 	 * of the program in turn. The canvas is then returned.
-	 * 
+	 *
 	 * @return a canvas that shows the result of the input.
 	 */
 	public Canvas run() {
@@ -84,7 +93,7 @@ public class Interpreter {
 	 * Evaluate the next command in the program. To do this, the interpreter
 	 * must first decide what kind of command it is. This is done by looking at
 	 * the first word of the input string at the current position.
-	 * 
+	 *
 	 * @param canvas
 	 */
 	private void evaluateNextCommand(Canvas canvas) {
@@ -113,7 +122,7 @@ public class Interpreter {
 	 * Read a "word" from the input string. This is defined as a sequence of one
 	 * or more consequtive letters. Digits and other characters (e.g. '_' or
 	 * '+') are not permitted as part of a word.
-	 * 
+	 *
 	 * @return
 	 */
 	private String readWord() {
@@ -128,7 +137,7 @@ public class Interpreter {
 
 	/**
 	 * This should fill a given shape in a given colour onto the canvas.
-	 * 
+	 *
 	 * @param color
 	 * @param shape
 	 * @param canvas
@@ -145,7 +154,7 @@ public class Interpreter {
 
 	/**
 	 * This should draw a given shape in a given colour onto the canvas.
-	 * 
+	 *
 	 * @param color
 	 * @param shape
 	 * @param canvas
@@ -175,7 +184,7 @@ public class Interpreter {
 	 * within the input string. This is done by first looking at the current
 	 * character in the input string. If this is a '(', for example, then it
 	 * signals the start of a bracketed expression.
-	 * 
+	 *
 	 * @return
 	 */
 	public Shape evaluateShapeExpression() {
@@ -197,12 +206,40 @@ public class Interpreter {
 			error("unknown operator");
 		}
 
-		skipWhiteSpace();
-
-		// TODO: For Part 2, you'll want to add code here to look for the
-		// symbols '+', '-', '&', etc. 
+		Character lookahead2 = lookaheadToNextChar();
+		if (lookahead2 != null && COMPOSITE_FACTORIES.keySet()
+				.contains(lookahead2)) {
+			CompositeShape compositeShape = evaluateCompositeShape(value);
+			if (compositeShape != null) return compositeShape;
+		}
 
 		return value;
+	}
+
+	private Character lookaheadToNextChar() {
+		for (int lookahead = index; lookahead < input.length(); lookahead++) {
+			char compositeOperator = input.charAt(lookahead);
+			if (compositeOperator == ' ') continue;
+			if (compositeOperator == '\n') return null;
+			return compositeOperator;
+		}
+
+		return null; // no next character
+}
+
+	private CompositeShape evaluateCompositeShape(Shape shape1) {
+		skipWhiteSpace();
+		char operator = input.charAt(index);
+		CompositeShape.Factory factory = COMPOSITE_FACTORIES.get(operator);
+		if (factory == null) return null;
+
+		index++;
+		skipWhiteSpace();
+		String shape2Name = readVariable();
+		Shape shape2 = environment.get(shape2Name);
+		if (shape2 == null) error("shape not found: " + shape2Name);
+
+		return factory.create(shape1, shape2);
 	}
 
 	/**
