@@ -63,16 +63,44 @@ Challenge out of 20 (up to 100, with 5 spare marks):
 * [ ] (5) Takes into account intersection constraints such as traffic lights to
   prefer routes with fewer lights.
 
+# Testing #
+
+I tested the program by doing a semi-Test-Driven Development style.
+
+- I wrote some simple tests for critical things like the A* algorithm
+- wrote a simple random-node-picking algorithm (to make sure the tests work) in
+  combination with a few more tests
+- built the infrastructure around the algorithm (e.g. UI)
+- added tests that require finding the most efficient path
+- replaced the random algorithm with the real Dijkstra
+- add a bit of code for A*, algorithm
+- wrote more tests for extra requirements like one-way roads)
+- test manually on the small and large data (fixing bugs and writing new tests
+  as needed)
+
+A similar process was used for the articulation points algorithm, although I
+did not implement a dummy algorithm before going into the more complex, because
+I couldn't think of one.
+
+I did not bother testing UI-related features because they are much harder to
+test (and tests were needed in the most complex parts of the program - the UI
+was not as complex). I relied on manual testing (by thoroughly checking that
+all combinations of inputs match my expectations) for UI.
+
+You can run the tests yourself by opening the 'full-project.zip' file, and
+running `./gradlew build test`. (This doesn't work on the uni computers though,
+because of the proxy settings - you can run it on any non-uni computer though).
+
 # Pseudocode and Notes #
 
 ## Djikstra / A* ##
 
-    start.shortestDistanceSoFar = 0 // appear first in pq
-    pq = new PriorityQueue([start,allOtherNodes...], sorted by shortestDistanceSoFar)
+    start.shortestCostSoFar = 0 // appear first in pq
+    pq = new PriorityQueue([start,allOtherNodes...], sorted by shortestCostSoFar)
 
     while !pq.empty? {
 
-      let n:Node = pq.poll() // n has the shortest shortestDistanceSoFar
+      let n:Node = pq.poll() // n has the shortest shortestCostSoFar
 
       if !n.hasCheckedChildren
         continue
@@ -83,15 +111,15 @@ Challenge out of 20 (up to 100, with 5 spare marks):
         if c.hasCheckedChildren, continue
         pq.add c
 
-        let nodeDist = n.shortestDistanceSoFar
+        let nodeDist = n.shortestCostSoFar
         let distFromNToC = n.distTo c
         let pathDistSoFar = nodeDist + distFromNToC
 
         // Is pathDistSoFar better than the current best for this node c?
-        if (c.shortestDistanceSoFar || Infinity) < pathDistSoFar
+        if (c.shortestCostSoFar || Infinity) < pathDistSoFar
           continue
 
-        c.shortestDistanceSoFar = pathDistSoFar
+        c.shortestCostSoFar = pathDistSoFar
         c.previousNode = n
 
       }
@@ -113,6 +141,15 @@ Word redefinitions = {
   - This is because, at any time (except in the foreach loop), the
     highest-prority node has the shortest path between the start and that node.
     Therefore, you will never find a faster route if you check again.
+
+### Heuristic ###
+
+I use strategy pattern to inject the distance or time heuristic into the
+algorithm (see line 98 of MapDataModel and line 72 of NodeState). The distance
+is the simple heuristic (it only requires addition). The time heuristic takes a
+distance and divides it by the speed limit to get a duration. If the speed
+limit isn't available (i.e. for the estimate) it uses the fastest known speed
+limit (110km/h).
 
 ## Articulation Points ##
 
@@ -158,6 +195,7 @@ Word redefinitions = {
 ### Iterative Version ###
 
     // General version of addArticulationPoints
+    // (just for working out the iterative version)
     void depthFirstSearchRecursive(node, doStuffBefore, doStuffAfter)
       node.setCount(whatever)
       node.children.foreach c ->
@@ -168,7 +206,8 @@ Word redefinitions = {
         doStuffAfter.run(node) // do stuff when recursion finishes
       return minResultFromNeighbours
 
-    // Generalised version turned into iterative version
+    // Generalised version turned into generalised iterative version
+    // (just for working out the iterative version)
     void depthFirstSearchIterative(node, root)
       stack = [[node: node, previousNode: root]] // array of keyword map
 
@@ -190,7 +229,7 @@ Word redefinitions = {
         doStuffAfter.run(state.node)
         stack.pop()
 
-
+    // Generalised iterative version turned into proper algorithm
     int addArticulationPointsIterative(node, root, articulationPoints, *lastCount)
       stack = [[node: node, previousNode: root]] // array of keyword map
       root.reachBack = root.count
