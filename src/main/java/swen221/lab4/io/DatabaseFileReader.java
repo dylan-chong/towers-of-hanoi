@@ -1,13 +1,10 @@
 package swen221.lab4.io;
 
+import swen221.lab4.lang.*;
+
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import swen221.lab4.lang.ColumnType;
-import swen221.lab4.lang.Database;
-import swen221.lab4.lang.DuplicateKeyException;
-import swen221.lab4.lang.InvalidRowException;
-import swen221.lab4.lang.RowType;
+import java.util.stream.IntStream;
 
 public class DatabaseFileReader {
 	private Scanner input;
@@ -97,7 +94,10 @@ public class DatabaseFileReader {
 	 * @return
 	 */
 	private int findKeyField(String schemaLine) {
-		// FIXME: you need to implement this
-		throw new RuntimeException("Implementation not provided");
+		String[] columnHeaders = schemaLine.split(",");
+		return IntStream.range(0, columnHeaders.length)
+				.filter(i -> columnHeaders[i].contains("*"))
+				.findFirst()
+				.orElseThrow(AssertionError::new);
 	}
 }
