@@ -3,6 +3,7 @@ package swen221.lab4.io;
 import swen221.lab4.lang.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
@@ -19,7 +20,7 @@ public class DatabaseFileReader {
 		ColumnType[] schema = parseSchema(schemaLine);
 		int keyField = findKeyField(schemaLine);
 				
-		ArrayList<Object[]> rows = new ArrayList<Object[]>();
+		List<Object[]> rows = new ArrayList<Object[]>();
 		
 		// Second, read data rows
 		while(input.hasNext()) {			
@@ -28,7 +29,7 @@ public class DatabaseFileReader {
 			rows.add(row);		
 		}
 		
-		return null; // HINT: construct your database implementation here
+		return new DatabaseImpl(schema, keyField, rows);
 	}
 
 	/**
