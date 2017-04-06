@@ -6,11 +6,15 @@
 
 
 IMPORTANT NOTES:
+- Unzip the passworded a2 zip with the password '123' (without quotes)
+  - This is needed because the submission system corrupts my jar. The
+    password prevents this from happening.
+  - You can run the program inside the zip with `java -jar submit/a2.jar`
+
 - I used the dependency injection framework called Google Guice
 - The java code can be found inside the full-project zip
     - The main java is under src/main/java
     - The test java is under src/test/java
-- You can run the program just by executing the jar file
 
 
 
