@@ -64,6 +64,11 @@ public class GuardBot extends Robot {
 				newXPosition = xPosition - 1;
 			}				
 		}
+		newXPosition = Math.max(newXPosition, 0);
+		newXPosition = Math.min(newXPosition, battle.arenaWidth - 1);
+		newYPosition = Math.max(newYPosition, 0);
+		newYPosition = Math.min(newYPosition, battle.arenaHeight - 1);
+
 		battle.actions.add(new Move(newXPosition,newYPosition,this));
 		
 	}

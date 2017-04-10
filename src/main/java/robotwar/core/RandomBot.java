@@ -46,9 +46,11 @@ public class RandomBot extends Robot {
 				battle.log("Robot " + name + " moves to " + xPosition + ", " + yPosition);
 			} else {
 				battle.log("Robot " + name + " bumps into arena wall!");
+				return;
 			}
 		} else {
 			battle.log("Robot " + name + " bumps into arena wall!");
+			return;
 		}		
 		
 		battle.actions.add(new Move(newXPos,newYPos,this));
