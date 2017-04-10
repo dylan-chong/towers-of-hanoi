@@ -1,5 +1,7 @@
 package robotwar.core;
 
+import robotwar.ui.GameImages;
+
 import java.awt.*;
 
 /**
@@ -57,4 +59,8 @@ public class GuardBot extends Robot {
 		return new Point(newXPosition, newYPosition);
 	}
 
+	@Override
+	protected GameImages getAliveImage() {
+		return GameImages.GUARD_BOT;
+	}
 }

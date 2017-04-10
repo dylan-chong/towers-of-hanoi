@@ -1,5 +1,7 @@
 package robotwar.core;
 
+import robotwar.ui.GameImages;
+
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -96,13 +98,24 @@ public abstract class Robot {
 				}
 			}
 		}
-		
+
 		return visibleRobots;
 	}
+
+	public GameImages getGameImage() {
+		if (isDead) return GameImages.DEAD_BOT;
+		return getAliveImage();
+	}
+
+	/**
+	 * @return The GameImages instance that should be used when the image is alive
+	 */
+	protected abstract GameImages getAliveImage();
 
 	private static boolean checkIsDead(int strength) {
 		return strength <= 0;
 	}
+
 
 	public int getxPosition() {
 		return xPosition;

@@ -2,9 +2,7 @@ package robotwar.ui;
 
 import robotwar.core.*;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.IOException;
 import java.util.HashSet;
 
 /**
@@ -27,12 +25,6 @@ import java.util.HashSet;
  * 
  */
 public class BattleCanvas extends Canvas {
-
-	/**
-	 * The image path simply determines where images are stored relative to this
-	 * class.
-	 */
-	private static final String IMAGE_PATH = "images/";
 
 	/**
 	 * The square width constant determines the width (in pixels) of a square in
@@ -62,22 +54,6 @@ public class BattleCanvas extends Canvas {
 	 * decrease the clock tick interval.
 	 */
 	private static final int INTERPOLATION_STEPS = 10;
-
-	/**
-	 * Represents the image of a robot which is now dead. That is, where the
-	 * isDead flag is true.
-	 */
-	private static Image deadBot = loadImage("DeadRobot.png");
-
-	/**
-	 * An image used to represent instances of "RandomBot".
-	 */
-	private static Image randomBot = loadImage("Robot5.png");
-
-	/**
-	 * An image used to represent instances of "GuardBot".
-	 */
-	private static Image guardBot = loadImage("Robot4.png");
 
 	/**
 	 * Provides access to the battle being displayed. Through this, the battle
@@ -171,36 +147,20 @@ public class BattleCanvas extends Canvas {
 	}
 	
 	private void drawRobotStill(Graphics g, robotwar.core.Robot r) {
-		Image image;
-		if (r.isDead()) {
-			image = deadBot;
-		} else if (r instanceof GuardBot) {
-			image = guardBot;
-		} else if (r instanceof RandomBot) {
-			image = randomBot;
-		} else {
-			// dead code
-			return;
-		}
+		Image image = r.getGameImage().getImage();
 
 		// Finally, draw the robot!!
-		g.drawImage(image, r.getxPosition() * SQUARE_WIDTH, r.getyPosition() * SQUARE_HEIGHT, SQUARE_WIDTH, SQUARE_HEIGHT, null,
-				null);
-
+		g.drawImage(
+				image,
+				r.getxPosition() * SQUARE_WIDTH,
+				r.getyPosition() * SQUARE_HEIGHT,
+				SQUARE_WIDTH, SQUARE_HEIGHT, null,
+				null
+		);
 	}
 	
 	private void drawRobotMoving(Graphics g, Move move) {
-		Image image;
-		if (move.robot.isDead()) {
-			image = deadBot;
-		} else if (move.robot instanceof GuardBot) {
-			image = guardBot;
-		} else if (move.robot instanceof RandomBot) {
-			image = randomBot;
-		} else {
-			// dead code
-			return;
-		}
+		Image image = move.robot.getGameImage().getImage();
 
 		// Compute the actual x and y position based on the interpolation step.
 		int rxp = computePosition(move.xDestination * SQUARE_WIDTH, move.xOriginal * SQUARE_WIDTH, step);
@@ -231,40 +191,6 @@ public class BattleCanvas extends Canvas {
 		g.drawImage(localOffscreen, 0, 0, this);
 	}
 
-	private static Image loadImage(String filename) {
-		try {
-			return loadImageWithoutSlash(filename);
-		} catch (IOException | IllegalArgumentException e) {
-			return loadImageWithSlash(filename);
-		}
-	}
-
-	private static Image loadImageWithoutSlash(String filename) throws IOException {
-		// using the URL means the image loads when stored
-		// in a jar or expanded into individual files.
-		java.net.URL imageURL = BattleCanvas.class.getResource(IMAGE_PATH
-				+ filename);
-		if (imageURL == null) throw new IllegalArgumentException();
-
-		Image img = ImageIO.read(imageURL);
-		return img;
-	}
-
-	private static Image loadImageWithSlash(String filename) {
-		// using the URL means the image loads when stored
-		// in a jar or expanded into individual files.
-		java.net.URL imageURL = BattleCanvas.class.getResource("/" + IMAGE_PATH
-				+ filename);
-
-		try {
-			Image img = ImageIO.read(imageURL);
-			return img;
-		} catch (IOException e) {
-			// we've encountered an error loading the image. There's not much we
-			// can actually do at this point, except to abort the game.
-			throw new RuntimeException("Unable to load image: " + filename);
-		}
-	}
 
 	private int computePosition(int np, int op, int step) {
 		int diff = np - op;

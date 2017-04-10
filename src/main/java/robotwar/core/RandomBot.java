@@ -1,6 +1,7 @@
 package robotwar.core;
 
 import robotwar.Main;
+import robotwar.ui.GameImages;
 
 import java.awt.*;
 
@@ -28,5 +29,10 @@ public class RandomBot extends Robot {
 		int newXPos = getxPosition() + dx;
 		int newYPos = getyPosition() + dy;
 		return new Point(newXPos, newYPos);
+	}
+
+	@Override
+	protected GameImages getAliveImage() {
+		return GameImages.RANDOM_BOT;
 	}
 }
