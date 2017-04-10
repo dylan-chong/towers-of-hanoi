@@ -1,13 +1,11 @@
 package robotwar.ui;
 
-import java.io.IOException;
-import java.awt.*;
-import java.util.*;
-import javax.imageio.ImageIO;
-
 import robotwar.core.*;
 
-import robotwar.core.Battle;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.IOException;
+import java.util.HashSet;
 
 /**
  * <p>
@@ -234,9 +232,28 @@ public class BattleCanvas extends Canvas {
 	}
 
 	private static Image loadImage(String filename) {
+		try {
+			return loadImageWithoutSlash(filename);
+		} catch (IOException | IllegalArgumentException e) {
+			return loadImageWithSlash(filename);
+		}
+	}
+
+	private static Image loadImageWithoutSlash(String filename) throws IOException {
 		// using the URL means the image loads when stored
 		// in a jar or expanded into individual files.
 		java.net.URL imageURL = BattleCanvas.class.getResource(IMAGE_PATH
+				+ filename);
+		if (imageURL == null) throw new IllegalArgumentException();
+
+		Image img = ImageIO.read(imageURL);
+		return img;
+	}
+
+	private static Image loadImageWithSlash(String filename) {
+		// using the URL means the image loads when stored
+		// in a jar or expanded into individual files.
+		java.net.URL imageURL = BattleCanvas.class.getResource("/" + IMAGE_PATH
 				+ filename);
 
 		try {

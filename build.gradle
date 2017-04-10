@@ -30,7 +30,7 @@ sourceSets {
 
 apply plugin: 'application'
 run {
-    mainClassName = 'swen221.assignment1.Main' // The class that is run
+    mainClassName = 'robotwar.Main' // The class that is run
     standardInput = System.in
     enableAssertions = true
 }
