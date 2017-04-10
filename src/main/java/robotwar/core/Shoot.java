@@ -21,6 +21,6 @@ public class Shoot implements Action {
 	public void apply(Battle b) {
 		shootee.isShot(strength);
 		b.log("Robot " + shooter.name + " shoots robot " + shootee.name
-				+ ".  It's strength is now: " + shootee.strength);
+				+ ".  It's strength is now: " + shootee.getStrength());
 	}
 }

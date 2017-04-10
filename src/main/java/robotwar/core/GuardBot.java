@@ -10,9 +10,9 @@ import java.util.LinkedList;
  * 
  */
 public class GuardBot extends Robot {
-	public int guardArea;
-	public int startXPosition;
-	public int startYPosition;
+	// protected final int guardArea;
+	protected final int startXPosition;
+	protected final int startYPosition;
 	
 	/**
 	 * Construct a gaurd bot with a given name, starting position, strength.
@@ -46,22 +46,22 @@ public class GuardBot extends Robot {
 		
 		// Now, move robot
 		int radius = 5;
-		int dy = yPosition - startYPosition;
-		int newXPosition = xPosition;		
-		int newYPosition = yPosition;
+		int dy = getyPosition() - startYPosition;
+		int newXPosition = getxPosition();
+		int newYPosition = getyPosition();
 		
 		// This implements a simple alternating walk pattern.
-		if(xPosition < startXPosition) {
-			if(dy < radius && yPosition < battle.arenaHeight) {
-				newYPosition = yPosition + 1;
+		if (getxPosition() < startXPosition) {
+			if(dy < radius && getyPosition() < battle.arenaHeight) {
+				newYPosition = getyPosition() + 1;
 			} else {
-				newXPosition = xPosition + 1;
+				newXPosition = getxPosition() + 1;
 			}
 		} else {
-			if(dy > -radius && yPosition >= 0) {
-				newYPosition = yPosition - 1;
+			if(dy > -radius && getyPosition() >= 0) {
+				newYPosition = getyPosition() - 1;
 			} else {
-				newXPosition = xPosition - 1;
+				newXPosition = getxPosition() - 1;
 			}				
 		}
 		newXPosition = Math.max(newXPosition, 0);

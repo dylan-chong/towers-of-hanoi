@@ -164,15 +164,15 @@ public class BattleCanvas extends Canvas {
 	private void drawShot(Graphics2D g2d, Shoot shoot) {
 		g2d.setColor(Color.YELLOW);
 		g2d.setStroke(new BasicStroke(3));
-		g2d.drawLine(shoot.shooter.xPosition * SQUARE_WIDTH,
-				shoot.shooter.yPosition * SQUARE_HEIGHT,
-				shoot.shootee.xPosition * SQUARE_WIDTH, shoot.shootee.yPosition
+		g2d.drawLine(shoot.shooter.getxPosition() * SQUARE_WIDTH,
+				shoot.shooter.getyPosition() * SQUARE_HEIGHT,
+				shoot.shootee.getxPosition() * SQUARE_WIDTH, shoot.shootee.getyPosition()
 						* SQUARE_HEIGHT);
 	}
 	
 	private void drawRobotStill(Graphics g, robotwar.core.Robot r) {
 		Image image;
-		if (r.isDead) {
+		if (r.isDead()) {
 			image = deadBot;
 		} else if (r instanceof GuardBot) {
 			image = guardBot;
@@ -184,14 +184,14 @@ public class BattleCanvas extends Canvas {
 		}
 
 		// Finally, draw the robot!!
-		g.drawImage(image, r.xPosition * SQUARE_WIDTH, r.yPosition * SQUARE_HEIGHT, SQUARE_WIDTH, SQUARE_HEIGHT, null,
+		g.drawImage(image, r.getxPosition() * SQUARE_WIDTH, r.getyPosition() * SQUARE_HEIGHT, SQUARE_WIDTH, SQUARE_HEIGHT, null,
 				null);
 
 	}
 	
 	private void drawRobotMoving(Graphics g, Move move) {
 		Image image;
-		if (move.robot.isDead) {
+		if (move.robot.isDead()) {
 			image = deadBot;
 		} else if (move.robot instanceof GuardBot) {
 			image = guardBot;

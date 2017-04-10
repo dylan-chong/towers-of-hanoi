@@ -36,14 +36,14 @@ public class Move implements Action {
 		this.robot = robot;
 		this.xDestination = xDest;
 		this.yDestination = yDest;
-		this.xOriginal = robot.xPosition;
-		this.yOriginal = robot.yPosition;
+		this.xOriginal = robot.getxPosition();
+		this.yOriginal = robot.getyPosition();
 	}
 	
 	public void apply(Battle b) {
 		// Update the location of the robot
-		robot.xPosition = xDestination;
-		robot.yPosition = yDestination;
+		robot.setxPosition(xDestination);
+		robot.setyPosition(yDestination);
 		b.log("Robot " + robot.name + " moves to " + xDestination + ", " + yDestination);
 	}
 }

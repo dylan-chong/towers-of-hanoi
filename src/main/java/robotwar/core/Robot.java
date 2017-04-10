@@ -5,17 +5,17 @@ import java.util.*;
 /**
  * An abstract class representing a Robot in the battle. Subclasses of this can
  * implement different strategies for moving and fighting within the arena.
- * 
+ *
  * @author David J. Pearce
- * 
+ *
  */
 public abstract class Robot {
-	public String name;
-	public int xPosition;	
-	public int yPosition;
-	public int strength;
-	public boolean isDead;
-	
+	public final String name;
+	private int xPosition;
+	private int yPosition;
+	private int strength;
+	private boolean isDead;
+
 	/**
 	 * Construct a robot at a given x and y position with a given strength.
 	 * 
@@ -28,7 +28,7 @@ public abstract class Robot {
 		this.xPosition = xPosition;
 		this.yPosition = yPosition;
 		this.strength = strength;
-		this.isDead = false;
+		this.isDead = checkIsDead(strength);
 	}
 	
 	/**
@@ -41,8 +41,10 @@ public abstract class Robot {
 	 * This method is called when a robot is shot by another robot.
 	 */
 	public void isShot(int strength) {
+		if (isDead) return;
 		this.strength = this.strength - 1;
-		// should check isDead here?
+
+		isDead = checkIsDead(this.strength);
 	}
 	
 	/**
@@ -73,5 +75,41 @@ public abstract class Robot {
 		}
 		
 		return visibleRobots;
+	}
+
+	private static boolean checkIsDead(int strength) {
+		return strength <= 0;
+	}
+
+	public int getxPosition() {
+		return xPosition;
+	}
+
+	public void setxPosition(int xPosition) {
+		this.xPosition = xPosition;
+	}
+
+	public int getyPosition() {
+		return yPosition;
+	}
+
+	public void setyPosition(int yPosition) {
+		this.yPosition = yPosition;
+	}
+
+	public int getStrength() {
+		return strength;
+	}
+
+	public void setStrength(int strength) {
+		this.strength = strength;
+	}
+
+	public boolean isDead() {
+		return isDead;
+	}
+
+	public void setDead(boolean dead) {
+		isDead = dead;
 	}
 }

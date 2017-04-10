@@ -42,7 +42,7 @@ public class Battle {
 	public void takeTurn() {
 		actions.clear();
 		for(Robot r : robots) {
-			if(!r.isDead) {
+			if(!r.isDead()) {
 				r.takeTurn(this);
 			}
 		}
