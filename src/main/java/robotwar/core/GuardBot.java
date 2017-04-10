@@ -1,6 +1,6 @@
 package robotwar.core;
 
-import java.util.LinkedList;
+import java.util.List;
 
 /**
  * The GuardBot marks out its starting location and hangs around there
@@ -36,7 +36,7 @@ public class GuardBot extends Robot {
 	@Override
 	public void takeTurn(Battle battle) {		
 		// First, look to see if there is anything to fire at.
-		LinkedList<Robot> robotsInSight = findRobotsInSight(battle, 10);
+		List<Robot> robotsInSight = findRobotsInSight(battle, 10);
 		
 		if(!robotsInSight.isEmpty()) {
 			// shoot a robot then!
