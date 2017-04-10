@@ -2,7 +2,7 @@ package robotwar.core;
 
 import robotwar.Main;
 
-import java.util.List;
+import java.awt.*;
 
 /**
  * The RandomBot just moves around randomly within the arena and fires at
@@ -21,38 +21,12 @@ public class RandomBot extends Robot {
 	 * is attacked immediately.
 	 */
 	@Override
-	public void takeTurn(Battle battle) {		
-		// First, look to see if there is anything to fire at.
-		List<Robot> robotsInSight = findRobotsInSight(battle, 10);
-		
-		if(!robotsInSight.isEmpty()) {
-			// shoot a robot then!
-			Robot target = robotsInSight.get(0);
-			battle.actions.add(new Shoot(this,target,0));
-			target.setStrength(target.getStrength() - 1);
-			if(this.getStrength() < 0) {
-				setDead(true);
-			}			
-		} 
+	public Point getNewPositionForTurn(Battle battle) {
 		// Now, make a random move
 		int dx = Main.randomInteger(3) - 1;
 		int dy = Main.randomInteger(3) - 1;
 		int newXPos = getxPosition() + dx;
 		int newYPos = getyPosition() + dy;
-
-		// Try to move, whilst watching out for the arena wall!
-		if(newXPos >= 0 && newXPos < battle.arenaWidth) {
-			if(newYPos >= 0 && newYPos < battle.arenaHeight) {
-				battle.log("Robot " + name + " moves to " + getxPosition() + ", " + getyPosition());
-			} else {
-				battle.log("Robot " + name + " bumps into arena wall!");
-				return;
-			}
-		} else {
-			battle.log("Robot " + name + " bumps into arena wall!");
-			return;
-		}		
-		
-		battle.actions.add(new Move(newXPos,newYPos,this));
+		return new Point(newXPos, newYPos);
 	}
 }

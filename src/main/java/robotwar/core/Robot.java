@@ -1,6 +1,8 @@
 package robotwar.core;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * An abstract class representing a Robot in the battle. Subclasses of this can
@@ -36,13 +38,34 @@ public abstract class Robot {
 	 * 
 	 * @param battle
 	 */
-	public abstract void takeTurn(Battle battle);	
+	public void takeTurn(Battle battle) {
+		// First, look to see if there is anything to fire at.
+		List<Robot> robotsInSight = findRobotsInSight(battle, 10);
+
+		if(!robotsInSight.isEmpty()) {
+			// shoot a robot then!
+			Robot target = robotsInSight.get(0);
+			battle.actions.add(new Shoot(this,target,1));
+		}
+
+		Point newPosition = getNewPositionForTurn(battle);
+		newPosition.x = Math.max(newPosition.x, 0);
+		newPosition.x = Math.min(newPosition.x, battle.arenaWidth - 1);
+		newPosition.y = Math.max(newPosition.y, 0);
+		newPosition.y = Math.min(newPosition.y, battle.arenaHeight - 1);
+		battle.log("Robot " + name + " moves to " +
+				newPosition.x + ", " + newPosition.y);
+		battle.actions.add(new Move(newPosition.x,newPosition.y,this));
+	}
+
+	public abstract Point getNewPositionForTurn(Battle battle);
+
 	/**
 	 * This method is called when a robot is shot by another robot.
 	 */
-	public void isShot(int strength) {
+	public void isShot(int strengthLoss) {
 		if (isDead) return;
-		this.strength = this.strength - 1;
+		this.strength = this.strength - strengthLoss;
 
 		isDead = checkIsDead(this.strength);
 	}
