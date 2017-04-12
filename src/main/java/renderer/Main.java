@@ -13,7 +13,7 @@ import renderer.async.ParallelAsyncTaskQueue;
 public class Main {
     public static void main(String[] args) {
         Injector mainInjector = Guice.createInjector(new MainModule());
-        MainController controller = mainInjector.getInstance(MainController.class);
+        Renderer renderer = mainInjector.getInstance(Renderer.class);
     }
 
     private static class MainModule implements Module {

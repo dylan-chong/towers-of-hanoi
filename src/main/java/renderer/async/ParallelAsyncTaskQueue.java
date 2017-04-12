@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Created by Dylan on 17/03/17.
- *
+ * <p>
  * Use this for queuing up multiple {@link AsyncTask}
  */
 @Singleton

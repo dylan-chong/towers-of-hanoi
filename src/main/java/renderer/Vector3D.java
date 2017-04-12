@@ -2,7 +2,7 @@ package renderer;
 /**
  * An immutable 3D vector or position. Note that it is safe to make the fields
  * public because they are final and cannot be modified.
- * 
+ *
  * @author Pondy
  */
 public class Vector3D {
