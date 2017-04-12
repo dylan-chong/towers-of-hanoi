@@ -1,19 +1,30 @@
 package renderer;
 
+import com.google.inject.Inject;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.*;
 
 public class Renderer extends GUI {
+
+    private final Parser parser;
+
+    private RendererModel model;
+
+    @Inject
+    public Renderer(Parser parser) {
+        this.parser = parser;
+    }
+
     @Override
     protected void onLoad(File file) {
-        // TODO fill this in.
-
-		/*
-         * This method should parse the given file into a Scene object, which
-		 * you store and use to render an image.
-		 */
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            this.model = parser.parse(reader);
+        } catch (IOException e) {
+           throw new AssertionError(e);
+        }
     }
 
     @Override

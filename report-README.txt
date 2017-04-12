@@ -25,8 +25,8 @@ IMPORTANT NOTES:
 Note: a '[x]' represents a completed task it is the markdown symbol for a
 ticked tickbox
 
-Stage 1 out of 55: 
- * [ ] (5) Reads the light source direction and all polygons from file.
+Stage 1 out of 55:
+ * [x] (5) Reads the light source direction and all polygons from file.
  * [ ] (10) Marks all the polygons that are facing away from the viewer.
  * [ ] (10) Computes normal and reflected light intesity of every non-hidden polygon.
  * [ ] (10) Finds the edge lists of polygons.
