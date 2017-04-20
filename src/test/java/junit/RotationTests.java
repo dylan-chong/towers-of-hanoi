@@ -2,8 +2,8 @@ package junit;
 
 import org.junit.Test;
 import renderer.Pipeline;
+import renderer.Polygon;
 import renderer.Scene;
-import renderer.Scene.Polygon;
 import renderer.Vector3D;
 
 import java.util.ArrayList;

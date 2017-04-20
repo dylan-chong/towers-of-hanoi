@@ -1,7 +1,5 @@
 package renderer;
 
-import renderer.Scene.Polygon;
-
 import java.awt.*;
 
 /**

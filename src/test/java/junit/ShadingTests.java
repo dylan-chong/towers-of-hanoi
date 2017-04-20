@@ -1,14 +1,13 @@
 package junit;
 
-import static org.junit.Assert.*;
-
-import java.awt.Color;
-
 import org.junit.Test;
-
 import renderer.Pipeline;
-import renderer.Scene.Polygon;
+import renderer.Polygon;
 import renderer.Vector3D;
+
+import java.awt.*;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author tony

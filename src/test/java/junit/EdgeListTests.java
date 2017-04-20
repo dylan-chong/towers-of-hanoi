@@ -1,12 +1,11 @@
 package junit;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
-
 import renderer.EdgeList;
 import renderer.Pipeline;
-import renderer.Scene.Polygon;
+import renderer.Polygon;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author tony

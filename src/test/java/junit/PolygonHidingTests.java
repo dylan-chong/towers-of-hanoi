@@ -2,7 +2,7 @@ package junit;
 
 import org.junit.Test;
 import renderer.Pipeline;
-import renderer.Scene.Polygon;
+import renderer.Polygon;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
