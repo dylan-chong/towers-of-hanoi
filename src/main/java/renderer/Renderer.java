@@ -5,7 +5,12 @@ import com.google.inject.Inject;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Renderer extends GUI {
 
@@ -38,7 +43,15 @@ public class Renderer extends GUI {
 
     @Override
     protected BufferedImage render() {
-        // TODO fill this in.
+        // scene = Pipeline.rotateScene(scene)
+        // todo rotate seen so the user is facing along the positive z axis
+
+        // todo scales the scene so that the polygons fill the screen
+
+        List<Polygon> visiblePolygons = scene.getPolygons()
+                .stream()
+                .filter(poly -> !Pipeline.isHidden(poly))
+                .collect(Collectors.toList());
 
 		/*
 		 * This method should put together the pieces of your renderer, as

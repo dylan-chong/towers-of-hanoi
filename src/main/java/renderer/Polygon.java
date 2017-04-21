@@ -10,8 +10,8 @@ import java.util.Arrays;
  * This class has been done for you.
  */
 public class Polygon {
-    Vector3D[] vertices;
-    Color reflectance;
+    private final Vector3D[] vertices;
+    private final Color reflectance;
 
     /**
      * @param points An array of floats with 9 elements, corresponding to the
@@ -77,7 +77,7 @@ public class Polygon {
         Polygon polygon = (Polygon) o;
 
         if (!Arrays.equals(vertices, polygon.vertices)) return false;
-        
+
         if (reflectance == null) return polygon.reflectance == null;
         else return reflectance.equals(polygon.reflectance);
     }

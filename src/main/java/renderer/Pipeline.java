@@ -15,10 +15,19 @@ public class Pipeline {
     /**
      * Returns true if the given polygon is facing away from the camera (and so
      * should be hidden), and false otherwise.
+     *
+     * Hidden when cross product is positive (across product is the direction
+     * the polygon is facingAnd the positive direction is the direction that
+     * the camera is looking through).
      */
     public static boolean isHidden(Polygon poly) {
-        // TODO fill this in.
-        return false;
+        Vector3D[] vertices = poly.getVertices();
+
+        Vector3D edge2 = vertices[2].minus(vertices[1]);
+        Vector3D edge1 = vertices[1].minus(vertices[0]);
+
+        Vector3D crossProduct = edge1.crossProduct(edge2);
+        return crossProduct.z > 0;
     }
 
     /**
