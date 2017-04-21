@@ -11,7 +11,7 @@ public class Renderer extends GUI {
 
     private final Parser parser;
 
-    private RendererModel model;
+    private Scene scene;
 
     @Inject
     public Renderer(Parser parser) {
@@ -21,7 +21,7 @@ public class Renderer extends GUI {
     @Override
     protected void onLoad(File file) {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            this.model = parser.parse(reader);
+            this.scene = parser.parse(reader);
         } catch (IOException e) {
            throw new AssertionError(e);
         }

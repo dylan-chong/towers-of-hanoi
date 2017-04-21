@@ -1,6 +1,7 @@
 package renderer;
 
 import java.awt.*;
+import java.util.Arrays;
 
 /**
  * Polygon stores data about a single polygon in a scene, keeping track of
@@ -66,6 +67,26 @@ public class Polygon {
         str.append("\n  ").append(reflectance.toString());
 
         return str.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Polygon polygon = (Polygon) o;
+
+        if (!Arrays.equals(vertices, polygon.vertices)) return false;
+        
+        if (reflectance == null) return polygon.reflectance == null;
+        else return reflectance.equals(polygon.reflectance);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Arrays.hashCode(vertices);
+        result = 31 * result + (reflectance != null ? reflectance.hashCode() : 0);
+        return result;
     }
 }
 

@@ -1,5 +1,6 @@
 package renderer;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -14,20 +15,21 @@ import java.util.List;
  */
 public class Scene {
 
-    public Scene(List<Polygon> polygons, Vector3D lightPos) {
-        // TODO fill this in.
-    }
+    private final List<Polygon> polygons;
+    private final Vector3D lightPos;
 
-    public Vector3D getLight() {
-        // TODO fill this in.
-        return null;
+    public Scene(List<Polygon> polygons, Vector3D lightPos) {
+        this.polygons = Collections.unmodifiableList(polygons);
+        this.lightPos = lightPos;
     }
 
     public List<Polygon> getPolygons() {
-        // TODO fill this in.
-        return null;
+        return polygons;
     }
 
+    public Vector3D getLightPos() {
+        return lightPos;
+    }
 }
 
 // code for COMP261 assignments
