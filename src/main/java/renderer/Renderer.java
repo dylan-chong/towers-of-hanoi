@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Note: the positive z direction is the direction of the camera
+ */
 public class Renderer extends GUI {
 
     private final Parser parser;

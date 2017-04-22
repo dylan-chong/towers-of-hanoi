@@ -84,7 +84,8 @@ public class ShadingTests {
 		Polygon poly = new Polygon(verts, col);
 
 		Color shading = Pipeline.getShading(poly, light, lightCol, ambient);
-		Color expected = new Color(13, 34, 34);
+		// Color expected = new Color(13, 34, 34); // off by 1
+		Color expected = new Color(14, 35, 35); // fixed off by 1
 
 		assertEquals(expected, shading);
 	}

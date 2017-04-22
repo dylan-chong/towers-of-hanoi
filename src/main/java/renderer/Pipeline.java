@@ -1,6 +1,8 @@
 package renderer;
 
 import java.awt.*;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * The Pipeline class has method stubs for all the major components of the
@@ -21,13 +23,7 @@ public class Pipeline {
      * the camera is looking through).
      */
     public static boolean isHidden(Polygon poly) {
-        Vector3D[] vertices = poly.getVertices();
-
-        Vector3D edge2 = vertices[2].minus(vertices[1]);
-        Vector3D edge1 = vertices[1].minus(vertices[0]);
-
-        Vector3D crossProduct = edge1.crossProduct(edge2);
-        return crossProduct.z > 0;
+        return poly.getNormal().z > 0;
     }
 
     /**
@@ -37,13 +33,47 @@ public class Pipeline {
      *
      * @param lightDirection The Vector3D pointing to the directional light read in from
      *                       the file.
-     * @param lightColor     The color of that directional light.
+     * @param lightColor     The color of that directional light (incident
+     *                       light)
      * @param ambientLight   The ambient light in the scene, i.e. light that doesn't depend
      *                       on the direction.
      */
-    public static Color getShading(Polygon poly, Vector3D lightDirection, Color lightColor, Color ambientLight) {
-        // TODO fill this in.
-        return null;
+    public static Color getShading(Polygon poly,
+                                   Vector3D lightDirection,
+                                   Color lightColor,
+                                   Color ambientLight) {
+        Vector3D normal = poly.getNormal().unitVector();
+        Vector3D lightDir = lightDirection.unitVector();
+
+        // lightIntensity == cos(theta)
+        // Theta is the angle of the incident light relative to the polygon.
+        // Theta == 0 when the light is directly facing polygon
+        // cosTheta == 1 when theta == 0, or less when Theta > 0
+        float lightIntensity = normal.cosTheta(lightDir);
+        if (lightIntensity < 0 || lightIntensity > 1) {
+            // polygon is facing away from camera
+            return ambientLight;
+        }
+
+        Stream<Function<Color, Float>> colorGetters = Stream.of(
+                c -> c.getRed() / 255f,
+                c -> c.getGreen() / 255f,
+                c -> c.getBlue() / 255f);
+        double[] colorComponents = colorGetters.mapToDouble(
+                colorGet -> {
+                    float ambientCol = colorGet.apply(ambientLight);
+                    float lightCol = colorGet.apply(lightColor);
+                    // polygon color
+                    float reflectance = colorGet.apply(poly.getReflectance());
+                    return ambientCol + (lightCol * lightIntensity) * reflectance;
+                })
+                .toArray();
+
+        return new Color(
+                (float) colorComponents[0],
+                (float) colorComponents[1],
+                (float) colorComponents[2]
+        );
     }
 
     /**

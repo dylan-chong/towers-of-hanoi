@@ -11,6 +11,9 @@ import java.util.Arrays;
  */
 public class Polygon {
     private final Vector3D[] vertices;
+    /**
+     * The color
+     */
     private final Color reflectance;
 
     /**
@@ -55,6 +58,16 @@ public class Polygon {
 
     public Color getReflectance() {
         return reflectance;
+    }
+
+    /**
+     * @return That cross products of two of the edges in this polygon
+     */
+    public Vector3D getNormal() {
+        Vector3D edge2 = vertices[2].minus(vertices[1]);
+        Vector3D edge1 = vertices[1].minus(vertices[0]);
+
+        return edge1.crossProduct(edge2);
     }
 
     @Override
