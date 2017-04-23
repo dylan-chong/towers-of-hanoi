@@ -134,19 +134,17 @@ public class Pipeline {
             if (start.y < end.y) {
                 // going downwards (we must be on the left side)
                 for (int y = Math.round(start.y); y <= Math.round(end.y); y++) {
-                    EdgeList.Edge listEdge = edgeList.getEdge(y);
-                    listEdge.setxLeft(x);
+                    edgeList.setLeftX(y, x);
                     x += xSlope;
-                    listEdge.setzLeft(z);
+                    edgeList.setLeftZ(y, z);
                     z += zSlope;
                 }
             } else {
                 // going upwards (we must be on the right side)
                 for (int y = Math.round(start.y); y >= Math.round(end.y); y--) {
-                    EdgeList.Edge listEdge = edgeList.getEdge(y);
-                    listEdge.setxRight(x);
+                    edgeList.setRightX(y, x);
                     x -= xSlope;
-                    listEdge.setzRight(z);
+                    edgeList.setRightZ(y, z);
                     z -= zSlope;
                 }
             }
@@ -168,8 +166,28 @@ public class Pipeline {
      * @param polyEdgeList The edgelist of the polygon to add into the zbuffer.
      * @param polyColor    The colour of the polygon to add into the zbuffer.
      */
-    public static void computeZBuffer(Color[][] zbuffer, float[][] zdepth, EdgeList polyEdgeList, Color polyColor) {
-        // TODO fill this in.
+    public static void updateZBuffer(Color[][] zbuffer,
+                                     float[][] zdepth,
+                                     EdgeList polyEdgeList,
+                                     Color polyColor) {
+        for (int y = polyEdgeList.getStartY(); y < polyEdgeList.getEndY(); y++) {
+            float leftX = polyEdgeList.getLeftX(y);
+            float leftZ = polyEdgeList.getLeftZ(y);
+            float rightX = polyEdgeList.getRightX(y);
+            float rightZ = polyEdgeList.getRightZ(y);
+
+            float slope = (rightZ - leftZ) / (rightX - leftX);
+
+            float z = leftZ;
+            for (int x = Math.round(leftX);
+                 x < rightX;
+                 x++, z += slope) {
+                if (zdepth[y][x] < z) continue; // current poly is further
+
+                zdepth[y][x] = z;
+                zbuffer[y][x] = polyColor;
+            }
+        }
     }
 }
 

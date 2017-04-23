@@ -1,13 +1,12 @@
 package junit;
 
-import static org.junit.Assert.assertEquals;
-
-import java.awt.Color;
-
 import org.junit.Test;
-
 import renderer.EdgeList;
 import renderer.Pipeline;
+
+import java.awt.*;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author tony
@@ -61,7 +60,7 @@ public class ZBufferTests {
 			}
 		};
 
-		Pipeline.computeZBuffer(zbuffer, zdepth, el, col);
+		Pipeline.updateZBuffer(zbuffer, zdepth, el, col);
 
 		// check the colour is written.
 		for (int i = 0; i < 10; i++) {
@@ -121,7 +120,7 @@ public class ZBufferTests {
 			}
 		};
 
-		Pipeline.computeZBuffer(zbuffer, zdepth, el, col);
+		Pipeline.updateZBuffer(zbuffer, zdepth, el, col);
 
 		// check the colour is written.
 		for (int i = 0; i < 10; i++) {
@@ -180,15 +179,15 @@ public class ZBufferTests {
 			}
 		};
 
-		Pipeline.computeZBuffer(zbuffer, zdepth, el, col);
+		Pipeline.updateZBuffer(zbuffer, zdepth, el, col);
 
 		// now ensure that all values outside the triangle are left as null.
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
-				if (i < j)
-					assertEquals(col, zbuffer[i][j]);
+		for (int y = 0; y < 10; y++) {
+			for (int x = 0; x < 10; x++) {
+				if (y > x)
+					assertEquals(col, zbuffer[y][x]);
 				else
-					assertEquals(null, zbuffer[i][j]);
+					assertEquals(null, zbuffer[y][x]);
 			}
 		}
 

@@ -45,7 +45,7 @@ public class ParserTest {
         Scene scene = new Parser()
                 .parse(new BufferedReader(new StringReader(input)));
 
-        assertEquals(scene.getLightPos(), expectedLightDirection);
+        assertEquals(scene.getLightDirection(), expectedLightDirection);
         assertEquals(scene.getPolygons(), expectedTriangles);
     }
 }

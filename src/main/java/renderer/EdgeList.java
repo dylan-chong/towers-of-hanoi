@@ -21,6 +21,7 @@ public class EdgeList {
     public EdgeList(int startY, int endY) {
         this.startY = startY;
         this.endY = endY;
+
         this.edges = Stream.generate(Edge::new)
                 .limit(endY - startY + 1) // size
                 .toArray(Edge[]::new);
@@ -50,7 +51,23 @@ public class EdgeList {
         return getEdge(y).zRight;
     }
 
-    public Edge getEdge(int y) {
+    public float setLeftX(int y, float x) {
+        return getEdge(y).xLeft = x;
+    }
+
+    public float setRightX(int y, float x) {
+        return getEdge(y).xRight = x;
+    }
+
+    public float setLeftZ(int y, float z) {
+        return getEdge(y).zLeft = z;
+    }
+
+    public float setRightZ(int y, float z) {
+        return getEdge(y).zRight = z;
+    }
+
+    private Edge getEdge(int y) {
         return edges[edgeIndex(y)];
     }
 
@@ -58,43 +75,11 @@ public class EdgeList {
         return y - startY;
     }
 
-    public static class Edge {
-        public float xLeft;
-        public float zLeft;
-        public float xRight;
-        public float zRight;
-
-        public float getxLeft() {
-            return xLeft;
-        }
-
-        public void setxLeft(float xLeft) {
-            this.xLeft = xLeft;
-        }
-
-        public float getzLeft() {
-            return zLeft;
-        }
-
-        public void setzLeft(float zLeft) {
-            this.zLeft = zLeft;
-        }
-
-        public float getxRight() {
-            return xRight;
-        }
-
-        public void setxRight(float xRight) {
-            this.xRight = xRight;
-        }
-
-        public float getzRight() {
-            return zRight;
-        }
-
-        public void setzRight(float zRight) {
-            this.zRight = zRight;
-        }
+    private static class Edge {
+        private float xLeft;
+        private float zLeft;
+        private float xRight;
+        private float zRight;
     }
 }
 

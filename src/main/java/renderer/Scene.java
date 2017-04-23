@@ -16,19 +16,19 @@ import java.util.List;
 public class Scene {
 
     private final List<Polygon> polygons;
-    private final Vector3D lightPos;
+    private final Vector3D lightDirection;
 
-    public Scene(List<Polygon> polygons, Vector3D lightPos) {
+    public Scene(List<Polygon> polygons, Vector3D lightDirection) {
         this.polygons = Collections.unmodifiableList(polygons);
-        this.lightPos = lightPos;
+        this.lightDirection = lightDirection;
     }
 
     public List<Polygon> getPolygons() {
         return polygons;
     }
 
-    public Vector3D getLightPos() {
-        return lightPos;
+    public Vector3D getLightDirection() {
+        return lightDirection;
     }
 }
 
