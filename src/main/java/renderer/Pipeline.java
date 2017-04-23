@@ -62,7 +62,8 @@ public class Pipeline {
                     float lightCol = colorGet.apply(lightColor);
                     // polygon color
                     float reflectance = colorGet.apply(poly.getReflectance());
-                    return ambientCol + (lightCol * lightIntensity) * reflectance;
+                    float result = ambientCol + (lightCol * lightIntensity) * reflectance;
+                    return Math.min(result, 1f);
                 })
                 .toArray();
 
@@ -182,7 +183,9 @@ public class Pipeline {
             for (int x = Math.round(leftX);
                  x < rightX;
                  x++, z += slope) {
-                if (zdepth[y][x] < z) continue; // current poly is further
+                if (zbuffer[y][x] != null && zdepth[y][x] < z) {
+                    continue; // current poly is further
+                }
 
                 zdepth[y][x] = z;
                 zbuffer[y][x] = polyColor;

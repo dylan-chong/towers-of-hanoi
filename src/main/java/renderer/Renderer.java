@@ -2,6 +2,7 @@ package renderer;
 
 import com.google.inject.Inject;
 
+import javax.swing.event.ChangeEvent;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
  */
 public class Renderer extends GUI {
 
+    private static final Color BG_COLOR = Color.WHITE;
     private final Parser parser;
 
     private Scene scene;
@@ -47,14 +49,30 @@ public class Renderer extends GUI {
     @Override
     protected BufferedImage render() {
         // scene = Pipeline.rotateScene(scene)
-        // todo rotate seen so the user is facing along the positive z axis
+        // todo LATER rotate seen so the user is facing along the positive z axis
 
-        // todo scales the scene so that the polygons fill the screen
+        // todo LATER scales the scene so that the polygons fill the screen
+        if (scene == null) return null;
 
         List<Polygon> visiblePolygons = scene.getPolygons()
                 .stream()
                 .filter(poly -> !Pipeline.isHidden(poly))
                 .collect(Collectors.toList());
+
+        Color[][] zbuffer = new Color[CANVAS_WIDTH][CANVAS_HEIGHT];
+        float[][] zdepth = new float[CANVAS_WIDTH][CANVAS_HEIGHT];
+
+        for (int i = 0; i < visiblePolygons.size(); i++) {
+            Polygon polygon = visiblePolygons.get(i);
+            Color shading = Pipeline.getShading(
+                    polygon,
+                    scene.getLightDirection(),
+                    new Color(255, 255, 255), //todo move to scene
+                    getAmbientLight()
+            );
+            EdgeList edgeList = Pipeline.computeEdgeList(polygon);
+            Pipeline.updateZBuffer(zbuffer, zdepth, edgeList, shading);
+        }
 
 		/*
 		 * This method should put together the pieces of your renderer, as
@@ -62,7 +80,7 @@ public class Renderer extends GUI {
 		 * static method stubs in the Pipeline class, which you also need to
 		 * fill in.
 		 */
-        return null;
+        return convertBitmapToImage(zbuffer);
     }
 
     /**
@@ -75,10 +93,17 @@ public class Renderer extends GUI {
         BufferedImage image = new BufferedImage(CANVAS_WIDTH, CANVAS_HEIGHT, BufferedImage.TYPE_INT_RGB);
         for (int x = 0; x < CANVAS_WIDTH; x++) {
             for (int y = 0; y < CANVAS_HEIGHT; y++) {
-                image.setRGB(x, y, bitmap[x][y].getRGB());
+                Color color = bitmap[x][y];
+                if (color == null) color = BG_COLOR;
+                image.setRGB(x, y, color.getRGB());
             }
         }
         return image;
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        redraw();
     }
 }
 

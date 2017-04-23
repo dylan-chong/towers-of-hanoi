@@ -86,12 +86,16 @@ public class ZBufferTests {
 	public void testDontHaveXRayGlasses() {
 		Color[][] zbuffer = new Color[10][10];
 		float[][] zdepth = new float[10][10];
+		final Color defaultColor = Color.BLACK;
 
-		for (int i = 0; i < 10; i++)
-			for (int j = 0; j < 10; j++)
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
 				zdepth[i][j] = 50;
+				zbuffer[i][j] = defaultColor;
+			}
+		}
 
-		Color col = new Color(100, 0, 0);
+		Color polygonShading = new Color(100, 0, 0);
 
 		// subclass EdgeList to return some dummy values.
 		EdgeList el = new EdgeList(0, 10) {
@@ -120,12 +124,12 @@ public class ZBufferTests {
 			}
 		};
 
-		Pipeline.updateZBuffer(zbuffer, zdepth, el, col);
+		Pipeline.updateZBuffer(zbuffer, zdepth, el, polygonShading);
 
 		// check the colour is written.
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
-				assertEquals(null, zbuffer[i][j]);
+				assertEquals(defaultColor, zbuffer[i][j]);
 			}
 		}
 

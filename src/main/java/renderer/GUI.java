@@ -2,6 +2,7 @@ package renderer;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +19,7 @@ import java.io.File;
  *
  * @author tony
  */
-public abstract class GUI {
+public abstract class GUI implements ChangeListener {
 
     /**
      * Is called when the user has successfully selected a model file to load,
@@ -52,8 +53,8 @@ public abstract class GUI {
      * light of the scene. The returned array in the form [R, G, B] where each
      * value is between 0 and 255.
      */
-    public int[] getAmbientLight() {
-        return new int[]{red.getValue(), green.getValue(), blue.getValue()};
+    protected Color getAmbientLight() {
+        return new Color(red.getValue(), green.getValue(), blue.getValue());
     }
 
     public static final int CANVAS_WIDTH = 600;
@@ -66,9 +67,9 @@ public abstract class GUI {
     // --------------------------------------------------------------------
 
     private JFrame frame;
-    private final JSlider red = new JSlider(JSlider.HORIZONTAL, 0, 255, 128);
-    private final JSlider green = new JSlider(JSlider.HORIZONTAL, 0, 255, 128);
-    private final JSlider blue = new JSlider(JSlider.HORIZONTAL, 0, 255, 128);
+    private final JSlider red = createColourSlider();
+    private final JSlider green = createColourSlider();
+    private final JSlider blue = createColourSlider();
 
     private static final Dimension DRAWING_SIZE = new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT);
     private static final Dimension CONTROLS_SIZE = new Dimension(150, 600);
@@ -77,6 +78,12 @@ public abstract class GUI {
 
     public GUI() {
         initialise();
+    }
+
+    private JSlider createColourSlider() {
+        JSlider jSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 128);
+        jSlider.addChangeListener(this);
+        return jSlider;
     }
 
     @SuppressWarnings("serial")
