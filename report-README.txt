@@ -28,8 +28,8 @@ ticked tickbox
 Stage 1 out of 55:
  * [x] (5) Reads the light source direction and all polygons from file.
  * [x] (10) Marks all the polygons that are facing away from the viewer.
- * [ ] (10) Computes normal and reflected light intesity of every non-hidden polygon.
- * [ ] (10) Finds the edge lists of polygons.
+ * [x] (10) Computes normal and reflected light intesity of every non-hidden polygon.
+ * [x] (10) Finds the edge lists of polygons.
  * [ ] (10) Renders the image to an array of colours using a Z-buffer.
  * [ ] (5) Displays the array of colours.
  * [ ] (5) A report that describes what the code does/doesn't do, any bugs, and how it was tested.

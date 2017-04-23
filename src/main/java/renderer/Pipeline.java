@@ -42,14 +42,11 @@ public class Pipeline {
                                    Vector3D lightDirection,
                                    Color lightColor,
                                    Color ambientLight) {
-        Vector3D normal = poly.getNormal().unitVector();
-        Vector3D lightDir = lightDirection.unitVector();
-
         // lightIntensity == cos(theta)
         // Theta is the angle of the incident light relative to the polygon.
         // Theta == 0 when the light is directly facing polygon
         // cosTheta == 1 when theta == 0, or less when Theta > 0
-        float lightIntensity = normal.cosTheta(lightDir);
+        float lightIntensity = poly.getNormal().cosTheta(lightDirection);
         if (lightIntensity < 0 || lightIntensity > 1) {
             // polygon is facing away from camera
             return ambientLight;
@@ -121,8 +118,40 @@ public class Pipeline {
      * slides.
      */
     public static EdgeList computeEdgeList(Polygon poly) {
-        // TODO fill this in.
-        return null;
+        EdgeList edgeList = new EdgeList(poly.getMinX(), poly.getMaxX());
+
+        for (Polygon.Edge polyEdge : poly.getEdges()) {
+            Vector3D start = polyEdge.start;
+            Vector3D end = polyEdge.end;
+
+            float xSlope = (end.x - start.x) / (end.y - start.y);
+            float zSlope = (end.z - start.z) / (end.y - start.y);
+
+            float x = start.x; // modified below
+            float z = start.z; // modified below
+
+            // assume that the sides are in a anticlockwise direction
+            if (start.y < end.y) {
+                // going downwards (we must be on the left side)
+                for (int y = Math.round(start.y); y <= Math.round(end.y); y++) {
+                    EdgeList.Edge listEdge = edgeList.getEdge(y);
+                    listEdge.setxLeft(x);
+                    x += xSlope;
+                    listEdge.setzLeft(z);
+                    z += zSlope;
+                }
+            } else {
+                // going upwards (we must be on the right side)
+                for (int y = Math.round(start.y); y >= Math.round(end.y); y--) {
+                    EdgeList.Edge listEdge = edgeList.getEdge(y);
+                    listEdge.setxRight(x);
+                    x -= xSlope;
+                    listEdge.setzRight(z);
+                    z -= zSlope;
+                }
+            }
+        }
+        return edgeList;
     }
 
     /**

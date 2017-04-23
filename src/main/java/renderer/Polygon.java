@@ -70,6 +70,28 @@ public class Polygon {
         return edge1.crossProduct(edge2);
     }
 
+    public Edge[] getEdges() {
+        return new Edge[]{
+                new Edge(vertices[0], vertices[1]),
+                new Edge(vertices[1], vertices[2]),
+                new Edge(vertices[2], vertices[0])
+        };
+    }
+
+    public int getMinX() {
+        return Arrays.stream(vertices)
+                .mapToInt(vertex -> Math.round(vertex.y))
+                .min()
+                .orElseThrow(AssertionError::new);
+    }
+
+    public int getMaxX() {
+        return Arrays.stream(vertices)
+                .mapToInt(vertex -> Math.round(vertex.y))
+                .max()
+                .orElseThrow(AssertionError::new);
+    }
+
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder("polygon:");
@@ -101,5 +123,15 @@ public class Polygon {
         result = 31 * result + (reflectance != null ? reflectance.hashCode() : 0);
         return result;
     }
+
+    public static class Edge {
+        public final Vector3D start, end;
+
+        Edge(Vector3D start, Vector3D end) {
+            this.start = start;
+            this.end = end;
+        }
+    }
+
 }
 

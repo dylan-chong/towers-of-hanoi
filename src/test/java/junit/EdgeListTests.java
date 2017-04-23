@@ -34,7 +34,7 @@ public class EdgeListTests {
 		Polygon poly = new Polygon(verts, col);
 
 		EdgeList el = Pipeline.computeEdgeList(poly);
-		
+
 		// half-way up the triangle
 		assertEquals(0, el.getLeftX(5), 1e-5);
 		assertEquals(5, el.getRightX(5), 1e-5);
@@ -46,7 +46,7 @@ public class EdgeListTests {
 		// the top of the triangle
 		assertEquals(0, el.getLeftX(10), 1e-5);
 		assertEquals(0, el.getRightX(10), 1e-5);
-		
+
 		// READ THIS.
 		// You can get away with this test failing. I think it's common that
 		// either this test will fail, or you'll get 'whiskers' (little
@@ -70,7 +70,7 @@ public class EdgeListTests {
 		Polygon poly = new Polygon(verts, col);
 
 		EdgeList el = Pipeline.computeEdgeList(poly);
-		
+
 		// half-way up the triangle
 		assertEquals(5, el.getLeftZ(5), 1e-5);
 		assertEquals(10, el.getRightZ(5), 1e-5);
