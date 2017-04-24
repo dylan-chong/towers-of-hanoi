@@ -70,8 +70,17 @@ public class Renderer extends GUI {
 
     @Override
     protected BufferedImage render() {
-        // todo AFTER scales the scene so that the polygons fill the screen
         if (scene == null) return null;
+
+        scene = Pipeline.translateToCenter(
+                scene, CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2
+        );
+        // todo AFTER scales the scene so that the polygons fill the screen
+
+
+
+
+
 
         List<Polygon> visiblePolygons = scene.getPolygons()
                 .stream()
@@ -86,7 +95,7 @@ public class Renderer extends GUI {
             Color shading = Pipeline.getShading(
                     polygon,
                     scene.getLightDirection(),
-                    new Color(255, 255, 255), //todo move to scene
+                    Scene.LIGHT_COLOR,
                     getAmbientLight()
             );
             EdgeList edgeList = Pipeline.computeEdgeList(polygon);

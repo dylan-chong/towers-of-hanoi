@@ -2,6 +2,9 @@ package renderer;
 
 import java.awt.*;
 import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Polygon stores data about a single polygon in a scene, keeping track of
@@ -90,6 +93,21 @@ public class Polygon {
                 .mapToInt(vertex -> Math.round(vertex.y))
                 .max()
                 .orElseThrow(AssertionError::new);
+    }
+
+    /**
+     * @return A new {@link Polygon} with the function applied to each vertex
+     */
+    public Polygon applyFunctionToVertices(Function<Vector3D, Vector3D> func) {
+        List<Vector3D> newVertices = Arrays.stream(vertices)
+                .map(func)
+                .collect(Collectors.toList());
+        return new Polygon(
+                newVertices.get(0),
+                newVertices.get(1),
+                newVertices.get(2),
+                reflectance
+        );
     }
 
     @Override

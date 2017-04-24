@@ -1,7 +1,6 @@
 package renderer;
 
 import java.awt.*;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -98,19 +97,24 @@ public class Pipeline {
         Vector3D newLightDir = rotate.multiply(scene.getLightDirection());
         List<Polygon> newPolygons = scene.getPolygons()
                 .stream()
-                .map(poly -> {
-                    List<Vector3D> newVertices = Arrays.stream(poly.getVertices())
-                            .map(rotate::multiply)
-                            .collect(Collectors.toList());
-                    return new Polygon(
-                            newVertices.get(0),
-                            newVertices.get(1),
-                            newVertices.get(2),
-                            poly.getReflectance()
-                    );
-                })
+                .map(poly -> poly.applyFunctionToVertices(rotate::multiply))
                 .collect(Collectors.toList());
         return new Scene(newPolygons, newLightDir);
+    }
+
+    public static Scene translateToCenter(Scene scene, int midX, int midY) {
+        List<MinMax> bounds = scene.getXYZBounds();
+        if (bounds == null) return scene; // nothing is in the scene
+
+        List<Float> currentMidPointOrds = bounds.stream()
+                .map(minMax -> (minMax.getMin() + minMax.getMax()) / 2f)
+                .collect(Collectors.toList());
+        Vector3D translateAmount = new Vector3D(
+                midX - currentMidPointOrds.get(0),
+                midY - currentMidPointOrds.get(1),
+                0 // don't bother translating z
+        );
+        return translateScene(scene, translateAmount);
     }
 
     /**
@@ -119,9 +123,16 @@ public class Pipeline {
      * @param scene
      * @return
      */
-    public static Scene translateScene(Scene scene) {
-        // TODO fill this in.
-        return null;
+    public static Scene translateScene(Scene scene, Vector3D amount) {
+        return new Scene(
+                scene.getPolygons()
+                        .stream()
+                        .map(poly -> poly.applyFunctionToVertices(
+                                vertex -> vertex.plus(amount)
+                        ))
+                        .collect(Collectors.toList()),
+                scene.getLightDirection()
+        );
     }
 
     /**
@@ -160,10 +171,6 @@ public class Pipeline {
                     x += xSlope;
                     edgeList.setLeftZ(y, z);
                     z += zSlope;
-
-                    if (x > 209) {
-                        System.out.printf(x +"");
-                    }
                 }
             } else {
                 // going upwards (we must be on the right side)
@@ -172,10 +179,6 @@ public class Pipeline {
                     x -= xSlope;
                     edgeList.setRightZ(y, z);
                     z -= zSlope;
-
-                    if (x > 209) {
-                        System.out.printf(x +"");
-                    }
                 }
             }
         }
@@ -224,6 +227,7 @@ public class Pipeline {
             }
         }
     }
+
 }
 
 // code for comp261 assignments
