@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 public class Renderer extends GUI {
 
     private static final Color BG_COLOR = Color.WHITE;
+    private static final float ROTATE_SPEED = 0.1f; // radians
     private final Parser parser;
 
     private Scene scene;
@@ -39,19 +40,37 @@ public class Renderer extends GUI {
 
     @Override
     protected void onKeyPress(KeyEvent ev) {
-        // TODO fill this in.
+        if (scene == null) return;
 
-		/*
-		 * This method should be used to rotate the user's viewpoint.
-		 */
+        // Shift viewpoint
+        float xRotation = 0; // rotation around the x-axis line
+        float yRotation = 0; // rotation around the y-axis line
+        switch (ev.getKeyCode()) {
+            case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_A:
+                yRotation = ROTATE_SPEED;
+                break;
+            case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_D:
+                yRotation = -ROTATE_SPEED;
+                break;
+            case KeyEvent.VK_UP:
+            case KeyEvent.VK_W:
+                xRotation = ROTATE_SPEED;
+                break;
+            case KeyEvent.VK_DOWN:
+            case KeyEvent.VK_S:
+                xRotation = -ROTATE_SPEED;
+                break;
+            default:
+                return;
+        }
+        scene = Pipeline.rotateScene(scene, xRotation, yRotation);
     }
 
     @Override
     protected BufferedImage render() {
-        // scene = Pipeline.rotateScene(scene)
-        // todo LATER rotate seen so the user is facing along the positive z axis
-
-        // todo LATER scales the scene so that the polygons fill the screen
+        // todo AFTER scales the scene so that the polygons fill the screen
         if (scene == null) return null;
 
         List<Polygon> visiblePolygons = scene.getPolygons()
@@ -99,6 +118,20 @@ public class Renderer extends GUI {
             }
         }
         return image;
+    }
+
+    private String convertBitmapToString(Color[][] bitmap) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < bitmap.length; i++) {
+            Color[] row = bitmap[i];
+            for (int i1 = 0; i1 < row.length; i1++) {
+                Color col = row[i1];
+                if (col != null) sb.append('x');
+                else sb.append(' ');
+            }
+            sb.append('\n');
+        }
+        return sb.toString();
     }
 
     @Override

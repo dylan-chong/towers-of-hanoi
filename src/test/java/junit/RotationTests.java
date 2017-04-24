@@ -6,9 +6,7 @@ import renderer.Polygon;
 import renderer.Scene;
 import renderer.Vector3D;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
@@ -33,17 +31,7 @@ public class RotationTests {
 
         final Polygon p1 = new Polygon(verts, col);
 
-        Scene scene = new Scene(Collections.emptyList(), null) {
-            public List<Polygon> getPolygons() {
-                List<Polygon> ar = new ArrayList<>();
-                ar.add(p1);
-                return ar;
-            }
-
-            public Vector3D getLight() {
-                return light;
-            }
-        };
+        Scene scene = new Scene(Collections.singletonList(p1), light);
 
         Scene res = Pipeline.rotateScene(scene, 0, 0);
         Polygon p2 = res.getPolygons().get(0);
@@ -60,17 +48,7 @@ public class RotationTests {
 
         final Polygon p1 = new Polygon(verts, col);
 
-        Scene scene = new Scene(null, null) {
-            public List<Polygon> getPolygons() {
-                List<Polygon> ar = new ArrayList<>();
-                ar.add(p1);
-                return ar;
-            }
-
-            public Vector3D getLight() {
-                return light;
-            }
-        };
+        Scene scene = new Scene(Collections.singletonList(p1), light);
 
         Scene res = Pipeline.rotateScene(scene, 0, 0.3f);
         Polygon p2 = res.getPolygons().get(0);
@@ -91,17 +69,7 @@ public class RotationTests {
 
         final Polygon p1 = new Polygon(verts, col);
 
-        Scene scene = new Scene(null, null) {
-            public List<Polygon> getPolygons() {
-                List<Polygon> ar = new ArrayList<>();
-                ar.add(p1);
-                return ar;
-            }
-
-            public Vector3D getLight() {
-                return light;
-            }
-        };
+        Scene scene = new Scene(Collections.singletonList(p1), light);
 
         Scene res = Pipeline.rotateScene(scene, 0.6f, 0);
         Polygon p2 = res.getPolygons().get(0);

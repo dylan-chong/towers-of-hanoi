@@ -186,12 +186,12 @@ public class ZBufferTests {
 		Pipeline.updateZBuffer(zbuffer, zdepth, el, col);
 
 		// now ensure that all values outside the triangle are left as null.
-		for (int y = 0; y < 10; y++) {
-			for (int x = 0; x < 10; x++) {
+		for (int x = 0; x < 10; x++) {
+			for (int y = 0; y < 10; y++) {
 				if (y > x)
-					assertEquals(col, zbuffer[y][x]);
+					assertEquals(col, zbuffer[x][y]);
 				else
-					assertEquals(null, zbuffer[y][x]);
+					assertEquals(null, zbuffer[x][y]);
 			}
 		}
 

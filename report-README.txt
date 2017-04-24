@@ -36,7 +36,7 @@ Stage 1 out of 55:
 
 Stage 2 out of 15 (up to 70):
  * [ ] (10) The renderer works correctly; No glitches or holes, the ambient light level is correctly used, and the light source is correctly used.
- * [ ] (4) Code is clean and readable.
+ * [x] (4) Code is clean and readable.
  * [ ] (1) Report is informative and clear.
 
 Stage 3 out of 15 (up to 85):

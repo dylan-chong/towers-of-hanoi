@@ -1,7 +1,10 @@
 package renderer;
 
 import java.awt.*;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -88,8 +91,26 @@ public class Pipeline {
      * rotated accordingly.
      */
     public static Scene rotateScene(Scene scene, float xRot, float yRot) {
-        // TODO fill this in.
-        return null;
+        Transform rotate = Transform
+                .newXRotation(xRot)
+                .compose(Transform.newYRotation(yRot));
+
+        Vector3D newLightDir = rotate.multiply(scene.getLightDirection());
+        List<Polygon> newPolygons = scene.getPolygons()
+                .stream()
+                .map(poly -> {
+                    List<Vector3D> newVertices = Arrays.stream(poly.getVertices())
+                            .map(rotate::multiply)
+                            .collect(Collectors.toList());
+                    return new Polygon(
+                            newVertices.get(0),
+                            newVertices.get(1),
+                            newVertices.get(2),
+                            poly.getReflectance()
+                    );
+                })
+                .collect(Collectors.toList());
+        return new Scene(newPolygons, newLightDir);
     }
 
     /**
@@ -139,6 +160,10 @@ public class Pipeline {
                     x += xSlope;
                     edgeList.setLeftZ(y, z);
                     z += zSlope;
+
+                    if (x > 209) {
+                        System.out.printf(x +"");
+                    }
                 }
             } else {
                 // going upwards (we must be on the right side)
@@ -147,6 +172,10 @@ public class Pipeline {
                     x -= xSlope;
                     edgeList.setRightZ(y, z);
                     z -= zSlope;
+
+                    if (x > 209) {
+                        System.out.printf(x +"");
+                    }
                 }
             }
         }
@@ -172,6 +201,8 @@ public class Pipeline {
                                      EdgeList polyEdgeList,
                                      Color polyColor) {
         for (int y = polyEdgeList.getStartY(); y < polyEdgeList.getEndY(); y++) {
+            if (y < 0 || y >= zbuffer[0].length) continue;
+
             float leftX = polyEdgeList.getLeftX(y);
             float leftZ = polyEdgeList.getLeftZ(y);
             float rightX = polyEdgeList.getRightX(y);
@@ -183,12 +214,13 @@ public class Pipeline {
             for (int x = Math.round(leftX);
                  x < rightX;
                  x++, z += slope) {
-                if (zbuffer[y][x] != null && zdepth[y][x] < z) {
+                if (x < 0 || x >= zbuffer.length) continue;
+                if (zbuffer[x][y] != null && zdepth[x][y] < z) {
                     continue; // current poly is further
                 }
 
-                zdepth[y][x] = z;
-                zbuffer[y][x] = polyColor;
+                zdepth[x][y] = z;
+                zbuffer[x][y] = polyColor;
             }
         }
     }
