@@ -141,9 +141,41 @@ public class Pipeline {
      * @param scene
      * @return
      */
-    public static Scene scaleScene(Scene scene) {
-        // TODO fill this in.
-        return null;
+    public static Scene scaleScene(Scene scene,
+                                   float minX, float maxX,
+                                   float minY, float maxY) {
+        List<MinMax> bounds = scene.getXYZBounds();
+        if (bounds == null) return scene; // nothing is in the scene
+
+        List<Float> sizes = bounds.stream() // [x, y, z] sizes
+                .map(minMax -> minMax.getMax() - minMax.getMin())
+                .collect(Collectors.toList());
+        sizes.remove(2); // get rid of z
+        if (sizes.stream().allMatch(size -> size == 0)) {
+            return scene; // scene is made of one point
+        }
+
+        float scaleFactor = Math.min(
+                (maxX - minX) / sizes.get(0),
+                (maxY - minY) / sizes.get(1)
+        );
+
+        return scaleScene(scene, scaleFactor);
+    }
+
+    public static Scene scaleScene(Scene scene, float scaleFactor) {
+        List<MinMax> bounds = scene.getXYZBounds();
+        if (bounds == null) return scene; // nothing is in the scene
+
+        Transform scale = Transform.newScale(scaleFactor, scaleFactor, scaleFactor);
+
+        return new Scene(
+                scene.getPolygons()
+                        .stream()
+                        .map(poly -> poly.applyFunctionToVertices(scale::multiply))
+                        .collect(Collectors.toList()),
+                scene.getLightDirection()
+        );
     }
 
     /**

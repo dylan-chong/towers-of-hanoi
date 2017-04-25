@@ -40,7 +40,7 @@ Stage 2 out of 15 (up to 70):
  * [ ] (1) Report is informative and clear.
 
 Stage 3 out of 15 (up to 85):
- * [ ] (15) The user can navigate the render, i.e.\ change the viewing direction.
+ * [x] (15) The user can navigate the render, i.e. change the viewing direction.
  	- Polygons are rotated based on the viewing direction.
  	- Polygons are translated and scaled to fit in the window.
 

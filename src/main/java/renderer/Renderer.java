@@ -72,15 +72,14 @@ public class Renderer extends GUI {
     protected BufferedImage render() {
         if (scene == null) return null;
 
+        scene = Pipeline.scaleScene(
+                scene,
+                0, CANVAS_WIDTH,
+                0, CANVAS_HEIGHT
+        );
         scene = Pipeline.translateToCenter(
                 scene, CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2
         );
-        // todo AFTER scales the scene so that the polygons fill the screen
-
-
-
-
-
 
         List<Polygon> visiblePolygons = scene.getPolygons()
                 .stream()
