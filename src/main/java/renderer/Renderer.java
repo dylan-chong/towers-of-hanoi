@@ -1,7 +1,5 @@
 package renderer;
 
-import com.google.inject.Inject;
-
 import javax.swing.event.ChangeEvent;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -25,7 +23,6 @@ public class Renderer extends GUI {
 
     private Scene scene;
 
-    @Inject
     public Renderer(Parser parser) {
         this.parser = parser;
     }
