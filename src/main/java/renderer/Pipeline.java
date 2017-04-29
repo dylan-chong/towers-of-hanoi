@@ -47,16 +47,6 @@ public class Pipeline {
                                                   Vector3D lightDirection,
                                                   Color lightColor,
                                                   Color ambientLight) {
-        // if (true) {
-        // // Flat shading
-        //     Color shadingFlat = getShadingFlat(
-        //             poly.getNormal(),
-        //             lightDirection,
-        //             lightColor, ambientLight, poly.getReflectance()
-        //     );
-        //     return Arrays.stream(poly.getVertices())
-        //             .collect(Collectors.toMap(vert -> vert, vert -> shadingFlat));
-        // }
         List<Vector3D> vertices = Arrays.asList(poly.getVertices());
         List<Vector3D> vertexNormals = vertices.stream()
                 .map(vert -> {
@@ -112,7 +102,10 @@ public class Pipeline {
         float lightIntensity = normal.cosTheta(lightDirection);
         if (lightIntensity < 0 || lightIntensity > 1) {
             // polygon is facing away from camera
-            return ambientLight;
+            return new Vector3D(ambientLight)
+                    .times(new Vector3D(polyReflectance))
+                    .wrapColor()
+                    .toColor();
         }
 
         Stream<Function<Color, Float>> colorGetters = Stream.of(
@@ -125,7 +118,8 @@ public class Pipeline {
                     float lightCol = colorGet.apply(lightColor);
                     // polygon color
                     float reflectance = colorGet.apply(polyReflectance);
-                    float result = ambientCol + (lightCol * lightIntensity) * reflectance;
+                    float result = (ambientCol + (lightCol * lightIntensity))
+                            * reflectance;
                     return Math.min(result, 1f);
                 })
                 .toArray();

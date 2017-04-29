@@ -82,6 +82,10 @@ public class Vector3D {
         return new Vector3D(x / other.x, y / other.y, z / other.z);
     }
 
+    public Vector3D times(Vector3D vector3D) {
+        return new Vector3D(x * vector3D.x, y * vector3D.y, z * vector3D.z);
+    }
+
     /**
      * Returns the float that is the dot product of this vector and the other
      * vector.
