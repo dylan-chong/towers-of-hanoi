@@ -35,7 +35,7 @@ Stage 1 out of 55:
  * [ ] (5) A report that describes what the code does/doesn't do, any bugs, and how it was tested.
 
 Stage 2 out of 15 (up to 70):
- * [ ] (10) The renderer works correctly; No glitches or holes, the ambient light level is correctly used, and the light source is correctly used.
+ * [x] (10) The renderer works correctly; No glitches or holes, the ambient light level is correctly used, and the light source is correctly used.
  * [x] (4) Code is clean and readable.
  * [ ] (1) Report is informative and clear.
 
@@ -45,6 +45,6 @@ Stage 3 out of 15 (up to 85):
  	- Polygons are translated and scaled to fit in the window.
 
 Stage 4 out of 15 (up to 100, with 5 spare marks):
- * [ ] (10) Allows multiple light sources to be added (and possibly modified) dynamically.
+ * [x] (10) Allows multiple light sources to be added (and possibly modified) dynamically.
  * [ ] (10) Gouraud shading is used to make smooth, curved surfaces. Alternatively, Phong shading is used for an over-the-top answer.
 

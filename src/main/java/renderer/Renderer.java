@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -56,11 +57,11 @@ public class Renderer extends GUI {
                 break;
             case KeyEvent.VK_UP:
             case KeyEvent.VK_W:
-                xRotation = ROTATE_SPEED;
+                xRotation = -ROTATE_SPEED;
                 break;
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_S:
-                xRotation = -ROTATE_SPEED;
+                xRotation = ROTATE_SPEED;
                 break;
             default:
                 return;
@@ -91,14 +92,15 @@ public class Renderer extends GUI {
 
         for (int i = 0; i < visiblePolygons.size(); i++) {
             Polygon polygon = visiblePolygons.get(i);
-            Color shading = Pipeline.getShading(
+            Map<Vector3D, Color> shadings = Pipeline.getShading(
                     polygon,
+                    scene.getPolygons(),
                     scene.getLightDirection(),
                     Scene.LIGHT_COLOR,
                     getAmbientLight()
             );
-            EdgeList edgeList = Pipeline.computeEdgeList(polygon);
-            Pipeline.updateZBuffer(zbuffer, zdepth, edgeList, shading);
+            EdgeList edgeList = Pipeline.computeEdgeList(polygon, shadings);
+            Pipeline.updateZBuffer(zbuffer, zdepth, edgeList);
         }
 
 		/*

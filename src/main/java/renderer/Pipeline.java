@@ -1,6 +1,7 @@
 package renderer;
 
 import java.awt.*;
+import java.util.*;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -39,16 +40,76 @@ public class Pipeline {
      *                       light)
      * @param ambientLight   The ambient light in the scene, i.e. light that doesn't depend
      *                       on the direction.
+     * @return vertex -> shading
      */
-    public static Color getShading(Polygon poly,
-                                   Vector3D lightDirection,
-                                   Color lightColor,
-                                   Color ambientLight) {
+    public static Map<Vector3D, Color> getShading(Polygon poly,
+                                                  Collection<Polygon> allPolygons,
+                                                  Vector3D lightDirection,
+                                                  Color lightColor,
+                                                  Color ambientLight) {
+        // if (true) {
+        // // Flat shading
+        //     Color shadingFlat = getShadingFlat(
+        //             poly.getNormal(),
+        //             lightDirection,
+        //             lightColor, ambientLight, poly.getReflectance()
+        //     );
+        //     return Arrays.stream(poly.getVertices())
+        //             .collect(Collectors.toMap(vert -> vert, vert -> shadingFlat));
+        // }
+        List<Vector3D> vertices = Arrays.asList(poly.getVertices());
+        List<Vector3D> vertexNormals = vertices.stream()
+                .map(vert -> {
+                    // Find polygons that have a vertex that equals vert
+                    // (includes this poly)
+                    Collection<Polygon> connectedPolys =
+                            getPolygonsConnectedToVertex(allPolygons, vert);
+                    List<Vector3D> normals = connectedPolys.stream()
+                            .map(Polygon::getNormal)
+                            .collect(Collectors.toList());
+                    Vector3D avgNormal = normals.stream()
+                            .map(Vector3D::unitVector)
+                            .reduce(Vector3D::plus)
+                            .orElse(poly.getNormal());
+                    avgNormal = avgNormal.unitVector();
+                    return avgNormal;
+                })
+                .collect(Collectors.toList());
+
+        List<Color> vertexColors = vertexNormals.stream()
+                .map(normal -> getShadingFlat(
+                        normal,
+                        lightDirection, lightColor, ambientLight,
+                        poly.getReflectance()
+                ))
+                .collect(Collectors.toList());
+
+        Map<Vector3D, Color> vertexToShading = new HashMap<>();
+        for (int i = 0; i < vertexNormals.size(); i++)
+            vertexToShading.put(vertices.get(i), vertexColors.get(i));
+        return vertexToShading;
+    }
+
+    public static Collection<Polygon> getPolygonsConnectedToVertex(
+            Collection<Polygon> allPolygons,
+            Vector3D vert) {
+        List<Polygon> collect = allPolygons.stream()
+                .filter(polygon -> Arrays.stream(polygon.getVertices())
+                        .anyMatch(polyVert -> polyVert.closeEquals(vert)))
+                .collect(Collectors.toList());
+        return collect;
+    }
+
+    private static Color getShadingFlat(Vector3D normal,
+                                        Vector3D lightDirection,
+                                        Color lightColor,
+                                        Color ambientLight,
+                                        Color polyReflectance) {
         // lightIntensity == cos(theta)
         // Theta is the angle of the incident light relative to the polygon.
         // Theta == 0 when the light is directly facing polygon
         // cosTheta == 1 when theta == 0, or less when Theta > 0
-        float lightIntensity = poly.getNormal().cosTheta(lightDirection);
+        float lightIntensity = normal.cosTheta(lightDirection);
         if (lightIntensity < 0 || lightIntensity > 1) {
             // polygon is facing away from camera
             return ambientLight;
@@ -63,7 +124,7 @@ public class Pipeline {
                     float ambientCol = colorGet.apply(ambientLight);
                     float lightCol = colorGet.apply(lightColor);
                     // polygon color
-                    float reflectance = colorGet.apply(poly.getReflectance());
+                    float reflectance = colorGet.apply(polyReflectance);
                     float result = ambientCol + (lightCol * lightIntensity) * reflectance;
                     return Math.min(result, 1f);
                 })
@@ -182,18 +243,26 @@ public class Pipeline {
      * Computes the edgelist of a single provided polygon, as per the lecture
      * slides.
      */
-    public static EdgeList computeEdgeList(Polygon poly) {
+    public static EdgeList computeEdgeList(Polygon poly,
+                                           Map<Vector3D, Color> colors) {
         EdgeList edgeList = new EdgeList(poly.getMinX(), poly.getMaxX());
 
         for (Polygon.Edge polyEdge : poly.getEdges()) {
             Vector3D start = polyEdge.start;
             Vector3D end = polyEdge.end;
+            Vector3D startColor = new Vector3D(colors.get(start));
+            Vector3D endColor = new Vector3D(colors.get(end));
 
-            float xSlope = (end.x - start.x) / (end.y - start.y);
-            float zSlope = (end.z - start.z) / (end.y - start.y);
+            float yDiff  = end.y - start.y;
+            float xSlope = (end.x - start.x) / yDiff;
+            float zSlope = (end.z - start.z) / yDiff;
+            Vector3D colorSlope = yDiff == 0 ? new Vector3D(0, 0, 0) :
+                    endColor.minus(startColor)
+                            .divide(new Vector3D(yDiff, yDiff, yDiff));
 
             float x = start.x; // modified below
             float z = start.z; // modified below
+            Vector3D color = startColor;
 
             // assume that the sides are in a anticlockwise direction
             if (start.y < end.y) {
@@ -203,6 +272,8 @@ public class Pipeline {
                     x += xSlope;
                     edgeList.setLeftZ(y, z);
                     z += zSlope;
+                    edgeList.setLeftColor(y, color);
+                    color = color.plus(colorSlope).wrapColor();
                 }
             } else {
                 // going upwards (we must be on the right side)
@@ -211,6 +282,8 @@ public class Pipeline {
                     x -= xSlope;
                     edgeList.setRightZ(y, z);
                     z -= zSlope;
+                    edgeList.setRightColor(y, color);
+                    color = color.minus(colorSlope).wrapColor();
                 }
             }
         }
@@ -223,39 +296,43 @@ public class Pipeline {
      * <p>
      * The idea here is to make zbuffer and zdepth arrays in your main loop, and
      * pass them into the method to be modified.
-     *
-     * @param zbuffer      A double array of colours representing the Color at each pixel
+     *  @param zbuffer      A double array of colours representing the Color at each pixel
      *                     so far.
      * @param zdepth       A double array of floats storing the z-value of each pixel
      *                     that has been coloured in so far.
      * @param polyEdgeList The edgelist of the polygon to add into the zbuffer.
-     * @param polyColor    The colour of the polygon to add into the zbuffer.
      */
     public static void updateZBuffer(Color[][] zbuffer,
                                      float[][] zdepth,
-                                     EdgeList polyEdgeList,
-                                     Color polyColor) {
-        for (int y = polyEdgeList.getStartY(); y < polyEdgeList.getEndY(); y++) {
+                                     EdgeList polyEdgeList) {
+        for (int y = polyEdgeList.getStartY(); y <= polyEdgeList.getEndY(); y++) {
             if (y < 0 || y >= zbuffer[0].length) continue;
 
             float leftX = polyEdgeList.getLeftX(y);
             float leftZ = polyEdgeList.getLeftZ(y);
+            Vector3D leftColor = polyEdgeList.getLeftColor(y);
             float rightX = polyEdgeList.getRightX(y);
             float rightZ = polyEdgeList.getRightZ(y);
+            Vector3D rightColor = polyEdgeList.getRightColor(y);
 
-            float slope = (rightZ - leftZ) / (rightX - leftX);
+            float xDiff = rightX - leftX;
+            float slope = (rightZ - leftZ) / xDiff;
+            Vector3D colorSlope = xDiff == 0 ? new Vector3D(0, 0, 0) :
+                    rightColor.minus(leftColor)
+                            .divide(new Vector3D(xDiff, xDiff, xDiff));
 
             float z = leftZ;
+            Vector3D color = leftColor;
             for (int x = Math.round(leftX);
                  x < rightX;
-                 x++, z += slope) {
+                 x++, z += slope, color = color.plus(colorSlope)) {
                 if (x < 0 || x >= zbuffer.length) continue;
                 if (zbuffer[x][y] != null && zdepth[x][y] < z) {
                     continue; // current poly is further
                 }
 
                 zdepth[x][y] = z;
-                zbuffer[x][y] = polyColor;
+                zbuffer[x][y] = color.wrapColor().toColor();
             }
         }
     }

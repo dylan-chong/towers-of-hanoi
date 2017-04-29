@@ -1,5 +1,7 @@
 package renderer;
 
+import java.awt.*;
+
 /**
  * An immutable 3D vector or position. Note that it is safe to make the fields
  * public because they are final and cannot be modified.
@@ -33,6 +35,22 @@ public class Vector3D {
         this.mag = mag;
     }
 
+    public Vector3D(Color c) {
+        this(
+                c.getRed() / 255f,
+                c.getGreen() / 255f,
+                c.getBlue() / 255f
+        );
+    }
+
+    public Color toColor() {
+        return new Color(
+                x,
+                y,
+                z
+        );
+    }
+
     /**
      * Constructs and returns a unit vector in the same direction as this
      * vector.
@@ -58,6 +76,10 @@ public class Vector3D {
      */
     public Vector3D plus(Vector3D other) {
         return new Vector3D(x + other.x, y + other.y, z + other.z);
+    }
+
+    public Vector3D divide(Vector3D other) {
+        return new Vector3D(x / other.x, y / other.y, z / other.z);
     }
 
     /**
@@ -123,6 +145,26 @@ public class Vector3D {
             return false;
         if (Math.abs(z - other.z) > 0.00001)
             return false;
+        return true;
+    }
+
+    public Vector3D wrapColor() {
+        return new Vector3D(
+                wrapColorComponent(x),
+                wrapColorComponent(y),
+                wrapColorComponent(z)
+        );
+    }
+
+    private float wrapColorComponent(float f) {
+        return Math.max(0, Math.min(1, f));
+    }
+
+    public boolean closeEquals(Vector3D vert) {
+        float dist = 0.01f;
+        if (Math.abs(x - vert.x) > dist) return false;
+        if (Math.abs(y - vert.y) > dist) return false;
+        if (Math.abs(z - vert.z) > dist) return false;
         return true;
     }
 }

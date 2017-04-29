@@ -27,6 +27,21 @@ public class EdgeList {
                 .toArray(Edge[]::new);
     }
 
+    @Override
+    public String toString() {
+        StringBuilder edgesStr = new StringBuilder("\n");
+        for (Edge edge : edges) {
+            edgesStr.append(edge.toString())
+                    .append('\n');
+        }
+
+        return "EdgeList{" +
+                "startY=" + startY +
+                ", endY=" + endY +
+                ",\nedges=" + edgesStr +
+                '}';
+    }
+
     public int getStartY() {
         return startY;
     }
@@ -51,6 +66,14 @@ public class EdgeList {
         return getEdge(y).zRight;
     }
 
+    public Vector3D getLeftColor(int y) {
+        return getEdge(y).colorLeft;
+    }
+
+    public Vector3D getRightColor(int y) {
+        return getEdge(y).colorRight;
+    }
+
     public float setLeftX(int y, float x) {
         return getEdge(y).xLeft = x;
     }
@@ -67,6 +90,18 @@ public class EdgeList {
         return getEdge(y).zRight = z;
     }
 
+    public void setLeftColor(int y, Vector3D color) {
+        if (!isValid(color))
+            throw new AssertionError();
+        getEdge(y).colorLeft = color;
+    }
+
+    public void setRightColor(int y, Vector3D color) {
+        if (!isValid(color))
+            throw new AssertionError();
+        getEdge(y).colorRight = color;
+    }
+
     private Edge getEdge(int y) {
         return edges[edgeIndex(y)];
     }
@@ -75,11 +110,26 @@ public class EdgeList {
         return y - startY;
     }
 
+    private boolean isValid(Vector3D v) {
+        return Stream.of(v.x, v.y, v.z)
+                .noneMatch(ordinate -> ordinate < 0 || ordinate > 1);
+    }
+
     private static class Edge {
         private float xLeft;
         private float zLeft;
         private float xRight;
         private float zRight;
+        private Vector3D colorLeft; // x: red, y: green, z: blue
+        private Vector3D colorRight; // x: red, y: green, z: blue
+
+        @Override
+        public String toString() {
+            return String.format(
+                    "Edge{xLeft=%.3f,\tzLeft=%.3f,\txRight=%.3f,\tzRight=%.3f}",
+                    xLeft, zLeft, xRight, zRight
+            );
+        }
     }
 }
 
