@@ -262,6 +262,11 @@ public class Pipeline {
             if (start.y < end.y) {
                 // going downwards (we must be on the left side)
                 for (int y = Math.round(start.y); y <= Math.round(end.y); y++) {
+                    if (start.x < end.x) { // fix large xSlope causing whiskers
+                        if (x > end.x) x = end.x;
+                    } else {
+                        if (x < end.x) x = end.x;
+                    }
                     edgeList.setLeftX(y, x);
                     x += xSlope;
                     edgeList.setLeftZ(y, z);
@@ -269,9 +274,14 @@ public class Pipeline {
                     edgeList.setLeftColor(y, color);
                     color = color.plus(colorSlope).wrapColor();
                 }
-            } else {
+            } else if (start.y > end.y) {
                 // going upwards (we must be on the right side)
                 for (int y = Math.round(start.y); y >= Math.round(end.y); y--) {
+                    if (start.x < end.x) { // fix large xSlope causing whiskers
+                        if (x > end.x) x = end.x;
+                    } else {
+                        if (x < end.x) x = end.x;
+                    }
                     edgeList.setRightX(y, x);
                     x -= xSlope;
                     edgeList.setRightZ(y, z);
@@ -279,6 +289,13 @@ public class Pipeline {
                     edgeList.setRightColor(y, color);
                     color = color.minus(colorSlope).wrapColor();
                 }
+            } else { // equal
+                // edge is a horizontal line
+                int y = Math.round(start.y);
+                edgeList.setLeftX(y, start.x);
+                edgeList.setLeftZ(y, start.z);
+                edgeList.setRightX(y, end.x);
+                edgeList.setRightZ(y, end.z);
             }
         }
         return edgeList;
