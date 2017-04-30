@@ -6,15 +6,11 @@
 
 
 IMPORTANT NOTES:
-- Unzip the passworded a2 zip with the password '123' (without quotes)
-  - This is needed because the submission system corrupts my jar. The
-    password prevents this from happening.
-  - You can run the program inside the zip with `java -jar submit/a3.jar`
 
-- I used the dependency injection framework called Google Guice
-- The java code can be found inside the full-project zip
-    - The renderer java is under src/renderer/java
-    - The test java is under src/test/java
+- Run the a3.jar file to run the program
+- The full java code can be found inside the full-project zip
+    - The renderer java is under src/main/java/
+    - The test java is under src/test/java/
 
 
 
@@ -32,12 +28,12 @@ Stage 1 out of 55:
  * [x] (10) Finds the edge lists of polygons.
  * [x] (10) Renders the image to an array of colours using a Z-buffer.
  * [x] (5) Displays the array of colours.
- * [ ] (5) A report that describes what the code does/doesn't do, any bugs, and how it was tested.
+ * [x] (5) A report that describes what the code does/doesn't do, any bugs, and how it was tested.
 
 Stage 2 out of 15 (up to 70):
  * [x] (10) The renderer works correctly; No glitches or holes, the ambient light level is correctly used, and the light source is correctly used.
  * [x] (4) Code is clean and readable.
- * [ ] (1) Report is informative and clear.
+ * [x] (1) Report is informative and clear.
 
 Stage 3 out of 15 (up to 85):
  * [x] (15) The user can navigate the render, i.e. change the viewing direction.
@@ -45,6 +41,22 @@ Stage 3 out of 15 (up to 85):
  	- Polygons are translated and scaled to fit in the window.
 
 Stage 4 out of 15 (up to 100, with 5 spare marks):
- * [x] (10) Allows multiple light sources to be added (and possibly modified) dynamically.
- * [ ] (10) Gouraud shading is used to make smooth, curved surfaces. Alternatively, Phong shading is used for an over-the-top answer.
+ * [ ] (10) Allows multiple light sources to be added (and possibly modified) dynamically.
+ * [x] (10) Gouraud shading is used to make smooth, curved surfaces. Alternatively, Phong shading is used for an over-the-top answer.
 
+## How I tested ##
+
+I got all of the stuff up to stage 4 working by doing the tasks incrementally,
+and making sure each test passed. (I made sure to do the easy tasks first to
+allow for time to learn about the project and to understand 3D graphics, so
+that the hard tasks would be easier). After the rendering code was completed, I
+resorted to visual testing. Then, I made my own tests for scaling and
+implemented that. Then for the Gouraud shading I just tested it visually,
+barely made any unit tests for it, and just implemented it manually. I also
+didn't bother to update the tests with the Gourand shading.
+
+## Bugs ##
+
+There is a slight rounding error with interpolation causing there to be some
+minor gaps in between shapes (eg in the ball.txt) but I emailed Yi about it and
+he said we won't be marked down on it.
