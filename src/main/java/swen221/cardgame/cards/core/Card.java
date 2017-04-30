@@ -36,7 +36,7 @@ public class Card implements Comparable<Card> {
 		KING,
 		ACE;
 	}
-	
+
 	// =======================================================
 	// Card stuff
 	// =======================================================
@@ -86,7 +86,30 @@ public class Card implements Comparable<Card> {
 
 	@Override
 	public int compareTo(Card o) {
-		// TODO: you need to implement this!
+		if (suit.ordinal() < o.suit.ordinal()) return -1;
+		if (suit.ordinal() > o.suit.ordinal()) return 1;
+
+		if (rank.ordinal() < o.rank.ordinal()) return -1;
+		if (rank.ordinal() > o.rank.ordinal()) return 1;
+
 		return 0;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Card card = (Card) o;
+
+		if (suit != card.suit) return false;
+		return rank == card.rank;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = suit != null ? suit.hashCode() : 0;
+		result = 31 * result + (rank != null ? rank.hashCode() : 0);
+		return result;
 	}
 }
