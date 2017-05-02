@@ -8,7 +8,7 @@ package swen221.cardgame.cards.core;
  * @author David J. Pearce
  * 
  */
-public class Player {
+public class Player implements Cloneable {
 	
 	/**
 	 * Represents one of the four position on the table (North, East, South and
@@ -38,7 +38,7 @@ public class Player {
 	}
 
 	public final Direction direction;
-	public final Hand hand;
+	private Hand hand;
 	
 	public Player(Direction direction) {
 		this.direction = direction;
@@ -61,5 +61,17 @@ public class Player {
 	 */
 	public Hand getHand() {
 		return hand;
+	}
+
+	@Override
+	public Player clone() {
+		try {
+			Player clone = (Player) super.clone();
+			clone.hand = hand.clone();
+			return clone;
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

@@ -1,6 +1,7 @@
 package swen221.cardgame.cards.core;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  * @author David J. Pearce
  * 
  */
-public class Trick {
+public class Trick implements Cloneable {
 	private Card[] cards = new Card[4];
 	private Player.Direction lead;
 	private Card.Suit trumps;
@@ -131,15 +132,50 @@ public class Trick {
 	 * these are not true, it throws an IllegalMove exception.
 	 */
 	public void play(Player p, Card c) throws IllegalMove {
-		// FIXME: we need to checks here for attempts to make illegal moves.
-		
-		// Finally, play the card.
-		for (int i = 0; i != 4; ++i) {
-			if (cards[i] == null) {
-				cards[i] = c;
-				p.getHand().remove(c);
+		int nextCardIndex;
+		for (nextCardIndex = 0; true; ++nextCardIndex) {
+			if (nextCardIndex >= 4) throw new IllegalMove("All slots filled");
+			if (cards[nextCardIndex] == null) {
 				break;
 			}
+		}
+
+		if (Arrays.stream(cards).anyMatch(c::equals))
+			throw new IllegalMove("Card already played");
+
+		if (!getNextToPlay().equals(p.direction))
+			throw new IllegalMove("Not your turn");
+
+		if (!p.getHand().contains(c))
+			throw new IllegalMove("Card is not in your hand");
+
+		if (nextCardIndex > 0) {
+			Card firstCard = cards[0];
+			boolean canPlayFirstSuit = p.getHand()
+					.matches(firstCard.suit())
+					.size() > 0;
+			if (canPlayFirstSuit) {
+				if (!c.suit().equals(firstCard.suit()))
+					throw new IllegalMove("You must play a card with the same" +
+							"suit as the first card in the trick, if you have" +
+							"such a card");
+			}
+		}
+
+		// Finally, play the card.
+		cards[nextCardIndex] = c;
+		p.getHand().remove(c);
+	}
+
+	@Override
+	public Trick clone() {
+		try {
+			Trick clone = (Trick) super.clone();
+			clone.cards = cards.clone();
+			return clone;
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 }

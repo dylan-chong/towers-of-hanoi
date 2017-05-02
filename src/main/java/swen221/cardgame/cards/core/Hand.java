@@ -1,6 +1,7 @@
 package swen221.cardgame.cards.core;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Represents a hand of cards held by a player. As the current round proceeds,
@@ -72,5 +73,14 @@ public class Hand implements Cloneable, Iterable<Card> {
 	 */
 	public void clear() {
 		cards.clear();
-	}	
+	}
+
+	@Override
+	public Hand clone() throws CloneNotSupportedException {
+		Hand clone = (Hand) super.clone();
+		clone.cards = new TreeSet<>(cards.stream()
+				.map(Card::clone)
+				.collect(Collectors.toSet()));
+		return clone;
+	}
 }

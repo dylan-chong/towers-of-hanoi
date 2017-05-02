@@ -1,15 +1,10 @@
 package swen221.cardgame.cards.variations;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import swen221.cardgame.cards.core.Card;
-import swen221.cardgame.cards.core.IllegalMove;
 import swen221.cardgame.cards.core.Player;
-import swen221.cardgame.cards.core.Trick;
-import swen221.cardgame.cards.core.Player.Direction;
 import swen221.cardgame.cards.util.AbstractCardGame;
+
+import java.util.List;
 
 public class KnockOutWhist extends AbstractCardGame {
 	private int hand = 13;

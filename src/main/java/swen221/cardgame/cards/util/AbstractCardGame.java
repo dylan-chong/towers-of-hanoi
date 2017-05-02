@@ -1,9 +1,10 @@
 package swen221.cardgame.cards.util;
 
-import java.util.*;
-
 import swen221.cardgame.cards.core.*;
 import swen221.cardgame.cards.core.Player.Direction;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Represents an abstract whist-like card game. This provides a common
@@ -15,24 +16,24 @@ import swen221.cardgame.cards.core.Player.Direction;
  * 
  */
 public abstract class AbstractCardGame implements CardGame {
-	
+
 	/**
 	 * A map of positions around the table to the players in the game.
 	 */
-	protected final Map<Player.Direction, Player> players = new HashMap<Player.Direction,Player>();
+	protected Map<Player.Direction, Player> players = new HashMap<Player.Direction,Player>();
 	
 	/**
 	 * Keeps track of the number of tricks each player has won in the current
 	 * round.
 	 */
-	protected final Map<Player.Direction,Integer> tricks = new HashMap<Player.Direction,Integer>();
+	protected Map<Player.Direction,Integer> tricks = new HashMap<Player.Direction,Integer>();
 	
 	/**
 	 * Keeps track of the player scores. In some games, this may equal the number
 	 * of tricks. In others, this may include certain bonuses that were
 	 * obtained.
 	 */
-	protected final Map<Player.Direction,Integer> scores = new HashMap<Player.Direction,Integer>();
+	protected Map<Player.Direction,Integer> scores = new HashMap<Player.Direction,Integer>();
 
 	/**
 	 * Keep track of which suit is currently trumps. Here, "null" may be used to
@@ -63,10 +64,30 @@ public abstract class AbstractCardGame implements CardGame {
 		// Part 3 of the assignment, you need to reimplement this to perform a
 		// deep clone.
 		try {
-			return (CardGame) super.clone();
-		} catch(CloneNotSupportedException e) {
+			AbstractCardGame clone = (AbstractCardGame) super.clone();
+			// Duplicate mutable things (using deep copy where necessary)
+			// I had to make the maps non-final to be able to properly
+			// duplicate mutable things properly. I can see why clone is
+			// rather annoying (it would to be more annoying to maintain
+			// this code because the compiler doesn't tell you off for not
+			// making a copy of the fields)
+			clone.players = players.entrySet()
+					.stream()
+					.collect(Collectors.toMap(
+							Map.Entry::getKey, // direction
+							entry -> entry.getValue().clone() // deep copy player
+					));
+			clone.tricks = new HashMap<>(tricks);
+			clone.tricks = new HashMap<>(tricks);
+			if (currentTrick != null) clone.currentTrick = currentTrick.clone();
+			return clone;
+		} catch (CloneNotSupportedException e) {
 			return null; // dead code
 		}
+
+		// // Haha can I do this? It's so much quicker to write!
+		// Gson gson = new Gson();
+		// return gson.fromJson(gson.toJson(this), getClass());
 	}
 	
 	// ========================================================

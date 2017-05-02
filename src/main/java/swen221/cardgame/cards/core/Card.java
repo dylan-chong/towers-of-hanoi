@@ -1,6 +1,6 @@
 package swen221.cardgame.cards.core;
 
-public class Card implements Comparable<Card> {
+public class Card implements Comparable<Card>, Cloneable {
 	
 	/**
 	 * Represents a card suit.
@@ -111,5 +111,15 @@ public class Card implements Comparable<Card> {
 		int result = suit != null ? suit.hashCode() : 0;
 		result = 31 * result + (rank != null ? rank.hashCode() : 0);
 		return result;
+	}
+
+	@Override
+	public Card clone() {
+		try {
+			return (Card) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
