@@ -1,5 +1,7 @@
 package swen221.cardgame.cards.core;
 
+import java.util.Comparator;
+
 public class Card implements Comparable<Card>, Cloneable {
 	
 	/**
@@ -86,13 +88,7 @@ public class Card implements Comparable<Card>, Cloneable {
 
 	@Override
 	public int compareTo(Card o) {
-		if (suit.ordinal() < o.suit.ordinal()) return -1;
-		if (suit.ordinal() > o.suit.ordinal()) return 1;
-
-		if (rank.ordinal() < o.rank.ordinal()) return -1;
-		if (rank.ordinal() > o.rank.ordinal()) return 1;
-
-		return 0;
+		return new SuitFirstComparator().compare(this, o);
 	}
 
 	@Override
@@ -120,6 +116,38 @@ public class Card implements Comparable<Card>, Cloneable {
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+
+	/**
+	 * Prioritises suit
+	 */
+	public static class SuitFirstComparator implements Comparator<Card> {
+		@Override
+		public int compare(Card o1, Card o2) {
+			if (o1.suit.ordinal() < o2.suit.ordinal()) return -1;
+			if (o1.suit.ordinal() > o2.suit.ordinal()) return 1;
+
+			if (o1.rank.ordinal() < o2.rank.ordinal()) return -1;
+			if (o1.rank.ordinal() > o2.rank.ordinal()) return 1;
+
+			return 0;
+		}
+	}
+
+	/**
+	 * Prioritises rank
+	 */
+	public static class RankFirstComparator implements Comparator<Card> {
+		@Override
+		public int compare(Card o1, Card o2) {
+			if (o1.rank.ordinal() < o2.rank.ordinal()) return -1;
+			if (o1.rank.ordinal() > o2.rank.ordinal()) return 1;
+
+			if (o1.suit.ordinal() < o2.suit.ordinal()) return -1;
+			if (o1.suit.ordinal() > o2.suit.ordinal()) return 1;
+
+			return 0;
 		}
 	}
 }

@@ -1,6 +1,7 @@
 package swen221.cardgame.cards.core;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -43,7 +44,17 @@ public class Hand implements Cloneable, Iterable<Card> {
 		}
 		return r;
 	}
-	
+
+	public Set<Card> matches(Predicate<Card> matcher) {
+		return cards.stream()
+				.filter(matcher)
+				.collect(Collectors.toSet());
+	}
+
+	public Set<Card> getCards() {
+		return new HashSet<>(cards);
+	}
+
 	
 	/**
 	 * Add a card to the hand.

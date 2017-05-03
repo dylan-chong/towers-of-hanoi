@@ -1,19 +1,17 @@
 package swen221.cardgame.cards.tests;
 
-import static org.junit.Assert.fail;
-import static swen221.cardgame.cards.core.Card.Rank.*;
-import static swen221.cardgame.cards.core.Card.Suit.*;
-
+import org.junit.FixMethodOrder;
+import org.junit.Test;
 import org.junit.runners.MethodSorters;
-
 import swen221.cardgame.cards.core.Card;
 import swen221.cardgame.cards.core.IllegalMove;
 import swen221.cardgame.cards.core.Player;
 import swen221.cardgame.cards.core.Trick;
 import swen221.cardgame.cards.util.SimpleComputerPlayer;
 
-import org.junit.FixMethodOrder;
-import org.junit.Test;
+import static org.junit.Assert.fail;
+import static swen221.cardgame.cards.core.Card.Rank.*;
+import static swen221.cardgame.cards.core.Card.Suit.*;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class Part4 {

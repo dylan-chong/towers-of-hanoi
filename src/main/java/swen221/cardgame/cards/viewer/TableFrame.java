@@ -1,5 +1,15 @@
 package swen221.cardgame.cards.viewer;
 
+import swen221.cardgame.cards.core.Card;
+import swen221.cardgame.cards.core.CardGame;
+import swen221.cardgame.cards.core.IllegalMove;
+import swen221.cardgame.cards.core.Player;
+import swen221.cardgame.cards.util.AbstractCardGame;
+import swen221.cardgame.cards.util.AbstractComputerPlayer;
+import swen221.cardgame.cards.util.SimpleComputerPlayer;
+import swen221.cardgame.cards.variations.ClassicWhist;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,14 +17,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import javax.swing.*;
-
-import swen221.cardgame.cards.core.*;
-import swen221.cardgame.cards.util.AbstractCardGame;
-import swen221.cardgame.cards.util.AbstractComputerPlayer;
-import swen221.cardgame.cards.util.SimpleComputerPlayer;
-import swen221.cardgame.cards.variations.*;
 
 /**
  * A Table Frame constructs the window that is the "card table".
@@ -222,13 +224,22 @@ public final class TableFrame extends JFrame {
 		} else {
 			// this indicates we're waiting for a computer player to play.
 			Player.Direction nextPlayer = game.getTrick().getNextToPlay();
+			AbstractComputerPlayer computerPlayer = computerPlayers.get(nextPlayer);
+			Card nextCard = null;
 			try {
-				AbstractComputerPlayer computerPlayer = computerPlayers.get(nextPlayer);
 				if (computerPlayer != null) {
-					playedEvent(nextPlayer,computerPlayer.getNextCard(game.getTrick()));
+					nextCard = computerPlayer.getNextCard(game.getTrick());
+					playedEvent(nextPlayer, nextCard);
 				}
 			} catch (IllegalMove e) {
-				throw new RuntimeException("Computer player is cheating!", e);
+				// throw new RuntimeException("Computer player is cheating!", e);
+				try {
+					System.out.println(nextCard);
+					nextCard = computerPlayer.getNextCard(game.getTrick());
+                    playedEvent(nextPlayer, nextCard);
+                } catch (IllegalMove illegalMove) {
+                    illegalMove.printStackTrace();
+                }
 			}
 		}
 	}
