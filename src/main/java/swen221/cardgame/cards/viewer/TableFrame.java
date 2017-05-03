@@ -225,21 +225,13 @@ public final class TableFrame extends JFrame {
 			// this indicates we're waiting for a computer player to play.
 			Player.Direction nextPlayer = game.getTrick().getNextToPlay();
 			AbstractComputerPlayer computerPlayer = computerPlayers.get(nextPlayer);
-			Card nextCard = null;
 			try {
 				if (computerPlayer != null) {
-					nextCard = computerPlayer.getNextCard(game.getTrick());
+					Card nextCard = computerPlayer.getNextCard(game.getTrick());
 					playedEvent(nextPlayer, nextCard);
 				}
 			} catch (IllegalMove e) {
-				// throw new RuntimeException("Computer player is cheating!", e);
-				try {
-					System.out.println(nextCard);
-					nextCard = computerPlayer.getNextCard(game.getTrick());
-                    playedEvent(nextPlayer, nextCard);
-                } catch (IllegalMove illegalMove) {
-                    illegalMove.printStackTrace();
-                }
+				throw new RuntimeException("Computer player is cheating!", e);
 			}
 		}
 	}
