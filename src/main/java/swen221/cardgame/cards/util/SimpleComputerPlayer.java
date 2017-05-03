@@ -29,6 +29,7 @@ public class SimpleComputerPlayer extends AbstractComputerPlayer {
 		Set<Card> cards = player.getHand().getCards();
 		Set<Card> trumpCards = player.getHand().matches(trick.getTrumps());
 		Comparator<Card> rankFirstComparator = new Card.RankFirstComparator();
+		boolean isLastTurn = playedCards.size() == 3;
 
 		if (playedCards.isEmpty()) {
 			if (!trumpCards.isEmpty()) {
@@ -65,8 +66,8 @@ public class SimpleComputerPlayer extends AbstractComputerPlayer {
 			}
 			if (!canWin) return Collections.min(leadSuitCards);
 
-			if (playedCards.size() == 3) {
-				// This is the last turn. We must win!
+			if (isLastTurn) {
+				// We know we can win. Choose worst winning card
 				return Collections.min(winnableLeadSuitCards);
 			} else {
 				// We might or might not win. Play best card
@@ -74,25 +75,28 @@ public class SimpleComputerPlayer extends AbstractComputerPlayer {
 			}
 		}
 
-		Set<Card> winnableTrumpCards = trumpCards.stream()
-				.filter(card -> {
-					if (bestPlayedTrumpCard == null) {
-						// All our trump cards can win (no trumps played yet)
-						return true;
-					}
-					return card.compareTo(bestPlayedTrumpCard) > 0;
-				})
-				.collect(Collectors.toSet());
+		// We don't have a leading suit card, we should play a trump card to win
+		// if possible
+
+		Set<Card> winnableTrumpCards;
+		if (bestPlayedTrumpCard == null) {
+			// All our trump cards can win (no trumps played yet)
+			winnableTrumpCards = trumpCards;
+		} else {
+			winnableTrumpCards = trumpCards.stream()
+					.filter(card -> card.compareTo(bestPlayedTrumpCard) > 0)
+					.collect(Collectors.toSet());
+		}
 
 		// Play a trump card if we have one that can/will win
 		if (!trumpCards.isEmpty()) {
 			boolean canWin = !winnableTrumpCards.isEmpty();
 			if (canWin) {
-				if (playedCards.size() == 3) {
-					// This is the last turn. We must win!
+				if (isLastTurn) {
+					// We know we can win. Choose worst winning card
 					return Collections.min(winnableTrumpCards);
 				} else {
-					// Not the last turn. We might win if we play our best card.
+					// We might win if we play our best card.
 					return Collections.max(winnableTrumpCards);
 				}
 			}
