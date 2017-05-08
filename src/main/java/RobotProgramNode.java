@@ -4,5 +4,5 @@
  */
 
 interface RobotProgramNode {
-    public void execute(Robot robot);
+    void execute(Robot robot);
 }

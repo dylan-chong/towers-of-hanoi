@@ -15,24 +15,19 @@ public class Parser {
      * Top level parse method, called by the World
      */
     static RobotProgramNode parseFile(File code) {
-        Scanner scan = null;
-        try {
-            scan = new Scanner(code);
-
+        try (Scanner scan = new Scanner(code)) {
             // the only time tokens can be next to each other is
             // when one of them is one of (){},;
             scan.useDelimiter("\\s+|(?=[{}(),;])|(?<=[{}(),;])");
 
             RobotProgramNode n = parseProgram(scan); // You need to implement this!!!
 
-            scan.close();
             return n;
         } catch (FileNotFoundException e) {
             System.out.println("Robot program source file not found");
         } catch (ParserFailureException e) {
             System.out.println("Parser error:");
             System.out.println(e.getMessage());
-            scan.close();
         }
         return null;
     }
@@ -75,14 +70,6 @@ public class Parser {
         }
         System.out.println("Done");
     }
-
-    // Useful Patterns
-
-    static Pattern NUMPAT = Pattern.compile("-?\\d+"); // ("-?(0|[1-9][0-9]*)");
-    static Pattern OPENPAREN = Pattern.compile("\\(");
-    static Pattern CLOSEPAREN = Pattern.compile("\\)");
-    static Pattern OPENBRACE = Pattern.compile("\\{");
-    static Pattern CLOSEBRACE = Pattern.compile("\\}");
 
     /**
      * PROG ::= STMT+
