@@ -16,15 +16,15 @@ dependencies {
 //    compile group: 'com.google.inject', name: 'guice', version: '4.1.0'
 //    compile group: 'com.google.inject.extensions',
 //            name: 'guice-assistedinject', version: '4.1.0'
-    compile group: 'com.google.code.gson', name: 'gson', version: '1.7.1'
+    // compile group: 'com.google.code.gson', name: 'gson', version: '1.7.1'
 
     // Required dependencies for assignments
     compile fileTree(dir: 'lib', include: ['*.jar'])
-    compile group: 'junit', name: 'junit', version: '4.11'
+    // compile group: 'junit', name: 'junit', version: '4.11'
 
     // Normal test compile dependencies
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-    testCompile group: 'info.cukes', name: 'cucumber-java', version: '1.2.5'
+    // testCompile group: 'junit', name: 'junit', version: '4.11'
+    // testCompile group: 'info.cukes', name: 'cucumber-java', version: '1.2.5'
 }
 
 // Cucumber test
