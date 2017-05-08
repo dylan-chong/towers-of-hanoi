@@ -39,7 +39,7 @@ public class Game {
 	private Rule[] rules = {
 			new CaptureRule(),
 			new ColumnWinRule(),
-			new ColumnWinRule(),
+			new RowWinRule(),
 			new StaleMateRule()
 	};
 
@@ -124,7 +124,7 @@ public class Game {
 	 *
 	 * @return
 	 */
-	private boolean isWhitesTurn() {
+	public boolean isWhitesTurn() {
 		return (moves%16) == 0;
 	}
 
@@ -133,7 +133,7 @@ public class Game {
 	 *
 	 * @return
 	 */
-	private boolean isBlacksTurn() {
+	public boolean isBlacksTurn() {
 		return (moves%16) == 1;
 	}
 

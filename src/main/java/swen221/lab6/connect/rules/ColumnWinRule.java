@@ -27,7 +27,7 @@ public class ColumnWinRule implements Rule {
 				return r;
 			}
 		}
-		return Status.ONGOING;
+		return g.getStatus();
 	}
 
 	/**

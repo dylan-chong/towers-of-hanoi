@@ -65,7 +65,7 @@ public class Board implements Cloneable {
 		}
 		return b;
 	}
-	
+
 	/**
 	 * Construct human-readable string representation of the board.
 	 */

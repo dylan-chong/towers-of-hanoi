@@ -74,10 +74,10 @@ public class CaptureRule implements Rule {
 	private boolean isCaptured(Board original, Board.Token token, int x, int y) {
 		boolean r = false;
 
-		r &= isHorizontalLongCapture(original, token, x, y);
-		r &= isHorizontalShortCapture(original, token, x, y);
-		r &= isVerticalLongCapture(original, token, x, y);
-		r &= isVerticalShortCapture(original, token, x, y);
+		r |= isHorizontalLongCapture(original, token, x, y);
+		r |= isHorizontalShortCapture(original, token, x, y);
+		r |= isVerticalLongCapture(original, token, x, y);
+		r |= isVerticalShortCapture(original, token, x, y);
 
 		return r;
 	}
@@ -131,13 +131,12 @@ public class CaptureRule implements Rule {
 	 * @return
 	 */
 	private boolean isHorizontalShortCapture(Board original, Board.Token token, int x, int y) {
-		if (x != 1 && x != 2) {
-			Position left = new Position(x - 1, y);
-			Position right = new Position(x + 1, y);
-			Board.Token opp = getOpposite(token);
-			return original.getSquare(left) == opp && original.getSquare(right) == opp;
-		}
-		return false;
+		if (x == 0 || x == 3) return false; // edge
+
+		Position left = new Position(x - 1, y);
+		Position right = new Position(x + 1, y);
+		Board.Token opp = getOpposite(token);
+		return original.getSquare(left) == opp && original.getSquare(right) == opp;
 	}
 
 	/**

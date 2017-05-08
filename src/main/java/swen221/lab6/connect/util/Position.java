@@ -7,6 +7,9 @@ package swen221.lab6.connect.util;
  *
  */
 public final class Position {
+	public static final String INVALID_X_COMPONENT = "Invalid X component: ";
+	public static final String INVALID_Y_COMPONENT = "Invalid Y component: ";
+
 	private final int x;
 	private final int y;
 
@@ -18,10 +21,10 @@ public final class Position {
 	 */
 	public Position(int x, int y) {
 		if(x < 0 || x >= 4) {
-			throw new IllegalArgumentException("Invalid X component: " + x);
+			throw new IllegalArgumentException(INVALID_X_COMPONENT + x);
 		}
-		if(x < 0 || x >= 4) {
-			throw new IllegalArgumentException("Invalid Y component: " + y);
+		if(y < 0 || y >= 4) {
+			throw new IllegalArgumentException(INVALID_Y_COMPONENT + y);
 		}
 		this.x = x;
 		this.y = y;

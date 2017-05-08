@@ -27,7 +27,7 @@ public class RowWinRule implements Rule {
 				return r;
 			}
 		}
-		return Status.ONGOING;
+		return g.getStatus();
 	}
 	
 	/**
@@ -35,27 +35,27 @@ public class RowWinRule implements Rule {
 	 * a winner.
 	 * 
 	 * @param b
-	 * @param x
+	 * @param y
 	 * @return
 	 */
 	private Game.Status checkRow(Board b, int y) {
 		Board.Token first = b.getSquare(new Position(0, y));
-		if (first != null) {
-			// There is a token in the first column. Now, all remaining tokens
-			// must match this one to have a winner.
-			for (int x = 1; x < 4; ++x) {
-				Board.Token t = b.getSquare(new Position(x, y));
-				if (t != first) {
-					return null;
-				}
-			}
-			// We found a winner!
-			if (first == Board.Token.WHITE) {
-				return Status.WHITEWON;
-			} else {
-				return Status.BLACKWON;
-			}
-		}
-		return null;
+		//noinspection Duplicates
+		if (first == null) return null;
+
+		// There is a token in the first column. Now, all remaining tokens
+		// must match this one to have a winner.
+		for (int x = 1; x < 4; ++x) {
+            Board.Token t = b.getSquare(new Position(x, y));
+            if (t != first) {
+                return null;
+            }
+        }
+		// We found a winner!
+		if (first == Board.Token.WHITE) {
+            return Status.WHITEWON;
+        } else {
+            return Status.BLACKWON;
+        }
 	}
 }
