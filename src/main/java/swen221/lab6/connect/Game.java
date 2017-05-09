@@ -1,7 +1,11 @@
 package swen221.lab6.connect;
 
-import swen221.lab6.connect.core.*;
-import swen221.lab6.connect.rules.*;
+import swen221.lab6.connect.core.Board;
+import swen221.lab6.connect.core.Rule;
+import swen221.lab6.connect.rules.CaptureRule;
+import swen221.lab6.connect.rules.ColumnWinRule;
+import swen221.lab6.connect.rules.RowWinRule;
+import swen221.lab6.connect.rules.StaleMateRule;
 import swen221.lab6.connect.util.Position;
 
 /**
@@ -125,7 +129,7 @@ public class Game {
 	 * @return
 	 */
 	public boolean isWhitesTurn() {
-		return (moves%16) == 0;
+		return (moves%2) == 0;
 	}
 
 	/**
@@ -134,7 +138,7 @@ public class Game {
 	 * @return
 	 */
 	public boolean isBlacksTurn() {
-		return (moves%16) == 1;
+		return (moves%2) == 1;
 	}
 
 	/**
@@ -150,12 +154,12 @@ public class Game {
 			// After 1 move, white has moved once.
 			// After 3 moves, white has moved twice.
 			// ..
-			return (moves+1) / 2;
+			return 8 - ((moves+1) / 2);
 		} else {
 			// After 2 moves, black has moved once
 			// after 4 moves, black has moved twice
 			// ..
-			return moves / 2;
+			return 8 - (moves / 2);
 		}
 	}
 }

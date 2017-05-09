@@ -2,6 +2,7 @@ package swen221.lab6.connect.rules;
 
 import swen221.lab6.connect.Game;
 import swen221.lab6.connect.Game.Status;
+import swen221.lab6.connect.core.Board;
 import swen221.lab6.connect.core.Rule;
 import swen221.lab6.connect.util.Position;
 
@@ -15,6 +16,11 @@ public class StaleMateRule implements Rule {
 
 	@Override
 	public Status apply(Game g) {
+		if (g.isWhitesTurn()) {
+			if (g.tokensLeft(Board.Token.WHITE) == 0) return Status.STALEMATE;
+		} else {
+			if (g.tokensLeft(Board.Token.BLACK) == 0) return Status.STALEMATE;
+		}
 		// Here, we need to check how many tokens have been played so far. Since
 		// each player starts with exactly eight tokens, there can be at most
 		// eight tokens played by each player. After that point, we have reached
