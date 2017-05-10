@@ -13,6 +13,11 @@ public enum ParserFailureType {
     /**
      * Failure in the middle or end of a node parse
      */
-    SYNTAX_ERROR,
-    NUMBER_FORMAT
+    WRONG_MIDDLE_OR_END_OF_NODE,
+    NUMBER_FORMAT,
+    /**
+     * When there is 0 or more than 1 possible match when trying to pick
+     * what sort of node (or action) to use
+     */
+    NON_ONE_MATCHES;
 }

@@ -8,7 +8,6 @@
 IMPORTANT NOTES:
 
 - The a4.jar file is there to run the program (for convenience)
-- 
 - The full java code can be found inside the full-project zip
     - The java code is under src/main/java/
 

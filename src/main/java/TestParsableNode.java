@@ -12,6 +12,10 @@ import static org.junit.Assert.fail;
  */
 public class TestParsableNode {
 
+    /*
+     ************************* Number *************************
+     */
+
     @Test
     public void parseNumber_withPositiveInteger_evaluatesToSameNumber() {
         testParseNumber("3", "3");
@@ -40,12 +44,20 @@ public class TestParsableNode {
     @Test
     public void parseNumber_withSpaceAfterMinus_fails() {
         try {
-            testParseNumber("- 9", "We don't need an expected value for a fail");
+            testParseNumber("- 9", null);
             fail();
         } catch (ParserFailureException exception) {
             assertEquals(exception.getType(), ParserFailureType.NUMBER_FORMAT);
         }
     }
+
+    private void testParseNumber(String input, String expectedToStringValue) {
+        testParseNode(input, expectedToStringValue, NumberNode::new);
+    }
+
+    /*
+     ************************* Add *************************
+     */
 
     @Test
     public void parseAdd_withAdd1And2NoSpaces_parsesCorrectly() {
@@ -70,14 +82,46 @@ public class TestParsableNode {
     }
 
 
-    private void testParseNumber(String input,
-                                 String expectedToStringValue) {
-        testParseNode(input, expectedToStringValue, Nodes.NumberNode::new);
+    private void testParseAdd(String input, String expectedToStringValue) {
+        testParseNode(input, expectedToStringValue, NumberNode.AddNode::new);
     }
 
-    private void testParseAdd(String input,
-                              String expectedToStringValue) {
-        testParseNode(input, expectedToStringValue, Nodes.AddNode::new);
+    /*
+     ************************* Action *************************
+     */
+
+    @Test
+    public void parseAction_turnL_actionIsRecognised() {
+        testParseAction("turnL;", "turnL;");
+    }
+
+    @Test
+    public void parseAction_turnR_actionIsRecognised() {
+        testParseAction("turnR;", "turnR;");
+    }
+
+    @Test
+    public void parseAction_unknownAction_error() {
+        try {
+            testParseAction("someUnknownAction;", null);
+            fail();
+        } catch (ParserFailureException exception) {
+            assertEquals(exception.getType(), ParserFailureType.NON_ONE_MATCHES);
+        }
+    }
+
+    @Test
+    public void parseAction_noSemicolon_error() {
+        try {
+            testParseAction("turnL", null);
+            fail();
+        } catch (ParserFailureException exception) {
+            assertEquals(exception.getType(), ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE);
+        }
+    }
+
+    private void testParseAction(String input, String expectedToStringValue) {
+        testParseNode(input, expectedToStringValue, StatementNode.ActionNode::new);
     }
 
     private void testParseNode(String input,

@@ -11,7 +11,7 @@ public abstract class ParsableNode<EvalT> implements RobotProgramNode {
     /**
      * Chars to be put into a string regex character set
      */
-    private static final String SPECIAL_CHARS = "(),";
+    private static final String SPECIAL_CHARS = "(){},;";
     private static final Pattern DEFAULT_DELIMITER = Pattern.compile(
             "\\s+|(?=[" + SPECIAL_CHARS + "])|(?<=[" + SPECIAL_CHARS + "])"
     );
@@ -75,5 +75,23 @@ public abstract class ParsableNode<EvalT> implements RobotProgramNode {
         msg.append("'");
 
         throw new ParserFailureException(msg.toString(), type);
+    }
+
+    /**
+     * Every {@link ParsableNode} should have a static factory class
+     *
+     * @param <NodeT> The type of node to produce
+     */
+    public interface Factory<NodeT extends ParsableNode<?>> {
+        /**
+         * Create a new {@link ParsableNode}
+         */
+        NodeT create();
+
+        /**
+         * @param scanner Scanner to call hasNext(pattern) on. Do not modify
+         *                the scanner
+         */
+        boolean canStartWith(Scanner scanner);
     }
 }
