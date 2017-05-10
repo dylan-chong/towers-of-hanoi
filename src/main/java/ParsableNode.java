@@ -15,6 +15,7 @@ public abstract class ParsableNode<EvalT> implements RobotProgramNode {
     private static final Pattern DEFAULT_DELIMITER = Pattern.compile(
             "\\s+|(?=[" + SPECIAL_CHARS + "])|(?<=[" + SPECIAL_CHARS + "])"
     );
+    private static final int ERROR_MAX_EXTRA_CHARS = 15;
 
     private boolean hasParsed = false;
 
@@ -66,13 +67,33 @@ public abstract class ParsableNode<EvalT> implements RobotProgramNode {
                              Scanner scanner,
                              ParserFailureType type) {
         if (scanner.hasNext(pattern)) return scanner.next();
+        throwParseError("\nExpected: " + pattern, scanner, type);
+        return null;
+    }
 
-        StringBuilder msg = new StringBuilder("\nExpected: '" + pattern + "'\n" +
-                "But Got: '");
-        if (scanner.hasNext()) msg.append(scanner.next());
-        else msg.append(" {END OF INPUT}");
+    protected void throwParseError(String startOfMessage,
+                                   Scanner scanner,
+                                   ParserFailureType type) {
+        StringBuilder msg = new StringBuilder(startOfMessage);
+        msg.append("\nBut Got: ");
 
-        msg.append("'");
+        if (scanner.hasNext()) {
+            // Using original delimiter
+            msg.append("'");
+            msg.append(scanner.next());
+            msg.append("'");
+        }
+
+        // Print next chars
+        scanner.useDelimiter("(?=.)|(?<=.)"); // one char at a time
+        if (scanner.hasNext()) {
+            msg.append("\nMore next input: '");
+            for (int i = 0; i < ERROR_MAX_EXTRA_CHARS && scanner.hasNext(); i++) {
+                msg.append(scanner.next());
+            }
+            msg.append("'");
+        }
+        if (!scanner.hasNext()) msg.append(" {END OF INPUT}");
 
         throw new ParserFailureException(msg.toString(), type);
     }

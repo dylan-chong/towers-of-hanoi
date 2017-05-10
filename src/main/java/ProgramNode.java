@@ -24,11 +24,12 @@ public class ProgramNode extends ParsableNode<Void> {
                 .stream()
                 .filter(factory -> factory.canStartWith(scanner))
                 .collect(Collectors.toList());
-        if (validFactories.size() != 1) throw new ParserFailureException(
+        if (validFactories.size() != 1) throwParseError(
                 String.format("Invalid number of valid factories (%d): %s",
                         validFactories.size(),
                         validFactories
                 ),
+                scanner,
                 ParserFailureType.NON_ONE_MATCHES
         );
     }

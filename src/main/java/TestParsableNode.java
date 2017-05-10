@@ -74,14 +74,6 @@ public class TestParsableNode {
         testParseAdd("  add  (  10  ,  -2  )  ", "add(10,-2)");
     }
 
-    @Test
-    public void TEMP_TEST() {
-        // TODO remove me
-        // Scanner scanner = new Scanner(new StringReader("add(1,2)"));
-        // scanner.useDelimiter("\\s+|(?=[(),])|(?<=[(),])");
-    }
-
-
     private void testParseAdd(String input, String expectedToStringValue) {
         testParseNode(input, expectedToStringValue, NumberNode.AddNode::new);
     }
@@ -132,7 +124,16 @@ public class TestParsableNode {
         node.parse(scanner);
         assertEquals(expectedToStringValue, node.toString());
     }
+
+    @Test
+    public void TEMP_TEST() {
+        // TODO remove me
+        Scanner scanner = new Scanner(new StringReader("add(1,2)"));
+        scanner.useDelimiter("(?=.)|(?<=.)");
+        while (scanner.hasNext()) {
+            System.out.println(scanner.next());
+        }
+        fail();
+    }
+
 }
-
-
-

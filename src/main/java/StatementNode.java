@@ -36,11 +36,12 @@ public abstract class StatementNode extends ParsableNode<Void> {
                     .stream()
                     .filter(entry -> scanner.hasNext(entry.getKey()))
                     .collect(Collectors.toList());
-            if (validActions.size() != 1) throw new ParserFailureException(
+            if (validActions.size() != 1) throwParseError(
                     String.format("Invalid number of valid actions (%d): %s",
                             validActions.size(),
                             validActions
                     ),
+                    scanner,
                     ParserFailureType.NON_ONE_MATCHES
             );
 
