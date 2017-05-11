@@ -125,15 +125,4 @@ public class TestParsableNode {
         assertEquals(expectedToStringValue, node.toString());
     }
 
-    @Test
-    public void TEMP_TEST() {
-        // TODO remove me
-        Scanner scanner = new Scanner(new StringReader("add(1,2)"));
-        scanner.useDelimiter("(?=.)|(?<=.)");
-        while (scanner.hasNext()) {
-            System.out.println(scanner.next());
-        }
-        fail();
-    }
-
 }

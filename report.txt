@@ -21,7 +21,7 @@ Note: a '[x]' represents a completed task it is the markdown symbol for a
 ticked tickbox
 
 Stage 0 of out 40:  LOOP and ACTION
- [ ] [15] Simple actions work.
+ [x] [15] Simple actions work.
  [ ] [15] The robot can loop through a block of multiple actions.
  [ ] [10] The parser throws errors on invalid strings.
 
