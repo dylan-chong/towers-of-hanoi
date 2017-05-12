@@ -165,6 +165,28 @@ public class TestNodes {
     }
 
     /*
+     ************************* LoopNode *************************
+     */
+
+    @Test
+    public void parseLoop_oneStatement_parsesCorrectly() {
+        NodeTesters.LOOP.testParseNode("loop{turnL;}", "loop{turnL;}");
+    }
+
+    @Test
+    public void parseLoop_missingBracket_error() {
+        NodeTesters.LOOP.testParseNodeFails(
+                "loop turnL;}",
+                ParserFailureType.WRONG_NODE_START // error in start of block
+        );
+    }
+
+    @Test
+    public void parseLoop_loopInsideLoop_parses() {
+        NodeTesters.LOOP.testParseNode("loop{loop{turnL;}}", "loop{loop{turnL;}}");
+    }
+
+    /*
      ************************* Utils *************************
      */
 
@@ -173,6 +195,7 @@ public class TestNodes {
         ACTION(StatementNode.ActionNode::new),
         PROGRAM(ProgramNode::new),
         BLOCK(BlockNode::new),
+        LOOP(StatementNode.LoopNode::new),
         ADD(ExpressionNode.OperationNode.AddNode::new);
 
         private final Supplier<ParsableNode<?>> nodeSupplier;
