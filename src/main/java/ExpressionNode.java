@@ -41,7 +41,6 @@ public abstract class ExpressionNode extends ParsableNode<Integer> {
 
         public OperationNode(String functionNamePattern) {
             this.functionNamePattern = functionNamePattern;
-            this.params = params;
         }
 
         @Override

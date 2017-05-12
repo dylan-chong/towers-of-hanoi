@@ -1,6 +1,7 @@
 import java.util.Collection;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Created by Dylan on 8/05/17.
@@ -99,8 +100,8 @@ public abstract class ParsableNode<EvalT> implements RobotProgramNode {
 
     /**
      * Every {@link ParsableNode} should have a static factory class (that
-     * overrides this). Don't implement this directly; use the {@link Base}
-     * class.
+     * overrides this). Don't implement this directly if you have a factory
+     * that delegates to other factories; extend the {@link DelegatorFactory}
      *
      * @param <NodeT> The type of node to produce
      */
@@ -118,5 +119,38 @@ public abstract class ParsableNode<EvalT> implements RobotProgramNode {
          *                other factories to create nodes to decide which to use
          */
         boolean canStartWith(Scanner scannerNotToBeModified);
+
+        /**
+         * A factory that uses other factories to create NodeT objects
+         * @param <NodeT>
+         */
+        abstract class DelegatorFactory<NodeT extends ParsableNode<?>>
+                implements Factory<NodeT> {
+
+            @Override
+            public NodeT create(Scanner scannerNotToBeModified) {
+                Collection<Factory<? extends NodeT>> matches = getMatches(scannerNotToBeModified);
+                requireOnlyOne(matches, scannerNotToBeModified);
+                return matches.stream()
+                        .findAny()
+                        .orElseThrow(AssertionError::new)
+                        .create(scannerNotToBeModified);
+            }
+
+            @Override
+            public boolean canStartWith(Scanner scannerNotToBeModified) {
+                return getMatches(scannerNotToBeModified).size() > 0;
+            }
+
+            public Collection<Factory<? extends NodeT>> getMatches(
+                    Scanner scannerNotToBeModified) {
+                return getPossibilities()
+                        .stream()
+                        .filter(factory -> factory.canStartWith(scannerNotToBeModified))
+                        .collect(Collectors.toList());
+            }
+
+            protected abstract Collection<Factory<? extends NodeT>> getPossibilities();
+        }
     }
 }
