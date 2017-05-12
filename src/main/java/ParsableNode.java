@@ -16,7 +16,6 @@ public abstract class ParsableNode<EvalT> implements RobotProgramNode {
     private static final Pattern DEFAULT_DELIMITER = Pattern.compile(
             "\\s+|(?=[" + SPECIAL_CHARS + "])|(?<=[" + SPECIAL_CHARS + "])"
     );
-    private static final int ERROR_MAX_EXTRA_CHARS = 15;
 
     private boolean hasParsed = false;
 
@@ -71,38 +70,11 @@ public abstract class ParsableNode<EvalT> implements RobotProgramNode {
      * message
      */
     protected static String require(String pattern,
-                             Scanner scanner,
-                             ParserFailureType type) {
+                                    Scanner scanner,
+                                    ParserFailureType type) {
         if (scanner.hasNext(pattern)) return scanner.next();
         throwParseError("\nExpected: " + pattern, scanner, type);
         throw new AssertionError("Should not reach here");
-    }
-
-    protected static void throwParseError(String startOfMessage,
-                                          Scanner scanner,
-                                          ParserFailureType type) {
-        StringBuilder msg = new StringBuilder(startOfMessage);
-        msg.append("\nBut Got: ");
-
-        if (scanner.hasNext()) {
-            // Using original delimiter
-            msg.append("'");
-            msg.append(scanner.next());
-            msg.append("'");
-        }
-
-        // Print next chars
-        scanner.useDelimiter("(?=.)|(?<=.)"); // one char at a time
-        if (scanner.hasNext()) {
-            msg.append("\nMore next input: '");
-            for (int i = 0; i < ERROR_MAX_EXTRA_CHARS && scanner.hasNext(); i++) {
-                msg.append(scanner.next());
-            }
-            msg.append("'");
-        }
-        if (!scanner.hasNext()) msg.append(" {END OF INPUT}");
-
-        throw new ParserFailureException(msg.toString(), type);
     }
 
     protected static void requireOnlyOne(Collection<?> matches,
@@ -114,6 +86,14 @@ public abstract class ParsableNode<EvalT> implements RobotProgramNode {
                 ),
                 scanner,
                 ParserFailureType.NON_ONE_MATCHES
+        );
+    }
+
+    protected static void throwParseError(String startOfMessage,
+                                        Scanner scanner,
+                                        ParserFailureType nonOneMatches) {
+        throw ParserFailureException.newFrom(
+                startOfMessage, scanner, nonOneMatches
         );
     }
 

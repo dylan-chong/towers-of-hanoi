@@ -22,8 +22,8 @@ ticked tickbox
 
 Stage 0 of out 40:  LOOP and ACTION
  [x] [15] Simple actions work.
- [ ] [15] The robot can loop through a block of multiple actions.
- [ ] [10] The parser throws errors on invalid strings.
+ [x] [15] The robot can loop through a block of multiple actions.
+ [x] [10] The parser throws errors on invalid strings.
 
 Stage 1 out of 20: SENSORS and CONDITIONS
  [ ] [2] The extended list of actions work.
