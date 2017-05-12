@@ -74,9 +74,9 @@ public class Parser {
      * PROG ::= STMT+
      */
     static RobotProgramNode parseProgram(Scanner s) {
-        // THE PARSER GOES HERE
-
-        return null;
+        ProgramNode programNode = new ProgramNode();
+        programNode.parse(s);
+        return programNode;
     }
 
     // utility methods for the parser

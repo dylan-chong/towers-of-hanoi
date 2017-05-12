@@ -1,3 +1,4 @@
+import java.util.Collection;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -49,13 +50,19 @@ public abstract class ParsableNode<EvalT> implements RobotProgramNode {
      * possible). Don't just return the code that was parsed, parse the code,
      * and reconstruct it from the parsed code.
      */
-    abstract public String toCode();
+    abstract protected String privateToCode();
 
+    /**
+     * Similar to {@link ParsableNode#execute(Robot)} but this doesn't perform
+     * {@link Robot} operations, it only calculates a return value. This is
+     * useful for maths and boolean operations.
+     */
     abstract public EvalT evaluate();
 
     @Override
     public String toString() {
-        return toCode();
+        if (!hasParsed) throw new IllegalStateException("Not parsed yet");
+        return privateToCode();
     }
 
     /**
@@ -63,17 +70,17 @@ public abstract class ParsableNode<EvalT> implements RobotProgramNode {
      * and returns the token, if not, it throws an exception with an error
      * message
      */
-    protected String require(String pattern,
+    protected static String require(String pattern,
                              Scanner scanner,
                              ParserFailureType type) {
         if (scanner.hasNext(pattern)) return scanner.next();
         throwParseError("\nExpected: " + pattern, scanner, type);
-        return null;
+        throw new AssertionError("Should not reach here");
     }
 
-    protected void throwParseError(String startOfMessage,
-                                   Scanner scanner,
-                                   ParserFailureType type) {
+    protected static void throwParseError(String startOfMessage,
+                                          Scanner scanner,
+                                          ParserFailureType type) {
         StringBuilder msg = new StringBuilder(startOfMessage);
         msg.append("\nBut Got: ");
 
@@ -98,21 +105,38 @@ public abstract class ParsableNode<EvalT> implements RobotProgramNode {
         throw new ParserFailureException(msg.toString(), type);
     }
 
+    protected static void requireOnlyOne(Collection<?> matches,
+                                         Scanner scanner) {
+        if (matches.size() != 1) throwParseError(
+                String.format("Invalid number of valid matches (%d): %s",
+                        matches.size(),
+                        matches
+                ),
+                scanner,
+                ParserFailureType.NON_ONE_MATCHES
+        );
+    }
+
     /**
-     * Every {@link ParsableNode} should have a static factory class
+     * Every {@link ParsableNode} should have a static factory class (that
+     * overrides this). Don't implement this directly; use the {@link Base}
+     * class.
      *
      * @param <NodeT> The type of node to produce
      */
     public interface Factory<NodeT extends ParsableNode<?>> {
+
         /**
-         * Create a new {@link ParsableNode}
+         * Create a new {@link ParsableNode}. Pick a node by choosing what
+         * can be created using
          */
-        NodeT create();
+        NodeT create(Scanner scannerNotToBeModified);
 
         /**
          * @param scanner Scanner to call hasNext(pattern) on. Do not modify
-         *                the scanner
+         *                the scanner. This is to be used for factories that use
+         *                other factories to create nodes to decide which to use
          */
-        boolean canStartWith(Scanner scanner);
+        boolean canStartWith(Scanner scannerNotToBeModified);
     }
 }

@@ -19,5 +19,6 @@ public enum ParserFailureType {
      * When there is 0 or more than 1 possible match when trying to pick
      * what sort of node (or action) to use
      */
-    NON_ONE_MATCHES;
+    NON_ONE_MATCHES,
+    WRONG_NUMBER_OF_STATEMENTS;
 }

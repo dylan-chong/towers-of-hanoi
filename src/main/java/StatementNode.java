@@ -1,7 +1,4 @@
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -10,40 +7,65 @@ import java.util.stream.Collectors;
  */
 public abstract class StatementNode extends ParsableNode<Void> {
 
+    /**
+     * All statement nodes (non-recursive)
+     */
+    private static final Collection<Factory<? extends StatementNode>> ALL_NODES = Arrays.asList(
+            new ActionNode.NodeFactory(),
+            new LoopNode.NodeFactory()
+    );
+
+    public static class NodeFactory implements Factory<StatementNode> {
+        @Override
+        public StatementNode create(Scanner scannerNotToBeModified) {
+            Collection<Factory<? extends StatementNode>> matches = getMatches(scannerNotToBeModified);
+            requireOnlyOne(matches, scannerNotToBeModified);
+            return matches.stream()
+                    .findAny()
+                    .orElseThrow(AssertionError::new)
+                    .create(scannerNotToBeModified);
+        }
+
+        @Override
+        public boolean canStartWith(Scanner scannerNotToBeModified) {
+            return getMatches(scannerNotToBeModified).size() > 0;
+        }
+
+        private Collection<Factory<? extends StatementNode>> getMatches(
+                Scanner scannerNotToBeModified) {
+            return ALL_NODES.stream()
+                    .filter(factory -> factory.canStartWith(scannerNotToBeModified))
+                    .collect(Collectors.toList());
+        }
+    }
+
     public static class ActionNode extends StatementNode {
         /**
          * Map of Pattern -> Robot function with no return value or params
          */
-        private static final Map<String, Consumer<Robot>> actions;
+        private static final Map<String, Consumer<Robot>> ALL_ACTIONS;
 
         // TODO move and wait params
         static {
-            actions = new HashMap<>();
-            actions.put("turnL", Robot::turnLeft);
-            actions.put("turnR", Robot::turnRight);
-            actions.put("turnAround", Robot::turnAround);
-            actions.put("shieldOn", (robot) -> robot.setShield(true));
-            actions.put("shieldOff", (robot) -> robot.setShield(false));
-            actions.put("takeFuel", Robot::takeFuel);
+            ALL_ACTIONS = new HashMap<>();
+            ALL_ACTIONS.put("turnL", Robot::turnLeft);
+            ALL_ACTIONS.put("turnR", Robot::turnRight);
+            ALL_ACTIONS.put("turnAround", Robot::turnAround);
+            ALL_ACTIONS.put("shieldOn", (robot) -> robot.setShield(true));
+            ALL_ACTIONS.put("shieldOff", (robot) -> robot.setShield(false));
+            ALL_ACTIONS.put("takeFuel", Robot::takeFuel);
         }
 
         private Map.Entry<String, Consumer<Robot>> action;
 
         @Override
         protected void privateDoParse(Scanner scanner) {
-            List<Map.Entry<String, Consumer<Robot>>> validActions = actions
+            List<Map.Entry<String, Consumer<Robot>>> validActions = ALL_ACTIONS
                     .entrySet()
                     .stream()
                     .filter(entry -> scanner.hasNext(entry.getKey()))
                     .collect(Collectors.toList());
-            if (validActions.size() != 1) throwParseError(
-                    String.format("Invalid number of valid actions (%d): %s",
-                            validActions.size(),
-                            validActions
-                    ),
-                    scanner,
-                    ParserFailureType.NON_ONE_MATCHES
-            );
+            requireOnlyOne(validActions, scanner);
 
             action = validActions.get(0);
             require(action.getKey(), scanner, ParserFailureType.WRONG_NODE_START);
@@ -51,7 +73,7 @@ public abstract class StatementNode extends ParsableNode<Void> {
         }
 
         @Override
-        public String toCode() {
+        public String privateToCode() {
             return action.getKey() + ";";
         }
 
@@ -65,5 +87,58 @@ public abstract class StatementNode extends ParsableNode<Void> {
             action.getValue().accept(robot);
         }
 
+        public static class NodeFactory implements Factory<ActionNode> {
+
+            @Override
+            public ActionNode create(Scanner scannerNotToBeModified) {
+                return new ActionNode();
+            }
+
+            @Override
+            public boolean canStartWith(Scanner scanner) {
+                return ALL_ACTIONS.entrySet()
+                        .stream()
+                        .anyMatch(entry -> scanner.hasNext(entry.getKey()));
+            }
+        }
+    }
+
+    // todo copy paste program node
+
+    public static class LoopNode extends StatementNode {
+
+        private static final String LOOP_KEYWORD = "loop";
+
+        @Override
+        public void execute(Robot robot) {
+
+        }
+
+        @Override
+        protected void privateDoParse(Scanner scanner) {
+
+        }
+
+        @Override
+        public String privateToCode() {
+            return null;
+        }
+
+        @Override
+        public Void evaluate() {
+            return null;
+        }
+
+        public static class NodeFactory implements Factory<LoopNode> {
+            @Override
+            public LoopNode create(Scanner scannerNotToBeModified) {
+                return new LoopNode();
+            }
+
+            @Override
+            public boolean canStartWith(Scanner scannerNotToBeModified) {
+                return scannerNotToBeModified.hasNext(LOOP_KEYWORD);
+            }
+        }
     }
 }
