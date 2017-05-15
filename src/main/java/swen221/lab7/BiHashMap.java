@@ -1,19 +1,19 @@
 package swen221.lab7;
 import java.util.*;
 
-public class BiHashMap implements Map {
-	private HashMap keyToValues = new HashMap();
-	private HashMap valueToKeys = new HashMap();
+public class BiHashMap<KeyT, ValueT> implements Map<KeyT, ValueT> {
+	private HashMap<KeyT, ValueT> keyToValue = new HashMap<>();
+	private HashMap<ValueT, List<KeyT>> valueToKeys = new HashMap<>();
 
 
 	@Override
 	public boolean containsKey(Object key) {		
-		return keyToValues.containsKey(key);
+		return keyToValue.containsKey(key);
 	}
 
 	@Override
 	public boolean containsValue(Object value) { 
-		return keyToValues.containsValue(value);
+		return keyToValue.containsValue(value);
 	}
 	
 	/**
@@ -24,20 +24,20 @@ public class BiHashMap implements Map {
      *(A null return can also indicate that the map previously associated null with key).
 	 */
 	@Override
-	public Object put(Object key, Object value) {
+	public ValueT put(KeyT key, ValueT value) {
+		if (keyToValue.containsKey(key)) {
+			remove(key);
+		}
+
 		// first, update the value associated with this key
-		Object rv = keyToValues.put(key, value);
+		ValueT removed = keyToValue.put(key, value);
 
 		// now, update the set of keys associated with this value
-		ArrayList keys = (ArrayList) valueToKeys.get(value);
-		if (keys == null) {
-			keys = new ArrayList();
-			valueToKeys.put(value, keys);
-		}
+		List<KeyT> keys = valueToKeys.computeIfAbsent(value, k -> new ArrayList<>());
 		keys.add(key);
 		// finally, return the original mapping in order to ad here to Map
 		// interface.
-		return rv;
+		return removed;
 	}
 
 	/**
@@ -48,8 +48,8 @@ public class BiHashMap implements Map {
 	 * specified map is modified while the operation is in progress.
 	 */
 	@Override	
-	public void putAll(Map m) {
-		// need to do something here!
+	public void putAll(Map<? extends KeyT, ? extends ValueT> m) {
+		m.forEach(this::put);
 	}
 	
 	/**
@@ -59,14 +59,15 @@ public class BiHashMap implements Map {
 	 * null with key).
 	 */
 	@Override
-	public Object remove(Object key) {
+	public ValueT remove(Object key) {
 		// first, update the value associated with this key
-		Object value = keyToValues.remove(key);
+		ValueT value = keyToValue.remove(key);
 
 		if (value != null) {
 			// now, update the set of keys associated with this value
-			ArrayList keys = (ArrayList) valueToKeys.get(value);
+			List<KeyT> keys = valueToKeys.get(value);
 			// Note, keys should not be null!
+			//noinspection SuspiciousMethodCalls
 			keys.remove(key);
 		}
 		// finally, return the original mapping in order to ad here to Map
@@ -86,20 +87,21 @@ public class BiHashMap implements Map {
 	 * @return
 	 */
 	@Override	
-	public Object get(Object key) {
-		return keyToValues.get(key);
+	public ValueT get(Object key) {
+		return keyToValue.get(key);
 	}
 
 	/**
 	 * Get the set of keys associated with a particular value
 	 */	
-	public List getKeys(Object value) {
-		return (List) valueToKeys.get(value);
+	public List<KeyT> getKeys(ValueT value) {
+		return valueToKeys.get(value);
 	}
 
 	@Override
 	public void clear() {
-		keyToValues.clear();			
+		keyToValue.clear();
+		valueToKeys.clear();
 	}	
 	
 	/**
@@ -114,8 +116,8 @@ public class BiHashMap implements Map {
 	 * @return
 	 */
 	@Override
-	public Set entrySet() {
-		return null;
+	public Set<Map.Entry<KeyT, ValueT>> entrySet() {
+		return keyToValue.entrySet();
 	}
 
     /**
@@ -129,7 +131,9 @@ public class BiHashMap implements Map {
 	 * It does not support the add or addAll operations.
 	 */
 	@Override
-	public Set keySet() { return keyToValues.entrySet(); }
+	public Set<KeyT> keySet() {
+		return keyToValue.keySet();
+	}
 
 	/**
 	 * Returns a collection view of the values contained in this map. The
@@ -145,8 +149,8 @@ public class BiHashMap implements Map {
 	 * @return
 	 */
 	@Override
-	public Collection values() {
-		return keyToValues.values();
+	public Collection<ValueT> values() {
+		return keyToValue.values();
 	}
 
 	/**
@@ -156,7 +160,7 @@ public class BiHashMap implements Map {
 	 */
 	@Override
 	public boolean isEmpty() {
-		return keyToValues.isEmpty();
+		return keyToValue.isEmpty();
 	}
 
 	/**
@@ -166,7 +170,7 @@ public class BiHashMap implements Map {
 	 */
 	@Override
 	public int size() {
-		return keyToValues.size();
+		return keyToValue.size();
 	}
 
 	/**
@@ -179,7 +183,7 @@ public class BiHashMap implements Map {
 	 */
 	@Override
 	public int hashCode() {
-		return keyToValues.hashCode();
+		return keyToValue.hashCode();
 	}
 
 	/**
@@ -188,13 +192,13 @@ public class BiHashMap implements Map {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		BiHashMap map = new BiHashMap();
+		BiHashMap<String, String> map = new BiHashMap<>();
 
 		map.put("Dave", "ENGR202");
 		map.put("Alex", "COMP205");
 		map.put("James", "ENGR202");
 
-		for (String x : (List<String>) map.getKeys("ENGR202")) {
+		for (String x : map.getKeys("ENGR202")) {
 			System.out.println("GOT: " + x);
 		}
 	}
