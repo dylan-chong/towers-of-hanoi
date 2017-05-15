@@ -78,6 +78,9 @@ public class TestNodes {
 
     @Test
     public void parseAction_turnL_actionIsRecognised() {
+        // Ensure test is sane
+        assertEquals(0, ActionNode.ALL_ACTIONS.get("turnL").numParams);
+
         NodeTesters.ACTION.testParseNode("turnL;", "turnL;");
     }
 
@@ -100,6 +103,19 @@ public class TestNodes {
                 "turnL",
                 ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE
         );
+    }
+
+    @Test
+    public void parseAction_oneParamForOneParamAction_success() {
+        // Ensure test is sane
+        assertEquals(1, ActionNode.ALL_ACTIONS.get("wait").numParams);
+
+        NodeTesters.ACTION.testParseNode("wait 3;", "wait 3;");
+    }
+
+    @Test
+    public void parseAction_noParamsForOneParamAction_success() {
+        NodeTesters.ACTION.testParseNode("wait 3;", "wait 3;");
     }
 
     /*
@@ -192,10 +208,10 @@ public class TestNodes {
 
     private enum NodeTesters {
         NUMBER(ExpressionNode.NumberNode::new),
-        ACTION(StatementNode.ActionNode::new),
+        ACTION(ActionNode::new),
         PROGRAM(ProgramNode::new),
         BLOCK(BlockNode::new),
-        LOOP(StatementNode.LoopNode::new),
+        LOOP(LoopNode::new),
         ADD(ExpressionNode.OperationNode.AddNode::new);
 
         private final Supplier<ParsableNode<?>> nodeSupplier;

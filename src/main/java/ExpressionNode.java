@@ -75,6 +75,7 @@ public abstract class ExpressionNode extends ParsableNode<Integer> {
 
         protected abstract Integer applyOperation(List<ParsableNode<Integer>> params);
 
+        // TODO remove, replace with enum
         public static class AddNode extends OperationNode {
             public AddNode() {
                 super("add");
