@@ -10,13 +10,17 @@ import java.util.stream.Collectors;
  */
 public abstract class ParsableNode<EvalT> implements RobotProgramNode {
 
+    static {
+        String specialChars = "(){},;";
+        DEFAULT_DELIMITER = Pattern.compile(
+                "\\s+|(?=[" + specialChars + "])|(?<=[" + specialChars + "])"
+        );
+    }
+
     /**
      * Chars to be put into a string regex character set
      */
-    private static final String SPECIAL_CHARS = "(){},;";
-    private static final Pattern DEFAULT_DELIMITER = Pattern.compile(
-            "\\s+|(?=[" + SPECIAL_CHARS + "])|(?<=[" + SPECIAL_CHARS + "])"
-    );
+    public static final Pattern DEFAULT_DELIMITER;
 
     private boolean hasParsed = false;
 

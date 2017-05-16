@@ -13,6 +13,40 @@ import static org.junit.Assert.fail;
 public class TestNodes {
 
     /*
+     ************************* Factories *************************
+     */
+
+    @Test
+    public void programFactory_create_noCircularDependency() {
+        testNodeFactoryStackOverflow(new StatementNode.NodeFactory());
+    }
+
+    @Test
+    public void actionFactory_create_noCircularDependency() {
+        testNodeFactoryStackOverflow(new ActionNode.NodeFactory());
+    }
+
+    @Test
+    public void expressionFactory_create_noCircularDependency() {
+        testNodeFactoryStackOverflow(new ExpressionNode.NodeFactory());
+    }
+
+    @Test
+    public void numberFactory_create_noCircularDependency() {
+        testNodeFactoryStackOverflow(new NumberNode.NodeFactory());
+    }
+
+    @Test
+    public void operationFactory_create_noCircularDependency() {
+        testNodeFactoryStackOverflow(new OperationNode.NodeFactory());
+    }
+
+    private void testNodeFactoryStackOverflow(ParsableNode.Factory<?> factory) {
+        Scanner scanner = new Scanner(new StringReader("test"));
+        factory.canStartWith(scanner);
+    }
+
+    /*
      ************************* Number *************************
      */
 
@@ -47,12 +81,28 @@ public class TestNodes {
     }
 
     /*
-     ************************* Add *************************
+     ************************* Operations *************************
      */
 
     @Test
     public void parseAdd_withAdd1And2NoSpaces_parsesCorrectly() {
         NodeTesters.ADD.testParseNode("add(1,2)", "add(1,2)");
+    }
+
+    @Test
+    public void parseAdd_oneParam_fails() {
+        NodeTesters.ADD.testParseNodeFails(
+                "add(1)",
+                ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE
+        );
+    }
+
+    @Test
+    public void parseAdd_3Params_parses() {
+        NodeTesters.ADD.testParseNodeFails(
+                "add(1,2,3)",
+                ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE
+        );
     }
 
     @Test
@@ -70,6 +120,31 @@ public class TestNodes {
         NodeTesters.ADD.testParseNodeFails(
                 "add 10,-2)", ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE
         );
+    }
+
+    @Test
+    public void evaluateAdd_twoPositiveArgs_sumsCorrectly() {
+        NodeTesters.ADD.testEvaluate("add(10,99)", 109);
+    }
+
+    @Test
+    public void evaluateAdd_twoNegativeArgs_sumsCorrectly() {
+        NodeTesters.ADD.testEvaluate("add(-5,-123)", -128);
+    }
+
+    @Test
+    public void evaluateOperationAdd_twoNegativeArgs_sumsCorrectly() {
+        NodeTesters.OPERATION.testEvaluate("add(-5,-123)", -128);
+    }
+
+    @Test
+    public void parseOperationSubtract_withAdd1And2NoSpaces_parsesCorrectly() {
+        NodeTesters.OPERATION.testParseNode("sub(1,2)", "sub(1,2)");
+    }
+
+    @Test
+    public void evaluateOperationSubtract_twoPositiveArgs_sumsCorrectly() {
+        NodeTesters.OPERATION.testEvaluate("sub(10,99)", -89);
     }
 
     /*
@@ -206,18 +281,46 @@ public class TestNodes {
      ************************* Utils *************************
      */
 
+    private static Scanner newScanner(String program) {
+        Scanner scanner = new Scanner(new StringReader(program));
+        scanner.useDelimiter(ParsableNode.DEFAULT_DELIMITER);
+        return scanner;
+    }
+
     private enum NodeTesters {
-        NUMBER(ExpressionNode.NumberNode::new),
-        ACTION(ActionNode::new),
-        PROGRAM(ProgramNode::new),
-        BLOCK(BlockNode::new),
-        LOOP(LoopNode::new),
-        ADD(ExpressionNode.OperationNode.AddNode::new);
+        // For factories that always instantiate one type of node
+        NUMBER(NumberNode.NodeFactory::new),
+        ACTION(ActionNode.NodeFactory::new),
+        LOOP(LoopNode.NodeFactory::new),
+        PROGRAM(factoryFromSupplier(ProgramNode::new)),
+        BLOCK(factoryFromSupplier(BlockNode::new)),
+        ADD(factoryFromSupplier(OperationNode.Operations.ADD::create)),
 
-        private final Supplier<ParsableNode<?>> nodeSupplier;
+        // For DelegatorFactories / factories that have to pick a node type
+        OPERATION(OperationNode.NodeFactory::new);
 
-        NodeTesters(Supplier<ParsableNode<?>> nodeSupplier) {
-            this.nodeSupplier = nodeSupplier;
+        private final Supplier<? extends ParsableNode.Factory<? extends ParsableNode<?>>>
+                factorySupplier;
+
+        NodeTesters(Supplier<? extends ParsableNode.Factory<? extends ParsableNode<?>>>
+                            factorySupplier) {
+            this.factorySupplier = factorySupplier;
+        }
+
+        private static Supplier<? extends ParsableNode.Factory<? extends ParsableNode<?>>>
+        factoryFromSupplier(Supplier<? extends ParsableNode<?>> nodeSupplier) {
+            return () ->
+                    new ParsableNode.Factory<ParsableNode<?>>() {
+                        @Override
+                        public ParsableNode<?> create(Scanner scannerNotToBeModified) {
+                            return nodeSupplier.get();
+                        }
+
+                        @Override
+                        public boolean canStartWith(Scanner scannerNotToBeModified) {
+                            return true;
+                        }
+                    };
         }
 
         public void testParseNode(String program, String expectedCode) {
@@ -235,9 +338,16 @@ public class TestNodes {
             }
         }
 
+        public void testEvaluate(String program, Object expected) {
+            Scanner scanner = newScanner(program);
+            ParsableNode<?> node = factorySupplier.get().create(scanner);
+            node.parse(scanner);
+            assertEquals(expected, node.evaluate());
+        }
+
         private ParsableNode<?> newNodeWithInput(String program) {
-            Scanner scanner = new Scanner(new StringReader(program));
-            ParsableNode<?> node = nodeSupplier.get();
+            Scanner scanner = newScanner(program);
+            ParsableNode<?> node = factorySupplier.get().create(scanner);
             node.parse(scanner);
             return node;
         }

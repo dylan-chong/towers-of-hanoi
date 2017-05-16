@@ -16,5 +16,4 @@ public abstract class StatementNode extends ParsableNode<Void> {
         }
     }
 
-
 }

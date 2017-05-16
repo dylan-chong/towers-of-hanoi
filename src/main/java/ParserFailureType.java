@@ -20,5 +20,5 @@ public enum ParserFailureType {
      * what sort of node (or action) to use
      */
     NON_ONE_MATCHES,
-    WRONG_NUMBER_OF_STATEMENTS;
+    WRONG_NUMBER_OF_STATEMENTS
 }

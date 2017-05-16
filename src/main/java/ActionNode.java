@@ -53,10 +53,8 @@ public class ActionNode extends StatementNode {
 
         require(actionName, scanner, ParserFailureType.WRONG_NODE_START);
         for (int i = 0; i < action.numParams; i++) {
-
-            // todo expression factory
-
-            ExpressionNode expressionNode = new ExpressionNode.NumberNode();
+            ExpressionNode expressionNode =
+                    new ExpressionNode.NodeFactory().create(scanner);
             expressionNode.parse(scanner);
             params.add(expressionNode);
         }
