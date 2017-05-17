@@ -24,14 +24,19 @@ public abstract class ParsableNode<EvalT> implements RobotProgramNode {
 
     private boolean hasParsed = false;
 
-    public final void parse(Scanner scanner) {
+    public final void parse(Scanner scanner, Logger logger) {
         if (hasParsed) throw new IllegalStateException("Already parsed");
-        hasParsed = true;
 
         if (scanner.delimiter() != getScannerDelimiter()) { // Compare pointers for speed
             scanner.useDelimiter(getScannerDelimiter());
         }
-        privateDoParse(scanner);
+
+        logger.logStartParseNode(this);
+
+        privateDoParse(scanner, logger);
+        hasParsed = true;
+
+        logger.logEndParseNode(this);
     }
 
     /**
@@ -47,7 +52,7 @@ public abstract class ParsableNode<EvalT> implements RobotProgramNode {
      * <p>
      * Note: the delimiter causes spaces to be removed
      */
-    abstract protected void privateDoParse(Scanner scanner);
+    abstract protected void privateDoParse(Scanner scanner, Logger logger);
 
     /**
      * @return The code for the node (and its insides) without spaces (where
@@ -65,7 +70,7 @@ public abstract class ParsableNode<EvalT> implements RobotProgramNode {
 
     @Override
     public String toString() {
-        if (!hasParsed) throw new IllegalStateException("Not parsed yet");
+        if (!hasParsed) return super.toString();
         return privateToCode();
     }
 

@@ -16,9 +16,9 @@ public class LoopNode extends StatementNode {
     }
 
     @Override
-    protected void privateDoParse(Scanner scanner) {
+    protected void privateDoParse(Scanner scanner, Logger logger) {
         require(LOOP_KEYWORD, scanner, ParserFailureType.WRONG_NODE_START);
-        blockNode.parse(scanner);
+        blockNode.parse(scanner, logger);
     }
 
     @Override

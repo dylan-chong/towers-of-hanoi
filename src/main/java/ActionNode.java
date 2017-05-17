@@ -24,12 +24,12 @@ public class ActionNode extends StatementNode {
         ALL_ACTIONS.put("shieldOff", new Action((robot, params) -> robot.setShield(false)));
         ALL_ACTIONS.put("takeFuel", new Action((robot, params) -> robot.takeFuel()));
 
-        ALL_ACTIONS.put("move", new Action(1, (robot, params) -> {
-            int times = params.get(0).evaluate();
+        ALL_ACTIONS.put("move", new Action(true, (robot, params) -> {
+            int times = params.size() > 0 ? params.get(0).evaluate() : 1;
             for (int i = 0; i < times; i++) robot.move();
         }));
-        ALL_ACTIONS.put("wait", new Action(1, (robot, params) -> {
-            int times = params.get(0).evaluate();
+        ALL_ACTIONS.put("wait", new Action(true, (robot, params) -> {
+            int times = params.size() > 0 ? params.get(0).evaluate() : 1;
             for (int i = 0; i < times; i++) robot.idleWait();
         }));
     }
@@ -38,7 +38,7 @@ public class ActionNode extends StatementNode {
     private List<ExpressionNode> params;
 
     @Override
-    protected void privateDoParse(Scanner scanner) {
+    protected void privateDoParse(Scanner scanner, Logger logger) {
         List<Map.Entry<String, Action>> validActions = ALL_ACTIONS
                 .entrySet()
                 .stream()
@@ -52,20 +52,33 @@ public class ActionNode extends StatementNode {
         Action action = actionEntry.getValue();
 
         require(actionName, scanner, ParserFailureType.WRONG_NODE_START);
-        for (int i = 0; i < action.numParams; i++) {
+
+        // Optional param (valid syntax: 'action(EXPR);' or 'action;'
+        if (action.hasOptionalParam && !scanner.hasNext(";")) {
+            require("\\(", scanner, ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE);
             ExpressionNode expressionNode =
                     new ExpressionNode.NodeFactory().create(scanner);
-            expressionNode.parse(scanner);
+            expressionNode.parse(scanner, logger);
             params.add(expressionNode);
+
+            require("\\)", scanner, ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE);
         }
         require(";", scanner, ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE);
     }
 
     @Override
     public String privateToCode() {
-        StringBuilder sb = new StringBuilder(actionEntry.getKey());
-        params.forEach(node -> sb.append(' ').append(node.toString()));
-        return sb.append(';').toString();
+        StringBuilder stringBuilder = new StringBuilder(actionEntry.getKey());
+
+        if (!params.isEmpty())
+            stringBuilder
+                    .append('(')
+                    .append(params.get(0))
+                    .append(')');
+
+        return stringBuilder
+                .append(';')
+                .toString();
     }
 
     @Override
@@ -96,15 +109,16 @@ public class ActionNode extends StatementNode {
 
     public static class Action {
         public final BiConsumer<Robot, List<ExpressionNode>> function; // robot, params
-        public final int numParams;
+        public final boolean hasOptionalParam;
 
         public Action(BiConsumer<Robot, List<ExpressionNode>> function) {
-            this(0, function);
+            this(false, function);
         }
 
-        public Action(int numParams, BiConsumer<Robot, List<ExpressionNode>> function) {
+        public Action(boolean hasOptionalParam,
+                      BiConsumer<Robot, List<ExpressionNode>> function) {
             this.function = function;
-            this.numParams = numParams;
+            this.hasOptionalParam = hasOptionalParam;
         }
     }
 }

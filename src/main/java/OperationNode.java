@@ -20,19 +20,19 @@ public class OperationNode extends ExpressionNode {
     }
 
     @Override
-    protected void privateDoParse(Scanner scanner) {
+    protected void privateDoParse(Scanner scanner, Logger logger) {
         require(functionNamePattern, scanner, ParserFailureType.WRONG_NODE_START);
         require("\\(", scanner, ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE);
 
         ExpressionNode.NodeFactory factory = new ExpressionNode.NodeFactory();
 
         params.add(factory.create(scanner));
-        params.get(0).parse(scanner);
+        params.get(0).parse(scanner, logger);
 
         require(",", scanner, ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE);
 
         params.add(factory.create(scanner));
-        params.get(1).parse(scanner);
+        params.get(1).parse(scanner, logger);
 
         require("\\)", scanner, ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE);
     }

@@ -43,7 +43,7 @@ public abstract class MultiStatementNode extends ParsableNode<Void> {
     }
 
     @Override
-    protected void privateDoParse(Scanner scanner) {
+    protected void privateDoParse(Scanner scanner, Logger logger) {
         if (!startPattern.isEmpty()) {
             startMatch = require(
                     startPattern, scanner, ParserFailureType.WRONG_NODE_START
@@ -61,14 +61,14 @@ public abstract class MultiStatementNode extends ParsableNode<Void> {
                         ParserFailureType.WRONG_NUMBER_OF_STATEMENTS
                 );
             }
-            parseOneExpression(scanner);
+            parseOneExpression(scanner, logger);
         }
 
         while (scanner.hasNext()) {
             if (!endPattern.isEmpty() && scanner.hasNext(endPattern)) {
                 break;
             }
-            parseOneExpression(scanner);
+            parseOneExpression(scanner, logger);
         }
 
         if (!endPattern.isEmpty()) {
@@ -93,10 +93,10 @@ public abstract class MultiStatementNode extends ParsableNode<Void> {
         return null;
     }
 
-    private void parseOneExpression(Scanner scanner) {
+    private void parseOneExpression(Scanner scanner, Logger logger) {
         StatementNode.NodeFactory factory = new StatementNode.NodeFactory();
         StatementNode statementNode = factory.create(scanner);
-        statementNode.parse(scanner);
+        statementNode.parse(scanner, logger);
         statements.add(statementNode);
     }
 }

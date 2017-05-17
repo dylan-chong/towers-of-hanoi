@@ -74,8 +74,14 @@ public class Parser {
      * PROG ::= STMT+
      */
     static RobotProgramNode parseProgram(Scanner s) {
+        return parseProgram(s, new Logger.StubLogger());
+    }
+
+    static RobotProgramNode parseProgram(Scanner s, Logger logger) {
         ProgramNode programNode = new ProgramNode();
-        programNode.parse(s);
+        logger.startLog();
+        programNode.parse(s, logger);
+        logger.endLog();
         return programNode;
     }
 

@@ -2,10 +2,17 @@ tests =  Dir
   .entries('src/main/resources/TestPrograms')
   .select{|file| !File.directory?(file)}
   .map do |file|
+    if file.include?('bad') then
+      expectation = 'fails'
+      succeeds = false
+    else
+      expectation = 'noErrors'
+      succeeds = true
+    end
     %Q(
     @Test
-    public void parseFile_#{file.gsub(/[\._]/, '')}_noErrors() throws Exception {
-        testParseFile("#{file}");
+    public void parseFile_#{file.gsub(/[\._]/, '')}_#{expectation}() throws Exception {
+        testParseFile("#{file}", #{succeeds});
     }
     )
   end

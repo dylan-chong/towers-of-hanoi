@@ -8,7 +8,7 @@ public class NumberNode extends ExpressionNode {
     private int number;
 
     @Override
-    protected void privateDoParse(Scanner scanner) {
+    protected void privateDoParse(Scanner scanner, Logger logger) {
         number = Integer.parseInt(require(NUMBER_PATTERN,
                 scanner,
                 ParserFailureType.NUMBER_FORMAT

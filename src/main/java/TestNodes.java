@@ -154,7 +154,7 @@ public class TestNodes {
     @Test
     public void parseAction_turnL_actionIsRecognised() {
         // Ensure test is sane
-        assertEquals(0, ActionNode.ALL_ACTIONS.get("turnL").numParams);
+        assertEquals(false, ActionNode.ALL_ACTIONS.get("turnL").hasOptionalParam);
 
         NodeTesters.ACTION.testParseNode("turnL;", "turnL;");
     }
@@ -183,14 +183,14 @@ public class TestNodes {
     @Test
     public void parseAction_oneParamForOneParamAction_success() {
         // Ensure test is sane
-        assertEquals(1, ActionNode.ALL_ACTIONS.get("wait").numParams);
+        assertEquals(true, ActionNode.ALL_ACTIONS.get("wait").hasOptionalParam);
 
-        NodeTesters.ACTION.testParseNode("wait 3;", "wait 3;");
+        NodeTesters.ACTION.testParseNode("wait(3);", "wait(3);");
     }
 
     @Test
     public void parseAction_noParamsForOneParamAction_success() {
-        NodeTesters.ACTION.testParseNode("wait 3;", "wait 3;");
+        NodeTesters.ACTION.testParseNode("wait;", "wait;");
     }
 
     /*
@@ -341,14 +341,14 @@ public class TestNodes {
         public void testEvaluate(String program, Object expected) {
             Scanner scanner = newScanner(program);
             ParsableNode<?> node = factorySupplier.get().create(scanner);
-            node.parse(scanner);
+            node.parse(scanner, new Logger.SystemOutputLogger());
             assertEquals(expected, node.evaluate());
         }
 
         private ParsableNode<?> newNodeWithInput(String program) {
             Scanner scanner = newScanner(program);
             ParsableNode<?> node = factorySupplier.get().create(scanner);
-            node.parse(scanner);
+            node.parse(scanner, new Logger.SystemOutputLogger());
             return node;
         }
     }
