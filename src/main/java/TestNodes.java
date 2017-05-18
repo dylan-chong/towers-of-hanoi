@@ -292,13 +292,19 @@ public class TestNodes {
     }
 
     /*
-     ************************* IfNode *************************
+     ************************* ConditionBlockNode (if/while) *************************
      */
 
     @Test
     public void parseIf_withLessThan_parses() {
         NodeTesters.IF.testParseNode("if(lt(1,2)){turnL;}", "if(lt(1,2)){turnL;}");
     }
+
+    @Test
+    public void parseWhile_withLessThan_parses() {
+        NodeTesters.WHILE.testParseNode("while(lt(1,2)){turnL;}", "while(lt(1,2)){turnL;}");
+    }
+
 
     /*
      ************************* Utils *************************
@@ -316,6 +322,7 @@ public class TestNodes {
         ACTION(ActionNode.NodeFactory::new),
         LOOP(LoopNode.NodeFactory::new),
         IF(IfNode.NodeFactory::new),
+        WHILE(WhileNode.NodeFactory::new),
         PROGRAM(factoryFromSupplier(ProgramNode::new)),
         BLOCK(factoryFromSupplier(BlockNode::new)),
         ADD(factoryFromSupplier(OperationNode.Operations.ADD::create)),
@@ -334,7 +341,6 @@ public class TestNodes {
 
         private static Supplier<? extends ParsableNode.Factory<? extends ParsableNode<?>>>
         factoryFromSupplier(Supplier<? extends ParsableNode<?>> nodeSupplier) {
-
             return () ->
                     new ParsableNode.Factory<ParsableNode<?>>() {
                         @Override

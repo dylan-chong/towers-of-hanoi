@@ -12,7 +12,8 @@ public abstract class StatementNode extends ParsableNode<Void> {
             return Arrays.asList(
                     new ActionNode.NodeFactory(),
                     new LoopNode.NodeFactory(),
-                    new IfNode.NodeFactory()
+                    new IfNode.NodeFactory(),
+                    new WhileNode.NodeFactory()
             );
         }
     }

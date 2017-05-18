@@ -26,13 +26,13 @@ Stage 0 of out 40:  LOOP and ACTION
  [x] [10] The parser throws errors on invalid strings.
 
 Stage 1 out of 20: SENSORS and CONDITIONS
- [ ] [2] The extended list of actions work.
+ [x] [2] The extended list of actions work.
  [x] [5] Conditions return the correct value.
  [ ] [5] Sensors return the correct value.
- [ ] [8] If and while loops behave as expected.
+ [x] [8] If and while loops behave as expected.
 
 Stage 2 out of 15: EXPRESSIONS
- [ ] [5] The move and wait commands can now take an argument
+ [x] [5] The move and wait commands can now take an argument
  [ ] [5] If statements can take an else clause.
  [ ] [5] Arithmetic expressions and boolean conditions work.
 
