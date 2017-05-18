@@ -26,8 +26,8 @@ Stage 0 of out 40:  LOOP and ACTION
  [x] [10] The parser throws errors on invalid strings.
 
 Stage 1 out of 20: SENSORS and CONDITIONS
- [0] [2] The extended list of actions work.
- [ ] [5] Conditions return the correct value.
+ [ ] [2] The extended list of actions work.
+ [x] [5] Conditions return the correct value.
  [ ] [5] Sensors return the correct value.
  [ ] [8] If and while loops behave as expected.
 

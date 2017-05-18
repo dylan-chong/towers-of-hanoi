@@ -23,7 +23,7 @@ public class LoopNode extends StatementNode {
 
     @Override
     public String privateToCode() {
-        return "loop" + blockNode.toString();
+        return LOOP_KEYWORD + blockNode.toString();
     }
 
     @Override

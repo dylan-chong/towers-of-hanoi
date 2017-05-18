@@ -61,14 +61,14 @@ public abstract class MultiStatementNode extends ParsableNode<Void> {
                         ParserFailureType.WRONG_NUMBER_OF_STATEMENTS
                 );
             }
-            parseOneExpression(scanner, logger);
+            parseOneStatement(scanner, logger);
         }
 
         while (scanner.hasNext()) {
             if (!endPattern.isEmpty() && scanner.hasNext(endPattern)) {
                 break;
             }
-            parseOneExpression(scanner, logger);
+            parseOneStatement(scanner, logger);
         }
 
         if (!endPattern.isEmpty()) {
@@ -93,7 +93,7 @@ public abstract class MultiStatementNode extends ParsableNode<Void> {
         return null;
     }
 
-    private void parseOneExpression(Scanner scanner, Logger logger) {
+    private void parseOneStatement(Scanner scanner, Logger logger) {
         StatementNode.NodeFactory factory = new StatementNode.NodeFactory();
         StatementNode statementNode = factory.create(scanner);
         statementNode.parse(scanner, logger);

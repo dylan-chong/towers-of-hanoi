@@ -278,6 +278,29 @@ public class TestNodes {
     }
 
     /*
+     ************************* ConditionNode *************************
+     */
+
+    @Test
+    public void parseLessThan_1Then2_parses() {
+        NodeTesters.CONDITION.testParseNode("lt(1,2)", "lt(1,2)");
+    }
+
+    @Test
+    public void evaluateLessThan_1Then2_parses() {
+        NodeTesters.CONDITION.testEvaluate("lt(1,2)", true);
+    }
+
+    /*
+     ************************* IfNode *************************
+     */
+
+    @Test
+    public void parseIf_withLessThan_parses() {
+        NodeTesters.IF.testParseNode("if(lt(1,2)){turnL;}", "if(lt(1,2)){turnL;}");
+    }
+
+    /*
      ************************* Utils *************************
      */
 
@@ -292,11 +315,13 @@ public class TestNodes {
         NUMBER(NumberNode.NodeFactory::new),
         ACTION(ActionNode.NodeFactory::new),
         LOOP(LoopNode.NodeFactory::new),
+        IF(IfNode.NodeFactory::new),
         PROGRAM(factoryFromSupplier(ProgramNode::new)),
         BLOCK(factoryFromSupplier(BlockNode::new)),
         ADD(factoryFromSupplier(OperationNode.Operations.ADD::create)),
 
         // For DelegatorFactories / factories that have to pick a node type
+        CONDITION(ConditionNode.NodeFactory::new),
         OPERATION(OperationNode.NodeFactory::new);
 
         private final Supplier<? extends ParsableNode.Factory<? extends ParsableNode<?>>>
@@ -309,6 +334,7 @@ public class TestNodes {
 
         private static Supplier<? extends ParsableNode.Factory<? extends ParsableNode<?>>>
         factoryFromSupplier(Supplier<? extends ParsableNode<?>> nodeSupplier) {
+
             return () ->
                     new ParsableNode.Factory<ParsableNode<?>>() {
                         @Override
