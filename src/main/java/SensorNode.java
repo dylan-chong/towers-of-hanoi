@@ -1,59 +1,59 @@
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 /**
  * Created by Dylan on 16/05/17.
  */
 public class SensorNode extends ExpressionNode {
 
-
-
-    // todo next make an optional param node decorable
-
-
     /**
      * Map of Pattern -> Robot function with no return value or params
-     *
+     * <p>
      * This is only public for tests.
      */
-    public static final Map<String, Function<Robot, Integer>> ALL_SENSORS;
+    public static final Map<String, FunctionWrapper<ExpressionNode, Integer>> ALL_SENSORS;
 
     static {
         ALL_SENSORS = new HashMap<>();
-        ALL_SENSORS.put("fuelLeft", Robot::getFuel);
-        ALL_SENSORS.put("oppLR", Robot::getOpponentLR);
-        ALL_SENSORS.put("oppFB", Robot::getOpponentFB);
-        ALL_SENSORS.put("numBarrels", Robot::numBarrels);
-        // ALL_SENSORS.put("barrelLR", Robot::getBarrelLR);
-        // TODO: NEXT above param?
+        ALL_SENSORS.put("fuelLeft", new FunctionWrapper<>((robot, param) ->
+                robot.getFuel()));
+        ALL_SENSORS.put("oppLR", new FunctionWrapper<>((robot, param) ->
+                robot.getOpponentLR()));
+        ALL_SENSORS.put("oppFB", new FunctionWrapper<>((robot, param) ->
+                robot.getOpponentFB()));
+        ALL_SENSORS.put("numBarrels", new FunctionWrapper<>((robot, param) ->
+                robot.numBarrels()));
+        ALL_SENSORS.put("wallDist", new FunctionWrapper<>((robot, param) ->
+                robot.getDistanceToWall()));
+        ALL_SENSORS.put("barrelLR", new FunctionWrapper<>(true, (robot, param) -> {
+            int n = param == null ? 0 : param.execute(robot);
+            return robot.getBarrelLR(n);
+        }));
+        ALL_SENSORS.put("barrelFB", new FunctionWrapper<>(true, (robot, param) -> {
+            int n = param == null ? 0 : param.execute(robot);
+            return robot.getBarrelFB(n);
+        }));
     }
 
-    private Map.Entry<String, Function<Robot, Integer>> actionEntry;
-
-    @Override
-    protected void privateDoParse(Scanner scanner, Logger logger) {
-        List<Map.Entry<String, Function<Robot, Integer>>> validActions = ALL_SENSORS
-                .entrySet()
-                .stream()
-                .filter(entry -> scanner.hasNext(entry.getKey()))
-                .collect(Collectors.toList());
-        requireOnlyOne(validActions, scanner);
-
-        actionEntry = validActions.get(0);
-
-        String sensorName = actionEntry.getKey();
-        require(sensorName, scanner, ParserFailureType.WRONG_NODE_START);
-    }
-
-    @Override
-    public String privateToCode() {
-        return actionEntry.getKey() + ';';
-    }
+    private final DecorableOptionalParamNode<ExpressionNode, Integer> subnode =
+            new DecorableOptionalParamNode<>(
+                    ALL_SENSORS, new ExpressionNode.NodeFactory()
+            );
 
     @Override
     public Integer execute(Robot robot) {
-        return actionEntry.getValue().apply(robot);
+        return subnode.execute(robot);
+    }
+
+    @Override
+    protected void privateDoParse(Scanner scanner, Logger logger) {
+        subnode.parse(scanner, logger);
+    }
+
+    @Override
+    protected String privateToCode() {
+        return subnode.toString();
     }
 
     public static class NodeFactory implements Factory<SensorNode> {

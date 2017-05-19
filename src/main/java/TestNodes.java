@@ -148,7 +148,7 @@ public class TestNodes {
     }
 
     /*
-     ************************* FunctionWrapper *************************
+     ************************* DecorableOptionalParamNode *************************
      */
 
     @Test
@@ -191,6 +191,22 @@ public class TestNodes {
     @Test
     public void parseAction_noParamsForOneParamAction_success() {
         NodeTesters.ACTION.testParseNode("wait;", "wait;");
+    }
+
+    @Test
+    public void parseSensor_fuelLeft_sensorIsRecognised() {
+        // Ensure test is sane
+        assertEquals(false, SensorNode.ALL_SENSORS.get("fuelLeft").hasOptionalParam);
+
+        NodeTesters.SENSOR.testParseNode("fuelLeft", "fuelLeft");
+    }
+
+    @Test
+    public void parseSensor_unrecognisedSensor_parseError() {
+        NodeTesters.SENSOR.testParseNodeFails(
+                "unrecognisedSensor",
+                ParserFailureType.NON_ONE_MATCHES
+        );
     }
 
     /*
@@ -320,6 +336,7 @@ public class TestNodes {
         // For factories that always instantiate one type of node
         NUMBER(NumberNode.NodeFactory::new),
         ACTION(ActionNode.NodeFactory::new),
+        SENSOR(SensorNode.NodeFactory::new),
         LOOP(LoopNode.NodeFactory::new),
         IF(IfNode.NodeFactory::new),
         WHILE(WhileNode.NodeFactory::new),

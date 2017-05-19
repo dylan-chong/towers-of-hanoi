@@ -54,8 +54,8 @@ public class TestFiles {
     }
     
     @Test
-    public void parseFile_s1bad3prog_fails() throws Exception {
-        testParseFile("s1_bad3.prog", false);
+    public void parseFile_s1bad3prog_noErrors() throws Exception {
+        testParseFile("s1_bad3.prog", true);
     }
     
     @Test
@@ -143,9 +143,15 @@ public class TestFiles {
                     new Scanner(fileStream),
                     new Logger.SystemOutputLogger()
             );
-            assertTrue(programNode.toString(), shouldSucceed);
-        } catch (ParserFailureException ignored) {
-            assertFalse(ignored.toString(), shouldSucceed);
+            if (!shouldSucceed)
+                fail("expected parse to fail, but it succeeded: "
+                        + programNode.toString()
+                );
+        } catch (ParserFailureException e) {
+            if (shouldSucceed)
+                fail("expected parse to succeed, but it failed: "
+                    + e.toString()
+                );
         }
     }
 }
