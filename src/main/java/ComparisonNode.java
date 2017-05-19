@@ -51,10 +51,10 @@ public class ComparisonNode extends ConditionNode {
     }
 
     @Override
-    public Boolean evaluate() {
+    public Boolean evaluate(Robot robot) {
         return nameToFunction
                 .getValue()
-                .apply(params.get(0).evaluate(), params.get(1).evaluate());
+                .apply(params.get(0).evaluate(robot), params.get(1).evaluate(robot));
     }
 
     private void parseOneExpression(Scanner scanner, Logger logger) {

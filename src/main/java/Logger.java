@@ -13,20 +13,23 @@ public abstract class Logger {
     }
 
     public void logStartParseNode(ParsableNode<?> node) {
-        privateLogLine(getSpaces() + "start (" + node.toString() + ")");
+        privateLogLine(getSpaces() + "{ (" + node.toString() + ")");
         depth++;
     }
 
     public void logEndParseNode(ParsableNode<?> node) {
         depth--;
-        privateLogLine(getSpaces() + "end   (" + node.toString() + ")");
+        privateLogLine(getSpaces() + "} (" + node.toString() + ")");
     }
 
     protected abstract void privateLogLine(String line);
 
     private String getSpaces() {
-        if (depth == 0) return "";
-        return new String(new char[depth * 2]).replace('\0', ' ');
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < depth; i++) {
+            stringBuilder.append("  ");
+        }
+        return stringBuilder.toString();
     }
 
     public static class SystemOutputLogger extends Logger {

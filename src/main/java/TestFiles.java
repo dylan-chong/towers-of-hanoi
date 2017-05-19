@@ -59,8 +59,8 @@ public class TestFiles {
     }
     
     @Test
-    public void parseFile_s1bad4prog_fails() throws Exception {
-        testParseFile("s1_bad4.prog", false);
+    public void parseFile_s1bad4prog_noErrors() throws Exception {
+        testParseFile("s1_bad4.prog", true);
     }
     
     @Test
@@ -143,8 +143,6 @@ public class TestFiles {
                     new Scanner(fileStream),
                     new Logger.SystemOutputLogger()
             );
-            assertNotNull(programNode);
-            System.out.println(programNode);
             assertTrue(programNode.toString(), shouldSucceed);
         } catch (ParserFailureException ignored) {
             assertFalse(ignored.toString(), shouldSucceed);

@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 /**
@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
  */
 public class OperationNode extends ExpressionNode {
     private final String functionNamePattern;
-    private final Function<List<ParsableNode<Integer>>, Integer> applyOperation;
+    private final BiFunction<Robot, List<ParsableNode<Integer>>, Integer> applyOperation;
     private List<ParsableNode<Integer>> params = new ArrayList<>(2);
 
     public OperationNode(String functionNamePattern,
-                         Function<List<ParsableNode<Integer>>, Integer> applyOperation) {
+                         BiFunction<Robot, List<ParsableNode<Integer>>, Integer> applyOperation) {
         this.functionNamePattern = functionNamePattern;
         this.applyOperation = applyOperation;
     }
@@ -46,45 +46,45 @@ public class OperationNode extends ExpressionNode {
     }
 
     @Override
-    public Integer evaluate() {
-        return applyOperation(params);
+    public Integer evaluate(Robot robot) {
+        return applyOperation(params, robot);
     }
 
-    private Integer applyOperation(List<ParsableNode<Integer>> params) {
-        return applyOperation.apply(params);
+    private Integer applyOperation(List<ParsableNode<Integer>> params, Robot robot) {
+        return applyOperation.apply(robot, params);
     }
 
     public enum Operations {
-        ADD("add", params -> params.stream()
-                .map(ParsableNode::evaluate)
+        ADD("add", (robot, params) -> params.stream()
+                .map(node -> node.evaluate(robot))
                 .reduce((a, b) -> a + b)
                 .orElse(0)
         ),
-        SUBTRACT("sub", params -> {
-            int result = params.get(0).evaluate();
+        SUBTRACT("sub", (robot, params) -> {
+            int result = params.get(0).evaluate(robot);
             for (int i = 1; i < params.size(); i++) {
-                result -= params.get(i).evaluate();
+                result -= params.get(i).evaluate(robot);
             }
             return result;
         }),
-        MULTIPLY("mul", params -> params.stream()
-                .map(ParsableNode::evaluate)
+        MULTIPLY("mul", (robot, params) -> params.stream()
+                .map(node -> node.evaluate(robot))
                 .reduce((a, b) -> a * b)
                 .orElse(0)
         ),
-        DIVIDE("div", params -> {
-            int result = params.get(0).evaluate();
+        DIVIDE("div", (robot, params) -> {
+            int result = params.get(0).evaluate(robot);
             for (int i = 1; i < params.size(); i++) {
-                result /= params.get(i).evaluate();
+                result /= params.get(i).evaluate(robot);
             }
             return result;
         });
 
         public final String namePattern;
-        public final Function<List<ParsableNode<Integer>>, Integer> applyOperation;
+        public final BiFunction<Robot, List<ParsableNode<Integer>>, Integer> applyOperation;
 
         Operations(String namePattern,
-                   Function<List<ParsableNode<Integer>>, Integer> applyOperation) {
+                   BiFunction<Robot, List<ParsableNode<Integer>>, Integer> applyOperation) {
 
             this.namePattern = namePattern;
             this.applyOperation = applyOperation;

@@ -65,8 +65,9 @@ public abstract class ParsableNode<EvalT> implements RobotProgramNode {
      * Similar to {@link ParsableNode#execute(Robot)} but this doesn't perform
      * {@link Robot} operations, it only calculates a return value. This is
      * useful for maths and boolean operations.
+     * @param robot
      */
-    abstract public EvalT evaluate();
+    abstract public EvalT evaluate(Robot robot);
 
     @Override
     public String toString() {

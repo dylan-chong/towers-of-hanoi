@@ -17,7 +17,8 @@ public abstract class ExpressionNode extends ParsableNode<Integer> {
         protected Collection<Factory<? extends ExpressionNode>> getPossibilities() {
             return Arrays.asList(
                     new OperationNode.NodeFactory(),
-                    new NumberNode.NodeFactory()
+                    new NumberNode.NodeFactory(),
+                    new SensorNode.NodeFactory()
             );
         }
     }

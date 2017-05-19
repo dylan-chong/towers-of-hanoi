@@ -1,8 +1,9 @@
+
 tests =  Dir
   .entries('src/main/resources/TestPrograms')
   .select{|file| !File.directory?(file)}
   .map do |file|
-    if file.include?('bad') then
+    if file.include?('bad') && file != 's1_bad4.prog'
       expectation = 'fails'
       succeeds = false
     else
@@ -17,7 +18,6 @@ tests =  Dir
     )
   end
   .join()
-
 
 path = 'src/main/java/TestFiles.java'
 file = File.open(path)

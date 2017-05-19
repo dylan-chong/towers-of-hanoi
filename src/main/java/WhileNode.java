@@ -14,7 +14,7 @@ public class WhileNode extends ConditionBlockNode {
     protected void privateExecute(Robot robot,
                                   ConditionNode conditionNode,
                                   BlockNode blockNode) {
-        while (conditionNode.evaluate()) {
+        while (conditionNode.evaluate(robot)) {
             blockNode.execute(robot);
         }
     }

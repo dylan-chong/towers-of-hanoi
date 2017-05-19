@@ -34,7 +34,7 @@ public abstract class ConditionBlockNode extends StatementNode {
     }
 
     @Override
-    public Void evaluate() {
+    public Void evaluate(Robot robot) {
         return null;
     }
 

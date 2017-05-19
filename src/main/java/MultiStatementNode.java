@@ -89,7 +89,7 @@ public abstract class MultiStatementNode extends ParsableNode<Void> {
     }
 
     @Override
-    public Void evaluate() {
+    public Void evaluate(Robot robot) {
         return null;
     }
 

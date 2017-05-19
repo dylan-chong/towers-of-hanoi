@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 /**
  * Created by Dylan on 16/05/17.
  */
-// TODO add params avoid dupl between simple and paramable action
 public class ActionNode extends StatementNode {
 
     /**
@@ -25,11 +24,11 @@ public class ActionNode extends StatementNode {
         ALL_ACTIONS.put("takeFuel", new Action((robot, params) -> robot.takeFuel()));
 
         ALL_ACTIONS.put("move", new Action(true, (robot, params) -> {
-            int times = params.size() > 0 ? params.get(0).evaluate() : 1;
+            int times = params.size() > 0 ? params.get(0).evaluate(robot) : 1;
             for (int i = 0; i < times; i++) robot.move();
         }));
         ALL_ACTIONS.put("wait", new Action(true, (robot, params) -> {
-            int times = params.size() > 0 ? params.get(0).evaluate() : 1;
+            int times = params.size() > 0 ? params.get(0).evaluate(robot) : 1;
             for (int i = 0; i < times; i++) robot.idleWait();
         }));
     }
@@ -82,7 +81,7 @@ public class ActionNode extends StatementNode {
     }
 
     @Override
-    public Void evaluate() {
+    public Void evaluate(Robot robot) {
         return null; // returns nothing
     }
 

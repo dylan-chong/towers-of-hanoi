@@ -148,7 +148,7 @@ public class TestNodes {
     }
 
     /*
-     ************************* Action *************************
+     ************************* FunctionWrapper *************************
      */
 
     @Test
@@ -371,10 +371,14 @@ public class TestNodes {
         }
 
         public void testEvaluate(String program, Object expected) {
+            testEvaluate(program, expected, null);
+        }
+
+        public void testEvaluate(String program, Object expected, Robot robot) {
             Scanner scanner = newScanner(program);
             ParsableNode<?> node = factorySupplier.get().create(scanner);
             node.parse(scanner, new Logger.SystemOutputLogger());
-            assertEquals(expected, node.evaluate());
+            assertEquals(expected, node.evaluate(robot));
         }
 
         private ParsableNode<?> newNodeWithInput(String program) {
