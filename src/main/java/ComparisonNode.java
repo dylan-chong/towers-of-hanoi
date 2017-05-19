@@ -25,8 +25,10 @@ public class ComparisonNode extends ConditionNode {
     }
 
     @Override
-    public void execute(Robot robot) {
-        // Do nothing
+    public Boolean execute(Robot robot) {
+        return nameToFunction
+                .getValue()
+                .apply(params.get(0).execute(robot), params.get(1).execute(robot));
     }
 
     @Override
@@ -48,13 +50,6 @@ public class ComparisonNode extends ConditionNode {
         return String.format("%s(%s,%s)",
                 nameToFunction.getKey(), params.get(0), params.get(1)
         );
-    }
-
-    @Override
-    public Boolean evaluate(Robot robot) {
-        return nameToFunction
-                .getValue()
-                .apply(params.get(0).evaluate(robot), params.get(1).evaluate(robot));
     }
 
     private void parseOneExpression(Scanner scanner, Logger logger) {

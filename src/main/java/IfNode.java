@@ -14,7 +14,7 @@ public class IfNode extends ConditionBlockNode {
     protected void privateExecute(Robot robot,
                                   ConditionNode conditionNode,
                                   BlockNode blockNode) {
-        if (conditionNode.evaluate(robot)) blockNode.execute(robot);
+        if (conditionNode.execute(robot)) blockNode.execute(robot);
     }
 
     public static class NodeFactory implements Factory<IfNode> {

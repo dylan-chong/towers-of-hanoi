@@ -10,12 +10,6 @@ public class LoopNode extends StatementNode {
     private final BlockNode blockNode = new BlockNode();
 
     @Override
-    public void execute(Robot robot) {
-        // noinspection InfiniteLoopStatement
-        while (true) blockNode.execute(robot);
-    }
-
-    @Override
     protected void privateDoParse(Scanner scanner, Logger logger) {
         require(LOOP_KEYWORD, scanner, ParserFailureType.WRONG_NODE_START);
         blockNode.parse(scanner, logger);
@@ -27,8 +21,9 @@ public class LoopNode extends StatementNode {
     }
 
     @Override
-    public Void evaluate(Robot robot) {
-        return null;
+    public Void execute(Robot robot) {
+        // noinspection InfiniteLoopStatement
+        while (true) blockNode.execute(robot);
     }
 
     public static class NodeFactory implements Factory<LoopNode> {

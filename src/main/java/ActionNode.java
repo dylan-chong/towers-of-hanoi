@@ -24,11 +24,11 @@ public class ActionNode extends StatementNode {
         ALL_ACTIONS.put("takeFuel", new Action((robot, params) -> robot.takeFuel()));
 
         ALL_ACTIONS.put("move", new Action(true, (robot, params) -> {
-            int times = params.size() > 0 ? params.get(0).evaluate(robot) : 1;
+            int times = params.size() > 0 ? params.get(0).execute(robot) : 1;
             for (int i = 0; i < times; i++) robot.move();
         }));
         ALL_ACTIONS.put("wait", new Action(true, (robot, params) -> {
-            int times = params.size() > 0 ? params.get(0).evaluate(robot) : 1;
+            int times = params.size() > 0 ? params.get(0).execute(robot) : 1;
             for (int i = 0; i < times; i++) robot.idleWait();
         }));
     }
@@ -81,15 +81,11 @@ public class ActionNode extends StatementNode {
     }
 
     @Override
-    public Void evaluate(Robot robot) {
-        return null; // returns nothing
-    }
-
-    @Override
-    public void execute(Robot robot) {
+    public Void execute(Robot robot) {
         actionEntry.getValue()
                 .function
                 .accept(robot, params);
+        return null;
     }
 
     public static class NodeFactory implements Factory<ActionNode> {

@@ -22,10 +22,6 @@ public class DecorableOptionalParamNode<EvalT> extends ParsableNode<EvalT> {
     }
 
     @Override
-    public void execute(Robot robot) {
-    }
-
-    @Override
     protected void privateDoParse(Scanner scanner, Logger logger) {
 
     }
@@ -36,7 +32,7 @@ public class DecorableOptionalParamNode<EvalT> extends ParsableNode<EvalT> {
     }
 
     @Override
-    public EvalT evaluate(Robot robot) {
+    public EvalT execute(Robot robot) {
         return functionWrapper.function.apply(robot, params);
     }
 

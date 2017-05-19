@@ -34,13 +34,9 @@ public abstract class ConditionBlockNode extends StatementNode {
     }
 
     @Override
-    public Void evaluate(Robot robot) {
-        return null;
-    }
-
-    @Override
-    public final void execute(Robot robot) {
+    public final Void execute(Robot robot) {
         privateExecute(robot, conditionNode, blockNode);
+        return null;
     }
 
     protected abstract void privateExecute(Robot robot,

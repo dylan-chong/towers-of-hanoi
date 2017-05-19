@@ -1,3 +1,4 @@
+import javax.lang.model.element.ElementVisitor;
 import java.util.Collection;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -8,7 +9,7 @@ import java.util.stream.Collectors;
  *
  * @param <EvalT> The type that this node returns (or {@link Void})
  */
-public abstract class ParsableNode<EvalT> implements RobotProgramNode {
+public abstract class ParsableNode<EvalT> implements RobotProgramNode<EvalT> {
 
     static {
         String specialChars = "(){},;";
@@ -60,14 +61,6 @@ public abstract class ParsableNode<EvalT> implements RobotProgramNode {
      * and reconstruct it from the parsed code.
      */
     abstract protected String privateToCode();
-
-    /**
-     * Similar to {@link ParsableNode#execute(Robot)} but this doesn't perform
-     * {@link Robot} operations, it only calculates a return value. This is
-     * useful for maths and boolean operations.
-     * @param robot
-     */
-    abstract public EvalT evaluate(Robot robot);
 
     @Override
     public String toString() {

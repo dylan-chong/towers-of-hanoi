@@ -7,11 +7,6 @@ import java.util.Collection;
 
 public abstract class ExpressionNode extends ParsableNode<Integer> {
 
-    @Override
-    public final void execute(Robot robot) {
-        // Do nothing
-    }
-
     public static class NodeFactory extends Factory.DelegatorFactory<ExpressionNode> {
         @Override
         protected Collection<Factory<? extends ExpressionNode>> getPossibilities() {

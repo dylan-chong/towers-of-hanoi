@@ -124,17 +124,17 @@ public class TestNodes {
 
     @Test
     public void evaluateAdd_twoPositiveArgs_sumsCorrectly() {
-        NodeTesters.ADD.testEvaluate("add(10,99)", 109);
+        NodeTesters.ADD.testExecute("add(10,99)", 109);
     }
 
     @Test
     public void evaluateAdd_twoNegativeArgs_sumsCorrectly() {
-        NodeTesters.ADD.testEvaluate("add(-5,-123)", -128);
+        NodeTesters.ADD.testExecute("add(-5,-123)", -128);
     }
 
     @Test
     public void evaluateOperationAdd_twoNegativeArgs_sumsCorrectly() {
-        NodeTesters.OPERATION.testEvaluate("add(-5,-123)", -128);
+        NodeTesters.OPERATION.testExecute("add(-5,-123)", -128);
     }
 
     @Test
@@ -144,7 +144,7 @@ public class TestNodes {
 
     @Test
     public void evaluateOperationSubtract_twoPositiveArgs_sumsCorrectly() {
-        NodeTesters.OPERATION.testEvaluate("sub(10,99)", -89);
+        NodeTesters.OPERATION.testExecute("sub(10,99)", -89);
     }
 
     /*
@@ -288,7 +288,7 @@ public class TestNodes {
 
     @Test
     public void evaluateLessThan_1Then2_parses() {
-        NodeTesters.CONDITION.testEvaluate("lt(1,2)", true);
+        NodeTesters.CONDITION.testExecute("lt(1,2)", true);
     }
 
     /*
@@ -370,15 +370,15 @@ public class TestNodes {
             }
         }
 
-        public void testEvaluate(String program, Object expected) {
-            testEvaluate(program, expected, null);
+        public void testExecute(String program, Object expected) {
+            testExecute(program, expected, null);
         }
 
-        public void testEvaluate(String program, Object expected, Robot robot) {
+        public void testExecute(String program, Object expected, Robot robot) {
             Scanner scanner = newScanner(program);
             ParsableNode<?> node = factorySupplier.get().create(scanner);
             node.parse(scanner, new Logger.SystemOutputLogger());
-            assertEquals(expected, node.evaluate(robot));
+            assertEquals(expected, node.execute(robot));
         }
 
         private ParsableNode<?> newNodeWithInput(String program) {

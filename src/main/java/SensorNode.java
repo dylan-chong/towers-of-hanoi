@@ -52,7 +52,7 @@ public class SensorNode extends ExpressionNode {
     }
 
     @Override
-    public Integer evaluate(Robot robot) {
+    public Integer execute(Robot robot) {
         return actionEntry.getValue().apply(robot);
     }
 

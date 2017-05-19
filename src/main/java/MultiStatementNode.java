@@ -36,13 +36,6 @@ public abstract class MultiStatementNode extends ParsableNode<Void> {
     }
 
     @Override
-    public void execute(Robot robot) {
-        for (StatementNode expression : statements) {
-            expression.execute(robot);
-        }
-    }
-
-    @Override
     protected void privateDoParse(Scanner scanner, Logger logger) {
         if (!startPattern.isEmpty()) {
             startMatch = require(
@@ -89,7 +82,10 @@ public abstract class MultiStatementNode extends ParsableNode<Void> {
     }
 
     @Override
-    public Void evaluate(Robot robot) {
+    public Void execute(Robot robot) {
+        for (StatementNode expression : statements) {
+            expression.execute(robot);
+        }
         return null;
     }
 

@@ -21,7 +21,7 @@ public class NumberNode extends ExpressionNode {
     }
 
     @Override
-    public Integer evaluate(Robot robot) {
+    public Integer execute(Robot robot) {
         return number;
     }
 

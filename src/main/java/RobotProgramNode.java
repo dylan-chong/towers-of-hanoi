@@ -3,6 +3,6 @@
  * including the top level program node
  */
 
-interface RobotProgramNode {
-    void execute(Robot robot);
+interface RobotProgramNode<EvalT> {
+    EvalT execute(Robot robot);
 }

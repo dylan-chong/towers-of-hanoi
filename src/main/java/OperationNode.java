@@ -46,7 +46,7 @@ public class OperationNode extends ExpressionNode {
     }
 
     @Override
-    public Integer evaluate(Robot robot) {
+    public Integer execute(Robot robot) {
         return applyOperation(params, robot);
     }
 
@@ -56,26 +56,26 @@ public class OperationNode extends ExpressionNode {
 
     public enum Operations {
         ADD("add", (robot, params) -> params.stream()
-                .map(node -> node.evaluate(robot))
+                .map(node -> node.execute(robot))
                 .reduce((a, b) -> a + b)
                 .orElse(0)
         ),
         SUBTRACT("sub", (robot, params) -> {
-            int result = params.get(0).evaluate(robot);
+            int result = params.get(0).execute(robot);
             for (int i = 1; i < params.size(); i++) {
-                result -= params.get(i).evaluate(robot);
+                result -= params.get(i).execute(robot);
             }
             return result;
         }),
         MULTIPLY("mul", (robot, params) -> params.stream()
-                .map(node -> node.evaluate(robot))
+                .map(node -> node.execute(robot))
                 .reduce((a, b) -> a * b)
                 .orElse(0)
         ),
         DIVIDE("div", (robot, params) -> {
-            int result = params.get(0).evaluate(robot);
+            int result = params.get(0).execute(robot);
             for (int i = 1; i < params.size(); i++) {
-                result /= params.get(i).evaluate(robot);
+                result /= params.get(i).execute(robot);
             }
             return result;
         });
