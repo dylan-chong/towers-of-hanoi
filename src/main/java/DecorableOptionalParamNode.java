@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
  * Doesn't represent an actual load in the grammar, so this should be wrapped
  * by another {@link ParsableNode} class. This is used for reducing
  * code duplication.
+ *
+ * Represents something like "wait" or "wait(1)"
  */
 public class DecorableOptionalParamNode<ParamT extends ParsableNode<?>, EvalT>
         extends ParsableNode<EvalT> {

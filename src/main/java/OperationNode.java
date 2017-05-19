@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -9,49 +8,34 @@ import java.util.stream.Collectors;
  * Created by Dylan on 16/05/17.
  */
 public class OperationNode extends ExpressionNode {
-    private final String functionNamePattern;
-    private final BiFunction<Robot, List<ParsableNode<Integer>>, Integer> applyOperation;
-    private List<ParsableNode<Integer>> params = new ArrayList<>(2);
 
-    public OperationNode(String functionNamePattern,
-                         BiFunction<Robot, List<ParsableNode<Integer>>, Integer> applyOperation) {
-        this.functionNamePattern = functionNamePattern;
-        this.applyOperation = applyOperation;
-    }
+    private final DecorableFunctionNode<ParsableNode<Integer>, Integer> subNode;
 
-    @Override
-    protected void privateDoParse(Scanner scanner, Logger logger) {
-        require(functionNamePattern, scanner, ParserFailureType.WRONG_NODE_START);
-        require("\\(", scanner, ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE);
+    public OperationNode(
+            String functionNamePattern,
+            BiFunction<Robot, List<ParsableNode<Integer>>, Integer> applyOperation) {
 
-        ExpressionNode.NodeFactory factory = new ExpressionNode.NodeFactory();
-
-        params.add(factory.create(scanner));
-        params.get(0).parse(scanner, logger);
-
-        require(",", scanner, ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE);
-
-        params.add(factory.create(scanner));
-        params.get(1).parse(scanner, logger);
-
-        require("\\)", scanner, ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE);
-    }
-
-    @Override
-    public String privateToCode() {
-        return String.format("%s(%s,%s)",
+        subNode = new DecorableFunctionNode<>(
                 functionNamePattern,
-                params.get(0), params.get(1)
+                2,
+                applyOperation,
+                new ExpressionNode.NodeFactory()
         );
     }
 
     @Override
     public Integer execute(Robot robot) {
-        return applyOperation(params, robot);
+        return subNode.execute(robot);
     }
 
-    private Integer applyOperation(List<ParsableNode<Integer>> params, Robot robot) {
-        return applyOperation.apply(robot, params);
+    @Override
+    protected void privateDoParse(Scanner scanner, Logger logger) {
+        subNode.parse(scanner, logger);
+    }
+
+    @Override
+    protected String privateToCode() {
+        return subNode.toString();
     }
 
     public enum Operations {

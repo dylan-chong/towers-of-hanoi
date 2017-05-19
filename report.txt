@@ -28,7 +28,7 @@ Stage 0 of out 40:  LOOP and ACTION
 Stage 1 out of 20: SENSORS and CONDITIONS
  [x] [2] The extended list of actions work.
  [x] [5] Conditions return the correct value.
- [ ] [5] Sensors return the correct value.
+ [x] [5] Sensors return the correct value.
  [x] [8] If and while loops behave as expected.
 
 Stage 2 out of 15: EXPRESSIONS

@@ -38,7 +38,7 @@ public class TestNodes {
 
     @Test
     public void operationFactory_create_noCircularDependency() {
-        testNodeFactoryStackOverflow(new OperationNode.NodeFactory());
+        testNodeFactoryStackOverflow(new BooleanOperationNode.NodeFactory());
     }
 
     private void testNodeFactoryStackOverflow(ParsableNode.Factory<?> factory) {
@@ -51,12 +51,12 @@ public class TestNodes {
      */
 
     @Test
-    public void parseNumber_withPositiveInteger_evaluatesToSameNumber() {
+    public void parseNumber_withPositiveInteger_executesToSameNumber() {
         NodeTesters.NUMBER.testParseNode("3", "3");
     }
 
     @Test
-    public void parseNumber_withNegativeInteger_evaluatesToSameNumber() {
+    public void parseNumber_withNegativeInteger_executesToSameNumber() {
         NodeTesters.NUMBER.testParseNode("-9", "-9");
     }
 
@@ -123,17 +123,17 @@ public class TestNodes {
     }
 
     @Test
-    public void evaluateAdd_twoPositiveArgs_sumsCorrectly() {
+    public void executeAdd_twoPositiveArgs_sumsCorrectly() {
         NodeTesters.ADD.testExecute("add(10,99)", 109);
     }
 
     @Test
-    public void evaluateAdd_twoNegativeArgs_sumsCorrectly() {
+    public void executeAdd_twoNegativeArgs_sumsCorrectly() {
         NodeTesters.ADD.testExecute("add(-5,-123)", -128);
     }
 
     @Test
-    public void evaluateOperationAdd_twoNegativeArgs_sumsCorrectly() {
+    public void executeOperationAdd_twoNegativeArgs_sumsCorrectly() {
         NodeTesters.OPERATION.testExecute("add(-5,-123)", -128);
     }
 
@@ -143,7 +143,7 @@ public class TestNodes {
     }
 
     @Test
-    public void evaluateOperationSubtract_twoPositiveArgs_sumsCorrectly() {
+    public void executeOperationSubtract_twoPositiveArgs_sumsCorrectly() {
         NodeTesters.OPERATION.testExecute("sub(10,99)", -89);
     }
 
@@ -303,8 +303,32 @@ public class TestNodes {
     }
 
     @Test
-    public void evaluateLessThan_1Then2_parses() {
+    public void executeLessThan_1Then2_parses() {
         NodeTesters.CONDITION.testExecute("lt(1,2)", true);
+    }
+
+    /*
+     ************************* BooleanOperationNode *************************
+     */
+
+    @Test
+    public void parseOr_simplestCondition_parses() {
+        NodeTesters.BOOLEAN.testParseNode("or(eq(1,1),lt(1,2))", "or(eq(1,1),lt(1,2))");
+    }
+
+    @Test
+    public void executeOr_bothConditionsTrue_returnsTrue() {
+        NodeTesters.BOOLEAN.testExecute("or(eq(1,1),lt(1,2))", true);
+    }
+
+    @Test
+    public void executeOr_oneConditionsTrue_returnsTrue() {
+        NodeTesters.BOOLEAN.testExecute("or(eq(1,2),lt(1,2))", true);
+    }
+
+    @Test
+    public void executeOr_noCondition_returnsFalse() {
+        NodeTesters.BOOLEAN.testExecute("or(eq(1,2),gt(1,2))", false);
     }
 
     /*
@@ -320,7 +344,6 @@ public class TestNodes {
     public void parseWhile_withLessThan_parses() {
         NodeTesters.WHILE.testParseNode("while(lt(1,2)){turnL;}", "while(lt(1,2)){turnL;}");
     }
-
 
     /*
      ************************* Utils *************************
@@ -344,7 +367,8 @@ public class TestNodes {
         BLOCK(factoryFromSupplier(BlockNode::new)),
         ADD(factoryFromSupplier(OperationNode.Operations.ADD::create)),
 
-        // For DelegatorFactories / factories that have to pick a node type
+        // For factories that have to pick a node type (e.g. DelegatorFactory)
+        BOOLEAN(BooleanOperationNode.NodeFactory::new),
         CONDITION(ConditionNode.NodeFactory::new),
         OPERATION(OperationNode.NodeFactory::new);
 

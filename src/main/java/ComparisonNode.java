@@ -16,47 +16,43 @@ public class ComparisonNode extends ConditionNode {
         FUNCTIONS.put("eq", Objects::equals);
     }
 
-    private final Map.Entry<String, BiFunction<Integer, Integer, Boolean>> nameToFunction;
-    private List<ExpressionNode> params;
+    private final DecorableFunctionNode<ExpressionNode, Boolean> subNode;
 
     public ComparisonNode(Map.Entry<String, BiFunction<Integer, Integer, Boolean>>
                                   nameToFunction) {
-        this.nameToFunction = nameToFunction;
+
+        subNode = new DecorableFunctionNode<>(
+                nameToFunction.getKey(),
+                2,
+                adaptFunction(nameToFunction.getValue()),
+                new ExpressionNode.NodeFactory()
+        );
+    }
+
+    private static BiFunction<Robot, List<ExpressionNode>, Boolean> adaptFunction(
+            BiFunction<Integer, Integer, Boolean> function) {
+
+        return (robot, paramNodes) -> {
+            List<Integer> params = paramNodes.stream()
+                    .map(node -> node.execute(robot))
+                    .collect(Collectors.toList());
+            return function.apply(params.get(0), params.get(1));
+        };
     }
 
     @Override
     public Boolean execute(Robot robot) {
-        return nameToFunction
-                .getValue()
-                .apply(params.get(0).execute(robot), params.get(1).execute(robot));
+        return subNode.execute(robot);
     }
 
     @Override
     protected void privateDoParse(Scanner scanner, Logger logger) {
-        require(nameToFunction.getKey(), scanner, ParserFailureType.WRONG_NODE_START);
-        require("\\(", scanner, ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE);
-
-        params = new ArrayList<>();
-        parseOneExpression(scanner, logger);
-        require(",", scanner, ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE);
-
-        parseOneExpression(scanner, logger);
-
-        require("\\)", scanner, ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE);
+        subNode.parse(scanner, logger);
     }
 
     @Override
     protected String privateToCode() {
-        return String.format("%s(%s,%s)",
-                nameToFunction.getKey(), params.get(0), params.get(1)
-        );
-    }
-
-    private void parseOneExpression(Scanner scanner, Logger logger) {
-        ExpressionNode.NodeFactory factory = new ExpressionNode.NodeFactory();
-        ExpressionNode node = factory.create(scanner);
-        node.parse(scanner, logger);
-        params.add(node);
+        return subNode.toString();
     }
 
     public static class NodeFactory implements Factory<ComparisonNode> {
