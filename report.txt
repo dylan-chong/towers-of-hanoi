@@ -33,8 +33,8 @@ Stage 1 out of 20: SENSORS and CONDITIONS
 
 Stage 2 out of 15: EXPRESSIONS
  [x] [5] The move and wait commands can now take an argument
- [ ] [5] If statements can take an else clause.
- [ ] [5] Arithmetic expressions and boolean conditions work.
+ [x] [5] If statements can take an else clause.
+ [x] [5] Arithmetic expressions and boolean conditions work.
 
 Stage 3 out of 10: VARIABLES
  [ ] [8] Variables and assignments work.

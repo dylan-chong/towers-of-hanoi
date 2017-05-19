@@ -7,7 +7,7 @@ public class WhileNode extends ConditionBlockNode {
     private static final String WHILE_KEYWORD = "while";
 
     public WhileNode() {
-        super(WHILE_KEYWORD);
+        super(WHILE_KEYWORD, true);
     }
 
     @Override

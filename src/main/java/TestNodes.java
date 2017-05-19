@@ -327,8 +327,13 @@ public class TestNodes {
     }
 
     @Test
-    public void executeOr_noCondition_returnsFalse() {
+    public void executeOr_noConditionsTrue_returnsFalse() {
         NodeTesters.BOOLEAN.testExecute("or(eq(1,2),gt(1,2))", false);
+    }
+
+    @Test
+    public void executeNot_inputTrue_returnsFalse() {
+        NodeTesters.BOOLEAN.testExecute("not(eq(1,1))", false);
     }
 
     /*
@@ -338,6 +343,14 @@ public class TestNodes {
     @Test
     public void parseIf_withLessThan_parses() {
         NodeTesters.IF.testParseNode("if(lt(1,2)){turnL;}", "if(lt(1,2)){turnL;}");
+    }
+
+    @Test
+    public void parseIf_withElse_parses() {
+        NodeTesters.IF.testParseNode(
+                "if(lt(1,2)){turnL;}else{turnR;}",
+                "if(lt(1,2)){turnL;}else{turnR;}"
+        );
     }
 
     @Test

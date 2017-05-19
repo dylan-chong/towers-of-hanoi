@@ -20,7 +20,6 @@ public class ComparisonNode extends ConditionNode {
 
     public ComparisonNode(Map.Entry<String, BiFunction<Integer, Integer, Boolean>>
                                   nameToFunction) {
-
         subNode = new DecorableFunctionNode<>(
                 nameToFunction.getKey(),
                 2,
