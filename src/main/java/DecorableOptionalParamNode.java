@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * Represents something like "wait" or "wait(1)"
  */
 public class DecorableOptionalParamNode<ParamT extends ParsableNode<?>, EvalT>
-        extends ParsableNode<EvalT> {
+        extends AbstractParsableNode<EvalT> {
 
     private final Map<String, FunctionWrapper<ParamT, EvalT>> keyToFunction;
     private final Factory<? extends ParamT> nodeFactory;

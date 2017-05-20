@@ -4,8 +4,8 @@ import java.util.Collection;
 /**
  * Created by Dylan on 18/05/17.
  */
-public abstract class ConditionNode extends ParsableNode<Boolean> {
-    public static class NodeFactory extends Factory.DelegatorFactory<ConditionNode> {
+public abstract class ConditionNode extends AbstractParsableNode<Boolean> {
+    public static class NodeFactory extends DelegatorFactory<ConditionNode> {
         @Override
         protected Collection<Factory<? extends ConditionNode>> getPossibilities() {
             return Arrays.asList(

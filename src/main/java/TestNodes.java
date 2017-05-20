@@ -348,8 +348,24 @@ public class TestNodes {
     @Test
     public void parseIf_withElse_parses() {
         NodeTesters.IF.testParseNode(
-                "if(lt(1,2)){turnL;}else{turnR;}",
-                "if(lt(1,2)){turnL;}else{turnR;}"
+                "if(gt(1,2)){turnL;}else{turnR;}",
+                "if(gt(1,2)){turnL;}else{turnR;}"
+        );
+    }
+
+    @Test
+    public void parseIf_withElif_parses() {
+        NodeTesters.IF.testParseNode(
+                "if(gt(1,2)){turnL;}elif(gt(1,2)){turnR;}",
+                "if(gt(1,2)){turnL;}elif(gt(1,2)){turnR;}"
+        );
+    }
+
+    @Test
+    public void parseIf_withElifAndElse_parses() {
+        NodeTesters.IF.testParseNode(
+                "if(gt(1,2)){turnL;}elif(gt(1,2)){turnR;}else{turnAround;}",
+                "if(gt(1,2)){turnL;}elif(gt(1,2)){turnR;}else{turnAround;}"
         );
     }
 
@@ -364,7 +380,7 @@ public class TestNodes {
 
     private static Scanner newScanner(String program) {
         Scanner scanner = new Scanner(new StringReader(program));
-        scanner.useDelimiter(ParsableNode.DEFAULT_DELIMITER);
+        scanner.useDelimiter(AbstractParsableNode.DEFAULT_DELIMITER);
         return scanner;
     }
 

@@ -4,9 +4,9 @@ import java.util.Collection;
 /**
  * Created by Dylan on 10/05/17.
  */
-public abstract class StatementNode extends ParsableNode<Void> {
+public abstract class StatementNode extends AbstractParsableNode<Void> {
 
-    public static class NodeFactory extends Factory.DelegatorFactory<StatementNode> {
+    public static class NodeFactory extends DelegatorFactory<StatementNode> {
         @Override
         protected Collection<Factory<? extends StatementNode>> getPossibilities() {
             return Arrays.asList(

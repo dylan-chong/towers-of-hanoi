@@ -9,7 +9,7 @@ import java.util.function.BiFunction;
  * Represents 'functionNamePattern(arg1,arg2)`
  */
 public class DecorableFunctionNode<ParamT extends ParsableNode<?>, EvalT>
-        extends ParsableNode<EvalT> {
+        extends AbstractParsableNode<EvalT> {
 
     private final String functionNamePattern;
     private final int numParams;

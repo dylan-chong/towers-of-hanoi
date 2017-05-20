@@ -56,6 +56,10 @@ public abstract class ConditionBlockNode extends StatementNode {
         return blockNode;
     }
 
+    public String getKeyword() {
+        return keyword;
+    }
+
     protected abstract void privateExecute(Robot robot,
                                            ConditionNode conditionNode,
                                            BlockNode blockNode);
