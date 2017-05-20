@@ -202,11 +202,38 @@ public class TestNodes {
     }
 
     @Test
+    public void parseSensor_sensorRequiringNoArgs_error() {
+        // Ensure test is sane
+        assertEquals(false, SensorNode.ALL_SENSORS.get("fuelLeft").hasOptionalParam);
+
+        NodeTesters.PROGRAM.testParseNodeFails(
+                "if(eq(fuelLeft(3), 2)){turnL;}",
+                ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE
+        );
+    }
+
+    @Test
     public void parseSensor_unrecognisedSensor_parseError() {
         NodeTesters.SENSOR.testParseNodeFails(
                 "unrecognisedSensor",
                 ParserFailureType.NON_ONE_MATCHES
         );
+    }
+
+    @Test
+    public void parseSensor_noArgsForSensorThatAllowsOneArg_parses() {
+        // Ensure test is sane
+        assertEquals(true, SensorNode.ALL_SENSORS.get("barrelLR").hasOptionalParam);
+
+        NodeTesters.SENSOR.testParseNode("barrelLR", "barrelLR");
+    }
+
+    @Test
+    public void parseSensor_oneArgForSensorThatAllowsOneArg_parses() {
+        // Ensure test is sane
+        assertEquals(true, SensorNode.ALL_SENSORS.get("barrelLR").hasOptionalParam);
+
+        NodeTesters.SENSOR.testParseNode("barrelLR(5)", "barrelLR(5)");
     }
 
     /*
@@ -366,6 +393,20 @@ public class TestNodes {
         NodeTesters.IF.testParseNode(
                 "if(gt(1,2)){turnL;}elif(gt(1,2)){turnR;}else{turnAround;}",
                 "if(gt(1,2)){turnL;}elif(gt(1,2)){turnR;}else{turnAround;}"
+        );
+    }
+
+    @Test
+    public void parseIf_with2ElifAndElse_parses() {
+        NodeTesters.IF.testParseNode(
+                "if(gt(1,2)){turnL;}" +
+                        "elif(gt(1,2)){turnR;}" +
+                        "elif(gt(3,4)){turnR;}" +
+                        "else{turnAround;}",
+                "if(gt(1,2)){turnL;}" +
+                        "elif(gt(1,2)){turnR;}" +
+                        "elif(gt(3,4)){turnR;}" +
+                        "else{turnAround;}"
         );
     }
 

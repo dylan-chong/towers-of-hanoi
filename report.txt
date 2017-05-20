@@ -38,8 +38,8 @@ Stage 2 out of 15: EXPRESSIONS
 
 Stage 3 out of 10: VARIABLES
  [ ] [8] Variables and assignments work.
- [ ] [1] Conditionals can have any number of elifs.
- [ ] [1] The barrel sensors can take an argument.
+ [x] [1] Conditionals can have any number of elifs.
+ [x] [1] The barrel sensors can take an argument.
 
 Stage 4 out of 15: CHALLENGE
  [ ] [15] Infix expressions work.
