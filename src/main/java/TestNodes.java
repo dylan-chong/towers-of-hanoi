@@ -2,6 +2,7 @@ import org.junit.Test;
 
 import java.io.StringReader;
 import java.util.Scanner;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static org.junit.Assert.assertEquals;
@@ -416,6 +417,44 @@ public class TestNodes {
     }
 
     /*
+     ************************* Variable/Assignment Nodes *************************
+     */
+
+    @Test
+    public void parseVariable_validName_parses() {
+        NodeTesters.VARIABLE.testParseNode("$a1B", "$a1B");
+    }
+
+    @Test
+    public void parseVariable_numberAfterDollar_error() {
+        NodeTesters.VARIABLE.testParseNodeFails("$1B", ParserFailureType.VARIABLE_FORMAT);
+    }
+
+    @Test
+    public void parseAssignment_numberAfterDollar_error() {
+        NodeTesters.ASSIGNMENT.testParseNode("$abc=2;", "$abc=2;");
+    }
+
+    @Test
+    public void executeAssignment_assign2_scopeHasValue2() {
+        VariableScopeNode.Scope scope = testExecuteAssignmentWithContainer("$abc=2;");
+        assertEquals((int) scope.getValue("$abc"), 2);
+    }
+
+    @Test
+    public void executeAssignment_undefinedVariable_equals0() {
+        VariableScopeNode.Scope scope = testExecuteAssignmentWithContainer("$abc=2;");
+        assertEquals((int) scope.getValue("$undefinedVariable"), 0);
+    }
+
+    private VariableScopeNode.Scope testExecuteAssignmentWithContainer(String input) {
+        AssignmentContainerTestNode scopeNode = new AssignmentContainerTestNode(null);
+        scopeNode.parse(newScanner(input), new Logger.SystemOutputLogger());
+        scopeNode.execute(null);
+        return scopeNode.getScope();
+    }
+
+    /*
      ************************* Utils *************************
      */
 
@@ -433,9 +472,11 @@ public class TestNodes {
         LOOP(LoopNode.NodeFactory::new),
         IF(IfNode.NodeFactory::new),
         WHILE(WhileNode.NodeFactory::new),
-        PROGRAM(factoryFromSupplier(ProgramNode::new)),
-        BLOCK(factoryFromSupplier(BlockNode::new)),
-        ADD(factoryFromSupplier(OperationNode.Operations.ADD::create)),
+        VARIABLE(VariableNode.NodeFactory::new),
+        ASSIGNMENT(AssignmentNode.NodeFactory::new),
+        PROGRAM(factoryFromFactoryFunction(ProgramNode::new)),
+        BLOCK(factoryFromFactoryFunction(BlockNode::new)),
+        ADD(factoryFromFactoryFunction(OperationNode.Operations.ADD::create)),
 
         // For factories that have to pick a node type (e.g. DelegatorFactory)
         BOOLEAN(BooleanOperationNode.NodeFactory::new),
@@ -451,12 +492,15 @@ public class TestNodes {
         }
 
         private static Supplier<? extends ParsableNode.Factory<? extends ParsableNode<?>>>
-        factoryFromSupplier(Supplier<? extends ParsableNode<?>> nodeSupplier) {
+        factoryFromFactoryFunction(
+                Function<ParsableNode<?>, ? extends ParsableNode<?>> nodeSupplier) {
+
             return () ->
                     new ParsableNode.Factory<ParsableNode<?>>() {
                         @Override
-                        public ParsableNode<?> create(Scanner scannerNotToBeModified) {
-                            return nodeSupplier.get();
+                        public ParsableNode<?> create(Scanner scannerNotToBeModified,
+                                                      ParsableNode<?> parentNode) {
+                            return nodeSupplier.apply(parentNode);
                         }
 
                         @Override
@@ -486,15 +530,13 @@ public class TestNodes {
         }
 
         public void testExecute(String program, Object expected, Robot robot) {
-            Scanner scanner = newScanner(program);
-            ParsableNode<?> node = factorySupplier.get().create(scanner);
-            node.parse(scanner, new Logger.SystemOutputLogger());
+            ParsableNode<?> node = newNodeWithInput(program);
             assertEquals(expected, node.execute(robot));
         }
 
         private ParsableNode<?> newNodeWithInput(String program) {
             Scanner scanner = newScanner(program);
-            ParsableNode<?> node = factorySupplier.get().create(scanner);
+            ParsableNode<?> node = factorySupplier.get().create(scanner, null);
             node.parse(scanner, new Logger.SystemOutputLogger());
             return node;
         }

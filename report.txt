@@ -37,7 +37,7 @@ Stage 2 out of 15: EXPRESSIONS
  [x] [5] Arithmetic expressions and boolean conditions work.
 
 Stage 3 out of 10: VARIABLES
- [ ] [8] Variables and assignments work.
+ [x] [8] Variables and assignments work.
  [x] [1] Conditionals can have any number of elifs.
  [x] [1] The barrel sensors can take an argument.
 

@@ -18,9 +18,12 @@ public class ComparisonNode extends ConditionNode {
 
     private final DecorableFunctionNode<ExpressionNode, Boolean> subNode;
 
-    public ComparisonNode(Map.Entry<String, BiFunction<Integer, Integer, Boolean>>
+    public ComparisonNode(ParsableNode<?> parentNode,
+                          Map.Entry<String, BiFunction<Integer, Integer, Boolean>>
                                   nameToFunction) {
+        super(parentNode);
         subNode = new DecorableFunctionNode<>(
+                parentNode,
                 nameToFunction.getKey(),
                 2,
                 adaptFunction(nameToFunction.getValue()),
@@ -56,14 +59,15 @@ public class ComparisonNode extends ConditionNode {
 
     public static class NodeFactory implements Factory<ComparisonNode> {
         @Override
-        public ComparisonNode create(Scanner scannerNotToBeModified) {
+        public ComparisonNode create(Scanner scannerNotToBeModified,
+                                     ParsableNode<?> parentNode) {
             List<Map.Entry<String, BiFunction<Integer, Integer, Boolean>>> matches
                     = FUNCTIONS.entrySet()
                     .stream()
                     .filter(entry -> scannerNotToBeModified.hasNext(entry.getKey()))
                     .collect(Collectors.toList());
             requireOnlyOne(matches, scannerNotToBeModified);
-            return new ComparisonNode(matches.get(0));
+            return new ComparisonNode(parentNode, matches.get(0));
         }
 
         @Override

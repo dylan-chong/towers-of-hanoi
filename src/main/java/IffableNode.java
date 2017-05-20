@@ -9,8 +9,9 @@ public abstract class IffableNode extends ConditionBlockNode {
 
     private ElsableNode elsableNode; // optional
 
-    public IffableNode(String keyword) {
-        super(keyword, true);
+    public IffableNode(ParsableNode<?> parentNode,
+                       String keyword) {
+        super(parentNode, keyword, true);
     }
 
     @Override
@@ -18,7 +19,7 @@ public abstract class IffableNode extends ConditionBlockNode {
         super.privateDoParse(scanner, logger);
         ElsableNode.NodeFactory factory = new ElsableNode.NodeFactory();
         if (factory.canStartWith(scanner)) {
-            elsableNode = factory.create(scanner);
+            elsableNode = factory.create(scanner, this);
             elsableNode.parse(scanner, logger);
         }
     }

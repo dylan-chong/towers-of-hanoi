@@ -21,15 +21,16 @@ public abstract class MultiStatementNode extends AbstractParsableNode<Void> {
 
     private List<StatementNode> statements = new ArrayList<>();
 
-    public MultiStatementNode(int minStatements) {
-        this.minStatements = minStatements;
-        this.startPattern = "";
-        this.endPattern = "";
+    public MultiStatementNode(ParsableNode<?> parentNode,
+                              int minStatements) {
+        this(parentNode, minStatements, "", "");
     }
 
-    public MultiStatementNode(int minStatements,
+    public MultiStatementNode(ParsableNode<?> parentNode,
+                              int minStatements,
                               String startPattern,
                               String endPattern) {
+        super(parentNode);
         this.minStatements = minStatements;
         this.startPattern = startPattern;
         this.endPattern = endPattern;
@@ -91,7 +92,7 @@ public abstract class MultiStatementNode extends AbstractParsableNode<Void> {
 
     private void parseOneStatement(Scanner scanner, Logger logger) {
         StatementNode.NodeFactory factory = new StatementNode.NodeFactory();
-        StatementNode statementNode = factory.create(scanner);
+        StatementNode statementNode = factory.create(scanner, this);
         statementNode.parse(scanner, logger);
         statements.add(statementNode);
     }

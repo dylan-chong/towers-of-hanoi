@@ -5,13 +5,16 @@ import java.util.Scanner;
  */
 public abstract class ConditionBlockNode extends StatementNode {
 
-    private final BlockNode blockNode = new BlockNode();
+    private final BlockNode blockNode = new BlockNode(this);
     private final String keyword;
     private final boolean hasCondition;
 
     private ConditionNode conditionNode;
 
-    public ConditionBlockNode(String keyword, boolean hasCondition) {
+    public ConditionBlockNode(ParsableNode<?> parentNode,
+                              String keyword,
+                              boolean hasCondition) {
+        super(parentNode);
         this.keyword = keyword;
         this.hasCondition = hasCondition;
     }
@@ -22,7 +25,7 @@ public abstract class ConditionBlockNode extends StatementNode {
 
         if (hasCondition) {
             require("\\(", scanner, ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE);
-            conditionNode = new ConditionNode.NodeFactory().create(scanner);
+            conditionNode = new ConditionNode.NodeFactory().create(scanner, this);
             conditionNode.parse(scanner, logger);
             require("\\)", scanner, ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE);
         }

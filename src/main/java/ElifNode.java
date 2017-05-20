@@ -6,14 +6,15 @@ import java.util.Scanner;
 public class ElifNode extends IffableNode implements ElsableNode {
     private static final String ELIF_KEYWORD = "elif";
 
-    public ElifNode() {
-        super(ELIF_KEYWORD);
+    public ElifNode(ParsableNode<?> parentNode) {
+        super(parentNode, ELIF_KEYWORD);
     }
 
     public static class NodeFactory implements Factory<ElifNode> {
         @Override
-        public ElifNode create(Scanner scannerNotToBeModified) {
-            return new ElifNode();
+        public ElifNode create(Scanner scannerNotToBeModified,
+                               ParsableNode<?> parentNode) {
+            return new ElifNode(parentNode);
         }
 
         @Override

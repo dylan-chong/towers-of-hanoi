@@ -8,14 +8,15 @@ import java.util.Scanner;
 public class IfNode extends IffableNode {
     private static final String IF_KEYWORD = "if";
 
-    public IfNode() {
-        super(IF_KEYWORD);
+    public IfNode(ParsableNode<?> parentNode) {
+        super(parentNode, IF_KEYWORD);
     }
 
     public static class NodeFactory implements Factory<IfNode> {
         @Override
-        public IfNode create(Scanner scannerNotToBeModified) {
-            return new IfNode();
+        public IfNode create(Scanner scannerNotToBeModified,
+                             ParsableNode<?> parentNode) {
+            return new IfNode(parentNode);
         }
 
         @Override

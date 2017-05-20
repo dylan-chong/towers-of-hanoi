@@ -6,8 +6,8 @@ import java.util.Scanner;
 public class WhileNode extends ConditionBlockNode {
     private static final String WHILE_KEYWORD = "while";
 
-    public WhileNode() {
-        super(WHILE_KEYWORD, true);
+    public WhileNode(ParsableNode<?> parentNode) {
+        super(parentNode, WHILE_KEYWORD, true);
     }
 
     @Override
@@ -21,8 +21,9 @@ public class WhileNode extends ConditionBlockNode {
 
     public static class NodeFactory implements Factory<WhileNode> {
         @Override
-        public WhileNode create(Scanner scannerNotToBeModified) {
-            return new WhileNode();
+        public WhileNode create(Scanner scannerNotToBeModified,
+                                ParsableNode<?> parentNode) {
+            return new WhileNode(parentNode);
         }
 
         @Override

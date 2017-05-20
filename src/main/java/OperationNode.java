@@ -12,10 +12,13 @@ public class OperationNode extends ExpressionNode {
     private final DecorableFunctionNode<ParsableNode<Integer>, Integer> subNode;
 
     public OperationNode(
+            ParsableNode<?> parentNode,
             String functionNamePattern,
             BiFunction<Robot, List<ParsableNode<Integer>>, Integer> applyOperation) {
 
+        super(parentNode);
         subNode = new DecorableFunctionNode<>(
+                parentNode,
                 functionNamePattern,
                 2,
                 applyOperation,
@@ -74,14 +77,15 @@ public class OperationNode extends ExpressionNode {
             this.applyOperation = applyOperation;
         }
 
-        public OperationNode create() {
-            return new OperationNode(namePattern, applyOperation);
+        public OperationNode create(ParsableNode<?> parentNode) {
+            return new OperationNode(parentNode, namePattern, applyOperation);
         }
     }
 
     public static class NodeFactory implements Factory<OperationNode> {
         @Override
-        public OperationNode create(Scanner scannerNotToBeModified) {
+        public OperationNode create(Scanner scannerNotToBeModified,
+                                    ParsableNode<?> parentNode) {
             List<Operations> matches = Arrays.stream(Operations.values())
                     .filter(operation ->
                             scannerNotToBeModified.hasNext(operation.namePattern)
@@ -89,7 +93,7 @@ public class OperationNode extends ExpressionNode {
                     .collect(Collectors.toList());
             requireOnlyOne(matches, scannerNotToBeModified);
 
-            return matches.get(0).create();
+            return matches.get(0).create(parentNode);
         }
 
         @Override

@@ -7,6 +7,10 @@ public class NumberNode extends ExpressionNode {
     private static final String NUMBER_PATTERN = "\\s*-?\\d+";
     private int number;
 
+    public NumberNode(ParsableNode<?> parentNode) {
+        super(parentNode);
+    }
+
     @Override
     protected void privateDoParse(Scanner scanner, Logger logger) {
         number = Integer.parseInt(require(NUMBER_PATTERN,
@@ -27,8 +31,9 @@ public class NumberNode extends ExpressionNode {
 
     public static class NodeFactory implements Factory<NumberNode> {
         @Override
-        public NumberNode create(Scanner scannerNotToBeModified) {
-            return new NumberNode();
+        public NumberNode create(Scanner scannerNotToBeModified,
+                                 ParsableNode<?> parentNode) {
+            return new NumberNode(parentNode);
         }
 
         @Override

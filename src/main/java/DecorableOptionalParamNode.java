@@ -22,8 +22,10 @@ public class DecorableOptionalParamNode<ParamT extends ParsableNode<?>, EvalT>
     private FunctionWrapper<ParamT, EvalT> functionWrapper;
     private ParamT param;
 
-    public DecorableOptionalParamNode(Map<String, FunctionWrapper<ParamT, EvalT>> keyToFunction,
+    public DecorableOptionalParamNode(ParsableNode<?> parentNode,
+                                      Map<String, FunctionWrapper<ParamT, EvalT>> keyToFunction,
                                       Factory<? extends ParamT> nodeFactory) {
+        super(parentNode);
         this.keyToFunction = keyToFunction;
         this.nodeFactory = nodeFactory;
     }
@@ -46,7 +48,7 @@ public class DecorableOptionalParamNode<ParamT extends ParsableNode<?>, EvalT>
         // Optional param (valid syntax: 'name(EXPR)' or 'name')
         if (functionWrapper.hasOptionalParam && scanner.hasNext("\\(")) {
             require("\\(", scanner, ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE);
-            param = nodeFactory.create(scanner);
+            param = nodeFactory.create(scanner, this);
             param.parse(scanner, logger);
             require("\\)", scanner, ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE);
         }

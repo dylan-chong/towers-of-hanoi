@@ -38,8 +38,14 @@ public class SensorNode extends ExpressionNode {
 
     private final DecorableOptionalParamNode<ExpressionNode, Integer> subnode =
             new DecorableOptionalParamNode<>(
-                    ALL_SENSORS, new ExpressionNode.NodeFactory()
+                    this,
+                    ALL_SENSORS,
+                    new ExpressionNode.NodeFactory()
             );
+
+    public SensorNode(ParsableNode<?> parentNode) {
+        super(parentNode);
+    }
 
     @Override
     public Integer execute(Robot robot) {
@@ -58,8 +64,9 @@ public class SensorNode extends ExpressionNode {
 
     public static class NodeFactory implements Factory<SensorNode> {
         @Override
-        public SensorNode create(Scanner scannerNotToBeModified) {
-            return new SensorNode();
+        public SensorNode create(Scanner scannerNotToBeModified,
+                                 ParsableNode<?> parentNode) {
+            return new SensorNode(parentNode);
         }
 
         @Override

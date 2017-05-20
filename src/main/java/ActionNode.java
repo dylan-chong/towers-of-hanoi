@@ -55,8 +55,14 @@ public class ActionNode extends StatementNode {
 
     private final DecorableOptionalParamNode<ExpressionNode, Void> subnode =
             new DecorableOptionalParamNode<>(
-                    ALL_ACTIONS, new ExpressionNode.NodeFactory()
+                    this,
+                    ALL_ACTIONS,
+                    new ExpressionNode.NodeFactory()
             );
+
+    public ActionNode(ParsableNode<?> parentNode) {
+        super(parentNode);
+    }
 
     @Override
     public Void execute(Robot robot) {
@@ -76,8 +82,9 @@ public class ActionNode extends StatementNode {
 
     public static class NodeFactory implements Factory<ActionNode> {
         @Override
-        public ActionNode create(Scanner scannerNotToBeModified) {
-            return new ActionNode();
+        public ActionNode create(Scanner scannerNotToBeModified,
+                                 ParsableNode<?> parentNode) {
+            return new ActionNode(parentNode);
         }
 
         @Override

@@ -6,6 +6,10 @@ import java.util.Collection;
  */
 public abstract class StatementNode extends AbstractParsableNode<Void> {
 
+    public StatementNode(ParsableNode<?> parentNode) {
+        super(parentNode);
+    }
+
     public static class NodeFactory extends DelegatorFactory<StatementNode> {
         @Override
         protected Collection<Factory<? extends StatementNode>> getPossibilities() {
@@ -13,7 +17,8 @@ public abstract class StatementNode extends AbstractParsableNode<Void> {
                     new ActionNode.NodeFactory(),
                     new LoopNode.NodeFactory(),
                     new IfNode.NodeFactory(),
-                    new WhileNode.NodeFactory()
+                    new WhileNode.NodeFactory(),
+                    new AssignmentNode.NodeFactory()
             );
         }
     }

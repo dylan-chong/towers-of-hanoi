@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public abstract class AbstractParsableNode<EvalT> implements ParsableNode<EvalT> {
 
     static {
-        String specialChars = "(){},;";
+        String specialChars = "(){},;=";
         DEFAULT_DELIMITER = Pattern.compile(
                 "\\s+|(?=[" + specialChars + "])|(?<=[" + specialChars + "])"
         );
@@ -22,7 +22,18 @@ public abstract class AbstractParsableNode<EvalT> implements ParsableNode<EvalT>
      */
     public static final Pattern DEFAULT_DELIMITER;
 
+    private final ParsableNode<?> parentNode;
+
     private boolean hasParsed = false;
+
+    public AbstractParsableNode(ParsableNode<?> parentNode) {
+        this.parentNode = parentNode;
+    }
+
+    @Override
+    public ParsableNode<?> getParentNode() {
+        return parentNode;
+    }
 
     @Override
     public final void parse(Scanner scanner, Logger logger) {
@@ -110,13 +121,14 @@ public abstract class AbstractParsableNode<EvalT> implements ParsableNode<EvalT>
             implements Factory<NodeT> {
 
         @Override
-        public NodeT create(Scanner scannerNotToBeModified) {
+        public NodeT create(Scanner scannerNotToBeModified,
+                            ParsableNode<?> parentNode) {
             Collection<Factory<? extends NodeT>> matches = getMatches(scannerNotToBeModified);
             requireOnlyOne(matches, scannerNotToBeModified);
             return matches.stream()
                     .findAny()
                     .orElseThrow(AssertionError::new)
-                    .create(scannerNotToBeModified);
+                    .create(scannerNotToBeModified, parentNode);
         }
 
         @Override

@@ -7,7 +7,11 @@ public class LoopNode extends StatementNode {
 
     private static final String LOOP_KEYWORD = "loop";
 
-    private final BlockNode blockNode = new BlockNode();
+    private final BlockNode blockNode = new BlockNode(this);
+
+    public LoopNode(ParsableNode<?> parentNode) {
+        super(parentNode);
+    }
 
     @Override
     protected void privateDoParse(Scanner scanner, Logger logger) {
@@ -28,8 +32,9 @@ public class LoopNode extends StatementNode {
 
     public static class NodeFactory implements Factory<LoopNode> {
         @Override
-        public LoopNode create(Scanner scannerNotToBeModified) {
-            return new LoopNode();
+        public LoopNode create(Scanner scannerNotToBeModified,
+                               ParsableNode<?> parentNode) {
+            return new LoopNode(parentNode);
         }
 
         @Override

@@ -78,7 +78,7 @@ public class Parser {
     }
 
     static RobotProgramNode parseProgram(Scanner s, Logger logger) {
-        ProgramNode programNode = new ProgramNode();
+        ProgramNode programNode = new ProgramNode(null);
         logger.startLog();
         programNode.parse(s, logger);
         logger.endLog();

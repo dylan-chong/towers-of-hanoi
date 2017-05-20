@@ -2,7 +2,7 @@
  * Created by Dylan on 12/05/17.
  */
 public class BlockNode extends MultiStatementNode {
-    public BlockNode() {
-        super(1, "\\{", "\\}");
+    public BlockNode(ParsableNode<?> parentNode) {
+        super(parentNode, 1, "\\{", "\\}");
     }
 }

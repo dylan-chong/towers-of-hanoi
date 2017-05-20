@@ -9,8 +9,11 @@ public class BooleanOperationNode extends ConditionNode {
 
     private final DecorableFunctionNode<ConditionNode, Boolean> subNode;
 
-    public BooleanOperationNode(BoolOperation operation) {
+    public BooleanOperationNode(ParsableNode<?> parentNode,
+                                BoolOperation operation) {
+        super(parentNode);
         subNode = new DecorableFunctionNode<>(
+                parentNode,
                 operation.functionName,
                 operation.numberOfArgs,
                 operation.function,
@@ -35,14 +38,15 @@ public class BooleanOperationNode extends ConditionNode {
 
     public static class NodeFactory implements Factory<BooleanOperationNode> {
         @Override
-        public BooleanOperationNode create(Scanner scannerNotToBeModified) {
+        public BooleanOperationNode create(Scanner scannerNotToBeModified,
+                                           ParsableNode<?> parentNode) {
             List<BoolOperation> matches = Arrays
                     .stream(BoolOperation.values())
                     .filter(operation ->
                             scannerNotToBeModified.hasNext(operation.functionName))
                     .collect(Collectors.toList());
             requireOnlyOne(matches, scannerNotToBeModified);
-            return matches.get(0).create();
+            return matches.get(0).create(parentNode);
         }
 
         @Override
@@ -73,8 +77,8 @@ public class BooleanOperationNode extends ConditionNode {
             this.numberOfArgs = numberOfArgs;
         }
 
-        public BooleanOperationNode create() {
-            return new BooleanOperationNode(this);
+        public BooleanOperationNode create(ParsableNode<?> parentNode) {
+            return new BooleanOperationNode(parentNode, this);
         }
     }
 

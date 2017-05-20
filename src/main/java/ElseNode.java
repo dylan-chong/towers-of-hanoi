@@ -6,8 +6,8 @@ import java.util.Scanner;
 public class ElseNode extends ConditionBlockNode implements ElsableNode {
     private static final String ELSE_KEYWORD = "else";
 
-    public ElseNode() {
-        super(ELSE_KEYWORD, false);
+    public ElseNode(ParsableNode<?> parentNode) {
+        super(parentNode, ELSE_KEYWORD, false);
     }
 
     @Override
@@ -19,8 +19,9 @@ public class ElseNode extends ConditionBlockNode implements ElsableNode {
 
     public static class NodeFactory implements Factory<ElseNode> {
         @Override
-        public ElseNode create(Scanner scannerNotToBeModified) {
-            return new ElseNode();
+        public ElseNode create(Scanner scannerNotToBeModified,
+                               ParsableNode<?> parentNode) {
+            return new ElseNode(parentNode);
         }
 
         @Override

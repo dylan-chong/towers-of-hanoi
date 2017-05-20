@@ -18,11 +18,12 @@ public class DecorableFunctionNode<ParamT extends ParsableNode<?>, EvalT>
 
     private List<ParamT> params;
 
-    public DecorableFunctionNode(
-            String functionNamePattern,
-            int numParams,
-            BiFunction<Robot, List<ParamT>, EvalT> executor,
-            Factory<? extends ParamT> paramFactory) {
+    public DecorableFunctionNode(ParsableNode<?> parentNode,
+                                 String functionNamePattern,
+                                 int numParams,
+                                 BiFunction<Robot, List<ParamT>, EvalT> executor,
+                                 Factory<? extends ParamT> paramFactory) {
+        super(parentNode);
 
         if (functionNamePattern.isEmpty())
             throw new IllegalArgumentException("functionNamePattern cannot be empty");
@@ -45,7 +46,7 @@ public class DecorableFunctionNode<ParamT extends ParsableNode<?>, EvalT>
 
         params = new ArrayList<>();
         for (int i = 0; i < numParams; i++) {
-            ParamT node = paramFactory.create(scanner);
+            ParamT node = paramFactory.create(scanner, this);
             node.parse(scanner, logger);
             params.add(node);
 

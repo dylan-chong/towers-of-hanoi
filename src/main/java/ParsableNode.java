@@ -13,10 +13,13 @@ public interface ParsableNode<EvalT> extends RobotProgramNode<EvalT> {
 
     void parse(Scanner scanner, Logger logger);
 
+    ParsableNode<?> getParentNode();
+
     /**
      * Every {@link ParsableNode} should have a static factory class (that
      * overrides this). Don't implement this directly if you have a factory
-     * that delegates to other factories; extend the {@link DelegatorFactory}
+     * that delegates to other factories; extend the
+     * {@link AbstractParsableNode.DelegatorFactory} class.
      *
      * @param <NodeT> The type of node to produce
      */
@@ -26,7 +29,7 @@ public interface ParsableNode<EvalT> extends RobotProgramNode<EvalT> {
          * Create a new {@link ParsableNode}. Pick a node by choosing what
          * can be created using
          */
-        NodeT create(Scanner scannerNotToBeModified);
+        NodeT create(Scanner scannerNotToBeModified, ParsableNode<?> parentNode);
 
         /**
          * @param scanner Scanner to call hasNext(pattern) on. Do not modify
