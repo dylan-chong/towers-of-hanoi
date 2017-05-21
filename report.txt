@@ -1,20 +1,5 @@
 # Report #
 
-
-
-
-
-
-IMPORTANT NOTES:
-
-- The a4.jar file is there to run the program (for convenience)
-- The full java code can be found inside the full-project zip
-    - The java code is under src/main/java/
-
-
-
-
-
 ## What was done ##
 
 Note: a '[x]' represents a completed task it is the markdown symbol for a
@@ -46,3 +31,9 @@ Stage 4 out of 15: CHALLENGE
  [x] [10] Variables are checked for assignment before use.
  [x] [15] Variables use proper scoping rules.
 
+## Report ##
+
+As shown above, I attempted all of the tasks except for infix expressions.
+
+There are a crapload of mini-test-programs that test the parsing (and a little
+bit of execution) in TestNodes.java (many of them are only fragments though).
