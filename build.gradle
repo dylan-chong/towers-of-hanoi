@@ -38,7 +38,7 @@ test.finalizedBy('cucumber')
 
 apply plugin: 'application'
 run {
-    mainClassName = 'renderer.Main'
+    mainClassName = 'RoboGame'
     standardInput = System.in
     enableAssertions = true
 }
