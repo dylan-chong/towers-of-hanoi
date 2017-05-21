@@ -5,7 +5,7 @@ import java.util.Scanner;
  */
 public class AssignmentNode extends StatementNode {
 
-    private VariableNode variableNode;
+    private String variableName;
     private ExpressionNode expressionNode;
 
     public AssignmentNode(ParsableNode<?> parentNode) {
@@ -15,14 +15,37 @@ public class AssignmentNode extends StatementNode {
     @Override
     public Void execute(Robot robot) {
         Integer expressionValue = expressionNode.execute(robot);
-        variableNode.putValue(expressionValue);
+        try {
+            VariableScopeNode.getClosestScope(this,
+                    variableName,
+                    VariableScopeNode::getExecutionScope
+            ).putValue(variableName, expressionValue);
+        } catch (VariableScopeNode.ScopeNotFoundException e) {
+            VariableScopeNode.ExecutionScope.throwScopeError(
+                    variableName, ParserFailureType.UNDEFINED_VARIBLE_ASSIGNMENT
+            );
+        }
         return null;
     }
 
     @Override
     protected void privateDoParse(Scanner scanner, Logger logger) {
-        variableNode = new VariableNode(this);
-        variableNode.parse(scanner, logger);
+        variableName = require(
+                VariableAccessNode.VARIABLE_PATTERN,
+                scanner,
+                ParserFailureType.WRONG_NODE_START
+        );
+        try {
+            VariableScopeNode.getClosestScope(
+                    this,
+                    variableName,
+                    VariableScopeNode::getCompilationScope
+            ).putValue(variableName, 1);
+        } catch (VariableScopeNode.ScopeNotFoundException e) {
+            VariableScopeNode.CompilationScope.throwScopeError(
+                    variableName, ParserFailureType.UNDEFINED_VARIBLE_ASSIGNMENT
+            );
+        }
 
         require("=", scanner, ParserFailureType.WRONG_MIDDLE_OR_END_OF_NODE);
 
@@ -35,7 +58,7 @@ public class AssignmentNode extends StatementNode {
     @Override
     protected String privateToCode() {
         return String.format("%s=%s;",
-                variableNode.toString(), expressionNode.toString());
+                variableName, expressionNode.toString());
     }
 
     public static class NodeFactory implements Factory<AssignmentNode> {
@@ -48,7 +71,7 @@ public class AssignmentNode extends StatementNode {
 
         @Override
         public boolean canStartWith(Scanner scannerNotToBeModified) {
-            return new VariableNode.NodeFactory()
+            return new VariableAccessNode.NodeFactory()
                     .canStartWith(scannerNotToBeModified);
         }
     }

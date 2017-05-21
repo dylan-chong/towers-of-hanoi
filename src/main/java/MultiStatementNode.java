@@ -8,7 +8,11 @@ import java.util.Scanner;
  * Shouldn't be instantiated directly because this doesn't directly represent
  * something in the grammar.
  */
-public abstract class MultiStatementNode extends AbstractParsableNode<Void> {
+public abstract class MultiStatementNode extends AbstractParsableNode<Void>
+        implements VariableScopeNode<Void> {
+
+    private final ExecutionScope executionScope = new ExecutionScope();
+    private final CompilationScope compilationScope = new CompilationScope();
     private final int minStatements;
     private final String startPattern; // e.g. "\\{"
     private final String endPattern;
@@ -34,6 +38,16 @@ public abstract class MultiStatementNode extends AbstractParsableNode<Void> {
         this.minStatements = minStatements;
         this.startPattern = startPattern;
         this.endPattern = endPattern;
+    }
+
+    @Override
+    public ExecutionScope getExecutionScope() {
+        return executionScope;
+    }
+
+    @Override
+    public CompilationScope getCompilationScope() {
+        return compilationScope;
     }
 
     @Override

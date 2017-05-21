@@ -124,13 +124,13 @@ public class TestFiles {
     }
     
     @Test
-    public void parseFile_s3fullprog_noErrors() throws Exception {
-        testParseFile("s3_full.prog", true);
+    public void parseFile_s3fullprog_fails() throws Exception {
+        testParseFile("s3_full.prog", false);
     }
     
     @Test
-    public void parseFile_s3simpleprog_noErrors() throws Exception {
-        testParseFile("s3_simple.prog", true);
+    public void parseFile_s3simpleprog_fails() throws Exception {
+        testParseFile("s3_simple.prog", false);
     }
     
     /* @inject test end */

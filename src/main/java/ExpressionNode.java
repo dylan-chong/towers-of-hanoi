@@ -18,7 +18,7 @@ public abstract class ExpressionNode extends AbstractParsableNode<Integer> {
                     new OperationNode.NodeFactory(),
                     new NumberNode.NodeFactory(),
                     new SensorNode.NodeFactory(),
-                    new VariableNode.NodeFactory()
+                    new VariableAccessNode.NodeFactory()
             );
         }
     }

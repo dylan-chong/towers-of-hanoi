@@ -1,11 +1,12 @@
 fake_bad_files = ['s1_bad4.prog', 's1_bad3.prog']
+fake_good_files = ['s3_full.prog', 's3_simple.prog']
 
 tests =  Dir
   .entries('src/main/resources/TestPrograms')
   .select{|file| !File.directory? file}
   .select{|file| !file.start_with? '.'}
   .map do |file|
-    if file.include?('bad') && !fake_bad_files.include?(file)
+    if (file.include?('bad') && !fake_bad_files.include?(file)) || fake_good_files.include?(file)
       expectation = 'fails'
       succeeds = false
     else

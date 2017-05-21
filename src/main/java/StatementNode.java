@@ -18,7 +18,8 @@ public abstract class StatementNode extends AbstractParsableNode<Void> {
                     new LoopNode.NodeFactory(),
                     new IfNode.NodeFactory(),
                     new WhileNode.NodeFactory(),
-                    new AssignmentNode.NodeFactory()
+                    new AssignmentNode.NodeFactory(),
+                    new DeclarationNode.NodeFactory()
             );
         }
     }

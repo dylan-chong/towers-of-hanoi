@@ -43,6 +43,6 @@ Stage 3 out of 10: VARIABLES
 
 Stage 4 out of 15: CHALLENGE
  [ ] [15] Infix expressions work.
- [ ] [10] Variables are checked for assignment before use.
- [ ] [15] Variables use proper scoping rules.
+ [x] [10] Variables are checked for assignment before use.
+ [x] [15] Variables use proper scoping rules.
 

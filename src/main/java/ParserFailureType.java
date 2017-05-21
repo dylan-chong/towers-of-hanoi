@@ -21,5 +21,8 @@ public enum ParserFailureType {
      * what sort of node (or action) to use
      */
     NON_ONE_MATCHES,
+    UNDEFINED_VARIBLE_ASSIGNMENT,
+    UNDEFINED_VARIBLE_ACCESS,
+    ALREADY_DEFINED_VARIABLE,
     WRONG_NUMBER_OF_STATEMENTS
 }

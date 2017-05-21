@@ -421,37 +421,78 @@ public class TestNodes {
      */
 
     @Test
-    public void parseVariable_validName_parses() {
-        NodeTesters.VARIABLE.testParseNode("$a1B", "$a1B");
+    public void parseDeclaration_validName_parses() {
+        NodeTesters.PROGRAM.testParseNode("vars $a1B;", "vars $a1B;");
+    }
+
+    @Test
+    public void parseDeclaration_multipleValidNames_parses() {
+        NodeTesters.PROGRAM.testParseNode("vars $a,$b;", "vars $a,$b;");
     }
 
     @Test
     public void parseVariable_numberAfterDollar_error() {
-        NodeTesters.VARIABLE.testParseNodeFails("$1B", ParserFailureType.VARIABLE_FORMAT);
+        NodeTesters.PROGRAM.testParseNodeFails(
+                "vars $1B;", ParserFailureType.VARIABLE_FORMAT
+        );
     }
 
     @Test
-    public void parseAssignment_numberAfterDollar_error() {
-        NodeTesters.ASSIGNMENT.testParseNode("$abc=2;", "$abc=2;");
+    public void parseAssignment_assignToDefinedVariable_parses() {
+        NodeTesters.PROGRAM.testParseNode("vars $abc;$abc=2;", "vars $abc;$abc=2;");
     }
 
     @Test
-    public void executeAssignment_assign2_scopeHasValue2() {
-        VariableScopeNode.Scope scope = testExecuteAssignmentWithContainer("$abc=2;");
-        assertEquals((int) scope.getValue("$abc"), 2);
+    public void executeAssignment_assignToDefinedVariable_scopeHasValue2() {
+        VariableScopeNode.Scope scope = testExecuteAssignment("vars $abc;$abc=2;");
+        assertEquals(2, (int) scope.getValue("$abc"));
     }
 
     @Test
-    public void executeAssignment_undefinedVariable_equals0() {
-        VariableScopeNode.Scope scope = testExecuteAssignmentWithContainer("$abc=2;");
-        assertEquals((int) scope.getValue("$undefinedVariable"), 0);
+    public void parseAssignment_assignToUndefinedVariable_error() {
+        NodeTesters.PROGRAM.testParseNodeFails(
+                "vars $a;$b=2;",
+                ParserFailureType.UNDEFINED_VARIBLE_ASSIGNMENT
+        );
     }
 
-    private VariableScopeNode.Scope testExecuteAssignmentWithContainer(String input) {
-        AssignmentContainerTestNode scopeNode = new AssignmentContainerTestNode(null);
+    @Test
+    public void executeAssignment_readUndefinedVariable_error() {
+        NodeTesters.PROGRAM.testParseNodeFails(
+                "if(eq($abc,2)){turnL;}",
+                ParserFailureType.UNDEFINED_VARIBLE_ACCESS
+        );
+    }
+
+    @Test
+    public void executeAssignment_declareInsideBlock_notAccessibleOutsideBlock() {
+        NodeTesters.PROGRAM.testParseNodeFails(
+                "if(eq(1,1)){vars $a;$a=2;}vars $b;$b=$a;", // $b accessed outside
+                ParserFailureType.UNDEFINED_VARIBLE_ACCESS
+        );
+    }
+
+    @Test
+    public void executeAssignment_reassignInsideBlock_newValueAccessibleOutside() {
+        VariableScopeNode.Scope scope = testExecuteAssignment(
+                "vars $a;$a=1;if(eq(1,1)){$a=2;}vars $b;$b=$a;"
+        );
+        assertEquals(2, (int) scope.getValue("$b"));
+    }
+
+    @Test
+    public void executeAssignment_redefineAndAssignInsideBlock_doesntOverrideOuterValue() {
+        VariableScopeNode.Scope scope = testExecuteAssignment(
+                "vars $a;$a=1;if(eq(1,1)){vars $a;$a=2;}vars $b;$b=$a;"
+        );
+        assertEquals((int) scope.getValue("$b"), 1);
+    }
+
+    private VariableScopeNode.Scope testExecuteAssignment(String input) {
+        ProgramNode scopeNode = new ProgramNode(null);
         scopeNode.parse(newScanner(input), new Logger.SystemOutputLogger());
         scopeNode.execute(null);
-        return scopeNode.getScope();
+        return scopeNode.getExecutionScope();
     }
 
     /*
@@ -472,8 +513,6 @@ public class TestNodes {
         LOOP(LoopNode.NodeFactory::new),
         IF(IfNode.NodeFactory::new),
         WHILE(WhileNode.NodeFactory::new),
-        VARIABLE(VariableNode.NodeFactory::new),
-        ASSIGNMENT(AssignmentNode.NodeFactory::new),
         PROGRAM(factoryFromFactoryFunction(ProgramNode::new)),
         BLOCK(factoryFromFactoryFunction(BlockNode::new)),
         ADD(factoryFromFactoryFunction(OperationNode.Operations.ADD::create)),
