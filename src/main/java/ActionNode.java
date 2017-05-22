@@ -43,7 +43,7 @@ public class ActionNode extends StatementNode {
 
         ALL_ACTIONS.put("move", new FunctionWrapper<>(true, (robot, param) -> {
             int times = param == null ? 1 : param.execute(robot);
-            for (int i = 0; i < times; i++) robot.takeFuel();
+            for (int i = 0; i < times; i++) robot.move();
             return null;
         }));
         ALL_ACTIONS.put("wait", new FunctionWrapper<>(true, (robot, param) -> {
