@@ -167,7 +167,9 @@ public class MyDatabaseTests {
 		
 		try { 
 			// Here, we're trying to set a key value ... should be impossible!
-			db.table("table").row(new IntegerValue(0)).set(1, new StringValue("A TEXT field cannot have new lines\nLike this.  Only TEXTAREAs can."));			
+			db.table("table")
+					.row(new IntegerValue(0))
+					.set(1, new StringValue("A TEXT field cannot have new lines\nLike this.  Only TEXTAREAs can."));
 			fail("Shouldn't be able to field to value of incorrect type");
 		} catch(InvalidOperation e) {
 			

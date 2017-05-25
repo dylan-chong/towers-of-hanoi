@@ -1,51 +1,65 @@
 package com.bytebach.impl;
 
+import com.bytebach.model.Field;
+import com.bytebach.model.InvalidOperation;
 import com.bytebach.model.Value;
 
-import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by Dylan on 25/05/17.
+ *
+ * One row in a table. Must have unique key fields.
  */
-public class MyRow extends AbstractList<Value> implements List<Value> {
-	private final List<Value> decoratedRow;
+public class MyRow extends ArrayList<Value> {
 	private final MyRows parentRows;
 
 	public MyRow(List<Value> row, MyRows parentRows) {
-		this.decoratedRow = new ArrayList<>(row);
+		super(row);
 		this.parentRows = parentRows;
+
+		if (!areTypesValid(this))
+			throw new InvalidOperation("Invalid types");
 	}
 
 	@Override
-	public Value get(int index) {
-		return decoratedRow.get(index);
-	}
+	public Value set(int index, Value element) {
+		boolean isKeyField = Arrays.stream(parentRows
+				.getParentTable()
+				.keyFieldIndexes())
+				.anyMatch(keyFieldIndex -> keyFieldIndex == index);
+		if (isKeyField)
+			throw new InvalidOperation("Can't modify key field");
 
-	@Override
-	public int size() {
-		return decoratedRow.size();
-	}
+		Field field = parentRows.getParentTable()
+				.fields()
+				.get(index);
+		if (!DBUtils.typesMatch(field, element))
+			throw new InvalidOperation("Invalid type");
 
-	@Override
-	public void add(int index, Value element) {
-		decoratedRow.add(index, element);
+		return super.set(index, element);
 	}
 
 	@Override
 	public boolean add(Value value) {
-		return decoratedRow.add(value);
+		throw new InvalidOperation("Illegal operation");
 	}
 
 	@Override
-	public Value remove(int index) {
-		return decoratedRow.remove(index);
+	public void add(int index, Value element) {
+		throw new InvalidOperation("Illegal operation");
 	}
 
 	@Override
 	public boolean remove(Object o) {
-		return decoratedRow.remove(o);
+		throw new InvalidOperation("Illegal operation");
+	}
+
+	@Override
+	public Value remove(int index) {
+		throw new InvalidOperation("Illegal operation");
 	}
 
 	public boolean matchesKeyFields(Value[] searchKeys) {
@@ -61,19 +75,16 @@ public class MyRow extends AbstractList<Value> implements List<Value> {
 		return true;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (!(o instanceof MyRow)) return false;
-		MyRow other = (MyRow) o;
-		return decoratedRow.equals(other.decoratedRow);
-	}
+	private boolean areTypesValid(List<Value> row) {
+		List<Field> fields = parentRows.getParentTable().fields();
 
-	public static List<Value> getKeyFields(List<Value> row,
-										   int[] keyFieldIndexes) {
-		List<Value> keyFields = new ArrayList<>();
-		for (int keyFieldIndex : keyFieldIndexes) {
-			keyFields.add(row.get(keyFieldIndex));
+		for (int i = 0; i < fields.size(); i++) {
+			Field field = fields.get(i);
+			Value value = row.get(i);
+
+			if (!DBUtils.typesMatch(field, value)) return false;
 		}
-		return keyFields;
+
+		return true;
 	}
 }

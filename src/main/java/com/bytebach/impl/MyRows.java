@@ -12,7 +12,7 @@ import java.util.List;
  * <p>
  * This class is required for fixing generics problems.
  */
-public class MyRows extends AbstractList<List<Value>> implements List<List<Value>> {
+public class MyRows extends AbstractList<List<Value>> {
 	private final List<MyRow> decoratedRows = new ArrayList<>();
 	private final MyTable parentTable;
 
@@ -30,6 +30,15 @@ public class MyRows extends AbstractList<List<Value>> implements List<List<Value
 	}
 
 	@Override
+	public List<Value> set(int index, List<Value> element) {
+		if (containsMatchingRow(element, index))
+			throw new InvalidOperation("Row already exists");
+		ensureCorrectSize(element);
+
+		return decoratedRows.set(index, new MyRow(element, this));
+	}
+
+	@Override
 	public int size() {
 		return decoratedRows.size();
 	}
@@ -38,6 +47,8 @@ public class MyRows extends AbstractList<List<Value>> implements List<List<Value
 	public void add(int index, List<Value> element) {
 		if (containsMatchingRow(element))
 			throw new InvalidOperation("Row already exists");
+		ensureCorrectSize(element);
+
 		decoratedRows.add(index, new MyRow(element, this));
 	}
 
@@ -45,7 +56,14 @@ public class MyRows extends AbstractList<List<Value>> implements List<List<Value
 	public boolean add(List<Value> value) {
 		if (containsMatchingRow(value))
 			throw new InvalidOperation("Row already exists");
+		ensureCorrectSize(value);
+
 		return decoratedRows.add(new MyRow(value, this));
+	}
+
+	private void ensureCorrectSize(List<Value> row) {
+		if (row.size() != parentTable.fields().size())
+			throw new InvalidOperation("Row already exists");
 	}
 
 	@Override
@@ -59,14 +77,24 @@ public class MyRows extends AbstractList<List<Value>> implements List<List<Value
 	}
 
 	public boolean containsMatchingRow(List<Value> row) {
-		int[] keyFieldIndexes = parentTable.keyFieldIndexes();
-		List<Value> keyFields = MyRow.getKeyFields(row, keyFieldIndexes);
-		Value[] keyFieldsArray = new Value[keyFields.size()];
-		return indexOfMatchingRow(keyFields.toArray(keyFieldsArray)) != -1;
+		return containsMatchingRow(row, null);
 	}
 
-	public int indexOfMatchingRow(Value... searchKeys) {
+	public boolean containsMatchingRow(List<Value> row, Integer indexToIgnore) {
+		int[] keyFieldIndexes = parentTable.keyFieldIndexes();
+		List<Value> keyFields = DBUtils.getKeyFields(row, keyFieldIndexes);
+		Value[] keyFieldsArray = new Value[keyFields.size()];
+		return indexOfMatchingRow(indexToIgnore, keyFields.toArray(keyFieldsArray)) != -1;
+	}
+
+	/**
+	 * Finds the index of a row that has the same key field values as
+	 * searchKeys
+	 * @param indexToIgnore null or an int to ignore that index
+	 */
+	public int indexOfMatchingRow(Integer indexToIgnore, Value... searchKeys) {
 		for (int i = 0; i < decoratedRows.size(); i++) {
+			if (indexToIgnore != null && i == indexToIgnore) continue;
 			if (decoratedRows.get(i).matchesKeyFields(searchKeys)) {
 				return i;
 			}
@@ -74,6 +102,13 @@ public class MyRows extends AbstractList<List<Value>> implements List<List<Value
 		return -1;
 	}
 
+	public int indexOfMatchingRow(Value... searchKeys) {
+		return indexOfMatchingRow(null, searchKeys);
+	}
+
+	/**
+	 * Delegated from {@link MyTable}
+	 */
 	public List<Value> row(Value... keys) {
 		int index = indexOfMatchingRow(keys);
 		if (index == -1) throw new InvalidOperation("No row found");
@@ -81,6 +116,9 @@ public class MyRows extends AbstractList<List<Value>> implements List<List<Value
 		return decoratedRows.get(index);
 	}
 
+	/**
+	 * Delegated from {@link MyTable}
+	 */
 	public void delete(Value... keys) {
 		int index = indexOfMatchingRow(keys);
 		if (index == -1) throw new InvalidOperation("No matching row to delete");
