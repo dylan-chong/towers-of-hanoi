@@ -1,10 +1,14 @@
 package com.bytebach;
 
-import java.io.*;
-import java.util.*;
-import com.bytebach.server.*;
+import com.bytebach.impl.MyDatabase;
 import com.bytebach.model.*;
-import com.bytebach.impl.*;
+import com.bytebach.server.WebServer;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -69,8 +73,15 @@ public class Main {
 	}
 	
 	private static void populateDBfromFile(String filename, Database bachDB) {
+		File file = new File(filename);
+		if (!file.exists()) {
+			System.out.printf("File %s doesn't exist\n", file.getPath());
+			file = new File("src/main/resources/data/" + filename);
+			System.out.printf("Trying %s\n", file.getPath());
+		}
+
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(filename));
+			BufferedReader reader = new BufferedReader(new FileReader(file));
 			String line;
 			while((line = reader.readLine()) != null) {
 				String[] split = line.split(",");				
