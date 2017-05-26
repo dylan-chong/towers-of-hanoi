@@ -10,7 +10,8 @@ import java.util.List;
 /**
  * Created by Dylan on 25/05/17.
  * <p>
- * This class is required for fixing generics problems.
+ * This class is required for fixing generics problem of returning a
+ * List<List<Value>> when the first inner generic type is MyRow
  */
 public class MyRows extends AbstractList<List<Value>> {
 	private final List<MyRow> decoratedRows = new ArrayList<>();
@@ -33,9 +34,11 @@ public class MyRows extends AbstractList<List<Value>> {
 	public List<Value> set(int index, List<Value> element) {
 		if (containsMatchingRow(element, index))
 			throw new InvalidOperation("Row already exists");
-		ensureCorrectSize(element);
 
-		return decoratedRows.set(index, new MyRow(element, this));
+		// new MyRow checks the types
+		MyRow replacedOrNull = decoratedRows.set(index, new MyRow(element, this));
+		pruneNullReferences();
+		return replacedOrNull;
 	}
 
 	@Override
@@ -47,7 +50,6 @@ public class MyRows extends AbstractList<List<Value>> {
 	public void add(int index, List<Value> element) {
 		if (containsMatchingRow(element))
 			throw new InvalidOperation("Row already exists");
-		ensureCorrectSize(element);
 
 		decoratedRows.add(index, new MyRow(element, this));
 	}
@@ -56,19 +58,22 @@ public class MyRows extends AbstractList<List<Value>> {
 	public boolean add(List<Value> value) {
 		if (containsMatchingRow(value))
 			throw new InvalidOperation("Row already exists");
-		ensureCorrectSize(value);
 
 		return decoratedRows.add(new MyRow(value, this));
 	}
 
 	@Override
 	public List<Value> remove(int index) {
-		return decoratedRows.remove(index);
+		MyRow removed = decoratedRows.remove(index);
+		pruneNullReferences();
+		return removed;
 	}
 
 	@Override
 	public boolean remove(Object o) {
-		return decoratedRows.remove(o);
+		boolean didRemove = decoratedRows.remove(o);
+		pruneNullReferences();
+		return didRemove;
 	}
 
 	public boolean containsMatchingRow(List<Value> row) {
@@ -118,13 +123,12 @@ public class MyRows extends AbstractList<List<Value>> {
 		int index = indexOfMatchingRow(keys);
 		if (index == -1) throw new InvalidOperation("No matching row to delete");
 
-		List<Value> row = decoratedRows.remove(index);
+		List<Value> row = remove(index);
 		assert row != null;
 	}
 
-	private void ensureCorrectSize(List<Value> row) {
-		if (row.size() != parentTable.fields().size())
-			throw new InvalidOperation("Row already exists");
+	public void pruneNullReferences() {
+		parentTable.getParentDatabase().pruneNullReferences();
 	}
 }
 

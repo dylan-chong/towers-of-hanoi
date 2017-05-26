@@ -6,8 +6,10 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
@@ -16,6 +18,9 @@ import static org.junit.Assert.fail;
  * Follow a non crap test naming convention by Roy Osherove
  * http://osherove.com/blog/2005/4/3/naming-standards-for-unit-tests.html
  * i.e., public void methodOrFunctionalityBeingTested_inputOrState_expectation()
+ *
+ * Still, these tests make lots of lines of code in exchange for reducing
+ * duplication. Hmm...
  */
 public class MyDatabaseCustomTests {
 
@@ -50,7 +55,7 @@ public class MyDatabaseCustomTests {
 					.fields()
 					.add(null);
 			fail();
-		} catch (InvalidOperation ignore){
+		} catch (InvalidOperation ignore) {
 		}
 	}
 
@@ -133,12 +138,12 @@ public class MyDatabaseCustomTests {
 
 	@Test
 	public void myRowAdd_referenceToExistingEntry_ok() {
-		Database database = databaseWithPeopleAndReferenceTables();
+		Database database = databaseWithPeopleNonEmptyAndReferenceEmptyTables();
 
 		StringValue referenceTableKey = new StringValue("ref1");
 		testRowAdd(
 				database,
-				TableDataSet.REFERENCES.tableName(),
+				TableDataSet.PEOPLE_REFERENCES_EMPTY.tableName(),
 				Arrays.asList(
 						referenceTableKey,
 						new ReferenceValue(
@@ -147,17 +152,17 @@ public class MyDatabaseCustomTests {
 						)
 				),
 				new Value[]{referenceTableKey}
-        );
+		);
 	}
 
 	@Test
 	public void myRowAdd_referenceToNonExistentEntry_error() {
-		Database database = databaseWithPeopleAndReferenceTables();
+		Database database = databaseWithPeopleNonEmptyAndReferenceEmptyTables();
 
 		StringValue referenceTableKey = new StringValue("ref1");
 		testAddRowFails(
 				database,
-				TableDataSet.REFERENCES.tableName(),
+				TableDataSet.PEOPLE_REFERENCES_EMPTY.tableName(),
 				Arrays.asList(
 						referenceTableKey,
 						new ReferenceValue(
@@ -166,6 +171,32 @@ public class MyDatabaseCustomTests {
 						)
 				)
 		);
+	}
+
+	@Test
+	public void myRowDelete_rowThatIsReferredTo_referenceIsDeletedToo() {
+		testDeleteTable(database ->
+				database.table(TableDataSet.PEOPLE.tableName())
+						.rows()
+						.remove(0)
+		);
+	}
+
+	@Test
+	public void myDatabaseDeleteTable_withRowThatIsReferredTo_referenceIsDeletedToo() {
+		testDeleteTable(database ->
+				database.deleteTable(TableDataSet.PEOPLE.tableName())
+		);
+	}
+
+	private void testDeleteTable(Consumer<Database> tableDeleter) {
+		Database database = databaseWithNonEmptyPeopleAndReferenceTables();
+		tableDeleter.accept(database);
+		boolean isEmpty = database
+				.table(TableDataSet.PEOPLE_REFERENCES_WITH_ONE_ITEM.tableName())
+				.rows()
+				.isEmpty();
+		assertTrue(isEmpty);
 	}
 
 	private void testRowAdd(TableDataSet tableDataSet,
@@ -206,9 +237,15 @@ public class MyDatabaseCustomTests {
 		);
 	}
 
-	private Database databaseWithPeopleAndReferenceTables() {
-		Database database = TableDataSet.REFERENCES.createDBWithTable();
+	private Database databaseWithPeopleNonEmptyAndReferenceEmptyTables() {
+		Database database = TableDataSet.PEOPLE_REFERENCES_EMPTY.createDBWithTable();
 		TableDataSet.PEOPLE.addThisTableToDatabase(database);
+		return database;
+	}
+
+	private Database databaseWithNonEmptyPeopleAndReferenceTables() {
+		Database database = TableDataSet.PEOPLE.createDBWithTable();
+		TableDataSet.PEOPLE_REFERENCES_WITH_ONE_ITEM.addThisTableToDatabase(database);
 		return database;
 	}
 
@@ -247,7 +284,7 @@ public class MyDatabaseCustomTests {
 				return PEOPLE.defaultRows();
 			}
 		},
-		REFERENCES {
+		PEOPLE_REFERENCES_EMPTY {
 			@Override
 			public List<Field> fields() {
 				return Arrays.asList(
@@ -260,9 +297,27 @@ public class MyDatabaseCustomTests {
 			public List<List<Value>> defaultRows() {
 				return Collections.emptyList();
 			}
+		},
+		PEOPLE_REFERENCES_WITH_ONE_ITEM {
+			@Override
+			public List<Field> fields() {
+				return PEOPLE_REFERENCES_EMPTY.fields();
+			}
+
+			@Override
+			public List<List<Value>> defaultRows() {
+				return Collections.singletonList(Arrays.asList(
+						new StringValue(PEOPLE_REF_1_NAME),
+						new ReferenceValue(
+								TableDataSet.PEOPLE.tableName(),
+								new StringValue(PERSON_NAME)
+						)
+				));
+			}
 		};
 
 		public static final String PERSON_NAME = "mr bob";
+		public static final String PEOPLE_REF_1_NAME = "ref1";
 
 		public Database createDBWithTable() {
 			MyDatabase myDatabase = new MyDatabase();

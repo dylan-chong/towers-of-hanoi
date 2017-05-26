@@ -22,9 +22,13 @@ public class MyRow extends ArrayList<Value> {
 		this.parentRows = parentRows;
 
 		if (!areTypesValid(row))
-			throw new InvalidOperation("Invalid types");
+			throw new InvalidOperation("Invalid types or row size");
 	}
 
+	/**
+	 * Set is the only modification that can be done to a row. And only works
+	 * if the type is correct, and is not the key field
+	 */
 	@Override
 	public Value set(int index, Value element) {
 		boolean isKeyField = Arrays.stream(parentRows
@@ -80,6 +84,9 @@ public class MyRow extends ArrayList<Value> {
 	private boolean areTypesValid(List<Value> row) {
 		List<Field> fields = parentRows.getParentTable().fields();
 		MyDatabase database = parentRows.getParentTable().getParentDatabase();
+
+		if (row.size() != fields.size())
+			return false;
 
 		for (int i = 0; i < fields.size(); i++) {
 			Field field = fields.get(i);

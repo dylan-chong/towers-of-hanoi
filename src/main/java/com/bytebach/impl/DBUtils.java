@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Created by Dylan on 25/05/17.
- *
+ * <p>
  * Random helpers
  */
 public class DBUtils {
@@ -45,20 +45,26 @@ public class DBUtils {
 		return keyFields;
 	}
 
-	private static boolean isReferenceValid(Field field,
-											ReferenceValue ref,
-											Database database) {
+	public static boolean isReferenceValid(Field field,
+										   ReferenceValue ref,
+										   Database database) {
 		if (!field.refTable().equals(ref.table()))
 			return false;
 
+		return isReferenceLinked(ref, database);
+	}
+
+	/**
+	 * @return true iff row doesn't exist
+	 */
+	public static boolean isReferenceLinked(ReferenceValue ref, Database database) {
 		try {
-			// table() or rows() throws invalidoperation if doesn't exist
-			database.table(ref.table())
-					.row(ref.keys());
+			Table table = database.table(ref.table());
+			if (table == null) return false;
+			table.row(ref.keys()); // throws invalidoperation if doesn't exist
 			return true;
 		} catch (InvalidOperation e) {
 			return false;
 		}
 	}
-
 }

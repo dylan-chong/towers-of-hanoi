@@ -1,9 +1,6 @@
 package com.bytebach.impl;
 
-import com.bytebach.model.Database;
-import com.bytebach.model.Field;
-import com.bytebach.model.InvalidOperation;
-import com.bytebach.model.Table;
+import com.bytebach.model.*;
 
 import java.util.*;
 
@@ -37,5 +34,42 @@ public class MyDatabase implements Database {
 			throw new InvalidOperation("Table doesn't exist");
 
 		tables.remove(name);
+		pruneNullReferences();
+	}
+
+	public void pruneNullReferences() {
+		boolean didPrune;
+		do {
+			// Make sure we prune references of references of a deleted row
+			didPrune = doPrune();
+		} while (didPrune);
+	}
+
+	/**
+	 * @return true iff any pruning was done
+	 */
+	private boolean doPrune() {
+		boolean didPrune = false;
+
+		for (Table table : tables.values()) {
+
+			Iterator<List<Value>> rowsIterator = table.rows().iterator();
+			while (rowsIterator.hasNext()) {
+				List<Value> row = rowsIterator.next();
+				if (!hasNullReference(row)) continue;
+
+				didPrune = true;
+				rowsIterator.remove();
+			}
+		}
+
+		return didPrune;
+	}
+
+	private boolean hasNullReference(List<Value> row) {
+		return row.stream()
+				.filter(val -> val instanceof ReferenceValue)
+				.map(val -> (ReferenceValue) val)
+				.anyMatch(ref -> !DBUtils.isReferenceLinked(ref, this));
 	}
 }
