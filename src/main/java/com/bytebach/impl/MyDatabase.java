@@ -8,7 +8,7 @@ import com.bytebach.model.Table;
 import java.util.*;
 
 /**
- * Simple list implementation of a {@link Database}
+ * Simple hashmap implementation of a {@link Database}
  */
 public class MyDatabase implements Database {
 	private final Map<String, Table> tables = new HashMap<>();
@@ -35,6 +35,7 @@ public class MyDatabase implements Database {
 	public void deleteTable(String name) {
 		if (!tables.containsKey(name))
 			throw new InvalidOperation("Table doesn't exist");
+
 		tables.remove(name);
 	}
 }

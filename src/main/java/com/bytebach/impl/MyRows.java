@@ -61,11 +61,6 @@ public class MyRows extends AbstractList<List<Value>> {
 		return decoratedRows.add(new MyRow(value, this));
 	}
 
-	private void ensureCorrectSize(List<Value> row) {
-		if (row.size() != parentTable.fields().size())
-			throw new InvalidOperation("Row already exists");
-	}
-
 	@Override
 	public List<Value> remove(int index) {
 		return decoratedRows.remove(index);
@@ -125,6 +120,11 @@ public class MyRows extends AbstractList<List<Value>> {
 
 		List<Value> row = decoratedRows.remove(index);
 		assert row != null;
+	}
+
+	private void ensureCorrectSize(List<Value> row) {
+		if (row.size() != parentTable.fields().size())
+			throw new InvalidOperation("Row already exists");
 	}
 }
 

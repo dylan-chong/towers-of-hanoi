@@ -20,7 +20,7 @@ public class MyRow extends ArrayList<Value> {
 		super(row);
 		this.parentRows = parentRows;
 
-		if (!areTypesValid(this))
+		if (!areTypesValid(row))
 			throw new InvalidOperation("Invalid types");
 	}
 
