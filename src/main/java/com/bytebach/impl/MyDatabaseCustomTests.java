@@ -21,19 +21,19 @@ public class MyDatabaseCustomTests {
 
 	@Test
 	public void myTableGetRow_oneMatchingRow_findsRow() {
-		DataSet dataSet = DataSet.PEOPLE;
-		Database myDatabase = dataSet.createDB();
-		List<Value> expectedRow = dataSet.mainTableRows().get(0);
+		TableDataSet tableDataSet = TableDataSet.PEOPLE;
+		Database myDatabase = tableDataSet.createDBWithTable();
+		List<Value> expectedRow = tableDataSet.defaultRows().get(0);
 
-		List<Value> foundRow = myDatabase.table(dataSet.mainTableName())
-				.row(new StringValue(DataSet.PERSON_NAME));
+		List<Value> foundRow = myDatabase.table(tableDataSet.tableName())
+				.row(new StringValue(TableDataSet.PERSON_NAME));
 		assertEquals(expectedRow, foundRow);
 	}
 
 	@Test
 	public void myTableGetRow_noMatchingRows_findsRow() {
-		DataSet dataSet = DataSet.PEOPLE;
-		Table table = dataSet.createDB().table(dataSet.mainTableName());
+		TableDataSet tableDataSet = TableDataSet.PEOPLE;
+		Table table = tableDataSet.createDBWithTable().table(tableDataSet.tableName());
 
 		try {
 			List<Value> row = table.row(new StringValue("fake name"));
@@ -43,10 +43,22 @@ public class MyDatabaseCustomTests {
 	}
 
 	@Test
+	public void myTableFields_modify_invalidOperationException() {
+		Database database = TableDataSet.PEOPLE.createDBWithTable();
+		try {
+			database.table(TableDataSet.PEOPLE.tableName())
+					.fields()
+					.add(null);
+			fail();
+		} catch (InvalidOperation ignore){
+		}
+	}
+
+	@Test
 	public void myRowAdd_matchingTypes_rowAdds() {
 		Value key = new StringValue("new name");
 		testRowAdd(
-				DataSet.PEOPLE,
+				TableDataSet.PEOPLE,
 				Arrays.asList(
 						new IntegerValue(2),
 						key,
@@ -59,7 +71,7 @@ public class MyDatabaseCustomTests {
 	@Test
 	public void myRowAdd_wrongNumberOfValues_error() {
 		testAddRowFails(
-				DataSet.PEOPLE,
+				TableDataSet.PEOPLE,
 				Arrays.asList(
 						new IntegerValue(2),
 						new StringValue("new name"),
@@ -72,7 +84,7 @@ public class MyDatabaseCustomTests {
 	@Test
 	public void myRowAdd_wrongKeyFieldType_error() {
 		testAddRowFails(
-				DataSet.PEOPLE,
+				TableDataSet.PEOPLE,
 				Arrays.asList(
 						new IntegerValue(2),
 						new IntegerValue(3), // wrong type
@@ -84,7 +96,7 @@ public class MyDatabaseCustomTests {
 	@Test
 	public void myRowAdd_wrongNonKeyFieldType_error() {
 		testAddRowFails(
-				DataSet.PEOPLE,
+				TableDataSet.PEOPLE,
 				Arrays.asList(
 						new IntegerValue(2),
 						new StringValue("new name"),
@@ -96,7 +108,7 @@ public class MyDatabaseCustomTests {
 	@Test
 	public void myRowAdd_lineSpaceInString_error() {
 		testAddRowFails(
-				DataSet.PEOPLE,
+				TableDataSet.PEOPLE,
 				Arrays.asList(
 						new IntegerValue(2),
 						new StringValue("new\nname"),
@@ -109,7 +121,7 @@ public class MyDatabaseCustomTests {
 	public void myRowAdd_lineSpaceInTextArea_ok() {
 		StringValue key = new StringValue("new\nname");
 		testRowAdd(
-				DataSet.PEOPLE_TEXTAREA,
+				TableDataSet.PEOPLE_TEXTAREA,
 				Arrays.asList(
 						new IntegerValue(2),
 						key,
@@ -119,21 +131,66 @@ public class MyDatabaseCustomTests {
 		);
 	}
 
-	private void testRowAdd(DataSet dataSet,
+	@Test
+	public void myRowAdd_referenceToExistingEntry_ok() {
+		Database database = databaseWithPeopleAndReferenceTables();
+
+		StringValue referenceTableKey = new StringValue("ref1");
+		testRowAdd(
+				database,
+				TableDataSet.REFERENCES.tableName(),
+				Arrays.asList(
+						referenceTableKey,
+						new ReferenceValue(
+								TableDataSet.PEOPLE.tableName(),
+								new StringValue(TableDataSet.PERSON_NAME)
+						)
+				),
+				new Value[]{referenceTableKey}
+        );
+	}
+
+	@Test
+	public void myRowAdd_referenceToNonExistentEntry_error() {
+		Database database = databaseWithPeopleAndReferenceTables();
+
+		StringValue referenceTableKey = new StringValue("ref1");
+		testAddRowFails(
+				database,
+				TableDataSet.REFERENCES.tableName(),
+				Arrays.asList(
+						referenceTableKey,
+						new ReferenceValue(
+								TableDataSet.PEOPLE.tableName(),
+								new StringValue("nonexistent name")
+						)
+				)
+		);
+	}
+
+	private void testRowAdd(TableDataSet tableDataSet,
 							List<Value> rowToAdd,
 							Value[] rowToAddKeys) {
-		Database myDatabase = dataSet.createDB();
-		myDatabase.table(dataSet.mainTableName())
+		Database myDatabase = tableDataSet.createDBWithTable();
+		testRowAdd(myDatabase, tableDataSet.tableName(), rowToAdd, rowToAddKeys);
+	}
+
+	private void testRowAdd(Database myDatabase,
+							String tableName,
+							List<Value> rowToAdd,
+							Value[] rowToAddKeys) {
+		myDatabase.table(tableName)
 				.rows()
 				.add(rowToAdd);
-		List<Value> foundRow = myDatabase.table(dataSet.mainTableName())
+		List<Value> foundRow = myDatabase.table(tableName)
 				.row(rowToAddKeys);
 		assertEquals(rowToAdd, foundRow);
 	}
 
-	private void testAddRowFails(DataSet dataSet, List<Value> row) {
-		Table table = dataSet.createDB()
-				.table(dataSet.mainTableName());
+	private void testAddRowFails(Database database,
+								 String tableName,
+								 List<Value> row) {
+		Table table = database.table(tableName);
 		try {
 			table.rows().add(row);
 			fail();
@@ -141,10 +198,24 @@ public class MyDatabaseCustomTests {
 		}
 	}
 
-	private enum DataSet {
+	private void testAddRowFails(TableDataSet tableDataSet, List<Value> row) {
+		testAddRowFails(
+				tableDataSet.createDBWithTable(),
+				tableDataSet.tableName(),
+				row
+		);
+	}
+
+	private Database databaseWithPeopleAndReferenceTables() {
+		Database database = TableDataSet.REFERENCES.createDBWithTable();
+		TableDataSet.PEOPLE.addThisTableToDatabase(database);
+		return database;
+	}
+
+	private enum TableDataSet {
 		PEOPLE {
 			@Override
-			public List<Field> mainTableFields() {
+			public List<Field> fields() {
 				return Arrays.asList(
 						new Field("age", Field.Type.INTEGER, false),
 						new Field("name", Field.Type.TEXT, true),
@@ -153,22 +224,17 @@ public class MyDatabaseCustomTests {
 			}
 
 			@Override
-			public List<List<Value>> mainTableRows() {
+			public List<List<Value>> defaultRows() {
 				return Collections.singletonList(Arrays.asList(
 						new IntegerValue(1),
 						new StringValue(PERSON_NAME),
 						new BooleanValue(true)
 				));
 			}
-
-			@Override
-			public String mainTableName() {
-				return "main-table";
-			}
 		},
 		PEOPLE_TEXTAREA {
 			@Override
-			public List<Field> mainTableFields() {
+			public List<Field> fields() {
 				return Arrays.asList(
 						new Field("age", Field.Type.INTEGER, false),
 						new Field("name", Field.Type.TEXTAREA, true),
@@ -177,36 +243,53 @@ public class MyDatabaseCustomTests {
 			}
 
 			@Override
-			public String mainTableName() {
-				return PEOPLE.mainTableName();
+			public List<List<Value>> defaultRows() {
+				return PEOPLE.defaultRows();
+			}
+		},
+		REFERENCES {
+			@Override
+			public List<Field> fields() {
+				return Arrays.asList(
+						new Field("id", Field.Type.TEXT, true),
+						new Field("ref", PEOPLE.tableName(), false)
+				);
 			}
 
 			@Override
-			public List<List<Value>> mainTableRows() {
-				return PEOPLE.mainTableRows();
+			public List<List<Value>> defaultRows() {
+				return Collections.emptyList();
 			}
 		};
 
 		public static final String PERSON_NAME = "mr bob";
 
-		public Database createDB() {
+		public Database createDBWithTable() {
 			MyDatabase myDatabase = new MyDatabase();
-			myDatabase.createTable(mainTableName(), mainTableFields());
-			myDatabase.table(mainTableName())
-					.rows()
-					.add(mainTableRows().get(0));
+			addThisTableToDatabase(myDatabase);
 			return myDatabase;
 		}
 
-		public abstract List<Field> mainTableFields();
+		public void addThisTableToDatabase(Database database) {
+			database.createTable(tableName(), fields());
+			for (List<Value> row : defaultRows()) {
+				database.table(tableName())
+						.rows()
+						.add(row);
+			}
+		}
 
-		public abstract String mainTableName();
+		public String tableName() {
+			return name().toLowerCase();
+		}
+
+		public abstract List<Field> fields();
 
 		/**
 		 * Some rows you could add
 		 *
 		 * @return
 		 */
-		public abstract List<List<Value>> mainTableRows();
+		public abstract List<List<Value>> defaultRows();
 	}
 }

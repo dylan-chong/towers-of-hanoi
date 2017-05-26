@@ -28,7 +28,7 @@ public class MyDatabase implements Database {
 		if (tables.containsKey(name))
 			throw new InvalidOperation("Table already exists");
 
-		tables.put(name, new MyTable(name, fields));
+		tables.put(name, new MyTable(name, fields, this));
 	}
 
 	@Override

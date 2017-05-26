@@ -1,5 +1,6 @@
 package com.bytebach.impl;
 
+import com.bytebach.model.Database;
 import com.bytebach.model.Field;
 import com.bytebach.model.InvalidOperation;
 import com.bytebach.model.Value;
@@ -36,7 +37,8 @@ public class MyRow extends ArrayList<Value> {
 		Field field = parentRows.getParentTable()
 				.fields()
 				.get(index);
-		if (!DBUtils.typesMatch(field, element))
+		Database database = parentRows.getParentTable().getParentDatabase();
+		if (!DBUtils.typesMatch(field, element, database))
 			throw new InvalidOperation("Invalid type");
 
 		return super.set(index, element);
@@ -77,12 +79,13 @@ public class MyRow extends ArrayList<Value> {
 
 	private boolean areTypesValid(List<Value> row) {
 		List<Field> fields = parentRows.getParentTable().fields();
+		MyDatabase database = parentRows.getParentTable().getParentDatabase();
 
 		for (int i = 0; i < fields.size(); i++) {
 			Field field = fields.get(i);
 			Value value = row.get(i);
 
-			if (!DBUtils.typesMatch(field, value)) return false;
+			if (!DBUtils.typesMatch(field, value, database)) return false;
 		}
 
 		return true;

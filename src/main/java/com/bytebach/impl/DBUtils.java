@@ -11,7 +11,7 @@ import java.util.List;
  * Random helpers
  */
 public class DBUtils {
-	public static boolean typesMatch(Field field, Value value) {
+	public static boolean typesMatch(Field field, Value value, Database database) {
 		if (value == null)
 			throw new InvalidOperation("Null");
 
@@ -27,8 +27,11 @@ public class DBUtils {
 					!((StringValue) value).value().contains("\r");
 		else if (type == Field.Type.TEXTAREA)
 			return value instanceof StringValue;
-		else if (type == Field.Type.REFERENCE)
-			return value instanceof ReferenceValue;
+		else if (type == Field.Type.REFERENCE) {
+			if (!(value instanceof ReferenceValue)) return false;
+			ReferenceValue ref = (ReferenceValue) value;
+			return isReferenceValid(field, ref, database);
+		}
 
 		throw new InvalidOperation("Invalid type of value: " + value);
 	}
@@ -41,4 +44,21 @@ public class DBUtils {
 		}
 		return keyFields;
 	}
+
+	private static boolean isReferenceValid(Field field,
+											ReferenceValue ref,
+											Database database) {
+		if (!field.refTable().equals(ref.table()))
+			return false;
+
+		try {
+			// table() or rows() throws invalidoperation if doesn't exist
+			database.table(ref.table())
+					.row(ref.keys());
+			return true;
+		} catch (InvalidOperation e) {
+			return false;
+		}
+	}
+
 }

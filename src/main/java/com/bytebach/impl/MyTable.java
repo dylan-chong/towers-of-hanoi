@@ -13,12 +13,21 @@ import java.util.stream.IntStream;
 public class MyTable implements Table {
 	private final String name;
 	private final List<Field> fields;
+	private final MyDatabase database;
 	private final MyRows rows;
 
-	public MyTable(String name, List<Field> fields) {
+	/**
+	 * @param database The db that contains this table
+	 */
+	public MyTable(String name, List<Field> fields, MyDatabase database) {
 		this.name = name;
-		this.fields = fields;
+		this.fields = new ImmutableList<>(fields);
+		this.database = database;
 		this.rows = new MyRows(this);
+	}
+
+	public MyDatabase getParentDatabase() {
+		return database;
 	}
 
 	/**
