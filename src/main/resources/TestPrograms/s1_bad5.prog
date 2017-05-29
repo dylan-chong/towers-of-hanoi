@@ -1,4 +1,0 @@
-while(gt(fuelLeft, zero)){
-	move;
-	turnL;
-}

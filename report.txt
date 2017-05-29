@@ -5,35 +5,25 @@
 Note: a '[x]' represents a completed task it is the markdown symbol for a
 ticked tickbox
 
-Stage 0 of out 40:  LOOP and ACTION
- [x] [15] Simple actions work.
- [x] [15] The robot can loop through a block of multiple actions.
- [x] [10] The parser throws errors on invalid strings.
+Minimum out of 30:
+ - [ ] (15) Creates the match table for the input pattern.
+ - [ ] (15) Performs correct KMP substring search with the pattern and text.
 
-Stage 1 out of 20: SENSORS and CONDITIONS
- [x] [2] The extended list of actions work.
- [x] [5] Conditions return the correct value.
- [x] [5] Sensors return the correct value.
- [x] [8] If and while loops behave as expected.
+Core out of 30 (up to 70):
+ - [ ] (5) Finds the frequency histogram for an input text.
+ - [ ] (10) Creates the coding tree for an input text.
+ - [ ] (5) Correctly encodes input.
+ - [ ] (5) Correctly decodes input.
+ - [ ] (5) Answers questions 1 and 2.
 
-Stage 2 out of 15: EXPRESSIONS
- [x] [5] The move and wait commands can now take an argument
- [x] [5] If statements can take an else clause.
- [x] [5] Arithmetic expressions and boolean conditions work.
+Completion out of 30 (up to 90):
+ - [ ] (10) Correctly performs Lempel Ziv compression.
+ - [ ] (10) Correctly performs Lempel Ziv decompression.
+ - [ ] (10) Answers questions 3 and 4.
 
-Stage 3 out of 10: VARIABLES
- [x] [8] Variables and assignments work.
- [x] [1] Conditionals can have any number of elifs.
- [x] [1] The barrel sensors can take an argument.
-
-Stage 4 out of 15: CHALLENGE
- [ ] [15] Infix expressions work.
- [x] [10] Variables are checked for assignment before use.
- [x] [15] Variables use proper scoping rules.
-
-## Report ##
-
-As shown above, I attempted all of the tasks except for infix expressions.
-
-There are a crapload of mini-test-programs that test the parsing (and a little
-bit of execution) in TestNodes.java (many of them are only fragments though).
+Challenge out of 10 (up to 100, 5 spare marks):
+ - [ ] (10) Implement Boyer-Moore string search OR a more complex coding algorithm,
+        for example:
+         - Adaptive Huffman coding
+         - Arithmetic coding
+ - [ ] (5) Find a algorithm for question 5 so that |Z| << 2*(|X| + |Y|).

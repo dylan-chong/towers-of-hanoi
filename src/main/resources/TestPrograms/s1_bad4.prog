@@ -1,4 +1,0 @@
-while(eq(1, 1)){
-	move;
-	turnL;
-}

@@ -1,5 +1,0 @@
-if(eq(numBarrels, 0)){
-	move;
-} else(gt(numBarrels, 1)){
-	turnL;
-}
