@@ -10,6 +10,13 @@ public class FilterClass {
          * "Stream.empty()" is returned, otherwise use "Stream.of(..)" to return
          * the appropriately casted parameter.
          */
-        return null;
+        return (T item) -> {
+        	if (clazz.isInstance(item)) {
+				// noinspection unchecked
+				return Stream.of((R) item);
+			} else {
+        		return Stream.empty();
+			}
+		};
     }
 }

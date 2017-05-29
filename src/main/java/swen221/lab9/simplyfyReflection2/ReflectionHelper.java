@@ -4,11 +4,24 @@ import java.lang.reflect.InvocationTargetException;
 
 public class ReflectionHelper {
     public static interface SupplierWithException<T> {
-        /*FIXME you may want to change code here*/
-        T get() throws Throwable;
+        T get() throws IllegalAccessException,
+				NoSuchMethodException,
+				SecurityException,
+				InvocationTargetException;
     }
 
     public static <T> T tryCatch(SupplierWithException<T> s) {
-        /*FIXME add here the try-catching logic as from the text*/ return null;
-    }
+		try {
+			return s.get();
+		} catch (IllegalAccessException | NoSuchMethodException | SecurityException e) {
+			throw new Error(e);
+		} catch (InvocationTargetException e) {
+			Throwable cause = e.getCause();
+			if (cause instanceof RuntimeException)
+				throw (RuntimeException) cause;
+			else if (cause instanceof Error)
+				throw (Error) cause;
+			throw new Error(cause);
+		}
+	}
 }
