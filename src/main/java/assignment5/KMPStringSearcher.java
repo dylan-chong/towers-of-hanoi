@@ -14,7 +14,7 @@ public class KMPStringSearcher implements StringSearcher {
      * it's the first char (the first char doesn't count as the prefix)
      */
     public static final int FIRST_CHAR = 0;
-    public static final int NOT_A_PREFIX = 0;
+    public static final int NOT_IN_PREFIX = 0;
 
     /**
      * Use this rather than raw ints for readability purposes.
@@ -48,8 +48,12 @@ public class KMPStringSearcher implements StringSearcher {
             if (charI == patternChar) {
                 currentPrefixLength++;
                 table[i] = jumpBack(currentPrefixLength);
-            } else {
-                table[i] = NOT_A_PREFIX;
+            } else if (currentPrefixLength > 0) {
+                currentPrefixLength = table[currentPrefixLength];
+                i--; // cancel i++
+            } else { // currentPrefixLength == 0
+                // not in the middle of a 'streak'
+                table[i] = NOT_IN_PREFIX;
                 currentPrefixLength = 0;
             }
         }

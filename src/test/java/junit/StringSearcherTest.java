@@ -107,7 +107,7 @@ public abstract class StringSearcherTest {
         @Test
         public void createSearchTable_threeDifferentChars_tableIsCorrect() {
             assertTableMatches("abc",
-                    new int[]{BEFORE_START, FIRST_CHAR, NOT_A_PREFIX}
+                    new int[]{BEFORE_START, FIRST_CHAR, NOT_IN_PREFIX}
             );
         }
 
@@ -128,7 +128,7 @@ public abstract class StringSearcherTest {
         @Test
         public void createSearchTable_two2CharRepeats_tableShowsJumpBacks() {
             assertTableMatches("abab",
-                    new int[]{BEFORE_START, FIRST_CHAR, NOT_A_PREFIX, jumpBack(1)}
+                    new int[]{BEFORE_START, FIRST_CHAR, NOT_IN_PREFIX, jumpBack(1)}
             );
         }
 
@@ -138,15 +138,15 @@ public abstract class StringSearcherTest {
                     new int[]{
                             BEFORE_START,
                             // first 'abc'
-                            FIRST_CHAR, NOT_A_PREFIX, NOT_A_PREFIX,
-                            // second 'abc'
+                            FIRST_CHAR, NOT_IN_PREFIX, NOT_IN_PREFIX,
+                            // second 'ab' (last char isn't checked)
                             jumpBack(1), jumpBack(2)
                     }
             );
         }
 
         /**
-         * Example from slides
+         * Example 1 from slides
          */
         @Test
         public void createSearchTable_twoPartialPrefixes_tableShowsJumpBacks() {
@@ -154,9 +154,40 @@ public abstract class StringSearcherTest {
                     new int[]{
                             BEFORE_START,
                             // 'abcd'
-                            FIRST_CHAR, NOT_A_PREFIX, NOT_A_PREFIX, NOT_A_PREFIX,
-                            // 'abd'
+                            FIRST_CHAR, NOT_IN_PREFIX, NOT_IN_PREFIX, NOT_IN_PREFIX,
+                            // 'ab'
                             jumpBack(1), jumpBack(2)
+                    }
+            );
+        }
+
+        @Test
+        public void createSearchTable_threePartialPrefixes_tableShowsJumpBacks() {
+            assertTableMatches("abcdabcabc",
+                    new int[]{
+                            BEFORE_START,
+                            // 'abcd'
+                            FIRST_CHAR, NOT_IN_PREFIX, NOT_IN_PREFIX, NOT_IN_PREFIX,
+                            // 'abc'
+                            jumpBack(1), jumpBack(2), jumpBack(3),
+                            // 'ab'
+                            jumpBack(1), jumpBack(2)
+                    }
+            );
+        }
+
+        /**
+         * Example 2 from slides
+         */
+        @Test
+        public void createSearchTable_threePartialPrefixes2_tableShowsJumpBacks() {
+            assertTableMatches("ananaba",
+                    new int[]{
+                            BEFORE_START,
+                            // 'an'
+                            FIRST_CHAR, NOT_IN_PREFIX,
+                            // 'anab'
+                            jumpBack(1), jumpBack(2), jumpBack(3), NOT_IN_PREFIX
                     }
             );
         }
