@@ -13,8 +13,8 @@ import static org.junit.Assert.assertEquals;
  */
 public abstract class StringSearcherTest {
     @Test
-    public void search_emptyPatternEmptyText_returns0() {
-        assertEquals(0, newSearcher().search("", ""));
+    public void search_emptyPatternEmptyText_returnsNoMatch() {
+        assertEquals(NO_MATCH_FOUND, newSearcher().search("", ""));
     }
 
     @Test
@@ -33,13 +33,18 @@ public abstract class StringSearcherTest {
     }
 
     @Test
+    public void search_patternLongerThanText_returnsNoMatch() {
+        assertEquals(NO_MATCH_FOUND, newSearcher().search("long pattern", "text"));
+    }
+
+    @Test
     public void search_textIsTwoRepeatsOfPattern_returns0() {
         assertEquals(0, newSearcher().search("ab", "abab"));
     }
 
     @Test
     public void search_textIsTwoRepeatsOfPatternNotAtStart_returnsFirstIndex() {
-        assertEquals(0, newSearcher().search("ab", "xxabab"));
+        assertEquals(2, newSearcher().search("ab", "xxabab"));
     }
 
     @Test
@@ -60,6 +65,7 @@ public abstract class StringSearcherTest {
     @Test
     public void search_textHasOverlappingIncompleteMatches_returnsMatch() {
         assertEquals(9, newSearcher().search("amalama", "amamalammamalamaa"));
+        // Match here: ------------------------------------------ amalama ---
     }
 
     protected abstract StringSearcher newSearcher();
