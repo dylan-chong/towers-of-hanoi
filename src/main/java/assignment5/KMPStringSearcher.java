@@ -6,11 +6,7 @@ package assignment5;
  * could, for example, use the constructor to create the match table and the
  * search method to perform the search itself.
  */
-public class KMP implements SearchableString {
-
-    public KMP(String pattern, String text) {
-        // TODO maybe fill this in.
-    }
+public class KMPStringSearcher implements StringSearcher {
 
     /**
      * Perform KMP substring search on the given text with the given pattern.
