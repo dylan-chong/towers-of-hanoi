@@ -6,9 +6,6 @@ package assignment5;
 public class BruteForceStringSearcher implements StringSearcher {
     @Override
     public int search(String pattern, String text) {
-        if (pattern == null || text == null)
-            throw new NullPointerException();
-
         if (pattern.isEmpty())
             return NO_MATCH_FOUND;
 
@@ -33,7 +30,7 @@ public class BruteForceStringSearcher implements StringSearcher {
 
             if (patternChar != textChar) // no match
                 break;
-            if (patternI == pattern.length() - 1) // match on last pattern char
+            else if (patternI == pattern.length() - 1) // match on last pattern char
                 return true;
         }
 

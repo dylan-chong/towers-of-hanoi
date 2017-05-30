@@ -6,8 +6,8 @@ Note: a '[x]' represents a completed task it is the markdown symbol for a
 ticked tickbox
 
 Minimum out of 30:
- - [ ] (15) Creates the match table for the input pattern.
- - [ ] (15) Performs correct KMP substring search with the pattern and text.
+ - [x] (15) Creates the match table for the input pattern.
+ - [x] (15) Performs correct KMP substring search with the pattern and text.
 
 Core out of 30 (up to 70):
  - [ ] (5) Finds the frequency histogram for an input text.

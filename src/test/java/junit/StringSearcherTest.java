@@ -87,48 +87,48 @@ public abstract class StringSearcherTest {
 
         @Test(expected = IllegalArgumentException.class)
         public void createSearchTable_emptyPattern_exception() {
-            createSearchTable("");
+            createPatternTable("");
         }
 
         @Test
         public void createSearchTable_oneCharPattern_equalsArrayOfMinus1() {
             assertTableMatches("a",
-                    new int[]{BEFORE_START}
+                    new int[]{BEFORE_PATTERN_START}
             );
         }
 
         @Test
         public void createSearchTable_twoDifferentChars_tableIsCorrect() {
             assertTableMatches("ab",
-                    new int[]{BEFORE_START, FIRST_CHAR}
+                    new int[]{BEFORE_PATTERN_START, FIRST_CHAR}
             );
         }
 
         @Test
         public void createSearchTable_threeDifferentChars_tableIsCorrect() {
             assertTableMatches("abc",
-                    new int[]{BEFORE_START, FIRST_CHAR, NOT_IN_PREFIX}
+                    new int[]{BEFORE_PATTERN_START, FIRST_CHAR, NOT_A_PREFIX}
             );
         }
 
         @Test
         public void createSearchTable_two1CharRepeats_tableIsCorrect() {
             assertTableMatches("aa",
-                    new int[]{BEFORE_START, FIRST_CHAR}
+                    new int[]{BEFORE_PATTERN_START, FIRST_CHAR}
             );
         }
 
         @Test
         public void createSearchTable_three1CharRepeats_tableShowsJumpBacks() {
             assertTableMatches("aaa",
-                    new int[]{BEFORE_START, FIRST_CHAR, jumpBack(1)}
+                    new int[]{BEFORE_PATTERN_START, FIRST_CHAR, jumpBack(1)}
             );
         }
 
         @Test
         public void createSearchTable_two2CharRepeats_tableShowsJumpBacks() {
             assertTableMatches("abab",
-                    new int[]{BEFORE_START, FIRST_CHAR, NOT_IN_PREFIX, jumpBack(1)}
+                    new int[]{BEFORE_PATTERN_START, FIRST_CHAR, NOT_A_PREFIX, jumpBack(1)}
             );
         }
 
@@ -136,9 +136,9 @@ public abstract class StringSearcherTest {
         public void createSearchTable_two3CharRepeats_tableShowsJumpBacks() {
             assertTableMatches("abcabc",
                     new int[]{
-                            BEFORE_START,
+                            BEFORE_PATTERN_START,
                             // first 'abc'
-                            FIRST_CHAR, NOT_IN_PREFIX, NOT_IN_PREFIX,
+                            FIRST_CHAR, NOT_A_PREFIX, NOT_A_PREFIX,
                             // second 'ab' (last char isn't checked)
                             jumpBack(1), jumpBack(2)
                     }
@@ -152,9 +152,9 @@ public abstract class StringSearcherTest {
         public void createSearchTable_twoPartialPrefixes_tableShowsJumpBacks() {
             assertTableMatches("abcdabd",
                     new int[]{
-                            BEFORE_START,
+                            BEFORE_PATTERN_START,
                             // 'abcd'
-                            FIRST_CHAR, NOT_IN_PREFIX, NOT_IN_PREFIX, NOT_IN_PREFIX,
+                            FIRST_CHAR, NOT_A_PREFIX, NOT_A_PREFIX, NOT_A_PREFIX,
                             // 'ab'
                             jumpBack(1), jumpBack(2)
                     }
@@ -165,9 +165,9 @@ public abstract class StringSearcherTest {
         public void createSearchTable_threePartialPrefixes_tableShowsJumpBacks() {
             assertTableMatches("abcdabcabc",
                     new int[]{
-                            BEFORE_START,
+                            BEFORE_PATTERN_START,
                             // 'abcd'
-                            FIRST_CHAR, NOT_IN_PREFIX, NOT_IN_PREFIX, NOT_IN_PREFIX,
+                            FIRST_CHAR, NOT_A_PREFIX, NOT_A_PREFIX, NOT_A_PREFIX,
                             // 'abc'
                             jumpBack(1), jumpBack(2), jumpBack(3),
                             // 'ab'
@@ -183,17 +183,17 @@ public abstract class StringSearcherTest {
         public void createSearchTable_threePartialPrefixes2_tableShowsJumpBacks() {
             assertTableMatches("ananaba",
                     new int[]{
-                            BEFORE_START,
+                            BEFORE_PATTERN_START,
                             // 'an'
-                            FIRST_CHAR, NOT_IN_PREFIX,
+                            FIRST_CHAR, NOT_A_PREFIX,
                             // 'anab'
-                            jumpBack(1), jumpBack(2), jumpBack(3), NOT_IN_PREFIX
+                            jumpBack(1), jumpBack(2), jumpBack(3), NOT_A_PREFIX
                     }
             );
         }
 
         private void assertTableMatches(String pattern, int[] expectedTable) {
-            int[] searchTable = createSearchTable(pattern);
+            int[] searchTable = createPatternTable(pattern);
             assertEquals(Arrays.toString(expectedTable), Arrays.toString(searchTable));
         }
     }
