@@ -5,6 +5,9 @@ import assignment5.KMPStringSearcher;
 import assignment5.StringSearcher;
 import org.junit.Test;
 
+import java.util.Arrays;
+
+import static assignment5.KMPStringSearcher.*;
 import static assignment5.StringSearcher.NO_MATCH_FOUND;
 import static org.junit.Assert.assertEquals;
 
@@ -80,6 +83,87 @@ public abstract class StringSearcherTest {
         @Override
         protected StringSearcher newSearcher() {
             return new KMPStringSearcher();
+        }
+
+        @Test(expected = IllegalArgumentException.class)
+        public void createSearchTable_emptyPattern_exception() {
+            createSearchTable("");
+        }
+
+        @Test
+        public void createSearchTable_oneCharPattern_equalsArrayOfMinus1() {
+            assertTableMatches("a",
+                    new int[]{BEFORE_START}
+            );
+        }
+
+        @Test
+        public void createSearchTable_twoDifferentChars_tableIsCorrect() {
+            assertTableMatches("ab",
+                    new int[]{BEFORE_START, FIRST_CHAR}
+            );
+        }
+
+        @Test
+        public void createSearchTable_threeDifferentChars_tableIsCorrect() {
+            assertTableMatches("abc",
+                    new int[]{BEFORE_START, FIRST_CHAR, NOT_A_PREFIX}
+            );
+        }
+
+        @Test
+        public void createSearchTable_two1CharRepeats_tableIsCorrect() {
+            assertTableMatches("aa",
+                    new int[]{BEFORE_START, FIRST_CHAR}
+            );
+        }
+
+        @Test
+        public void createSearchTable_three1CharRepeats_tableShowsJumpBacks() {
+            assertTableMatches("aaa",
+                    new int[]{BEFORE_START, FIRST_CHAR, jumpBack(1)}
+            );
+        }
+
+        @Test
+        public void createSearchTable_two2CharRepeats_tableShowsJumpBacks() {
+            assertTableMatches("abab",
+                    new int[]{BEFORE_START, FIRST_CHAR, NOT_A_PREFIX, jumpBack(1)}
+            );
+        }
+
+        @Test
+        public void createSearchTable_two3CharRepeats_tableShowsJumpBacks() {
+            assertTableMatches("abcabc",
+                    new int[]{
+                            BEFORE_START,
+                            // first 'abc'
+                            FIRST_CHAR, NOT_A_PREFIX, NOT_A_PREFIX,
+                            // second 'abc'
+                            jumpBack(1), jumpBack(2)
+                    }
+            );
+        }
+
+        /**
+         * Example from slides
+         */
+        @Test
+        public void createSearchTable_twoPartialPrefixes_tableShowsJumpBacks() {
+            assertTableMatches("abcdabd",
+                    new int[]{
+                            BEFORE_START,
+                            // 'abcd'
+                            FIRST_CHAR, NOT_A_PREFIX, NOT_A_PREFIX, NOT_A_PREFIX,
+                            // 'abd'
+                            jumpBack(1), jumpBack(2)
+                    }
+            );
+        }
+
+        private void assertTableMatches(String pattern, int[] expectedTable) {
+            int[] searchTable = createSearchTable(pattern);
+            assertEquals(Arrays.toString(expectedTable), Arrays.toString(searchTable));
         }
     }
 }
