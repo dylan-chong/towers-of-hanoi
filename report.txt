@@ -27,3 +27,7 @@ Challenge out of 10 (up to 100, 5 spare marks):
          - Adaptive Huffman coding
          - Arithmetic coding
  - [ ] (5) Find a algorithm for question 5 so that |Z| << 2*(|X| + |Y|).
+
+# Questions #
+
+
