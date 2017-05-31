@@ -1,32 +1,34 @@
 package assignment5;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * Created by Dylan on 30/05/17.
  */
 public class BruteForceStringSearcher implements StringSearcher {
     @Override
-    public int search(String pattern, String text) {
-        if (pattern.isEmpty())
-            return NO_MATCH_FOUND;
+    public SearchResult search(String pattern, String text) {
+        AtomicLong numChecks = new AtomicLong(0);
 
-        if (pattern.length() > text.length())
-            return NO_MATCH_FOUND;
+        if (pattern.isEmpty() || pattern.length() > text.length())
+            return new SearchResult(NO_MATCH_FOUND, 0);
 
         // 'xI' is short for 'x index'
 
         for (int textI = 0; textI <= text.length() - pattern.length(); textI++) {
-            if (isMatchAt(textI, pattern, text)) {
-                return textI;
+            if (isMatchAt(textI, pattern, text, numChecks)) {
+                return new SearchResult(textI, numChecks.get());
             }
         }
 
-        return -1;
+        return new SearchResult(NO_MATCH_FOUND, numChecks.get());
     }
 
-    private boolean isMatchAt(int textI, String pattern, String text) {
+    private boolean isMatchAt(int textI, String pattern, String text, AtomicLong numChecks) {
         for (int patternI = 0; patternI < pattern.length(); patternI++) {
             char patternChar = pattern.charAt(patternI);
             char textChar = text.charAt(textI + patternI);
+            numChecks.addAndGet(2);
 
             if (patternChar != textChar) // no match
                 break;

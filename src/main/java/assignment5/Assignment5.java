@@ -169,7 +169,9 @@ public class Assignment5 {
             public void actionPerformed(ActionEvent e) {
                 String pattern = searchField.getText();
                 String text = textEditor.getText();
-                int index = new KMPStringSearcher().search(pattern, text);
+                int index = new KMPStringSearcher()
+                        .search(pattern, text)
+                        .matchIndex;
 
                 if (index == -1) {
                     JOptionPane.showMessageDialog(frame, "Pattern not found.");

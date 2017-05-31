@@ -30,4 +30,10 @@ Challenge out of 10 (up to 100, 5 spare marks):
 
 # Questions #
 
+## Q1 ##
 
+I wrote some benchmarks for comparison between BruteForce and KMP algorithms
+(see report-string-search-benchmark.png for comparisons - look at the 'median
+duration field').
+
+Surprisingly, the brute force was slightly faster than KMP.
