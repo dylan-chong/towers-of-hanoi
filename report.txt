@@ -33,7 +33,15 @@ Challenge out of 10 (up to 100, 5 spare marks):
 ## Q1 ##
 
 I wrote some benchmarks for comparison between BruteForce and KMP algorithms
-(see report-string-search-benchmark.png for comparisons - look at the 'median
-duration field').
+See report-string-search-benchmark.png for comparisons - look at the 'median
+duration field'.
 
-Surprisingly, the brute force was slightly faster than KMP.
+KMP was mostly faster than brute force, which makes sense because the brute
+force rechecks characters multiple times, especially if there are lots of
+occurrences of the pattern's prefix.
+
+The brute force search was faster for the 3rd test in the png file, where the
+match was at the start, and the pattern was long. There is some overhead in
+making the table, especially for a long pattern, so KMP would lag behind
+during the checking of the pattern. This is the best case for the brute force
+because no characters will have to be checked twice
