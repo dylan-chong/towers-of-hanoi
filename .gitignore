@@ -20,3 +20,6 @@
 
 # Assignment submit
 /submit/
+
+# Temp
+src/main/resources/out.txt

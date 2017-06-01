@@ -11,10 +11,10 @@ Minimum out of 30:
 
 Core out of 30 (up to 70):
  - [x] (5) Finds the frequency histogram for an input text.
- - [ ] (10) Creates the coding tree for an input text.
- - [ ] (5) Correctly encodes input.
- - [ ] (5) Correctly decodes input.
- - [ ] (5) Answers questions 1 and 2.
+ - [x] (10) Creates the coding tree for an input text.
+ - [x] (5) Correctly encodes input.
+ - [x] (5) Correctly decodes input.
+ - [x] (5) Answers questions 1 and 2.
 
 Completion out of 30 (up to 90):
  - [ ] (10) Correctly performs Lempel Ziv compression.
@@ -26,7 +26,7 @@ Challenge out of 10 (up to 100, 5 spare marks):
         for example:
          - Adaptive Huffman coding
          - Arithmetic coding
- - [ ] (5) Find a algorithm for question 5 so that |Z| << 2*(|X| + |Y|).
+ - [ ] (5) Find a algorithm for question 5 so that `|Z| << 2*(|X| + |Y|)`.
 
 # Questions #
 
@@ -45,3 +45,119 @@ match was at the start, and the pattern was long. There is some overhead in
 making the table, especially for a long pattern, so KMP would lag behind
 during the checking of the pattern. This is the best case for the brute force
 because no characters will have to be checked twice
+
+## Q2 ##
+
+Codes:
+
+    {
+      \n=111010,
+      \r=111001,
+       =110,
+      !=1110000111,
+      "=11111010,
+      '=111000010,
+      (=1111101111111,
+      )=011000111000,
+      *=11111011010010,
+      ,=1111111,
+      -=100101001,
+      .=1110001,
+      /=011000111001010111110,
+      0=111110110100001,
+      1=11111011010001,
+      2=111110110100000,
+      3=0110001110010111,
+      4=01100011100101010,
+      5=0110001110010100,
+      6=0110001110010110,
+      7=01100011100111110,
+      8=01100011100100,
+      9=01100011100111101,
+      :=111000001001,
+      ;=111110110101,
+      ==011000111001010111111,
+      ?=1001010100,
+      A=011000110,
+      B=1110000001,
+      C=01100010000,
+      D=11111011000,
+      E=01100010001,
+      F=11100000101,
+      G=111110111101,
+      H=1110000011,
+      I=100101011,
+      J=11111011010011,
+      K=111110111100,
+      L=1111101111110,
+      M=1001010101,
+      N=1110000000,
+      O=01100011101,
+      P=011000101,
+      Q=01100011100111111,
+      R=11111011011,
+      S=0110001111,
+      T=100101000,
+      U=01100011100110,
+      V=111000001000,
+      W=0110001001,
+      X=01100011100111100,
+      Y=111110111110,
+      Z=011000111001110,
+      à=0110001110010101110,
+      a=1000,
+      b=1111100,
+      c=101111,
+      d=10110,
+      ä=0110001110010101111010,
+      e=000,
+      f=100110,
+      g=100100,
+      h=0011,
+      é=0110001110010101111011,
+      i=0100,
+      j=11111011001,
+      ê=011000111001010110,
+      k=0110000,
+      l=01101,
+      m=101110,
+      n=0101,
+      o=0111,
+      p=1111110,
+      q=11111011101,
+      r=11110,
+      s=0010,
+      t=1010,
+      u=111011,
+      v=1001011,
+      w=100111,
+      x=1110000110,
+      y=011001,
+      z=11111011100,
+      \uFEFF=011000111001010111100
+    }
+
+input length:  `3258246 bytes`
+output length: `1848598 bytes`
+
+## Q3 ##
+
+| File              | Input bytes | Output bytes | In/Out (reduction factor) |
+|-------------------|-------------|--------------|---------------------------|
+| war_and_peace.txt | 3258246     | 1848598      | 1.762549781               |
+| taisho.txt        | 3649944     | 1542656      | 2.366012902               |
+| pi.txt            | 1010003     | 443632       | 2.2766685                 |
+
+All of the files did very well, resulting in files roughly 1/2 the size,
+excluding the data required to store the codes. 
+
+This is most likely because each character required 8 bits, because of UTF-8.
+In the Pi example, there are only 12 different characters (`[\d\.\n]*`), so
+only `ceil(log_2(12)) == 4` bits are required. This results in a file roughly
+half the size. 
+
+I suspect the Taisho was the best because certain characters are used very very
+frequently, and many very infrequently, which makes the Huffman algorithm be
+more effective. Taisho is probably the worst if you include the coding data -
+there was over 8000 different characters, which would take up quite a bit of
+space to store.
