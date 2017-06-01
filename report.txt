@@ -10,7 +10,7 @@ Minimum out of 30:
  - [x] (15) Performs correct KMP substring search with the pattern and text.
 
 Core out of 30 (up to 70):
- - [ ] (5) Finds the frequency histogram for an input text.
+ - [x] (5) Finds the frequency histogram for an input text.
  - [ ] (10) Creates the coding tree for an input text.
  - [ ] (5) Correctly encodes input.
  - [ ] (5) Correctly decodes input.

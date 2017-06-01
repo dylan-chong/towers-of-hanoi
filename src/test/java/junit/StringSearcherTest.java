@@ -43,9 +43,6 @@ public abstract class StringSearcherTest {
                                 "As with astronomy the difficulty of " +
                                         "recognizing the motion of the earth"
                         ));
-                put("data/lenna.txt",
-                        Arrays.asList(
-                        ));
             }};
 
     @Test

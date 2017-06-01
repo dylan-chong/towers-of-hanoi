@@ -84,7 +84,7 @@ public class Assignment5 {
                 String text = readFile(compressionInputFile);
 
                 // run the algorithms.
-                HuffmanCoding huffman = new HuffmanCoding(text);
+                HuffmanEncoder huffman = new HuffmanEncoder();
                 String encoded = huffman.encode(text);
                 String decoded = huffman.decode(encoded);
 
@@ -104,7 +104,6 @@ public class Assignment5 {
                 // check they're the same and display user output.
                 compressionOutput
                         .append("original and decoded texts " + (text.equals(decoded) ? "" : "DO NOT ") + "match.\n");
-                compressionOutput.append(huffman.getInformation());
 
             } else if (algorithm.equals("Lempel Ziv")) {
                 // read in the file.
@@ -162,7 +161,7 @@ public class Assignment5 {
             }
         });
 
-        // next, add in the search box on the top right.
+        // next, add in the search box on the top rightNode.
         searchField = new JTextField(SEARCH_COLS);
         searchField.setMaximumSize(new Dimension(0, 25));
         searchField.addActionListener(new ActionListener() {
@@ -189,7 +188,7 @@ public class Assignment5 {
         JPanel controls = new JPanel();
         controls.setLayout(new BoxLayout(controls, BoxLayout.LINE_AXIS));
 
-        // make an empty border so the components aren't right up against the
+        // make an empty border so the components aren't rightNode up against the
         // frame edge.
         Border edge = BorderFactory.createEmptyBorder(LAYOUT_GAP, LAYOUT_GAP, LAYOUT_GAP, LAYOUT_GAP);
         controls.setBorder(edge);
@@ -225,7 +224,7 @@ public class Assignment5 {
 		 * Now let's make the second tabbed pane.
 		 */
 
-        // first the left panel, which is the input side.
+        // first the leftNode panel, which is the input side.
 
         // a load button.
         load = new JButton("Input file");
@@ -299,7 +298,7 @@ public class Assignment5 {
         leftBottom.add(compressionFileSelection, BorderLayout.NORTH);
         leftBottom.add(run, BorderLayout.SOUTH);
 
-        // the left panel is just leftTop, a bunch of vertical space, and the
+        // the leftNode panel is just leftTop, a bunch of vertical space, and the
         // run button at the bottom.
         JPanel left = new JPanel();
         layout = new BorderLayout();
@@ -316,7 +315,7 @@ public class Assignment5 {
         Border border = BorderFactory.createCompoundBorder(title, edge);
         left.setBorder(border);
 
-        // now the right panel, which is output.
+        // now the rightNode panel, which is output.
 
         // a text output area for writing information.
         compressionOutput = new JTextArea(COMP_OUTPUT_ROWS, COMP_OUTPUT_COLS);
@@ -337,7 +336,7 @@ public class Assignment5 {
         compression.add(left);
         compression.add(right);
 
-        // same border as for the left.
+        // same border as for the leftNode.
         title = BorderFactory.createTitledBorder("output");
         edge = BorderFactory.createEmptyBorder(LAYOUT_GAP, LAYOUT_GAP, LAYOUT_GAP, LAYOUT_GAP);
         border = BorderFactory.createCompoundBorder(title, edge);
