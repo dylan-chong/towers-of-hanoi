@@ -84,8 +84,8 @@ public class Assignment5 {
                 String text = readFile(compressionInputFile);
 
                 // run the algorithms.
-                HuffmanEncoder huffman = new HuffmanEncoder();
-                String encoded = huffman.encode(text);
+                HuffmanEncoder huffman = new HuffmanEncoder(text);
+                String encoded = huffman.encode();
                 String decoded = huffman.decode(encoded);
 
                 if (!encoded.matches("[01]*"))

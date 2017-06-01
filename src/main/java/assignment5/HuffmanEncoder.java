@@ -5,14 +5,26 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class HuffmanEncoder {
+
+    private final String text;
+    private final Map<Character, String> codes;
+
+    public HuffmanEncoder(String text) {
+        this.text = text;
+        this.codes = getCharacterCodes(text);
+    }
+
     /**
      * Take an input string, text, and encode it with the stored tree. Should
      * return the encoded text as a binary string, that is, a string containing
      * only 1 and 0.
      */
-    public String encode(String text) {
-        // TODO fill this in.
-        return "";
+    public String encode() {
+        StringBuilder encoded = new StringBuilder();
+        text.chars().forEach(character ->
+                encoded.append(codes.get((char) character))
+        );
+        return encoded.toString();
     }
 
     /**
@@ -20,8 +32,31 @@ public class HuffmanEncoder {
      * and return the decoded text as a text string.
      */
     public String decode(String encoded) {
-        // TODO fill this in.
-        return "";
+        Map<String, Character> codeToChar = codes.entrySet()
+                .stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getValue, Map.Entry::getKey
+                ));
+
+        StringBuilder text = new StringBuilder();
+        StringBuilder token = null;
+        for (int i = 0; i < encoded.length(); i++) {
+            char thisChar = encoded.charAt(i);
+
+            if (token == null)
+                token = new StringBuilder();
+            token.append(thisChar);
+
+            Character character = codeToChar.get(token.toString());
+            if (character == null) {
+                continue; // keep appending to token
+            }
+
+            text.append(character);
+            token = null;
+        }
+
+        return text.toString();
     }
 
     public static Map<Character, Integer> getCharacterCounts(String text) {
@@ -101,7 +136,9 @@ public class HuffmanEncoder {
 
         public Integer getCharCount() {
             if (character != null) return charCount;
-            return leftNode.getCharCount() + rightNode.getCharCount();
+            int left = leftNode == null ? 0 : leftNode.getCharCount();
+            int right = rightNode == null ? 0 : rightNode.getCharCount();
+            return left + right;
         }
 
         public Map<Character, String> getCodes() {

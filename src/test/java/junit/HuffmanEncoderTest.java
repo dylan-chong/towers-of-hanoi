@@ -3,10 +3,7 @@ package junit;
 import assignment5.HuffmanEncoder;
 import org.junit.Test;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,6 +11,7 @@ import static org.junit.Assert.assertEquals;
  * Created by Dylan on 1/06/17.
  */
 public class HuffmanEncoderTest {
+
     @Test
     public void getCharacterCounts_emptyString_returnsEmptyMap() {
         assertEquals(Collections.emptyMap(), HuffmanEncoder.getCharacterCounts(""));
@@ -68,40 +66,57 @@ public class HuffmanEncoderTest {
         expectedCodes.put('b', "11");
         expectedCodes.put('a', "10");
         assertEquals(expectedCodes, HuffmanEncoder.getCharacterCodes(text));
-
-        // ---
-        // Map<Character, Integer> counts = HuffmanEncoder.getCharacterCounts(text);
-        // Map<Character, String> codes = HuffmanEncoder.getCharacterCodes(counts);
-        //
-        // List<Character> charactersSortedByCodeLength = codes.entrySet().stream()
-        //         .sorted(Comparator.comparingInt(entry -> entry.getValue().length()))
-        //         .map(Map.Entry::getKey)
-        //         .collect(Collectors.toList());
-        //
-        // List<Integer> hopefullySortedCounts = charactersSortedByCodeLength.stream()
-        //         .map(counts::get)
-        //         .collect(Collectors.toList());
-        // assertTrue(isSorted(hopefullySortedCounts));
-
-        // Check that small code lengths are used by frequent chars
-        // by making sure that when you sort the codes by length, they are
-        // also sorted by frequency
     }
 
-    private <T extends Comparable<T>> boolean isSorted(List<T> hopefullySortedCounts) {
-        if (hopefullySortedCounts.size() <= 1) return true;
+    @Test
+    public void getCharacterCodes_fourDifferentChars_returnsMapOf0() {
+        String text = "abbcccdddd";
 
-        T previousItem = null;
-        for (T item : hopefullySortedCounts) {
-            if (previousItem == null) {
-                previousItem = item;
-                continue;
-            }
+        Map<Character, String> expectedCodes = new HashMap<>();
+        expectedCodes.put('d', "0");
+        expectedCodes.put('c', "10");
+        expectedCodes.put('b', "111");
+        expectedCodes.put('a', "110");
+        assertEquals(expectedCodes, HuffmanEncoder.getCharacterCodes(text));
+    }
 
-            if (previousItem.compareTo(item) > 0)
-                return false;
-        }
+    @Test
+    public void encode_twoDifferentChars_encodes() {
+        String text = "abb";
+        assertEquals("011", new HuffmanEncoder(text).encode());
+    }
 
-        return true;
+    @Test
+    public void encode_threeDifferentChars_encodes() {
+        String text = "abbccc";
+        assertEquals("101111000", new HuffmanEncoder(text).encode());
+    }
+
+    @Test
+    public void encode_fourDifferentChars_encodes() {
+        String text = "abbcccdddd";
+        assertEquals("1101111111010100000", new HuffmanEncoder(text).encode());
+    }
+
+    @Test
+    public void decode_twoDifferentChars_getsOriginalText() {
+        String text = "abb";
+        String encoded = "011";
+        assertEquals(text, new HuffmanEncoder(text).decode(encoded));
+    }
+
+    @Test
+    public void decode_threeDifferentChars_getsOriginalText() {
+        String text = "abbccc";
+        String encoded = "101111000";
+        assertEquals(text, new HuffmanEncoder(text).decode(encoded));
+    }
+
+    @Test
+    public void decode_fourDifferentChars_getsOriginalText() {
+        String text = "abbcccdddd";
+        String encoded = "1101111111010100000";
+        assertEquals(text, new HuffmanEncoder(text).decode(encoded));
     }
 }
+
