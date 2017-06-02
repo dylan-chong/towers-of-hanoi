@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class HuffmanEncoder {
+public class HuffmanEncoder implements Encoder {
 
     private final String text;
     private final Map<Character, String> codes;
@@ -14,11 +14,7 @@ public class HuffmanEncoder {
         this.codes = getCharacterCodes(text);
     }
 
-    /**
-     * Take an input string, text, and encode it with the stored tree. Should
-     * return the encoded text as a binary string, that is, a string containing
-     * only 1 and 0.
-     */
+    @Override
     public String encode() {
         StringBuilder encoded = new StringBuilder();
         text.chars().forEach(character ->
@@ -27,10 +23,7 @@ public class HuffmanEncoder {
         return encoded.toString();
     }
 
-    /**
-     * Take encoded input as a binary string, decode it using the stored tree,
-     * and return the decoded text as a text string.
-     */
+    @Override
     public String decode(String encoded) {
         Map<String, Character> codeToChar = codes.entrySet()
                 .stream()

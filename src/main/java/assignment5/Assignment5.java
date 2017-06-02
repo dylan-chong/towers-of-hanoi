@@ -110,9 +110,9 @@ public class Assignment5 {
                 String text = readFile(compressionInputFile);
 
                 // run the algorithms.
-                LempelZiv lz = new LempelZiv();
-                String compressed = lz.compress(text);
-                String decompressed = lz.decompress(compressed);
+                LempelZivEncoder lz = new LempelZivEncoder(text);
+                String compressed = lz.encode();
+                String decompressed = lz.decode(compressed);
 
                 // write out the encoded text.
                 List<String> lines = Arrays.asList(compressed);
@@ -125,7 +125,6 @@ public class Assignment5 {
                 // check they're the same and display user output.
                 compressionOutput.append(
                         "\noriginal and decoded texts " + (text.equals(decompressed) ? "" : "DO NOT ") + "match!\n");
-                compressionOutput.append(lz.getInformation());
             }
         } catch (IOException e) {
             e.printStackTrace();

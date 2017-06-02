@@ -22,11 +22,13 @@ Completion out of 30 (up to 90):
  - [ ] (10) Answers questions 3 and 4.
 
 Challenge out of 10 (up to 100, 5 spare marks):
- - [ ] (10) Implement Boyer-Moore string search OR a more complex coding algorithm,
-        for example:
+ - [ ] (10) Implement Boyer-Moore string search OR a more complex coding
+   algorithm, for example:
          - Adaptive Huffman coding
          - Arithmetic coding
  - [ ] (5) Find a algorithm for question 5 so that `|Z| << 2*(|X| + |Y|)`.
+
+-------------------------------------------------------------------------------
 
 # Questions #
 
