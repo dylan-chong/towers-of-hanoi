@@ -10,12 +10,18 @@ import java.util.stream.IntStream;
  */
 public class LempelZivEncoder implements Encoder {
 
-    private static final int LOOKBACK_MAX = 1023;
+    private static final int DEFAULT_LOOKBACK_WINDOW_SIZE = 1023;
 
     private final String text;
+    private final int lookbackWindowSize;
 
     public LempelZivEncoder(String text) {
+        this(text, DEFAULT_LOOKBACK_WINDOW_SIZE);
+    }
+
+    public LempelZivEncoder(String text, int lookbackWindowSize) {
         this.text = text;
+        this.lookbackWindowSize = lookbackWindowSize;
     }
 
     @Override
@@ -48,12 +54,12 @@ public class LempelZivEncoder implements Encoder {
         return CharRef.toString(charRefs);
     }
 
-    private static BackReferenceResult findBackReference(String text,
+    private BackReferenceResult findBackReference(String text,
                                                          int endPos) {
         if (endPos == 0)
             return null;
 
-        int searchPosStart = Math.max(0, endPos - LOOKBACK_MAX);
+        int searchPosStart = Math.max(0, endPos - lookbackWindowSize);
         Collection<BackReferenceResult> backRefs = new ArrayList<>();
 
         for (int searchPos = searchPosStart; searchPos < endPos; searchPos++) {
@@ -120,7 +126,7 @@ public class LempelZivEncoder implements Encoder {
 
 
     /**
-     * Represents a char or a lookback for a next char
+     * Represents a char or a lookbackWindowSize for a next char
      */
     public static class CharRef {
         /**

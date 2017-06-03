@@ -4,6 +4,7 @@ import assignment5.Encoder;
 import assignment5.HuffmanEncoder;
 import assignment5.LempelZivEncoder;
 import assignment5.LempelZivEncoder.CharRef;
+import assignment5.LempelZivHuffmanEncoder;
 import org.junit.Test;
 
 import java.util.*;
@@ -154,6 +155,7 @@ public abstract class EncoderTest {
     }
 
     public static class LempelZivEncoderTest extends EncoderTest {
+
         @Override
         protected Encoder newEncoder(String text) {
             return new LempelZivEncoder(text);
@@ -280,6 +282,11 @@ public abstract class EncoderTest {
             ));
         }
 
+        @Test
+        public void RUN_BENCHMARK() {
+            TestUtils.runBenchmarkForDifferentWindowSizes(LempelZivEncoder::new);
+        }
+
         // See EncoderTest.encodeThenDecode_* for more decoding tests
 
         private void testDecode_getsExpectedText(String text,
@@ -288,6 +295,21 @@ public abstract class EncoderTest {
                     text,
                     newEncoder(text).decode(CharRef.toString(charRefs))
             );
+        }
+
+    }
+
+
+    public static class LempelZivPlusHuffmanEncoderTest extends EncoderTest {
+
+        @Override
+        protected Encoder newEncoder(String text) {
+            return new LempelZivHuffmanEncoder(text);
+        }
+
+        @Test
+        public void RUN_BENCHMARK() {
+            TestUtils.runBenchmarkForDifferentWindowSizes(LempelZivHuffmanEncoder::new);
         }
     }
 }

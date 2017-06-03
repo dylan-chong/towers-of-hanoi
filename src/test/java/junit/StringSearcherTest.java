@@ -6,14 +6,16 @@ import assignment5.StringSearcher;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.LongStream;
 
 import static assignment5.KMPStringSearcher.*;
 import static assignment5.StringSearcher.NO_MATCH_FOUND;
+import static junit.TestUtils.getRuntimeDuration;
+import static junit.TestUtils.getTextFromFile;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -146,23 +148,7 @@ public abstract class StringSearcherTest {
     }
 
     private long getDuration(String pattern, String text) {
-        System.gc();
-        long start = System.currentTimeMillis();
-        newSearcher().search(pattern, text);
-        long end = System.currentTimeMillis();
-        return end - start;
-    }
-
-    private String getTextFromFile(File path) {
-        try {
-            List<String> lines = Files.readAllLines(Paths.get(path.getPath()));
-            StringBuilder text = new StringBuilder();
-            for (String line : lines)
-                text.append(line).append('\n');
-            return text.toString();
-        } catch (IOException e) {
-            throw new Error(e);
-        }
+        return getRuntimeDuration(() -> newSearcher().search(pattern, text));
     }
 
     protected abstract StringSearcher newSearcher();
