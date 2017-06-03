@@ -14,6 +14,7 @@ import static org.junit.Assert.assertEquals;
  * Created by Dylan on 2/06/17.
  */
 public abstract class EncoderTest {
+
     @Test
     public void encodeThenDecode_twoDifferentChars_getsOriginalText() {
         testEncodeThenDecode_getsOriginalTest("abb");
@@ -159,86 +160,133 @@ public abstract class EncoderTest {
         }
 
         @Test
-        public void encode_oneCharacter_getOneTuple() {
-            testEncode_getsCorrectTuples("a", Arrays.asList(
-                    new LempelZivEncoder.CharRef(0, 0, 'a'),
-                    new LempelZivEncoder.CharRef(0, 0, CharRef.NULL_CHAR)
-            ));
-        }
-
-        @Test
-        public void encode_twoCharacters_getTwoTuples() {
-            testEncode_getsCorrectTuples("ab", Arrays.asList(
+        public void encode_oneCharacter_getOneRefPlusNull() {
+            testEncode_getsCorrectRefs("a", Arrays.asList(
                     new CharRef(0, 0, 'a'),
-                    new LempelZivEncoder.CharRef(0, 0, 'b'),
                     new CharRef(0, 0, CharRef.NULL_CHAR)
             ));
         }
 
         @Test
-        public void encode_oneSingleCharLookback_secondTuplePointsBack() {
-            testEncode_getsCorrectTuples("aab", Arrays.asList(
-                    new LempelZivEncoder.CharRef(0, 0, 'a'),
-                    new LempelZivEncoder.CharRef(1, 1, 'b'),
-                    new LempelZivEncoder.CharRef(0, 0, CharRef.NULL_CHAR)
+        public void encode_twoCharacters_getTwoRefsPlusNull() {
+            testEncode_getsCorrectRefs("ab", Arrays.asList(
+                    new CharRef(0, 0, 'a'),
+                    new CharRef(0, 0, 'b'),
+                    new CharRef(0, 0, CharRef.NULL_CHAR)
             ));
         }
 
         @Test
-        public void encode_oneSingleCharLookbackNotAtStart_secondTuplePointsBack() {
-            testEncode_getsCorrectTuples("zaab", Arrays.asList(
-                    new LempelZivEncoder.CharRef(0, 0, 'z'),
-                    new LempelZivEncoder.CharRef(0, 0, 'a'),
-                    new LempelZivEncoder.CharRef(1, 1, 'b'),
-                    new LempelZivEncoder.CharRef(0, 0, CharRef.NULL_CHAR)
+        public void encode_oneSingleCharLookback_secondRefPointsBack() {
+            testEncode_getsCorrectRefs("aab", Arrays.asList(
+                    new CharRef(0, 0, 'a'),
+                    new CharRef(1, 1, 'b'),
+                    new CharRef(0, 0, CharRef.NULL_CHAR)
+            ));
+        }
+
+        @Test
+        public void encode_oneSingleCharLookbackNotAtStart_secondRefPointsBack() {
+            testEncode_getsCorrectRefs("zaab", Arrays.asList(
+                    new CharRef(0, 0, 'z'),
+                    new CharRef(0, 0, 'a'),
+                    new CharRef(1, 1, 'b'),
+                    new CharRef(0, 0, CharRef.NULL_CHAR)
             ));
         }
 
         @Test
         public void encode_twoSingleCharLookbacks_twoCharRefsLookBack() {
-            testEncode_getsCorrectTuples("aaba", Arrays.asList(
-                    new LempelZivEncoder.CharRef(0, 0, 'a'),
-                    new LempelZivEncoder.CharRef(1, 1, 'b'),
-                    new LempelZivEncoder.CharRef(3, 1, CharRef.NULL_CHAR)
+            testEncode_getsCorrectRefs("aaba", Arrays.asList(
+                    new CharRef(0, 0, 'a'),
+                    new CharRef(1, 1, 'b'),
+                    new CharRef(3, 1, CharRef.NULL_CHAR)
             ));
         }
 
         @Test
         public void encode_twoDoubleCharLookbacks_twoCharRefsLookBack() {
-            testEncode_getsCorrectTuples("aabaa", Arrays.asList(
-                    new LempelZivEncoder.CharRef(0, 0, 'a'),
-                    new LempelZivEncoder.CharRef(1, 1, 'b'),
-                    new LempelZivEncoder.CharRef(3, 2, CharRef.NULL_CHAR)
+            testEncode_getsCorrectRefs("aabaa", Arrays.asList(
+                    new CharRef(0, 0, 'a'),
+                    new CharRef(1, 1, 'b'),
+                    new CharRef(3, 2, CharRef.NULL_CHAR)
             ));
         }
 
         @Test
         public void encode_twoOfTwoDifferentCharLookbacks_twoCharRefsLookBack() {
-            testEncode_getsCorrectTuples("acbac", Arrays.asList(
-                    new LempelZivEncoder.CharRef(0, 0, 'a'),
-                    new LempelZivEncoder.CharRef(0, 0, 'c'),
-                    new LempelZivEncoder.CharRef(0, 0, 'b'),
-                    new LempelZivEncoder.CharRef(3, 2, CharRef.NULL_CHAR)
+            testEncode_getsCorrectRefs("acbac", Arrays.asList(
+                    new CharRef(0, 0, 'a'),
+                    new CharRef(0, 0, 'c'),
+                    new CharRef(0, 0, 'b'),
+                    new CharRef(3, 2, CharRef.NULL_CHAR)
             ));
         }
 
         @Test
         public void encode_oneShortAndOneLongLookback_picksTheShortest() {
             // 2nd "acc" should reference first "acc"
-            testEncode_getsCorrectTuples("acbaccacc", Arrays.asList(
-                    new LempelZivEncoder.CharRef(0, 0, 'a'),
-                    new LempelZivEncoder.CharRef(0, 0, 'c'),
-                    new LempelZivEncoder.CharRef(0, 0, 'b'),
-                    new LempelZivEncoder.CharRef(3, 2, 'c'),
-                    new LempelZivEncoder.CharRef(3, 3, CharRef.NULL_CHAR)
+            testEncode_getsCorrectRefs("acbaccacc", Arrays.asList(
+                    new CharRef(0, 0, 'a'),
+                    new CharRef(0, 0, 'c'),
+                    new CharRef(0, 0, 'b'),
+                    new CharRef(3, 2, 'c'),
+                    new CharRef(3, 3, CharRef.NULL_CHAR)
             ));
         }
 
-        private void testEncode_getsCorrectTuples(String text,
-                                                  List<LempelZivEncoder.CharRef> charRefs) {
+        @Test
+        public void encode_threeCharsInARow_refsAreCorrect() {
+            testEncode_getsCorrectRefs("ccc", Arrays.asList(
+                    new CharRef(0, 0, 'c'),
+                    new CharRef(1, 1, 'c'),
+                    new CharRef(0, 0, CharRef.NULL_CHAR)
+            ));
+        }
+
+        @Test
+        public void encode_someStuffThenThreeCharsInARow_refsAreCorrect() {
+            testEncode_getsCorrectRefs("abbccc", Arrays.asList(
+                    new CharRef(0, 0, 'a'),
+                    new CharRef(0, 0, 'b'),
+                    new CharRef(1, 1, 'c'),
+                    new CharRef(1, 1, 'c'),
+                    new CharRef(0, 0, CharRef.NULL_CHAR)
+            ));
+        }
+
+        private void testEncode_getsCorrectRefs(String text,
+                                                List<CharRef> charRefs) {
             assertEquals(
-                    LempelZivEncoder.CharRef.toString(charRefs),
+                    CharRef.toString(charRefs),
                     newEncoder(text).encode()
+            );
+        }
+
+        @Test
+        public void decode_oneRefPlusNull_getsOneCharText() {
+            testDecode_getsExpectedText("a", Arrays.asList(
+                    new CharRef(0, 0, 'a'),
+                    new CharRef(0, 0, CharRef.NULL_CHAR)
+            ));
+        }
+
+        @Test
+        public void decode_twoRefsDifferentCharsPlusNull_getsOneCharText() {
+            testDecode_getsExpectedText("ab", Arrays.asList(
+                    new CharRef(0, 0, 'a'),
+                    new CharRef(0, 0, 'b'),
+                    new CharRef(0, 0, CharRef.NULL_CHAR)
+            ));
+        }
+
+        // See EncoderTest.encodeThenDecode_* for more decoding tests
+
+        private void testDecode_getsExpectedText(String text,
+                                                 List<CharRef> charRefs) {
+            assertEquals(
+                    text,
+                    newEncoder(text).decode(CharRef.toString(charRefs))
             );
         }
     }
