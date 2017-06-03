@@ -26,7 +26,7 @@ Challenge out of 10 (up to 100, 5 spare marks):
    algorithm, for example:
          - Adaptive Huffman coding
          - Arithmetic coding
- - [ ] (5) Find a algorithm for question 5 so that `|Z| << 2*(|X| + |Y|)`.
+ - [x] (5) Find a algorithm for question 5 so that `|Z| << 2*(|X| + |Y|)`.
 
 -------------------------------------------------------------------------------
 
@@ -317,3 +317,17 @@ is required.
 It is slightly less than 8x probably because with binary there are only 2
 characters, so there are going to be many repeated patterns to help reduce file
 size, which LempelZiv shortens.
+
+## Q5 again (i.e. Q6) ##
+
+let `S` be the smallest of X and Y, and `B` be the bigger
+
+let `L` be 32-bit binary string representing the length of `S` (limits smallest
+file to 4GB)
+
+let `W` == 1 iff `|X| < |Y|` (so we know to switch X and Y around later) `Z`
+will be the string literal `${W}${L}${S}${B}`, where `${stuff}` evaluates
+`stuff` (like string interpolation)
+
+`|Z|` is equal to `|X| + |Y| + 1 + ${|L|}`, where `|L|` is 32. This is smaller
+than `2*(|X| + |Y|)` when `|X| + |Y| > 33`.
