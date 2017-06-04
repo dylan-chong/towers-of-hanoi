@@ -17,12 +17,12 @@ Core out of 30 (up to 70):
  - [x] (5) Answers questions 1 and 2.
 
 Completion out of 30 (up to 90):
- - [ ] (10) Correctly performs Lempel Ziv compression.
- - [ ] (10) Correctly performs Lempel Ziv decompression.
- - [ ] (10) Answers questions 3 and 4.
+ - [x] (10) Correctly performs Lempel Ziv compression.
+ - [x] (10) Correctly performs Lempel Ziv decompression.
+ - [x] (10) Answers questions 3 and 4.
 
 Challenge out of 10 (up to 100, 5 spare marks):
- - [ ] (10) Implement Boyer-Moore string search OR a more complex coding
+ - [x] (10) Implement Boyer-Moore string search OR a more complex coding
    algorithm, for example:
          - Adaptive Huffman coding
          - Arithmetic coding

@@ -1,19 +1,19 @@
 package junit;
 
+import assignment5.BoyerMooreStringSearcher;
 import assignment5.BruteForceStringSearcher;
 import assignment5.KMPStringSearcher;
 import assignment5.StringSearcher;
 import org.junit.Test;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.LongStream;
 
 import static assignment5.KMPStringSearcher.*;
 import static assignment5.StringSearcher.NO_MATCH_FOUND;
+import static junit.TestUtils.RUN_BENCHMARKS;
 import static junit.TestUtils.getRuntimeDuration;
 import static junit.TestUtils.getTextFromFile;
 import static org.junit.Assert.assertEquals;
@@ -101,10 +101,27 @@ public abstract class StringSearcherTest {
     public void search_textHasOverlappingIncompleteMatches_returnsMatch() {
         assertEquals(9, newSearcher().search("amalama", "amamalammamalamaa").matchIndex);
         // Match here: ------------------------------------------ amalama ---
+        // amalama
+        // amamalammamalamaa
+    }
+
+    @Test
+    public void search_withRepeatedCharactersInPattern_returnsCorrectMatch() {
+        // multiple n's and e's
+        assertEquals(3, newSearcher().search("independence", "is independence").matchIndex);
+    }
+
+    @Test
+    public void search_patternIsTwoRepeatedChars_returnsCorrectMatch() {
+        // multiple n's and e's
+        assertEquals(1, newSearcher().search("--", "a--").matchIndex);
     }
 
     @Test
     public void RUN_BENCHMARKS() throws Exception {
+        if (!RUN_BENCHMARKS && false)
+            return;
+
         BENCHMARK_FILES_TO_PATTERNS.forEach((file, patterns) -> {
             String text = getTextFromFile(new File(file));
             System.out.printf("File : %s\n", file);
@@ -291,6 +308,26 @@ public abstract class StringSearcherTest {
             assertEquals(
                     Arrays.toString(expectedTable),
                     Arrays.toString(result.patternTable)
+            );
+        }
+    }
+
+    public static class BoyerMooreStringSearcherTest extends StringSearcherTest {
+        protected StringSearcher newSearcher() {
+            return new BoyerMooreStringSearcher();
+        }
+
+        @Test
+        public void getCharsIn_stringWithDuplicates_correctSet() {
+            Map<Character, NavigableSet<Integer>> expected = new HashMap<>();
+            expected.put('a', new TreeSet<>(Arrays.asList(0)));
+            expected.put('b', new TreeSet<>(Arrays.asList(1, 2)));
+            expected.put('c', new TreeSet<>(Arrays.asList(3, 4, 5)));
+            AtomicLong numChecks = new AtomicLong();
+
+            assertEquals(
+                    expected,
+                    BoyerMooreStringSearcher.getCharsToIndexes("abbccc", numChecks)
             );
         }
     }

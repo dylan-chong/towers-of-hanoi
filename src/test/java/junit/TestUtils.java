@@ -17,6 +17,8 @@ import static org.junit.Assert.assertEquals;
  * Created by Dylan on 3/06/17.
  */
 public class TestUtils {
+    public static final boolean RUN_BENCHMARKS = false;
+
     private static final List<Integer> WINDOW_SIZES
             = Arrays.asList(255, 1023, 4095);
 
@@ -42,13 +44,15 @@ public class TestUtils {
 
     public static void runBenchmarkForDifferentWindowSizes(
             BiFunction<String, Integer, Encoder> encoderFactory) {
+        if (!RUN_BENCHMARKS)
+            return;
 
         List<File> testFiles =
                 Arrays.stream(new File("./data/").listFiles(File::isFile))
                         .filter(file -> file.getName().endsWith(".txt"))
                         .collect(Collectors.toList());
 
-        testFiles = Arrays.asList(new File("./data/war_and_peace.txt"));
+        // testFiles = Arrays.asList(new File("./data/war_and_peace.txt"));
 
         for (File file : testFiles) {
             String text = TestUtils.getTextFromFile(file);
