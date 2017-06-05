@@ -1,20 +1,24 @@
 package swen221.monopoly;
 
-import java.util.*;
-
 import swen221.monopoly.locations.Location;
 import swen221.monopoly.locations.Property;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * This class repesents a player in the game. In particular, it records what
  * properties are currently owned by that player, how much cash he/she has, what
  * token they are, etc.
+ *
+ * I also made this implement iterable because it makes no sense. I haven't
+ * heard of the Collections.unmodifiableX() proxy factory methods or anything
  * 
  * @author David J. Pearce
  */
 public class Player implements Iterable<Property> {
 	public enum Token {
-		ScottishTerrier,
+		ScottishTerrier, // Woo for not following naming conventions!
 		Battleship,
 		Automobile,
 		TopHat,
@@ -24,7 +28,7 @@ public class Player implements Iterable<Property> {
 		Iron
 	}
 	
-	private ArrayList<Property> portfolio;
+	private ArrayList<Property> portfolio; // woo let's depend on arraylist, not list!
 	private Location location;
 	private int cash;
 	private Token token;
@@ -87,6 +91,8 @@ public class Player implements Iterable<Property> {
 	 * Deduct amount in $ from player.
 	 */
 	public void deduct(int amount) {
+		if (cash - amount < 0)
+			throw new IllegalArgumentException();
 		cash -= amount;
 	}
 
@@ -107,7 +113,7 @@ public class Player implements Iterable<Property> {
 			throw new IllegalArgumentException("cannot buy property!");
 		}
 
-		cash -= p.getPrice();
+		deduct(p.getPrice());
 		portfolio.add(p);
 		p.setOwner(this);
 	}

@@ -31,6 +31,9 @@ public class GameOfMonopoly {
 	 * players balance may go negative as a result of this.
 	 */
 	public void movePlayer(Player player, int diceRoll) {
+		if (diceRoll < 1)
+			throw new IllegalArgumentException("Invalid dice roll " + diceRoll);
+
 		// First, check whether we have passed Go or not. If so, then credit
 		// $200 into the account.
 		if(movePassesGo(player.getLocation(),diceRoll)) {
@@ -42,9 +45,9 @@ public class GameOfMonopoly {
 		player.setLocation(loc);
 
 		// Second, collect rent if applicable
-		if (loc.hasOwner()) {
-			Property prop = (Property) loc; // only properties can have owners
-			if (!prop.isMortgaged() && prop.getOwner() == player) {
+		if (loc instanceof Property && loc.hasOwner()) {
+			Property prop = (Property) loc;
+			if (!prop.isMortgaged() && prop.getOwner() != player) {
 				// can only collect rent on unmortgaged properties
 				// and, obviously, don't collect on our own properties!
 				int rent = prop.getRent(diceRoll);
@@ -60,8 +63,9 @@ public class GameOfMonopoly {
 	 * Go, that doesn't count.
 	 */
 	private boolean movePassesGo(Location start, int steps) {
-		for (int i = 1; i < steps; ++i) {
-			if (board.findLocation(start, i).getName().equals("GO")) {
+		for (int i = 1; i <= steps; ++i) {
+			if (board.findLocation(start, i).getName().equals("Go")) {
+				// yea cos fuck string constants. great design!
 				return true;
 			}
 		}
@@ -85,11 +89,12 @@ public class GameOfMonopoly {
 					+ prop.getName() + ": it's owned by "
 					+ prop.getOwner().getName() + "!");
 		}
-		if (prop.hasOwner() && prop.getPrice() > player.getBalance()) {
+		if (prop.getPrice() > player.getBalance()) {
 			throw new InvalidMove(player + " cannot buy location "
 					+ prop.getName() + ": player has insufficient funds!");
 		}
-		// OK, player can buy the property!
+		// OK, player can buy the property, because I like wasting time writing
+		// useless comments. Wait...
 		player.buy(prop);
 	}
 
@@ -98,12 +103,12 @@ public class GameOfMonopoly {
 	 * by player and not already mortgaged.
 	 */
 	public void sellProperty(Player player, Location loc) throws InvalidMove {
-		if (loc instanceof Property) {
+		if (!(loc instanceof Property)) {
 			throw new InvalidMove(player + " cannot sell location "
 					+ loc.getName() + ": it's not a property!");
 		}
 		Property prop = (Property) loc;
-		if (prop.getOwner() != player && player == null) {
+		if (prop.getOwner() != player) {
 			throw new InvalidMove(player + " cannot sell location "
 					+ loc.getName() + ": it's not theirs!");
 		}
@@ -153,7 +158,7 @@ public class GameOfMonopoly {
 					+ loc.getName() + ": it's not a property!");
 		}
 		Property prop = (Property) loc;
-		if (prop.getOwner() != player && player == null) {
+		if (prop.getOwner() != player) {
 			throw new InvalidMove(player + " cannot unmortgage location "
 					+ loc.getName() + ": it's not theirs!");
 		}
@@ -161,14 +166,14 @@ public class GameOfMonopoly {
 			throw new InvalidMove(player + " cannot unmortgage location "
 					+ loc.getName() + ": it's not mortgaged!");
 		}
-		int cost = (int) ((double) (prop.getPrice() / 2) * 1.1);
+		int cost = (int) ((prop.getPrice() / 2.0) * 1.1); // nice try scrub
 		if (cost > player.getBalance()) {
 			throw new InvalidMove(player + " cannot mortgage location "
 					+ loc.getName() + ": insufficient funds!");
 		}
 		// OK, we can unmortgage the property!
 		player.deduct(cost);
-		prop.mortgage();
+		prop.unmortgage();
 	}
 
 	/**

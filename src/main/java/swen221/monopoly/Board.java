@@ -1,13 +1,8 @@
 package swen221.monopoly;
 
-import java.util.*;
+import swen221.monopoly.locations.*;
 
-import swen221.monopoly.locations.ColourGroup;
-import swen221.monopoly.locations.Location;
-import swen221.monopoly.locations.SpecialArea;
-import swen221.monopoly.locations.Station;
-import swen221.monopoly.locations.Street;
-import swen221.monopoly.locations.Utility;
+import java.util.ArrayList;
 
 /**
  * Represents the Monopoly Board, which is made up from 40 different locations.
@@ -25,8 +20,8 @@ public class Board {
 	 * Construct a new board.
 	 */
 	public Board() {
-
-		// Construct the locations
+		// Construct the locations like a noob who doesn't know that using
+		// string constants is a dumb idea and a noob who hasn't heard of enums
 		Street oldKentRoad = new Street("Old Kent Road", 60, 2);
 		Street whiteChapel = new Street("Whitechapel Road", 60, 4);
 
@@ -124,6 +119,8 @@ public class Board {
 	 */
 	public Location findLocation(Location location, int steps) {
 		int idx = places.indexOf(location);
+		if (idx == -1)
+			throw new IllegalArgumentException();
 		idx = (idx + steps) % places.size();
 		return places.get(idx);
 	}

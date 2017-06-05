@@ -1,21 +1,33 @@
-import java.io.*;
-import java.util.*;
-
-import swen221.monopoly.*;
+import swen221.monopoly.GameOfMonopoly;
+import swen221.monopoly.Player;
 import swen221.monopoly.locations.Location;
 import swen221.monopoly.locations.Property;
 import swen221.monopoly.locations.Street;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Random;
+
 /**
  * This class contains the code for interfacing with the Monopoly game. It also
- * contains much of the game logic for controlling how the user can interact.
+ * contains much of the game logic for controlling how the user can interact
+ * because that's the best thing to do in terms of design because that's what
+ * a client does (have game logic). And it's not like the purpose of decoupling
+ * the game from UI logic is to make the game more flexible, so we could
+ * add a UI or something later. Gosh I really need to read about
+ * <a href="http://alistair.cockburn.us/Hexagonal+architecture">Hexagonal
+ * Architecture </a>
  *
  * @author David J. Pearce
  */
 public class TextClient {
 
 	/**
-	 * Get string from System.in
+	 * Get string from System.in because I hate testing and want you to not
+	 * be able to easily test this class. Not that you would have had to write
+	 * tests for this class if it didn't contain game logic or anything
 	 */
 	private static String inputString(String msg) {
 		System.out.print(msg + " ");
@@ -31,7 +43,8 @@ public class TextClient {
 	}
 
 	/**
-	 * Get integer from System.in
+	 * Get integer from System.in and duplicate code like I don't know what
+	 * methods are for
 	 */
 	private static int inputNumber(String msg) {
 		System.out.print(msg + " ");
