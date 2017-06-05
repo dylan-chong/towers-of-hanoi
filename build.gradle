@@ -59,12 +59,6 @@ task submit << {
         include "$project.name$withDependenciesTag*.jar"
         into exportPath
     }
-
-    // Copy java
-    copy {
-        from 'src/main/java/'
-        into 'submit/'
-    }
 }
 submit.dependsOn assemble
 

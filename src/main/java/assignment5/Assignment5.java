@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Handout code for assignment 5.
@@ -37,12 +38,19 @@ public class Assignment5 {
     // method.
     private static final String[] ALGORITHMS = {"Huffman coding", "Lempel Ziv"};
 
+    private static final List<StringSearcher> STRING_SEARCHERS = Arrays.asList(
+            new BruteForceStringSearcher(),
+            new KMPStringSearcher(),
+            new BoyerMooreStringSearcher()
+    );
+
     private JFrame frame;
     private JFileChooser fileChooser;
 
     // editor components.
     private JTextField searchField;
     private JTextArea textEditor;
+    private JComboBox<StringSearcher> searchersBox;
 
     // compression components and state.
     private JComboBox<String> list;
@@ -165,9 +173,9 @@ public class Assignment5 {
         searchField.setMaximumSize(new Dimension(0, 25));
         searchField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String pattern = searchField.getText();
+                String pattern = searchField.getText().trim();
                 String text = textEditor.getText();
-                int index = new KMPStringSearcher()
+                int index = ((StringSearcher) searchersBox.getSelectedItem())
                         .search(pattern, text)
                         .matchIndex;
 
@@ -186,6 +194,9 @@ public class Assignment5 {
         // of the pane.
         JPanel controls = new JPanel();
         controls.setLayout(new BoxLayout(controls, BoxLayout.LINE_AXIS));
+
+        searchersBox = new JComboBox<>(new Vector<>(STRING_SEARCHERS));
+        controls.add(searchersBox);
 
         // make an empty border so the components aren't rightNode up against the
         // frame edge.
