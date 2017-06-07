@@ -147,6 +147,49 @@ public class MonopolyTests {
 		assertEquals(startMoney + rent, enemy.getBalance());
 	}
 
+	@Test
+	public void movePlayer_onToSquareWithHouses_correctMoneyTransferred() {
+		GameOfMonopoly gameOfMonopoly = new GameOfMonopoly();
+		final int startMoney = 10;
+		final int numHouses = 2;
+		Player player = setupMockPlayer(gameOfMonopoly, "Euston Road", startMoney);
+		Player enemy = setupMockPlayer(gameOfMonopoly, "Euston Road", startMoney);
+		Street pent = (Street) gameOfMonopoly.getBoard().findLocation("Pentonville");
+		for (Street street : pent.getColourGroup()) {
+			street.setOwner(enemy);
+			street.setHouses(numHouses);
+		}
+
+		int diceRoll = 1;
+		gameOfMonopoly.movePlayer(player, diceRoll);
+
+		int rent = pent.getRent(diceRoll);
+		assertEquals(9 * 2 + 25 * numHouses, rent);
+		assertEquals(startMoney - rent, player.getBalance());
+		assertEquals(startMoney + rent, enemy.getBalance());
+	}
+
+	@Test
+	public void movePlayer_onToSquareWithHotel_correctMoneyTransferred() {
+		GameOfMonopoly gameOfMonopoly = new GameOfMonopoly();
+		final int startMoney = 10;
+		Player player = setupMockPlayer(gameOfMonopoly, "Euston Road", startMoney);
+		Player enemy = setupMockPlayer(gameOfMonopoly, "Euston Road", startMoney);
+		Street pent = (Street) gameOfMonopoly.getBoard().findLocation("Pentonville");
+		for (Street street : pent.getColourGroup()) {
+			street.setOwner(enemy);
+			street.setHotels(1);
+		}
+
+		int diceRoll = 1;
+		gameOfMonopoly.movePlayer(player, diceRoll);
+
+		int rent = pent.getRent(diceRoll);
+		assertEquals(9 * 2 + 200, rent);
+		assertEquals(startMoney - rent, player.getBalance());
+		assertEquals(startMoney + rent, enemy.getBalance());
+	}
+
 	// because we all know the assignment writers have the best code style!
 
 	@Test
@@ -271,10 +314,136 @@ public class MonopolyTests {
 		assertFalse(mayfair.isMortgaged());
 	}
 
-	// todo sell
-	// todo thi color
-	// todo build house/hotel
+	@Test
+	public void buildHouse_ownedSet_moneyGoesDown() throws GameOfMonopoly.InvalidMove {
+		GameOfMonopoly gameOfMonopoly = new GameOfMonopoly();
+		Player player = setupMockPlayer(gameOfMonopoly, "Park Lane", 10000);
+		Property mayfair = (Property) gameOfMonopoly.getBoard().findLocation("Mayfair");
+		gameOfMonopoly.buyProperty(player); // buy park lane
+		gameOfMonopoly.movePlayer(player, 2);
+		gameOfMonopoly.buyProperty(player); // buy mayfair
+		int balance = player.getBalance();
+
+		gameOfMonopoly.buildHouses(player, mayfair, 1);
+
+		assertEquals(balance - 200, player.getBalance());
+		assertEquals(player, mayfair.getOwner());
+	}
+
+	@Test
+	public void buildHouse_partiallyOwnedSet_invalidMove() throws GameOfMonopoly.InvalidMove {
+		GameOfMonopoly gameOfMonopoly = new GameOfMonopoly();
+		Player player = setupMockPlayer(gameOfMonopoly, "Park Lane", 10000);
+		Property mayfair = (Property) gameOfMonopoly.getBoard().findLocation("Mayfair");
+		gameOfMonopoly.buyProperty(player);
+
+		// Mayfair is owned but not Park Lane
+		try {
+			gameOfMonopoly.buildHouses(player, mayfair, 2);
+			fail();
+		} catch (GameOfMonopoly.InvalidMove ignored) {
+		}
+	}
+
+	@Test
+	public void buildHouse_notEnoughMoney_invalidMove() throws GameOfMonopoly.InvalidMove {
+		GameOfMonopoly gameOfMonopoly = new GameOfMonopoly();
+		Property mayfair = (Property) gameOfMonopoly.getBoard().findLocation("Mayfair");
+		Property parkLane = (Property) gameOfMonopoly.getBoard().findLocation("Park Lane");
+		final int startMoney = mayfair.getPrice() + parkLane.getPrice() + 200; // enough for 1 house
+		Player player = setupMockPlayer(gameOfMonopoly, "Park Lane", startMoney);
+		gameOfMonopoly.buyProperty(player); // buy park lane
+		gameOfMonopoly.movePlayer(player, 2);
+		gameOfMonopoly.buyProperty(player); // buy mayfair
+
+		try {
+			// Not enough money for 2 houses
+			gameOfMonopoly.buildHouses(player, mayfair, 2);
+			fail();
+		} catch (GameOfMonopoly.InvalidMove ignored) {
+		}
+	}
+
+	// Duplicating is definitely good fun and good practice! I am saving so much
+	// time in the short term! Good thing I don't have to maintain this
+	// assignment!
+
+	@Test
+	public void buildHotel_ownedSet_moneyGoesDown() throws GameOfMonopoly.InvalidMove {
+		GameOfMonopoly gameOfMonopoly = new GameOfMonopoly();
+		Player player = setupMockPlayer(gameOfMonopoly, "Park Lane", 10000);
+		gameOfMonopoly.buyProperty(player); // buy park lane
+		gameOfMonopoly.movePlayer(player, 2);
+		gameOfMonopoly.buyProperty(player); // buy mayfair
+		Street mayfair = (Street) gameOfMonopoly.getBoard().findLocation("Mayfair");
+		mayfair.setHouses(5);
+		int balance = player.getBalance();
+
+		gameOfMonopoly.buildHotel(player, mayfair);
+
+		assertEquals(balance - 200, player.getBalance());
+		assertEquals(player, mayfair.getOwner());
+		assertEquals(1, mayfair.getHotels());
+		assertEquals(0, mayfair.getHouses());
+	}
+
+	@Test
+	public void buildHotel_partiallyOwnedSet_invalidMove() throws GameOfMonopoly.InvalidMove {
+		GameOfMonopoly gameOfMonopoly = new GameOfMonopoly();
+		Player player = setupMockPlayer(gameOfMonopoly, "Park Lane", 10000);
+		gameOfMonopoly.buyProperty(player);
+		Street mayfair = (Street) gameOfMonopoly.getBoard().findLocation("Mayfair");
+		mayfair.setHouses(5);
+
+		// Mayfair is owned but not Park Lane
+		try {
+			gameOfMonopoly.buildHotel(player, mayfair);
+			fail();
+		} catch (GameOfMonopoly.InvalidMove ignored) {
+		}
+	}
+
+	@Test
+	public void buildHotel_notEnoughMoney_invalidMove() throws GameOfMonopoly.InvalidMove {
+		GameOfMonopoly gameOfMonopoly = new GameOfMonopoly();
+		Street mayfair = (Street) gameOfMonopoly.getBoard().findLocation("Mayfair");
+		Street parkLane = (Street) gameOfMonopoly.getBoard().findLocation("Park Lane");
+		final int startMoney = mayfair.getPrice() + parkLane.getPrice() + 200; // enough for 1 house
+		Player player = setupMockPlayer(gameOfMonopoly, "Park Lane", startMoney);
+		gameOfMonopoly.buyProperty(player); // buy park lane
+		gameOfMonopoly.movePlayer(player, 2);
+		gameOfMonopoly.buyProperty(player); // buy mayfair
+
+		try {
+			// Not enough money for 2 houses
+			gameOfMonopoly.buildHouses(player, mayfair, 2);
+			fail();
+		} catch (GameOfMonopoly.InvalidMove ignored) {
+		}
+	}
+
+	@Test
+	public void buildHotel_hotelAlreadyExists_invalidMove() throws GameOfMonopoly.InvalidMove {
+		GameOfMonopoly gameOfMonopoly = new GameOfMonopoly();
+		Street mayfair = (Street) gameOfMonopoly.getBoard().findLocation("Mayfair");
+		mayfair.setHotels(1);
+		Street parkLane = (Street) gameOfMonopoly.getBoard().findLocation("Park Lane");
+		final int startMoney = mayfair.getPrice() + parkLane.getPrice() + 200; // enough for 1 house
+		Player player = setupMockPlayer(gameOfMonopoly, "Park Lane", startMoney);
+		gameOfMonopoly.buyProperty(player); // buy park lane
+		gameOfMonopoly.movePlayer(player, 2);
+		gameOfMonopoly.buyProperty(player); // buy mayfair
+
+		try {
+			// Already hotel
+			gameOfMonopoly.buildHotel(player, mayfair);
+			fail();
+		} catch (GameOfMonopoly.InvalidMove ignored) {
+		}
+	}
+
 	// todo coverage
+	// todo play the game
 
 	/**
 	 * Setup a mock game of monopoly with a player located at a given location.

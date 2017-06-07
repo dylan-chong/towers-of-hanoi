@@ -132,7 +132,7 @@ public class GameOfMonopoly {
 					+ loc.getName() + ": it's not a property!");
 		}
 		Property prop = (Property) loc;
-		if (prop.getOwner() != player && player == null) {
+		if (prop.getOwner() != player) {
 			throw new InvalidMove(player + " cannot mortgage location "
 					+ loc.getName() + ": it's not theirs!");
 		}
@@ -191,10 +191,12 @@ public class GameOfMonopoly {
 			throw new InvalidMove(
 					player + " cannot build houses on location " + loc.getName() + ": it's not a street!");
 		}
+		if (numHouses <= 0)
+			throw new InvalidMove("Invalid number of houses");
 		// Check street is not mortgaged
 		Street street = (Street) loc;
 		if (street.isMortgaged()) {
-			throw new InvalidMove(player + " cannot build houses on location " + loc.getName() + ": it's mortgaged!");
+			throw new InvalidMove(player + " cannot build houses on location " + street.getName() + ": it's mortgaged!");
 		}
 		// Check all properties in colour group are owned
 		ColourGroup group = street.getColourGroup();
@@ -210,7 +212,7 @@ public class GameOfMonopoly {
 		} else if (street.getHotels() != 0) {
 			throw new InvalidMove(
 					player + " cannot build houses on location " + loc.getName() + ": hotel already present!");
-		}	
+		}
 		// Check available funds
 		int cost = numHouses * group.getHouseCost();
 		if(player.getBalance() < cost) {
@@ -266,6 +268,7 @@ public class GameOfMonopoly {
 		//
 		player.deduct(cost);
 		street.setHouses(0);
+		street.setHotels(1);
 	}
 	
 	/**

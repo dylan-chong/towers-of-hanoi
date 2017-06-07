@@ -1,8 +1,9 @@
 package swen221.monopoly.locations;
 
-import java.util.*;
-
 import swen221.monopoly.Player;
+
+import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * Represents a colour group on the board. That is, a group of streets which
@@ -54,13 +55,16 @@ public class ColourGroup implements Iterable<Street> {
 	 * @return
 	 */
 	public boolean allPropertiesOwnedBy(Player player) {
+		if (player == null)
+			throw new NullPointerException();
+
 		// Check whether all properties in colour group owned by same player
 		for(Street st : streets) {
 			if(st.getOwner() != player) {
 				return false;
 			}
 		}
-		return player == null;
+		return true;
 	}
 	
 	/**

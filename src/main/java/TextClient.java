@@ -13,12 +13,9 @@ import java.util.Random;
 /**
  * This class contains the code for interfacing with the Monopoly game. It also
  * contains much of the game logic for controlling how the user can interact
- * because that's the best thing to do in terms of design because that's what
- * a client does (have game logic). And it's not like the purpose of decoupling
- * the game from UI logic is to make the game more flexible, so we could
- * add a UI or something later. Gosh I really need to read about
- * <a href="http://alistair.cockburn.us/Hexagonal+architecture">Hexagonal
- * Architecture </a>
+ *
+ * So basically it's the Controller in MVC, but also the V as well so this
+ * class gets quite messy lol.
  *
  * @author David J. Pearce
  */
@@ -169,6 +166,35 @@ public class TextClient {
 		System.out.println(player.getName() + " now has $" + player.getBalance() + " remaining.");
 	}
 
+	private static void buildHouse(Player player, GameOfMonopoly game) throws GameOfMonopoly.InvalidMove {
+		String name = inputString("Which property?");
+		Location loc = game.getBoard().findLocation(name);
+		if(loc == null) {
+			System.out.println("No such property!");
+			return;
+		}
+		int numHouses = inputNumber("How many houses?");
+		int oldBalance = player.getBalance();
+		game.buildHouses(player,loc,numHouses);
+		int newBalance = player.getBalance();
+		System.out.println("Houses bought for $" + (oldBalance - newBalance));
+		System.out.println(player.getName() + " now has $" + player.getBalance() + " remaining.");
+	}
+
+	private static void buildHotel(Player player, GameOfMonopoly game) throws GameOfMonopoly.InvalidMove {
+		String name = inputString("Which property?");
+		Location loc = game.getBoard().findLocation(name);
+		if(loc == null) {
+			System.out.println("No such property!");
+			return;
+		}
+		int oldBalance = player.getBalance();
+		game.buildHotel(player,loc);
+		int newBalance = player.getBalance();
+		System.out.println("Hotel bought for $" + (oldBalance - newBalance));
+		System.out.println(player.getName() + " now has $" + player.getBalance() + " remaining.");
+	}
+
 	/**
 	 * Print out details of properties owned by player
 	 */
@@ -235,31 +261,34 @@ public class TextClient {
 				+ " remaining.\n");
 		System.out.println("Options for " + player.getName() + ":");
 		System.out.println("* Buy, Sell, Mortgage, Unmortgage and Property");
-		System.out.println("* Build House or Hotel");
+		System.out.println("* Build Houses or Hotel");
 		System.out.println("* List Owned Properties");
 		System.out.println("* Get information on location");
 		System.out.println("* End turn");
 		while (1 == 1) {
 			try {
-			String cmd = inputString("[buy/sell/mortgage/unmortgage/list/info/end]");
-			if (cmd.equals("end")) {
-				return;
-			} else if (cmd.equals("sell")) {
-				sellProperty(player, board);
-			} else if (cmd.equals("buy")) {
-				buyProperty(player, board);
-			} else if (cmd.equals("mortgage")) {
-				mortgageProperty(player, board);
-			} else if (cmd.equals("unmortgage")) {
-				unmortgageProperty(player, board);
-			} else if (cmd.equals("info")) {
-				detailLocation(player, board);
-			} else if (cmd.equals("list")) {
-				listProperties(player, board);
-			} else {
-				System.out
-						.println("Invalid command.  Enter 'end' to finish turn.");
-			}
+				String cmd = inputString("[buy/sell/mortgage/unmortgage/list/buildhouses/buildhotel/info/end]");
+				if (cmd.equals("end")) {
+					return;
+				} else if (cmd.equals("sell")) {
+					sellProperty(player, board);
+				} else if (cmd.equals("buy")) {
+					buyProperty(player, board);
+				} else if (cmd.equals("mortgage")) {
+					mortgageProperty(player, board);
+				} else if (cmd.equals("unmortgage")) {
+					unmortgageProperty(player, board);
+				} else if (cmd.equals("info")) {
+					detailLocation(player, board);
+				} else if (cmd.equals("list")) {
+					listProperties(player, board);
+				} else if (cmd.equals("buildhouses")) {
+					buildHouse(player, board);
+				} else if (cmd.equals("buildhotel")) {
+					buildHotel(player, board);
+				} else {
+					System.out.println("Invalid command.  Enter 'end' to finish turn.");
+				}
 			} catch(GameOfMonopoly.InvalidMove e) {
 				System.out.println(e.getMessage());
 			}

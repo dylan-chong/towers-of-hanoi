@@ -91,8 +91,6 @@ public class Player implements Iterable<Property> {
 	 * Deduct amount in $ from player.
 	 */
 	public void deduct(int amount) {
-		if (cash - amount < 0)
-			throw new IllegalArgumentException();
 		cash -= amount;
 	}
 

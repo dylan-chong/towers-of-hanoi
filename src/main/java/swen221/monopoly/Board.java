@@ -21,7 +21,7 @@ public class Board {
 	 */
 	public Board() {
 		// Construct the locations like a noob who doesn't know that using
-		// string constants is a dumb idea and a noob who hasn't heard of enums
+		// string constants is a dumb idea and a noob who hasn't heard of enums :P
 		Street oldKentRoad = new Street("Old Kent Road", 60, 2);
 		Street whiteChapel = new Street("Whitechapel Road", 60, 4);
 
