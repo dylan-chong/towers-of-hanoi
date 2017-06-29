@@ -1,7 +1,9 @@
-package main;
+package main.gui;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import main.Observer;
+import main.printers.GameInfoPrinter;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;

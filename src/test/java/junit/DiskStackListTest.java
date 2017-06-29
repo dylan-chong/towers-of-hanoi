@@ -1,9 +1,9 @@
 package junit;
 
-import main.Disk;
-import main.DiskMoveException;
-import main.DiskStackList;
-import main.Move;
+import main.game.Disk;
+import main.game.DiskMoveException;
+import main.game.DiskStackList;
+import main.game.Move;
 import org.junit.Assert;
 import org.junit.Test;
 

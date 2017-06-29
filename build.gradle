@@ -37,7 +37,7 @@ test.finalizedBy('cucumber')
 
 apply plugin: 'application'
 run {
-    mainClassName = 'swen221.assignment1.LeftWalker'
+    mainClassName = 'main.Main'
     standardInput = System.in
     enableAssertions = true
 }

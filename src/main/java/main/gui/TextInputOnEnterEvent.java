@@ -1,4 +1,4 @@
-package main;
+package main.gui;
 
 /**
  * Created by Dylan on 7/03/17.

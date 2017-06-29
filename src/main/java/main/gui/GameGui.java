@@ -1,4 +1,6 @@
-package main;
+package main.gui;
+
+import main.Observable;
 
 import javax.swing.*;
 

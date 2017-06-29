@@ -1,7 +1,11 @@
 package junit;
 
-import main.*;
-import main.StringTextPrinter;
+import main.game.DiskMoveException;
+import main.game.DiskStackList;
+import main.game.Move;
+import main.game.TowersOfHanoiGame;
+import main.printers.GameInfoPrinter;
+import main.printers.StringTextPrinter;
 import org.junit.Assert;
 import org.junit.Test;
 

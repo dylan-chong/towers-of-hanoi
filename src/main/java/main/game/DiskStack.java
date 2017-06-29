@@ -1,4 +1,4 @@
-package main;
+package main.game;
 
 import java.util.*;
 import java.util.stream.Collectors;

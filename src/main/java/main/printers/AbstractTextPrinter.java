@@ -1,4 +1,4 @@
-package main;
+package main.printers;
 
 /**
  * Created by Dylan on 31/12/16.

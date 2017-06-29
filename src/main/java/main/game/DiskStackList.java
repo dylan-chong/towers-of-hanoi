@@ -1,4 +1,4 @@
-package main;
+package main.game;
 
 import com.google.inject.Inject;
 

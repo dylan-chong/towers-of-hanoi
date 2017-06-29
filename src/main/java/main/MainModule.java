@@ -2,6 +2,13 @@ package main;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
+import main.game.DefaultDiskStackFactory;
+import main.gui.DefaultGameGui;
+import main.game.DiskStackFactory;
+import main.gui.GameGui;
+import main.gui.GameOutProvider;
+import main.printers.TextAreaPrinter;
+import main.printers.TextPrinter;
 
 import javax.swing.*;
 

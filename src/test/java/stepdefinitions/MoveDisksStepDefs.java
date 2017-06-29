@@ -4,11 +4,11 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import main.DiskStack;
-import main.DiskStackList;
-import main.GameInfoPrinter;
-import main.TowersOfHanoiGame;
-import main.StringTextPrinter;
+import main.game.DiskStack;
+import main.game.DiskStackList;
+import main.printers.GameInfoPrinter;
+import main.game.TowersOfHanoiGame;
+import main.printers.StringTextPrinter;
 
 import java.util.List;
 

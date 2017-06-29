@@ -1,4 +1,4 @@
-package main;
+package main.game;
 
 /**
  * Created by Dylan on 7/03/17.

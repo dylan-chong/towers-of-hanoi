@@ -2,6 +2,8 @@ package main;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import main.game.TowersOfHanoiGame;
+import main.gui.GameGui;
 
 /**
  * Created by Dylan on 27/11/16.

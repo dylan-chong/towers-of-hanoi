@@ -1,7 +1,12 @@
-package main;
+package main.game;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import main.Observer;
+import main.gui.GameGui;
+import main.gui.TextInputOnEnterEvent;
+import main.gui.UserInputFormatException;
+import main.printers.GameInfoPrinter;
 
 import java.util.Arrays;
 import java.util.List;

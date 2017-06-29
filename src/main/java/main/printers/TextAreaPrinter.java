@@ -1,4 +1,4 @@
-package main;
+package main.printers;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;

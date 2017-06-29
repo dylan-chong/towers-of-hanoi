@@ -1,4 +1,4 @@
-package main;
+package main.game;
 
 /**
  * To be used when the {@link GameSolver} class is given a
