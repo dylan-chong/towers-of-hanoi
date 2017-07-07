@@ -10,6 +10,14 @@ import main.gui.GameGui;
  */
 public class Main {
 
+    /*
+     * TODO NEXT: Observable -> Event
+     * TODO AFTER: Remove AbstractTextPrinter
+     * TODO: MOVE MainModule
+     * TODO: Move DiskStackFactory
+     *
+     */
+
     public static void main(String[] args) {
         Injector mainInjector = Guice.createInjector(new MainModule());
 
@@ -20,3 +28,4 @@ public class Main {
     }
 
 }
+
