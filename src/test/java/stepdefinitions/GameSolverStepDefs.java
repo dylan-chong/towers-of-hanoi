@@ -9,16 +9,15 @@ import main.game.DefaultDiskStackFactory;
 import main.game.DiskStackList;
 import main.game.GameInfoPrinter;
 import main.game.TowersOfHanoiGame;
-import main.printers.StringTextPrinter;
 import org.junit.Assert;
 
 /**
  * Created by Dylan on 4/01/17.
  */
 public class GameSolverStepDefs {
-    private TowersOfHanoiGame game;
-    private StringBuilder gameOutSB;
-    Events.TextInput textInputEvent;
+    TowersOfHanoiGame game;
+    StringBuilder gameOutSB;
+    Events.OutputText outputTextEvent;
 
     private boolean isThereSolveErrorDisplayed() {
         return gameOutSB.toString()
@@ -28,12 +27,16 @@ public class GameSolverStepDefs {
     @Given("^a new game with (\\d+) disks$")
     public void a_new_game_with_disks(int numDisks) throws Throwable {
         gameOutSB = new StringBuilder();
-        textInputEvent = new Events.TextInput();
+        outputTextEvent = new Events.OutputText();
+        outputTextEvent.registerListener(gameOutSB::append);
+
+        Events.AppReady appReadyEvent = new Events.AppReady();
         game = new TowersOfHanoiGame(
-                new GameInfoPrinter(new StringTextPrinter(gameOutSB)),
-                textInputEvent,
+                new GameInfoPrinter(outputTextEvent),
+                appReadyEvent,
                 new DiskStackList(numDisks, new DefaultDiskStackFactory())
         );
+        appReadyEvent.broadcast(null);
     }
 
     @And("^no solve error should be displayed to the user$")
@@ -43,7 +46,7 @@ public class GameSolverStepDefs {
 
     @When("^the user enters the command \"([^\"]*)\"$")
     public void theUserEntersTheCommand(String command) throws Throwable {
-        textInputEvent.broadcast(command);
+        game.onUserInputtedLine(command);
     }
 
     @Then("^the game should not be in the solved state$")

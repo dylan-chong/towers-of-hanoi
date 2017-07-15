@@ -8,7 +8,7 @@ import java.util.Collection;
  *
  * @param <ParamT> The parameter type
  */
-public class Event<ParamT> {
+public abstract class Event<ParamT> {
     private Collection<Listener<ParamT>> listeners = new ArrayList<>();
 
     public Runnable registerListener(Listener<ParamT> listener) {

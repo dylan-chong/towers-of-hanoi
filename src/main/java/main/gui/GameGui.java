@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import main.event.Events;
 import main.game.GameInfoPrinter;
+import main.game.TowersOfHanoiGame;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
@@ -15,19 +16,24 @@ import java.awt.event.ActionEvent;
  */
 @Singleton
 public class GameGui extends JFrame {
-    private final Events.TextInput textInputEvent;
+    private final TowersOfHanoiGame game;
+    private final Events.OutputText outputTextEvent;
+
     private JPanel mainPanel;
     private JTextArea gameOut;
     private JTextField userInput;
     private JScrollPane gameOutScroll;
 
     @Inject
-    public GameGui(Events.TextInput textInputEvent) {
-        this.textInputEvent = textInputEvent;
-        initialise();
+    public GameGui(TowersOfHanoiGame game,
+                   Events.OutputText outputTextEvent) {
+        this.game = game;
+        this.outputTextEvent = outputTextEvent;
+        configureGui();
+        setupEvents();
     }
 
-    private void initialise() {
+    private void configureGui() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setContentPane(mainPanel);
 
@@ -35,7 +41,7 @@ public class GameGui extends JFrame {
         gameOut.setFont(font);
         userInput.setFont(font);
 
-        gameOut.setColumns(GameInfoPrinter.WIDTH);
+        gameOut.setColumns(GameInfoPrinter.WIDTH + 1);
 
         // Make gameOut scroll to the bottom automatically
         ((DefaultCaret) gameOut.getCaret())
@@ -44,17 +50,22 @@ public class GameGui extends JFrame {
         pack();
         setVisible(true);
         setResizable(false);
+    }
 
+    private void setupEvents() {
         userInput.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onUserEnteredLine();
             }
         });
+        outputTextEvent.registerListener(str -> {
+            gameOut.append(str);
+        });
     }
 
     private void onUserEnteredLine() {
-        textInputEvent.broadcast(userInput.getText());
+        game.onUserInputtedLine(userInput.getText());
         userInput.setText("");
     }
 

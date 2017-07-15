@@ -1,7 +1,7 @@
 package main.game;
 
 import com.google.inject.Inject;
-import main.printers.TextPrinter;
+import main.event.Events;
 
 /**
  * Created by Dylan on 30/12/16.
@@ -15,60 +15,60 @@ public class GameInfoPrinter {
     public static final String CANT_SOLVE = "CAN'T SOLVE: ";
     public static final String GAME_HAS_BEEN_SOLVED = "GAME HAS BEEN SOLVED";
 
-    private final TextPrinter out;
+    private final Events.OutputText outputTextEvent;
 
     @Inject
-    public GameInfoPrinter(TextPrinter out) {
-        this.out = out;
+    public GameInfoPrinter(Events.OutputText outputTextEvent) {
+        this.outputTextEvent = outputTextEvent;
     }
 
     public GameInfoPrinter printWelcome() {
         printSectionLine(0);
-        out.println(GAME_TITLE);
+        println(GAME_TITLE);
         printSectionLine(0);
         return this;
     }
 
     public GameInfoPrinter printInstructions() {
-        out.println("Objective: Get everything to the right stack");
+        println("Objective: Get everything to the right stack");
         return this;
     }
 
     public GameInfoPrinter printControls() {
-        out.println("Controls: Enter '1 3' to move from the left stack to " +
+        println("Controls: Enter '1 3' to move from the left stack to " +
                 "the 3rd stack. Enter 'solve' when you start the game to " +
                 "automatically solve the game");
         return this;
     }
 
     public GameInfoPrinter printShortControls() {
-        out.print("Action: ");
+        print("Action: ");
         return this;
     }
 
     public GameInfoPrinter printStackState(DiskStackList diskStacks) {
-        out.println();
+        println();
         printSectionLine(1);
-        out.println();
-        out.println(diskStacks.toString());
-        out.println();
+        println();
+        println(diskStacks.toString());
+        println();
         printSectionLine(1);
-        out.println();
+        println();
         return this;
     }
 
     public GameInfoPrinter printUnableToMoveDisk(String reason) {
-        out.println("CAN'T MOVE: " + reason);
+        println("CAN'T MOVE: " + reason);
         return this;
     }
 
     public GameInfoPrinter printEmptyLine() {
-        out.println();
+        println();
         return this;
     }
 
     public GameInfoPrinter printUserEnteredLine(String line) {
-        out.println(line);
+        println(line);
         return this;
     }
 
@@ -88,19 +88,17 @@ public class GameInfoPrinter {
                 throw new IllegalArgumentException(
                         "Nothing set for " + importance + " importance level");
         }
-        out.println(
-                new String(new char[WIDTH]).replace("\0", c)
-        );
+        println(new String(new char[WIDTH]).replace("\0", c));
         return this;
     }
 
     public GameInfoPrinter printGameSolverStateException(GameSolverStateException e) {
-        out.println(CANT_SOLVE + e.getMessage());
+        println(CANT_SOLVE + e.getMessage());
         return this;
     }
 
     public GameInfoPrinter printCannotSolve() {
-        out.println();
+        println();
         return this;
     }
 
@@ -111,7 +109,20 @@ public class GameInfoPrinter {
     }
 
     public GameInfoPrinter printSolveSuccess() {
-        out.println(GAME_HAS_BEEN_SOLVED);
+        println(GAME_HAS_BEEN_SOLVED);
         return this;
     }
+
+    private void print(String s) {
+        outputTextEvent.broadcast(s);
+    }
+
+    private void println(String s) {
+        print(s + "\n");
+    }
+
+    private void println() {
+        println("");
+    }
+
 }

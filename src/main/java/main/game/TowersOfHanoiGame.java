@@ -23,21 +23,21 @@ public class TowersOfHanoiGame {
 
     @Inject
     public TowersOfHanoiGame(GameInfoPrinter gameInfoPrinter,
-                             Events.TextInput textInputEvent,
+                             Events.AppReady appReadyEvent,
                              DiskStackList diskStackList) {
         this.gameInfoPrinter = gameInfoPrinter;
         this.diskStackList = diskStackList;
 
-        gameInfoPrinter.printWelcome()
-                .printEmptyLine()
-                .printInstructions()
-                .printEmptyLine()
-                .printControls()
-                .printStackState(diskStackList);
+        appReadyEvent.registerListener((noop) -> {
+            gameInfoPrinter.printWelcome()
+                    .printEmptyLine()
+                    .printInstructions()
+                    .printEmptyLine()
+                    .printControls()
+                    .printStackState(diskStackList);
 
-        gameInfoPrinter.printShortControls();
-
-        textInputEvent.registerListener(this::onUserInputtedLine);
+            gameInfoPrinter.printShortControls();
+        });
     }
 
     public void moveDisk(Move move) throws DiskMoveException {
@@ -59,7 +59,7 @@ public class TowersOfHanoiGame {
     /**
      * @return True iff a change was made to the diskStackList
      */
-    private boolean onUserInputtedLine(String line) {
+    public boolean onUserInputtedLine(String line) {
         gameInfoPrinter.printUserEnteredLine(line);
 
         line = line.toLowerCase();

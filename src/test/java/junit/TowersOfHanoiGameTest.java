@@ -2,7 +2,6 @@ package junit;
 
 import main.event.Events;
 import main.game.*;
-import main.printers.StringTextPrinter;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -12,8 +11,8 @@ import org.junit.Test;
 public class TowersOfHanoiGameTest {
     private TowersOfHanoiGame getNewTowersOfHanoiGame() {
         return new TowersOfHanoiGame(
-                new GameInfoPrinter(new StringTextPrinter(new StringBuilder())),
-                new Events.TextInput(),
+                new GameInfoPrinter(new Events.OutputText()),
+                new Events.AppReady(),
                 new DiskStackList(3, new DefaultDiskStackFactory())
         );
     }

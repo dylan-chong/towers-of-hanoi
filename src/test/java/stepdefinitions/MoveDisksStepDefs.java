@@ -6,7 +6,6 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import main.event.Events;
 import main.game.*;
-import main.printers.StringTextPrinter;
 
 import java.util.List;
 
@@ -18,31 +17,29 @@ import static org.junit.Assert.assertTrue;
  */
 public class MoveDisksStepDefs {
     TowersOfHanoiGame game;
-    StringTextPrinter gameOut;
     DiskStackList diskStackList;
-    Events.TextInput textInputEvent;
 
     @Given("^a starting-game stack with (\\d+) disks and (\\d+) stacks$")
     public void aStartingGameStackWithDisksAndStacks(int numDisks,
                                                      int numStacks) throws Throwable {
-        gameOut = new StringTextPrinter(new StringBuilder());
         diskStackList = new DiskStackList(
                 numStacks,
                 numDisks,
                 new DefaultDiskStackFactory()
         );
-        textInputEvent = new Events.TextInput();
+        Events.AppReady appReadyEvent = new Events.AppReady();
         game = new TowersOfHanoiGame(
-                new GameInfoPrinter(gameOut),
-                textInputEvent,
+                new GameInfoPrinter(new Events.OutputText()),
+                appReadyEvent,
                 diskStackList
         );
+        appReadyEvent.broadcast(null);
     }
 
     @When("^the user moves a disk from stack (\\d+) to stack (\\d+)$")
     public void theUserMovesADiskFromStackToStack(int fromStackNum,
                                                   int toStackNum) throws Throwable {
-        textInputEvent.broadcast(fromStackNum + " " + toStackNum);
+        game.onUserInputtedLine(fromStackNum + " " + toStackNum);
     }
 
     @Then("^stack (\\d+) should have (\\d+) disks?$")
@@ -71,7 +68,7 @@ public class MoveDisksStepDefs {
             int fromStackNum, int toStackNum) throws Throwable {
 
         int numberOfMoves = game.getSuccessfulMoveCount();
-        textInputEvent.broadcast(fromStackNum + " " + toStackNum);
+        game.onUserInputtedLine(fromStackNum + " " + toStackNum);
         int newNumberOfMoves = game.getSuccessfulMoveCount();
         assertEquals(numberOfMoves, newNumberOfMoves);
     }
