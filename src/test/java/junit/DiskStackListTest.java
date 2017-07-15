@@ -1,9 +1,6 @@
 package junit;
 
-import main.game.Disk;
-import main.game.DiskMoveException;
-import main.game.DiskStackList;
-import main.game.Move;
+import main.game.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -27,7 +24,10 @@ public class DiskStackListTest {
     }
 
     private DiskStackList getNewDiskStackList(int numDisks) {
-        return new DiskStackList(NUM_STACKS, numDisks);
+        return new DiskStackList(NUM_STACKS,
+                numDisks,
+                new DefaultDiskStackFactory()
+        );
     }
 
     private boolean areDisksSorted(List<Disk> disks) {

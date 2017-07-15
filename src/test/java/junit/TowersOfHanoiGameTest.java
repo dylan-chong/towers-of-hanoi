@@ -1,10 +1,7 @@
 package junit;
 
-import main.game.DiskMoveException;
-import main.game.DiskStackList;
-import main.game.Move;
-import main.game.TowersOfHanoiGame;
-import main.printers.GameInfoPrinter;
+import main.event.Events;
+import main.game.*;
 import main.printers.StringTextPrinter;
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,7 +13,9 @@ public class TowersOfHanoiGameTest {
     private TowersOfHanoiGame getNewTowersOfHanoiGame() {
         return new TowersOfHanoiGame(
                 new GameInfoPrinter(new StringTextPrinter(new StringBuilder())),
-                new DiskStackList(3));
+                new Events.TextInput(),
+                new DiskStackList(3, new DefaultDiskStackFactory())
+        );
     }
 
     @Test

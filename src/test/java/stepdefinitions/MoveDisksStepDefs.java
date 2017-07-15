@@ -4,38 +4,45 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import main.game.DiskStack;
-import main.game.DiskStackList;
-import main.printers.GameInfoPrinter;
-import main.game.TowersOfHanoiGame;
+import main.event.Events;
+import main.game.*;
 import main.printers.StringTextPrinter;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Dylan on 29/12/16.
  */
 public class MoveDisksStepDefs {
-    private TowersOfHanoiGame game;
-    private StringTextPrinter gameOut;
-    private DiskStackList diskStackList;
+    TowersOfHanoiGame game;
+    StringTextPrinter gameOut;
+    DiskStackList diskStackList;
+    Events.TextInput textInputEvent;
 
     @Given("^a starting-game stack with (\\d+) disks and (\\d+) stacks$")
     public void aStartingGameStackWithDisksAndStacks(int numDisks,
                                                      int numStacks) throws Throwable {
         gameOut = new StringTextPrinter(new StringBuilder());
-        diskStackList = new DiskStackList(numStacks, numDisks);
+        diskStackList = new DiskStackList(
+                numStacks,
+                numDisks,
+                new DefaultDiskStackFactory()
+        );
+        textInputEvent = new Events.TextInput();
         game = new TowersOfHanoiGame(
                 new GameInfoPrinter(gameOut),
-                diskStackList);
+                textInputEvent,
+                diskStackList
+        );
     }
 
     @When("^the user moves a disk from stack (\\d+) to stack (\\d+)$")
     public void theUserMovesADiskFromStackToStack(int fromStackNum,
                                                   int toStackNum) throws Throwable {
-        game.onUserInputtedLine(fromStackNum + " " + toStackNum);
+        textInputEvent.broadcast(fromStackNum + " " + toStackNum);
     }
 
     @Then("^stack (\\d+) should have (\\d+) disks?$")
@@ -62,8 +69,10 @@ public class MoveDisksStepDefs {
     @When("^the user tries to move a disk from stack (\\d+) to stack (\\d+) \\(expect fail\\)$")
     public void theUserTriesToMoveADiskFromStackToStackExpectFail(
             int fromStackNum, int toStackNum) throws Throwable {
-        boolean didChangeSomething =
-                game.onUserInputtedLine(fromStackNum + " " + toStackNum);
-        assertFalse(didChangeSomething);
+
+        int numberOfMoves = game.getSuccessfulMoveCount();
+        textInputEvent.broadcast(fromStackNum + " " + toStackNum);
+        int newNumberOfMoves = game.getSuccessfulMoveCount();
+        assertEquals(numberOfMoves, newNumberOfMoves);
     }
 }

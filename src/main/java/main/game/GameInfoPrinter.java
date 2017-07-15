@@ -1,8 +1,7 @@
-package main.printers;
+package main.game;
 
 import com.google.inject.Inject;
-import main.game.DiskStackList;
-import main.game.GameSolverStateException;
+import main.printers.TextPrinter;
 
 /**
  * Created by Dylan on 30/12/16.

@@ -1,4 +1,4 @@
-package main;
+package main.event;
 
 import java.util.ArrayList;
 import java.util.Collection;

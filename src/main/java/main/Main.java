@@ -1,9 +1,14 @@
 package main;
 
+import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import main.game.TowersOfHanoiGame;
+import com.google.inject.Module;
+import main.game.DefaultDiskStackFactory;
+import main.game.DiskStackFactory;
 import main.gui.GameGui;
+import main.printers.TextAreaPrinter;
+import main.printers.TextPrinter;
 
 /**
  * Created by Dylan on 27/11/16.
@@ -11,9 +16,8 @@ import main.gui.GameGui;
 public class Main {
 
     /*
-     * TODO NEXT: Observable -> Event
+     * TO DO NEXT Unbind Text printer
      * TODO AFTER: Remove AbstractTextPrinter
-     * TODO: MOVE MainModule
      * TODO: Move DiskStackFactory
      *
      */
@@ -22,10 +26,14 @@ public class Main {
         Injector mainInjector = Guice.createInjector(new MainModule());
 
         GameGui gui = mainInjector.getInstance(GameGui.class);
-        TowersOfHanoiGame game = mainInjector.getInstance(TowersOfHanoiGame.class);
-
-        gui.registerObserver(game);
     }
 
+    public static class MainModule implements Module {
+        @Override
+        public void configure(Binder binder) {
+            binder.bind(TextPrinter.class).to(TextAreaPrinter.class);
+            binder.bind(DiskStackFactory.class).to(DefaultDiskStackFactory.class);
+        }
+    }
 }
 

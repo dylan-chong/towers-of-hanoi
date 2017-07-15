@@ -4,8 +4,10 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import main.event.Events;
+import main.game.DefaultDiskStackFactory;
 import main.game.DiskStackList;
-import main.printers.GameInfoPrinter;
+import main.game.GameInfoPrinter;
 import main.game.TowersOfHanoiGame;
 import main.printers.StringTextPrinter;
 import org.junit.Assert;
@@ -16,6 +18,7 @@ import org.junit.Assert;
 public class GameSolverStepDefs {
     private TowersOfHanoiGame game;
     private StringBuilder gameOutSB;
+    Events.TextInput textInputEvent;
 
     private boolean isThereSolveErrorDisplayed() {
         return gameOutSB.toString()
@@ -25,9 +28,12 @@ public class GameSolverStepDefs {
     @Given("^a new game with (\\d+) disks$")
     public void a_new_game_with_disks(int numDisks) throws Throwable {
         gameOutSB = new StringBuilder();
+        textInputEvent = new Events.TextInput();
         game = new TowersOfHanoiGame(
                 new GameInfoPrinter(new StringTextPrinter(gameOutSB)),
-                new DiskStackList(numDisks));
+                textInputEvent,
+                new DiskStackList(numDisks, new DefaultDiskStackFactory())
+        );
     }
 
     @And("^no solve error should be displayed to the user$")
@@ -37,7 +43,7 @@ public class GameSolverStepDefs {
 
     @When("^the user enters the command \"([^\"]*)\"$")
     public void theUserEntersTheCommand(String command) throws Throwable {
-        game.onUserInputtedLine(command);
+        textInputEvent.broadcast(command);
     }
 
     @Then("^the game should not be in the solved state$")

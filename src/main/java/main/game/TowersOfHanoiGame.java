@@ -2,11 +2,8 @@ package main.game;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import main.Observer;
-import main.gui.GameGui;
-import main.gui.TextInputOnEnterEvent;
+import main.event.Events;
 import main.gui.UserInputFormatException;
-import main.printers.GameInfoPrinter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +13,7 @@ import java.util.stream.Collectors;
  * Created by Dylan on 30/12/16.
  */
 @Singleton
-public class TowersOfHanoiGame implements Observer<GameGui, TextInputOnEnterEvent> {
+public class TowersOfHanoiGame {
 
     private static final String SOLVE_FUNCTION = "solve";
     private final GameInfoPrinter gameInfoPrinter;
@@ -26,6 +23,7 @@ public class TowersOfHanoiGame implements Observer<GameGui, TextInputOnEnterEven
 
     @Inject
     public TowersOfHanoiGame(GameInfoPrinter gameInfoPrinter,
+                             Events.TextInput textInputEvent,
                              DiskStackList diskStackList) {
         this.gameInfoPrinter = gameInfoPrinter;
         this.diskStackList = diskStackList;
@@ -38,6 +36,8 @@ public class TowersOfHanoiGame implements Observer<GameGui, TextInputOnEnterEven
                 .printStackState(diskStackList);
 
         gameInfoPrinter.printShortControls();
+
+        textInputEvent.registerListener(this::onUserInputtedLine);
     }
 
     public void moveDisk(Move move) throws DiskMoveException {
@@ -181,10 +181,5 @@ public class TowersOfHanoiGame implements Observer<GameGui, TextInputOnEnterEven
 
     public List<Disk> getAllDisks() {
         return diskStackList.getAllDisks();
-    }
-
-    @Override
-    public void receiveNotification(TextInputOnEnterEvent notification) {
-        onUserInputtedLine(notification.getUserEnteredLine());
     }
 }
