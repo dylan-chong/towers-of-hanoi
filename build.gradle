@@ -21,8 +21,6 @@ dependencies {
     compile group: 'junit', name: 'junit', version: '4.11'
 }
 
-// TODO remove test
-// TODO rename jar
 sourceSets {
     test {
         java.srcDir 'src/main/java'
@@ -34,21 +32,13 @@ run {
     enableAssertions = true
 }
 
-def testVar = System.getenv('TEST')
-def exportedJarFileName
-if (testVar == null || testVar.toLowerCase() != 'true') {
-	mainClassName = 'main.Main'
-	exportedJarFileName = 'app.jar'
-}
-else {
-	mainClassName = 'test.MainTest'
-	exportedJarFileName = 'app-tests.jar'
-}
+mainClassName = 'main.Main'
 
 // Submit task
 def withDependenciesTag = '-with-dependencies'
 def exportPath = './submit/'
-task _submit << {
+def exportedJarFileName = 'app.jar'
+task submit << {
 
     println "Exporting Java files and resources for assignment submission: $exportPath"
 
@@ -58,14 +48,14 @@ task _submit << {
         include "$project.name$withDependenciesTag*.jar"
         into exportPath
 		rename { fileName ->
-			return exportedJarFileName
+			if (fileName.endsWith(".jar")) {
+				return exportedJarFileName
+			}
+			return fileName
 		}
     }
 }
-_submit.dependsOn assemble
-task submit(type: Exec) {
-	commandLine './scripts/submit.sh'
-}
+submit.dependsOn assemble
 
 // Export jar that includes the dependencies
 // (copied from http://www.mkyong.com/gradle/gradle-create-a-jar-file-with-dependencies/)

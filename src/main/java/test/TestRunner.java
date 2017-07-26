@@ -3,10 +3,12 @@ package test;
 import org.junit.internal.TextListener;
 import org.junit.runner.JUnitCore;
 
+import java.util.Arrays;
+
 /**
  * The test runner
  */
-public class MainTest {
+public class TestRunner {
 
 	/**
 	 * List all classes to test here
@@ -15,11 +17,9 @@ public class MainTest {
 			ExampleTests.class
 	};
 
-	public static void main(String[] args) {
+	public static void run() {
 		JUnitCore junit = new JUnitCore();
 		junit.addListener(new TextListener(System.out));
-		for (Class<?> testClass : TEST_CLASSES) {
-			junit.run(testClass);
-		}
+		Arrays.stream(TEST_CLASSES).forEach(junit::run);
 	}
 }
