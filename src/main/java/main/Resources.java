@@ -1,4 +1,4 @@
-package swen221.assignment1;
+package main;
 
 import java.io.*;
 import java.nio.file.Files;

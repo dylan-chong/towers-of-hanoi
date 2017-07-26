@@ -1,4 +1,4 @@
-package swen221.assignment1;
+package main;
 
 /**
  * Delete this when you put your assignments here

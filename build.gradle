@@ -1,5 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'eclipse' // For generating Eclipse projects
+apply plugin: 'application'
 
 version '1.0-SNAPSHOT'
 
@@ -20,47 +21,61 @@ dependencies {
     compile group: 'junit', name: 'junit', version: '4.11'
 }
 
+// TODO remove test
+// TODO rename jar
 sourceSets {
     test {
         java.srcDir 'src/main/java'
     }
 }
 
-// Run application with 'run' task
-
-apply plugin: 'application'
 run {
-    mainClassName = 'swen221.assignment1.Main' // The class that is run
     standardInput = System.in
     enableAssertions = true
 }
 
+def testVar = System.getenv('TEST')
+def exportedJarFileName
+if (testVar == null || testVar.toLowerCase() != 'true') {
+	mainClassName = 'main.Main'
+	exportedJarFileName = 'app.jar'
+}
+else {
+	mainClassName = 'test.MainTest'
+	exportedJarFileName = 'app-tests.jar'
+}
+
 // Submit task
-String withDependenciesTag = '-with-dependencies'
-task submit << {
-    String exportPath = './submit/'
+def withDependenciesTag = '-with-dependencies'
+def exportPath = './submit/'
+task _submit << {
 
     println "Exporting Java files and resources for assignment submission: $exportPath"
-
-    // Clean folder first
-    delete exportPath
 
     // Copy jar
     copy {
         from './build/libs/'
         include "$project.name$withDependenciesTag*.jar"
         into exportPath
+		rename { fileName ->
+			return exportedJarFileName
+		}
     }
 }
-submit.dependsOn assemble
+_submit.dependsOn assemble
+task submit(type: Exec) {
+	commandLine './scripts/submit.sh'
+}
 
 // Export jar that includes the dependencies
 // (copied from http://www.mkyong.com/gradle/gradle-create-a-jar-file-with-dependencies/)
 task fatJar(type: Jar) {
     manifest {
-        attributes 'Implementation-Title': 'Gradle Project',
-                'Implementation-Version': version,
-                'Main-Class': mainClassName
+        attributes(
+				'Implementation-Title': 'Gradle Project',
+				'Implementation-Version': version,
+				'Main-Class': mainClassName,
+		)
     }
     baseName = project.name + withDependenciesTag
     from {
@@ -75,4 +90,8 @@ jar.dependsOn fatJar
 jar {
     // Copy Java files into jar
     from sourceSets.main.allSource
+}
+
+clean {
+	delete exportPath
 }
