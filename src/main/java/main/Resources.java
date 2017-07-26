@@ -8,12 +8,17 @@ import java.util.List;
 
 /**
  * Access resources from `src/main/resources/` within a jar
+ *
+ * Source file paths will follow the format of "data/testfile.txt" if there
+ * is a file "towers-of-hanoi/src/main/resources/data/testfile.txt".
  */
 public class Resources {
 	/**
 	 * Do not write to this file! This creates a temporary file. So it can be
 	 * accessed when it is compressed inside a jar
 	 *
+	 * @param srcFileName The name of the file to read. See the docs at the top
+	 *                    of this class
 	 * @return Temporary file (copied from the original)
 	 */
 	public File getResourceFile(String srcFileName) throws FileNotFoundException {
@@ -32,7 +37,8 @@ public class Resources {
 	/**
 	 * Reads the file, even if the file is inside a Jar
 	 *
-	 * @param srcFileName The name of the file to read (e.g. 'test.txt')
+	 * @param srcFileName The name of the file to read. See the docs at the top
+	 *                    of this class
 	 * @return A {@link List} of the lines in the file
 	 * @throws FileNotFoundException Probably thrown when the file is not found
 	 */
@@ -52,12 +58,14 @@ public class Resources {
 	 * the requirement of knowing exactly what directory the file is in.
 	 */
 	private File copyToTempFile(String srcFileName) throws IOException {
+		if (!srcFileName.startsWith("/")) {
+			srcFileName = "/" + srcFileName;
+		}
 
 		String tempFileName = "temp-" + srcFileName + "-" + System.currentTimeMillis();
 		File tempFile = File.createTempFile(tempFileName, null);
 
-		try (InputStream inputStream = getClass()
-				.getResourceAsStream("/" + srcFileName);
+		try (InputStream inputStream = getClass().getResourceAsStream(srcFileName);
 			 FileOutputStream outputStream = new FileOutputStream(tempFile)) {
 
 			if (inputStream == null) throw new FileNotFoundException();
