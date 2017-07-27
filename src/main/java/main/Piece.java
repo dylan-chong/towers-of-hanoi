@@ -42,12 +42,39 @@ public class Piece extends BoardCell {
 	 * {@link SideType} in the name of each value for conciseness.
 	 */
 	public enum SideCombination {
-		// TODO NEXT ALL COMBOX
-		// TODO AFTER board (class) and printing
-		EMPTY_EMPTY_EMPTY_EMPTY, // 4 empty sides
+		// 1st row in assignment diagram
 		SWORD_SWORD_SWORD_SHIELD,
-		SWORD_SWORD_SHIELD_SHIELD,
 		SWORD_SWORD_SWORD_EMPTY,
+		SHIELD_SHIELD_SHIELD_SHIELD,
+		EMPTY_SWORD_SHIELD_EMPTY,
+
+		// 2nd row
+		EMPTY_EMPTY_EMPTY_EMPTY, // 4 empty sides
+		SWORD_SWORD_SHIELD_SHIELD,
+		SWORD_SWORD_SWORD_SWORD,
+		SHIELD_SWORD_SHIELD_EMPTY,
+		EMPTY_EMPTY_EMPTY_SHIELD,
+
+		// 3rd row
+		SHIELD_SWORD_SWORD_SHIELD,
+		SWORD_SWORD_EMPTY_SHIELD,
+		EMPTY_SWORD_EMPTY_EMPTY,
+		EMPTY_SWORD_SHIELD_SHIELD,
+		EMPTY_EMPTY_SHIELD_SHIELD,
+
+		// 4th row
+		SHIELD_SWORD_SWORD_EMPTY,
+		SWORD_SWORD_SHIELD_EMPTY,
+		SHIELD_SWORD_EMPTY_EMPTY,
+		SHIELD_SWORD_EMPTY_SHIELD,
+		SHIELD_EMPTY_EMPTY_SHIELD,
+
+		// 5th row
+		EMPTY_SWORD_SWORD_EMPTY,
+		SWORD_SWORD_EMPTY_EMPTY,
+		EMPTY_SWORD_EMPTY_SHIELD,
+		SHIELD_SWORD_SHIELD_SHIELD,
+		SHIELD_EMPTY_SHIELD_SHIELD,
 		;
 
 		public final SideType left, up, down, right;
@@ -58,6 +85,10 @@ public class Piece extends BoardCell {
 			List<SideType> sideTypes = new ArrayList<>();
 			for (String sidePattern : name.split("_")) {
 				sideTypes.add(SideType.valueOf(sidePattern));
+			}
+
+			if (sideTypes.size() != 4) {
+				throw new Error("Invalid SideCombination name");
 			}
 
 			this.left = sideTypes.get(0);
@@ -74,7 +105,7 @@ public class Piece extends BoardCell {
 		EMPTY {
 			@Override
 			public char toTextualRep(AbsDirection direction) {
-				return ' ';
+				return Board.BLANK_TEXT_REP_CHAR;
 			}
 		},
 		SWORD {

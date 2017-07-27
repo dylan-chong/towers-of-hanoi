@@ -8,14 +8,7 @@ public abstract class BoardCell {
 	 * A new textual representation object. Add your representation here
 	 */
 	public static char[][] blankTextualRep() {
-		char[][] representation = new char[3][3];
-		for (int r = 0; r < representation.length; r++) {
-			char[] row = representation[r];
-			for (int c = 0; c < row.length; c++) {
-				row[c] = ' ';
-			}
-		}
-		return representation;
+		return Board.blankTextualRep(TEXTUAL_REP_HEIGHT, TEXTUAL_REP_WIDTH);
 	}
 
 	/**

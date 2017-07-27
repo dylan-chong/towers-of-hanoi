@@ -6,13 +6,6 @@ import org.junit.Test;
 
 import static test.TestUtils.assertRepresentationEquals;
 
-/**
- * Created by Dylan on 2/04/17.
- *
- * Use naming format [ClassName_]methodName_state_expectedResult for tests.
- * Extended from:
- * http://osherove.com/blog/2005/4/3/naming-standards-for-unit-tests.html
- */
 public class BoardCellTests {
 
 	@Test
@@ -23,9 +16,9 @@ public class BoardCellTests {
 		);
 		char[][] representation = piece.toTextualRep();
 		char[][] expected = {
-				"   ".toCharArray(),
-				" a ".toCharArray(),
-				"   ".toCharArray()
+				"...".toCharArray(),
+				".a.".toCharArray(),
+				"...".toCharArray()
 		};
 		assertRepresentationEquals(expected, representation);
 	}
@@ -37,9 +30,9 @@ public class BoardCellTests {
 		);
 		char[][] representation = piece.toTextualRep();
 		char[][] expected = {
-				" | ".toCharArray(),
-				"-a ".toCharArray(),
-				" | ".toCharArray()
+				".|.".toCharArray(),
+				"-a.".toCharArray(),
+				".|.".toCharArray()
 		};
 		assertRepresentationEquals(expected, representation);
 	}
@@ -51,9 +44,9 @@ public class BoardCellTests {
 		);
 		char[][] representation = piece.toTextualRep();
 		char[][] expected = {
-				" | ".toCharArray(),
+				".|.".toCharArray(),
 				"-a#".toCharArray(),
-				" # ".toCharArray()
+				".#.".toCharArray()
 		};
 		assertRepresentationEquals(expected, representation);
 	}
@@ -65,9 +58,9 @@ public class BoardCellTests {
 		Player piece = new Player(token, 1, 1);
 		char[][] representation = piece.toTextualRep();
 		char[][] expected = {
-				"   ".toCharArray(),
-				String.format(" %s ", Player.Token.HAPPY.representation).toCharArray(),
-				"   ".toCharArray()
+				"...".toCharArray(),
+				String.format(".%s.", Player.Token.HAPPY.representation).toCharArray(),
+				"...".toCharArray()
 		};
 		assertRepresentationEquals(expected, representation);
 	}
