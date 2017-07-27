@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Represents a cell with sword/shield parts
  */
-public class Piece extends BoardCell {
+public class PieceCell extends BoardCell {
 	/**
 	 * These are relative to the piece's direction
 	 *
@@ -16,8 +16,7 @@ public class Piece extends BoardCell {
 
 	private final char id;
 
-	public Piece(char id, SideCombination sides, int row, int col) {
-		super(row, col);
+	public PieceCell(char id, SideCombination sides) {
 		this.id = id;
 		this.sides = sides;
 	}

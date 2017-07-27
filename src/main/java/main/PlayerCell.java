@@ -3,12 +3,11 @@ package main;
 /**
  * The player cell
  */
-public class Player extends BoardCell {
+public class PlayerCell extends BoardCell {
 
 	private final Token token;
 
-	public Player(Token token, int row, int col) {
-		super(row, col);
+	public PlayerCell(Token token) {
 		this.token = token;
 	}
 

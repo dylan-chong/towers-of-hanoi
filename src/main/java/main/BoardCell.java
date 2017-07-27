@@ -12,18 +12,6 @@ public abstract class BoardCell {
 	}
 
 	/**
-	 * Don't modify or access outside the class/subclasses. Underscore
-	 * is used to make privacy obvious
-	 */
-	protected int _row;
-	protected int _col;
-
-	public BoardCell(int row, int col) {
-		this._row = row;
-		this._col = col;
-	}
-
-	/**
 	 * @return a 3x3 grid of characters representing this piece -
 	 * a textual representation. This representation is independent
 	 * of it's position.
