@@ -14,7 +14,7 @@ public class TestRunner {
 	 * List all classes to test here
 	 */
 	private static final Class<?>[] TEST_CLASSES = new Class[] {
-			ExampleTests.class
+			BoardCellTests.class
 	};
 
 	public static void run() {
