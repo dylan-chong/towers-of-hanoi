@@ -9,6 +9,8 @@ import java.util.List;
 public class Piece extends BoardCell {
 	/**
 	 * These are relative to the piece's direction
+	 *
+	 * TODO this will break after adding rotation
 	 */
 	private final SideCombination sides;
 
@@ -23,7 +25,13 @@ public class Piece extends BoardCell {
 	@Override
 	public char[][] toTextualRep() {
 		char[][] representation = blankTextualRep();
-		representation[1][1] = id;
+		representation[1][1] = id; // middle
+
+		representation[1][0] = sides.left.toTextualRep(AbsDirection.WEST);
+		representation[0][1] = sides.up.toTextualRep(AbsDirection.NORTH);
+		representation[1][2] = sides.right.toTextualRep(AbsDirection.EAST);
+		representation[2][1] = sides.down.toTextualRep(AbsDirection.SOUTH);
+
 		return representation;
 	}
 
@@ -34,10 +42,15 @@ public class Piece extends BoardCell {
 	 * {@link SideType} in the name of each value for conciseness.
 	 */
 	public enum SideCombination {
+		// TODO NEXT ALL COMBOX
+		// TODO AFTER board (class) and printing
 		EMPTY_EMPTY_EMPTY_EMPTY, // 4 empty sides
-		SWORD_SWORD_SWORD_EMPTY;
+		SWORD_SWORD_SWORD_SHIELD,
+		SWORD_SWORD_SHIELD_SHIELD,
+		SWORD_SWORD_SWORD_EMPTY,
+		;
 
-		private final SideType left, up, down, right;
+		public final SideType left, up, down, right;
 
 		SideCombination() {
 			String name = this.name().toUpperCase();
@@ -58,8 +71,30 @@ public class Piece extends BoardCell {
 	 * The different possibilities for each side (90 degrees) of the piece
 	 */
 	public enum SideType {
-		EMPTY,
-		SWORD,
-		SHIELD,
+		EMPTY {
+			@Override
+			public char toTextualRep(AbsDirection direction) {
+				return ' ';
+			}
+		},
+		SWORD {
+			@Override
+			public char toTextualRep(AbsDirection direction) {
+				if (direction == AbsDirection.NORTH ||
+						direction == AbsDirection.SOUTH) {
+					return '|';
+				}
+				return '-';
+			}
+		},
+		SHIELD {
+			@Override
+			public char toTextualRep(AbsDirection direction) {
+				return '#';
+			}
+		},
+		;
+
+		public abstract char toTextualRep(AbsDirection direction);
 	}
 }

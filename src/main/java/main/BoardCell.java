@@ -33,7 +33,9 @@ public abstract class BoardCell {
 	/**
 	 * @return a 3x3 grid of characters representing this piece -
 	 * a textual representation. This representation is independent
-	 * of it's position
+	 * of it's position.
+	 *
+	 * The array is in char[row][col] format
 	 */
 	public abstract char[][] toTextualRep();
 }
