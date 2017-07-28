@@ -5,10 +5,10 @@ public abstract class BoardCell {
 	public static final int TEXTUAL_REP_HEIGHT = 3;
 
 	/**
-	 * A new textual representation object. Add your representation here
+	 * A new textual representation object.
 	 */
 	public static char[][] blankTextualRep() {
-		return Board.blankTextualRep(TEXTUAL_REP_HEIGHT, TEXTUAL_REP_WIDTH);
+		return TextualRepresentable.blankTextualRep(TEXTUAL_REP_HEIGHT, TEXTUAL_REP_WIDTH);
 	}
 
 	/**

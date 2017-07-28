@@ -4,6 +4,7 @@ import test.TestRunner;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Delete this when you put your assignments here
@@ -20,5 +21,10 @@ public class Main {
 	}
 
 	private static void startApp() {
+		new TextBoardController(
+				new Scanner(System.in),
+				System.out,
+				new Board()
+		).listenUntilGameEnd();
 	}
 }

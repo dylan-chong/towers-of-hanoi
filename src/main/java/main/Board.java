@@ -1,61 +1,11 @@
-package
-		main;
+package main;
 
-public class Board {
+import java.util.concurrent.atomic.AtomicInteger;
 
-	public static final char BLANK_TEXT_REP_CHAR = '.';
+public class Board implements TextualRepresentable {
 
-	/**
-	 * A new textual representation object. Add your representation here
-	 */
-	public static char[][] blankTextualRep(int height, int width) {
-		char[][] representation = new char[height][width];
-		for (int r = 0; r < representation.length; r++) {
-			char[] row = representation[r];
-			for (int c = 0; c < row.length; c++) {
-				row[c] = BLANK_TEXT_REP_CHAR;
-			}
-		}
-		return representation;
-	}
-
-	public static String representationToString(char[][] representation) {
-		StringBuilder builder = new StringBuilder();
-		for (char[] row : representation) {
-			for (char c : row) {
-				builder.append(c);
-			}
-
-			builder.append('\n');
-		}
-		return builder.toString();
-	}
-
-	/**
-	 * Copies the entire toCopy content onto the largerRep where the top left
-	 * position is at startRow and startCol.
-	 */
-	public void copyRepIntoRep(char[][] toCopy,
-							   char[][] largerRep,
-							   int startRow,
-							   int startCol) {
-		for (int r = 0; r < toCopy.length; r++) {
-			for (int c = 0; c < toCopy[0].length; c++) {
-				int largerRow = startRow + r;
-				int largerCol = startCol + c;
-
-				if (largerRep[largerRow][largerCol] != BLANK_TEXT_REP_CHAR) {
-					throw new RuntimeException(String.format(
-							"Position r: %d, c: %d not blank",
-							r,
-							c
-					));
-				}
-
-				largerRep[largerRow][largerCol] = toCopy[r][c];
-			}
-		}
-	}
+	private static final int DEFAULT_NUM_COLS = 10;
+	private static final int DEFAULT_NUM_ROWS = 10;
 
 	private final BoardCell[][] cells;
 
@@ -63,8 +13,33 @@ public class Board {
 		this.cells = new BoardCell[numRows][numCols];
 	}
 
+	public Board() {
+		this(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLS);
+	}
+
 	public void addCell(BoardCell boardCell, int row, int col) {
 		cells[row][col] = boardCell;
+	}
+
+	/**
+	 * To be used for testing only. Underscore is used to show privacy
+	 */
+	public BoardCell _getCellAt(int row, int col) {
+		return cells[row][col];
+	}
+
+	public boolean isEmpty() {
+		return numCells() == 0;
+	}
+
+	public int numCells() {
+		AtomicInteger count = new AtomicInteger(0);
+		forEachCell((cell, row, col) -> {
+			if (cell != null) {
+				count.getAndIncrement();
+			}
+		});
+		return count.get();
 	}
 
 	/**
@@ -73,30 +48,47 @@ public class Board {
 	 * cell takes up {@link BoardCell#TEXTUAL_REP_WIDTH} chars in width
 	 * and {@link BoardCell#TEXTUAL_REP_HEIGHT} cells in height.
 	 */
+	@Override
 	public char[][] toTextualRep() {
 		int height = cells.length * BoardCell.TEXTUAL_REP_HEIGHT;
 		int width = cells[0].length * BoardCell.TEXTUAL_REP_WIDTH;
 
-		char[][] representation = blankTextualRep(height, width);
+		char[][] representation =
+				TextualRepresentable.blankTextualRep(height, width);
 
+		forEachCell((cell, row, col) -> {
+			if (cell == null) {
+				return;
+			}
+
+			char[][] cellRep = cell.toTextualRep();
+			TextualRepresentable.copyRepIntoRep(
+					cellRep,
+					representation,
+					row * BoardCell.TEXTUAL_REP_HEIGHT,
+					col * BoardCell.TEXTUAL_REP_WIDTH
+			);
+
+		});
+
+		return representation;
+	}
+
+	/**
+	 * This is here to reduce nested for loop
+	 * @param consumer A function that does stuff to each cell
+	 */
+	private void forEachCell(CellConsumer consumer) {
 		for (int r = 0; r < cells.length; r++) {
 			BoardCell[] row = cells[r];
 			for (int c = 0; c < row.length; c++) {
-				BoardCell cell = row[c];
-				if (cell == null) {
-					continue;
-				}
-
-				char[][] cellRep = cell.toTextualRep();
-				copyRepIntoRep(
-						cellRep,
-						representation,
-						r * BoardCell.TEXTUAL_REP_HEIGHT,
-						c * BoardCell.TEXTUAL_REP_WIDTH
-				);
+				BoardCell cell = cells[r][c];
+				consumer.apply(cell, r, c);
 			}
 		}
+	}
 
-		return representation;
+	interface CellConsumer {
+		void apply(BoardCell cell, int row, int col);
 	}
 }

@@ -3,11 +3,18 @@ package test;
 import main.Board;
 import main.BoardCell;
 import main.PieceCell;
+import main.TextualRepresentable;
 import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
 import static test.TestUtils.assertRepresentationEquals;
 
 public class BoardTest {
+
+	@Test
+	public void new_initialState_shouldBeEmpty() {
+		assertTrue(new Board().isEmpty());
+	}
 
 	@Test
 	public void toTextualRep_emptyBoard_returnsEmptyRepresentation() {
@@ -16,7 +23,7 @@ public class BoardTest {
 		Board board = new Board(rows, cols);
 
 		char[][] representation = board.toTextualRep();
-		char[][] expected = Board.blankTextualRep(
+		char[][] expected = TextualRepresentable.blankTextualRep(
 				rows * BoardCell.TEXTUAL_REP_HEIGHT,
 				cols * BoardCell.TEXTUAL_REP_WIDTH
 		);

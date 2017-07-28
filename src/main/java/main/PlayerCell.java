@@ -15,6 +15,7 @@ public class PlayerCell extends BoardCell {
 	 * @return a 3x3 grid of characters representing this piece -
 	 * a textual representation
 	 */
+	@Override
 	public char[][] toTextualRep() {
 		char[][] representation = blankTextualRep();
 		representation[1][1] = token.representation;

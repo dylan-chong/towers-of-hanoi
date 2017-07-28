@@ -1,6 +1,6 @@
 package test;
 
-import static main.Board.representationToString;
+import static main.TextualRepresentable.representationToString;
 import static org.junit.Assert.assertEquals;
 
 public class TestUtils {
