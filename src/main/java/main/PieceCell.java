@@ -34,6 +34,14 @@ public class PieceCell extends BoardCell {
 		return representation;
 	}
 
+	public SideCombination getOriginalSide() {
+		return sides;
+	}
+
+	public char getId() {
+		return id;
+	}
+
 	/**
 	 * The different amount of combinations of sword and shield
 	 *

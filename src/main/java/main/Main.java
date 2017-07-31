@@ -21,10 +21,13 @@ public class Main {
 	}
 
 	private static void startApp() {
-		new TextBoardController(
+		GameModel game = new GameModel(new Board());
+		GameTextController controller = new GameTextController(
 				new Scanner(System.in),
 				System.out,
-				new Board()
-		).listenUntilGameEnd();
+				game
+		);
+
+		controller.runUntilGameEnd();
 	}
 }

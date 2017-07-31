@@ -16,6 +16,7 @@ public class TestRunner {
 	private static final Class<?>[] TEST_CLASSES = new Class[] {
 			BoardCellTest.class,
 			BoardTest.class,
+			GameTextControllerTest.class,
 	};
 
 	public static void run() {

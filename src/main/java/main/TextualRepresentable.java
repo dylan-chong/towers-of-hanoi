@@ -6,6 +6,7 @@ package main;
 public interface TextualRepresentable {
 
 	char BLANK_TEXT_REP_CHAR = '.';
+
 	/**
 	 * A new textual representation object. Add your representation here
 	 */
@@ -20,16 +21,23 @@ public interface TextualRepresentable {
 		return representation;
 	}
 
-	static String representationToString(char[][] representation) {
+	static String convertToString(char[][] representation, boolean withGap) {
 		StringBuilder builder = new StringBuilder();
 		for (char[] row : representation) {
 			for (char c : row) {
 				builder.append(c);
+				if (withGap) {
+					builder.append(' ');
+				}
 			}
 
 			builder.append('\n');
 		}
 		return builder.toString();
+	}
+
+	static String convertToString(char[][] representation) {
+		return convertToString(representation, false);
 	}
 
 	/**

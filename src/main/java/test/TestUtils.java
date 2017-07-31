@@ -1,6 +1,6 @@
 package test;
 
-import static main.TextualRepresentable.representationToString;
+import static main.TextualRepresentable.convertToString;
 import static org.junit.Assert.assertEquals;
 
 public class TestUtils {
@@ -8,8 +8,8 @@ public class TestUtils {
 	public static void assertRepresentationEquals(char[][] expected,
 												  char[][] actualArray) {
 		// Hack to easily compare the 2d arrays, and show the output
-		String expectedStr = representationToString(expected);
-		String arrayStr = representationToString(actualArray);
+		String expectedStr = convertToString(expected);
+		String arrayStr = convertToString(actualArray);
 		assertEquals(expectedStr, arrayStr);
 	}
 

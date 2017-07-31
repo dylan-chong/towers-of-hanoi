@@ -17,6 +17,14 @@ public class Board implements TextualRepresentable {
 		this(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLS);
 	}
 
+	public int getNumRows() {
+		return cells.length;
+	}
+
+	public int getNumCols() {
+		return cells[0].length;
+	}
+
 	public void addCell(BoardCell boardCell, int row, int col) {
 		cells[row][col] = boardCell;
 	}
@@ -24,7 +32,7 @@ public class Board implements TextualRepresentable {
 	/**
 	 * To be used for testing only. Underscore is used to show privacy
 	 */
-	public BoardCell _getCellAt(int row, int col) {
+	public BoardCell getCellAt(int row, int col) {
 		return cells[row][col];
 	}
 
