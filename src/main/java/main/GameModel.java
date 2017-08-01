@@ -52,7 +52,7 @@ public class GameModel implements TextualRepresentable {
 	 * @param orientation 0/90/180/270
 	 */
 	public void create(char pieceID, int orientation) {
-
+		// TODO
 	}
 
 	private class PlayerData {
