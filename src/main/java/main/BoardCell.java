@@ -8,7 +8,7 @@ public abstract class BoardCell {
 	 * A new textual representation object.
 	 */
 	public static char[][] blankTextualRep() {
-		return TextualRepresentable.blankTextualRep(
+		return Textable.blankTextualRep(
 				TEXTUAL_REP_HEIGHT, TEXTUAL_REP_WIDTH
 		);
 	}

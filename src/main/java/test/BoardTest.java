@@ -3,7 +3,7 @@ package test;
 import main.Board;
 import main.BoardCell;
 import main.PieceCell;
-import main.TextualRepresentable;
+import main.Textable;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -23,7 +23,7 @@ public class BoardTest {
 		Board board = new Board(rows, cols);
 
 		char[][] representation = board.toTextualRep();
-		char[][] expected = TextualRepresentable.blankTextualRep(
+		char[][] expected = Textable.blankTextualRep(
 				rows * BoardCell.TEXTUAL_REP_HEIGHT,
 				cols * BoardCell.TEXTUAL_REP_WIDTH
 		);

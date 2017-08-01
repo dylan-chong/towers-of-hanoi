@@ -3,7 +3,7 @@ package main;
 /**
  * Something that can be represented by text
  */
-public interface TextualRepresentable {
+public interface Textable {
 
 	char BLANK_TEXT_REP_CHAR = '.';
 
@@ -66,5 +66,8 @@ public interface TextualRepresentable {
 		}
 	}
 
+	/**
+	 * @return The textual representation of this object
+	 */
 	char[][] toTextualRep();
 }

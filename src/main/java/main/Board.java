@@ -2,7 +2,7 @@ package main;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Board implements TextualRepresentable {
+public class Board implements Textable {
 
 	private static final int DEFAULT_NUM_COLS = 10;
 	private static final int DEFAULT_NUM_ROWS = 10;
@@ -62,7 +62,7 @@ public class Board implements TextualRepresentable {
 		int width = cells[0].length * BoardCell.TEXTUAL_REP_WIDTH;
 
 		char[][] representation =
-				TextualRepresentable.blankTextualRep(height, width);
+				Textable.blankTextualRep(height, width);
 
 		forEachCell((cell, row, col) -> {
 			if (cell == null) {
@@ -70,7 +70,7 @@ public class Board implements TextualRepresentable {
 			}
 
 			char[][] cellRep = cell.toTextualRep();
-			TextualRepresentable.copyRepIntoRep(
+			Textable.copyRepIntoRep(
 					cellRep,
 					representation,
 					row * BoardCell.TEXTUAL_REP_HEIGHT,

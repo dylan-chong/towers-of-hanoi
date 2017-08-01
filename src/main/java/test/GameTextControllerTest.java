@@ -2,6 +2,7 @@ package test;
 
 import main.GameModel;
 import main.GameTextController;
+import main.InvalidMoveException;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -13,7 +14,8 @@ import java.util.Scanner;
 public class GameTextControllerTest {
 
 	@Test
-	public void runUntilGameEnd_typeCreateCommand_gameCreateMethodCalled() {
+	public void runUntilGameEnd_typeCreateCommand_gameCreateMethodCalled()
+			throws InvalidMoveException {
 		String input = "create a 0";
 		GameModel gameSpy = Mockito.mock(GameModel.class);
 		// Stub toTextualRep to prevent converting actual data to string

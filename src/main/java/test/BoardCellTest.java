@@ -58,9 +58,9 @@ public class BoardCellTest {
 		PlayerCell piece = new PlayerCell(token);
 		char[][] representation = piece.toTextualRep();
 		char[][] expected = {
-				"...".toCharArray(),
-				String.format(".%s.", PlayerCell.Token.HAPPY.representation).toCharArray(),
-				"...".toCharArray()
+				"+++".toCharArray(),
+				String.format("+%s+", PlayerCell.Token.HAPPY.representation).toCharArray(),
+				"+++".toCharArray()
 		};
 		assertRepresentationEquals(expected, representation);
 	}

@@ -27,7 +27,7 @@ public class GameTextController {
 			String line = textIn.nextLine();
 			try {
 				parseAndRunLine(line);
-			} catch (ParseFormatException e) {
+			} catch (ParseFormatException | InvalidMoveException e) {
 				textOut.println(e.getMessage());
 			}
 
@@ -36,17 +36,21 @@ public class GameTextController {
 	}
 
 	private String getGameString() {
-		return TextualRepresentable.convertToString(
+		return Textable.convertToString(
 				this.game.toTextualRep(), true
 		);
 	}
 
-	private void parseAndRunLine(String line) throws ParseFormatException {
+	private void parseAndRunLine(String line)
+			throws ParseFormatException, InvalidMoveException {
 		String[] tokens = line.split(" ");
 		String commandName = tokens[0];
 
 		switch (commandName) {
 			case "create":
+				if (tokens.length != 3) {
+					throw new ParseFormatException("Invalid number of tokens");
+				}
 				char pieceID = tokens[1].charAt(0);
 				int orientation = Integer.parseInt(tokens[2]);
 				game.create(pieceID, orientation);

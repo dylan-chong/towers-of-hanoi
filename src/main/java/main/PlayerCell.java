@@ -5,6 +5,11 @@ package main;
  */
 public class PlayerCell extends BoardCell {
 
+	/**
+	 * Char to go around {@link Token#representation} icon
+	 */
+	private static final char FILLER_CHAR = '+';
+
 	private final Token token;
 
 	public PlayerCell(Token token) {
@@ -18,6 +23,12 @@ public class PlayerCell extends BoardCell {
 	@Override
 	public char[][] toTextualRep() {
 		char[][] representation = blankTextualRep();
+		for (int r = 0; r < representation.length; r++) {
+			for (int c = 0; c < representation[r].length; c++) {
+				representation[r][c] = FILLER_CHAR;
+			}
+		}
+
 		representation[1][1] = token.representation;
 		return representation;
 	}
