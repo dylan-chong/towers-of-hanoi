@@ -1,9 +1,6 @@
 package test;
 
-import main.Board;
-import main.BoardCell;
-import main.PieceCell;
-import main.Textable;
+import main.*;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -31,7 +28,8 @@ public class BoardTest {
 	}
 
 	@Test
-	public void toTextualRep_boardWith1Cell_returnsBoardWithCellRep() {
+	public void toTextualRep_boardWith1Cell_returnsBoardWithCellRep()
+			throws InvalidMoveException {
 		Board board = new Board(2, 2);
 		board.addCell(new PieceCell(
 				'a',
@@ -51,7 +49,8 @@ public class BoardTest {
 	}
 
 	@Test
-	public void toTextualRep_boardWith2Cells_returnsBoardWithCellRep() {
+	public void toTextualRep_boardWith2Cells_returnsBoardWithCellRep()
+			throws InvalidMoveException {
 		Board board = new Board(2, 2);
 		board.addCell(new PieceCell(
 				'a',

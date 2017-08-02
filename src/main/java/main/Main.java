@@ -2,6 +2,7 @@ package main;
 
 import test.TestRunner;
 
+import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -20,11 +21,21 @@ public class Main {
 		}
 	}
 
+	public static boolean areAssertionsEnabled() {
+		boolean enabled = false;
+		// noinspection ConstantConditions,AssertWithSideEffects
+		assert enabled = true;
+		// noinspection ConstantConditions
+		return enabled;
+	}
+
 	private static void startApp() {
 		GameModel game = new GameModel(new Board());
+		PrintStream out = System.out;
 		GameTextController controller = new GameTextController(
 				new Scanner(System.in),
 				System.out,
+				new GameTextController.ProductionExceptionHandler(out),
 				game
 		);
 

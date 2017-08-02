@@ -25,8 +25,23 @@ public class Board implements Textable {
 		return cells[0].length;
 	}
 
-	public void addCell(BoardCell boardCell, int row, int col) {
+	public void addCell(BoardCell boardCell, int row, int col)
+			throws InvalidMoveException {
+		if (getCellAt(row, col) != null) {
+			throw new InvalidMoveException("There is already cell there");
+		}
+
 		cells[row][col] = boardCell;
+	}
+
+	public BoardCell removeCell(int row, int col) throws InvalidMoveException {
+		BoardCell cell = getCellAt(row , col);
+		if (cell == null) {
+			throw new InvalidMoveException("There is no cell there");
+		}
+
+		cells[row][col] = null;
+		return cell;
 	}
 
 	/**
@@ -48,6 +63,20 @@ public class Board implements Textable {
 			}
 		});
 		return count.get();
+	}
+
+	public int[] positionOf(BoardCell cell) {
+		for (int r = 0; r < cells.length; r++) {
+			BoardCell[] row = cells[r];
+			for (int c = 0; c < row.length; c++) {
+				BoardCell currentCell = cells[r][c];
+				if (cell == currentCell) {
+					return new int[]{r, c};
+				}
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -81,6 +110,7 @@ public class Board implements Textable {
 
 		return representation;
 	}
+
 
 	/**
 	 * This is here to reduce nested for loop
