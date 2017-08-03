@@ -3,11 +3,16 @@ package main.gamemodel;
 import main.gamemodel.cells.PieceCell;
 import main.gamemodel.cells.PlayerCell;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import static main.gamemodel.cells.PieceCell.SideCombination;
 
+/**
+ * Represents a single player in the game
+ */
 public class PlayerData {
 
 	private final PlayerCell playerCell;
@@ -60,8 +65,12 @@ public class PlayerData {
 		return creationCol;
 	}
 
-	public boolean isUppercase() {
-		return isUppercase;
+	public Collection<Character> getUnusedPieceIds() {
+		return Collections.unmodifiableSet(unusedPieces.keySet());
+	}
+
+	public Collection<Character> getUsedPieceIds() {
+		return Collections.unmodifiableSet(usedPieces.keySet());
 	}
 
 	/**

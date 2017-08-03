@@ -3,8 +3,8 @@ package main;
 import main.gamemodel.*;
 
 import java.io.PrintStream;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class GameTextController {
 
@@ -58,8 +58,17 @@ public class GameTextController {
 	}
 
 	private String getGameString() {
-		return Textable.convertToString(game.toTextualRep(), true) +
-				"\nThe current player is: " + game.getCurrentPlayerData().getName();
+		String gameRep = Textable.convertToString(game.toTextualRep(), true);
+
+		String playerName = game.getCurrentPlayerData().getName();
+
+		String instructions = game.getTurnState()
+				.getCommand(commandProvider)
+				.getInstructions();
+
+		return gameRep +
+				"\nThe current player is: " + playerName +
+				"\n" + instructions;
 	}
 
 	public static class AppExceptionHandler implements ExceptionHandler {
@@ -85,15 +94,24 @@ public class GameTextController {
 		}
 	}
 
-	private static abstract class TurnStateCommand {
+	private abstract class TurnStateCommand {
+
 		/**
 		 * @param line The text the user entered
 		 */
 		public abstract void parseAndExecute(String line)
 				throws ParseFormatException, InvalidMoveException;
 
-		protected String[] requireTokens(int minTokens, int maxTokens, String line)
+		/**
+		 * Instructions to display to the user
+		 */
+		public abstract String getInstructions();
+
+		protected String[] requireTokens(int minTokens,
+										 int maxTokens,
+										 String line)
 				throws ParseFormatException {
+
 			String[] tokens = Arrays
 					.stream(line.split(" "))
 					.map(String::trim)
@@ -105,6 +123,25 @@ public class GameTextController {
 			}
 
 			return tokens;
+		}
+
+		protected String commandInstructions(String cmdName,
+											 Collection<Character> pieceIds) {
+			List<String> sortedIds = pieceIds.stream()
+					.map(Object::toString)
+					.sorted()
+					.collect(Collectors.toList());
+			List<String> directions = Arrays.stream(AbsDirection.values())
+					.map(AbsDirection::getAlternateName)
+					.map(String::toLowerCase)
+					.collect(Collectors.toList());
+
+			return String.format(
+					"%s <%s> <%s>",
+					cmdName,
+					String.join("/", sortedIds),
+					String.join("/", directions)
+			);
 		}
 	}
 
@@ -133,6 +170,14 @@ public class GameTextController {
 					AbsDirection orientation = AbsDirection.valueOfAlternateName(tokens[2]);
 					game.create(pieceID, orientation);
 				}
+
+				@Override
+				public String getInstructions() {
+					return "You can:\n- " + commandInstructions(
+							"create",
+							game.getCurrentPlayerData().getUnusedPieceIds()
+					);
+				}
 			};
 		}
 
@@ -160,6 +205,14 @@ public class GameTextController {
 
 					AbsDirection orientation = AbsDirection.valueOfAlternateName(tokens[2]);
 					game.move(pieceID, orientation);
+				}
+
+				@Override
+				public String getInstructions() {
+					return "You can:\n- " + commandInstructions(
+							"move",
+							game.getCurrentPlayerData().getUsedPieceIds()
+					);
 				}
 			};
 		}
