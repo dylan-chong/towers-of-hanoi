@@ -2,16 +2,17 @@ package main.gamemodel.cells;
 
 import main.gamemodel.Textable;
 
-public abstract class BoardCell {
+public abstract class BoardCell implements Textable {
 	public static final int TEXTUAL_REP_WIDTH = 3;
 	public static final int TEXTUAL_REP_HEIGHT = 3;
 
 	/**
 	 * A new textual representation object.
 	 */
-	public static char[][] blankTextualRep() {
+	public static char[][] blankCellTextualRep() {
 		return Textable.blankTextualRep(
-				TEXTUAL_REP_HEIGHT, TEXTUAL_REP_WIDTH
+				TEXTUAL_REP_HEIGHT, TEXTUAL_REP_WIDTH,
+				' '
 		);
 	}
 

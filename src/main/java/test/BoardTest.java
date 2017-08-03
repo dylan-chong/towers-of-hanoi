@@ -40,9 +40,9 @@ public class BoardTest {
 
 		char[][] representation = board.toTextualRep();
 		char[][] expected = new char[][] {
-				"....|.".toCharArray(),
+				"... | ".toCharArray(),
 				"...-a-".toCharArray(),
-				"....|.".toCharArray(),
+				"... | ".toCharArray(),
 				"......".toCharArray(),
 				"......".toCharArray(),
 				"......".toCharArray(),
@@ -65,12 +65,12 @@ public class BoardTest {
 
 		char[][] representation = board.toTextualRep();
 		char[][] expected = new char[][] {
-				"....|.".toCharArray(),
+				"... | ".toCharArray(),
 				"...-a-".toCharArray(),
-				"....|.".toCharArray(),
-				".#....".toCharArray(),
+				"... | ".toCharArray(),
+				" # ...".toCharArray(),
 				"#b#...".toCharArray(),
-				".#....".toCharArray(),
+				" # ...".toCharArray(),
 		};
 		assertRepresentationEquals(expected, representation);
 	}

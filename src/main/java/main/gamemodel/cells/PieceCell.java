@@ -1,7 +1,7 @@
 package main.gamemodel.cells;
 
 import main.gamemodel.AbsDirection;
-import main.gamemodel.Board;
+import main.gamemodel.Textable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class PieceCell extends BoardCell {
 
 	@Override
 	public char[][] toTextualRep() {
-		char[][] representation = blankTextualRep();
+		char[][] representation = blankCellTextualRep();
 		representation[1][1] = id; // middle
 
 		representation[1][0] = sides.left.toTextualRep(AbsDirection.WEST);
@@ -115,7 +115,7 @@ public class PieceCell extends BoardCell {
 		EMPTY {
 			@Override
 			public char toTextualRep(AbsDirection direction) {
-				return Board.BLANK_TEXT_REP_CHAR;
+				return Textable.BLANK_CELL_TEXT_REP_CHAR;
 			}
 		},
 		SWORD {

@@ -6,16 +6,21 @@ package main.gamemodel;
 public interface Textable {
 
 	char BLANK_TEXT_REP_CHAR = '.';
+	char BLANK_CELL_TEXT_REP_CHAR = ' ';
 
 	/**
 	 * A new textual representation object. Add your representation here
 	 */
 	static char[][] blankTextualRep(int height, int width) {
+		return blankTextualRep(height, width, BLANK_TEXT_REP_CHAR);
+	}
+
+	static char[][] blankTextualRep(int height, int width, char fillChar) {
 		char[][] representation = new char[height][width];
 		for (int r = 0; r < representation.length; r++) {
 			char[] row = representation[r];
 			for (int c = 0; c < row.length; c++) {
-				row[c] = BLANK_TEXT_REP_CHAR;
+				row[c] = fillChar;
 			}
 		}
 		return representation;

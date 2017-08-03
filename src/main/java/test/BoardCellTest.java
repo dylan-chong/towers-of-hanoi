@@ -16,9 +16,9 @@ public class BoardCellTest {
 		);
 		char[][] representation = piece.toTextualRep();
 		char[][] expected = {
-				"...".toCharArray(),
-				".a.".toCharArray(),
-				"...".toCharArray()
+				"   ".toCharArray(),
+				" a ".toCharArray(),
+				"   ".toCharArray()
 		};
 		assertRepresentationEquals(expected, representation);
 	}
@@ -30,9 +30,9 @@ public class BoardCellTest {
 		);
 		char[][] representation = piece.toTextualRep();
 		char[][] expected = {
-				".|.".toCharArray(),
-				"-a.".toCharArray(),
-				".|.".toCharArray()
+				" | ".toCharArray(),
+				"-a ".toCharArray(),
+				" | ".toCharArray()
 		};
 		assertRepresentationEquals(expected, representation);
 	}
@@ -44,9 +44,9 @@ public class BoardCellTest {
 		);
 		char[][] representation = piece.toTextualRep();
 		char[][] expected = {
-				".|.".toCharArray(),
+				" | ".toCharArray(),
 				"-a#".toCharArray(),
-				".#.".toCharArray()
+				" # ".toCharArray()
 		};
 		assertRepresentationEquals(expected, representation);
 	}

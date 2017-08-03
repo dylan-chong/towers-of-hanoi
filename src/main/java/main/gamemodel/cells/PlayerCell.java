@@ -22,7 +22,7 @@ public class PlayerCell extends BoardCell {
 	 */
 	@Override
 	public char[][] toTextualRep() {
-		char[][] representation = blankTextualRep();
+		char[][] representation = blankCellTextualRep();
 		for (int r = 0; r < representation.length; r++) {
 			for (int c = 0; c < representation[r].length; c++) {
 				representation[r][c] = FILLER_CHAR;
