@@ -1,6 +1,6 @@
 package test;
 
-import static main.Textable.convertToString;
+import static main.gamemodel.Textable.convertToString;
 import static org.junit.Assert.assertEquals;
 
 public class TestUtils {

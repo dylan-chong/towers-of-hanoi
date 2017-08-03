@@ -1,4 +1,4 @@
-package main;
+package main.gamemodel.cells;
 
 /**
  * The player cell

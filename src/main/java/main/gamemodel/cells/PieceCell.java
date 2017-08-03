@@ -1,4 +1,7 @@
-package main;
+package main.gamemodel.cells;
+
+import main.gamemodel.AbsDirection;
+import main.gamemodel.Board;
 
 import java.util.ArrayList;
 import java.util.List;

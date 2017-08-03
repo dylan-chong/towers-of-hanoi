@@ -1,5 +1,7 @@
 package main;
 
+import main.gamemodel.*;
+
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -36,7 +38,7 @@ public class GameTextController {
 		while (textIn.hasNext()) {
 			String line = textIn.nextLine();
 
-			GameModel.TurnState turnState = game.getTurnState();
+			TurnState turnState = game.getTurnState();
 			TurnStateCommand command = turnState.getCommand(commandProvider);
 
 			try {
@@ -107,7 +109,7 @@ public class GameTextController {
 	}
 
 	private class CommandProvider
-			implements GameModel.TurnStateCommandProvider<TurnStateCommand> {
+			implements TurnState.CommandProvider<TurnStateCommand> {
 		@Override
 		public TurnStateCommand getCreatingPiecesCommand() {
 			return new TurnStateCommand() {

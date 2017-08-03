@@ -1,4 +1,4 @@
-package main;
+package main.gamemodel;
 
 public class InvalidMoveException extends Exception {
 	/**

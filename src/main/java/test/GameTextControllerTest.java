@@ -1,8 +1,8 @@
 package test;
 
-import main.AbsDirection;
-import main.Board;
-import main.GameModel;
+import main.gamemodel.AbsDirection;
+import main.gamemodel.Board;
+import main.gamemodel.GameModel;
 import main.GameTextController;
 import org.junit.Test;
 import org.mockito.Mockito;

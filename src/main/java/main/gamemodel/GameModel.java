@@ -1,11 +1,11 @@
-package main;
+package main.gamemodel;
 
-import main.PieceCell.SideCombination;
+import main.gamemodel.cells.BoardCell;
+import main.gamemodel.cells.PieceCell;
+import main.gamemodel.cells.PlayerCell;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class GameModel implements Textable {
 
@@ -69,7 +69,7 @@ public class GameModel implements Textable {
 		PlayerData player = getCurrentPlayerData();
 
 		BoardCell existingCell = board.getCellAt(
-				player.creationRow, player.creationCol
+				player.getCreationRow(), player.getCreationCol()
 		);
 		if (existingCell != null) {
 			throw new InvalidMoveException(
@@ -79,7 +79,7 @@ public class GameModel implements Textable {
 
 		board.addCell(
 				player.useUnusedPiece(pieceID), // throws
-				player.creationRow, player.creationCol
+				player.getCreationRow(), player.getCreationCol()
 		);
 
 // TODO: orientation
@@ -156,129 +156,4 @@ public class GameModel implements Textable {
 		}
 	}
 
-	public class PlayerData {
-		private final PlayerCell playerCell;
-		private final boolean isUppercase;
-		private final int creationRow;
-		private final int creationCol;
-
-		/**
-		 * Pieces that haven't been placed on the board yet
-		 */
-		private Map<Character, PieceCell> unusedPieces;
-		/**
-		 * Pieces that have been placed on the board, and haven't died
-		 */
-		private Map<Character, PieceCell> usedPieces;
-
-		public PlayerData(PlayerCell playerCell,
-						  boolean isUppercase,
-						  int creationRow,
-						  int creationCol) {
-			this.playerCell = playerCell;
-			this.isUppercase = isUppercase;
-			this.creationRow = creationRow;
-			this.creationCol = creationCol;
-
-			usedPieces = new HashMap<>();
-
-			unusedPieces = new HashMap<>();
-			for (int i = 0; i < SideCombination.values().length; i++) {
-				SideCombination sides = SideCombination.values()[i];
-				char id = (char) ('a' + i);
-				if (isUppercase) {
-					id = Character.toUpperCase(id);
-				}
-
-				PieceCell pieceCell = new PieceCell(id, sides);
-				unusedPieces.put(id, pieceCell);
-			}
-		}
-
-		public PlayerCell getPlayerCell() {
-			return playerCell;
-		}
-
-		/**
-		 * @param pieceID Case insensitive
-		 * @return The piece if it is unused, null if the piece is already used
-		 */
-		public PieceCell useUnusedPiece(char pieceID) throws InvalidMoveException {
-			pieceID = ensureCase(pieceID);
-
-			PieceCell newCell = unusedPieces.remove(pieceID);
-			if (newCell == null) {
-				throw new InvalidMoveException(
-						"That cell has already been created, or does not exist " +
-								"on this player"
-				);
-			}
-
-			usedPieces.put(pieceID, newCell);
-			return newCell;
-		}
-
-		/**
-		 * Finds a piece that is on the board
-		 * May return null
-		 */
-		public PieceCell findUsedPiece(char pieceID) {
-			pieceID = ensureCase(pieceID);
-			return usedPieces.get(pieceID);
-		}
-
-		private char ensureCase(char pieceID) {
-			if (isUppercase) {
-				return Character.toUpperCase(pieceID);
-			} else {
-				return Character.toLowerCase(pieceID);
-			}
-		}
-
-		public String getName() {
-			return playerCell.getName();
-		}
-	}
-
-	/**
-	 * The state of the current players turn. It is the job of the controllers
-	 * to call the correct methods of the model for the current state
-	 *
-	 * This uses a visitor-like pattern to ensure that all controllers
-	 * implement a command for enum value.
-	 */
-	public enum TurnState {
-		CREATING_PIECE {
-			@Override
-			public <CommandT> CommandT getCommand(TurnStateCommandProvider<CommandT> provider) {
-				return provider.getCreatingPiecesCommand();
-			}
-
-			@Override
-			public boolean canMoveToNextState(GameModel gameModel) {
-				return true;
-			}
-		},
-		MOVING_OR_ROTATING_PIECE {
-			@Override
-			public <CommandT> CommandT getCommand(TurnStateCommandProvider<CommandT> provider) {
-				return provider.getMovingOrRotatingPieceCommand();
-			}
-
-			@Override
-			public boolean canMoveToNextState(GameModel gameModel) {
-				return true;
-			}
-		},
-		;
-
-		public abstract <CommandT> CommandT getCommand(TurnStateCommandProvider<CommandT> provider);
-
-		public abstract boolean canMoveToNextState(GameModel gameModel);
-	}
-
-	public interface TurnStateCommandProvider<CommandT> {
-		CommandT getCreatingPiecesCommand();
-		CommandT getMovingOrRotatingPieceCommand();
-	}
 }

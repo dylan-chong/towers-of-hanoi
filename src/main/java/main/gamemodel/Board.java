@@ -1,4 +1,6 @@
-package main;
+package main.gamemodel;
+
+import main.gamemodel.cells.BoardCell;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

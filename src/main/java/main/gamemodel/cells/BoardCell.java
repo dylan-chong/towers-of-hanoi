@@ -1,4 +1,6 @@
-package main;
+package main.gamemodel.cells;
+
+import main.gamemodel.Textable;
 
 public abstract class BoardCell {
 	public static final int TEXTUAL_REP_WIDTH = 3;

@@ -1,4 +1,4 @@
-package main;
+package main.gamemodel;
 
 import java.util.Arrays;
 

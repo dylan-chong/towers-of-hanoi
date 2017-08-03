@@ -1,7 +1,7 @@
 package test;
 
-import main.PieceCell;
-import main.PlayerCell;
+import main.gamemodel.cells.PieceCell;
+import main.gamemodel.cells.PlayerCell;
 import org.junit.Test;
 
 import static test.TestUtils.assertRepresentationEquals;

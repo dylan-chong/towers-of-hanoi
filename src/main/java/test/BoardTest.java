@@ -1,6 +1,8 @@
 package test;
 
-import main.*;
+import main.gamemodel.*;
+import main.gamemodel.cells.BoardCell;
+import main.gamemodel.cells.PieceCell;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;

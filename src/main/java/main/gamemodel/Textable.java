@@ -1,4 +1,4 @@
-package main;
+package main.gamemodel;
 
 /**
  * Something that can be represented by text

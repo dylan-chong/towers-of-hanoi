@@ -1,5 +1,7 @@
 package main;
 
+import main.gamemodel.Board;
+import main.gamemodel.GameModel;
 import test.TestRunner;
 
 import java.io.PrintStream;
