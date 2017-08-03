@@ -173,9 +173,15 @@ public class GameTextController {
 
 				@Override
 				public String getInstructions() {
-					return "You can:\n- " + commandInstructions(
-							"create",
+					String commandInstructions = commandInstructions(
+							CREATE_COMMAND,
 							game.getCurrentPlayerData().getUnusedPieceIds()
+					);
+					return String.format(
+							"You can:\n- %s\n" +
+									"- %s",
+							commandInstructions,
+							PASS_COMMAND
 					);
 				}
 			};
@@ -190,9 +196,13 @@ public class GameTextController {
 					String[] tokens = requireTokens(1, 3, line);
 					String command = tokens[0];
 
-					if (command.equals(PASS_COMMAND)) {
-						game.passTurn();
-						return;
+					if (mustPass()) {
+						if (command.equals(PASS_COMMAND)) {
+							game.passTurn();
+							return;
+						}
+
+						throw new ParseFormatException("Invalid command name");
 					}
 
                     if (!command.equals(MOVE_COMMAND)) {
@@ -209,10 +219,21 @@ public class GameTextController {
 
 				@Override
 				public String getInstructions() {
-					return "You can:\n- " + commandInstructions(
-							"move",
+					if (mustPass()) {
+						return "You can:\n- " + PASS_COMMAND;
+					}
+
+					String commandInstructions = commandInstructions(
+							MOVE_COMMAND,
 							game.getCurrentPlayerData().getUsedPieceIds()
 					);
+					return "You can:\n- " + commandInstructions;
+				}
+
+				public boolean mustPass() {
+					return game.getCurrentPlayerData()
+							.getUsedPieceIds()
+							.isEmpty();
 				}
 			};
 		}
