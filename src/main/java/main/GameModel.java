@@ -22,6 +22,7 @@ public class GameModel implements Textable {
 	 * Index in playerData
 	 */
 	private int currentPlayerIndex;
+	private TurnState turnState = TurnState.CREATING_PIECE;
 
 	public GameModel(Board emptyBoard) {
 		assert emptyBoard.isEmpty();
@@ -46,8 +47,96 @@ public class GameModel implements Textable {
 		setupPlayers();
 	}
 
-	private PlayerData getCurrentPlayerData() {
+	public PlayerData getCurrentPlayerData() {
 		return playerData.get(currentPlayerIndex);
+	}
+
+	@Override
+	public char[][] toTextualRep() {
+		return board.toTextualRep();
+	}
+
+	/**
+	 * Create a piece on the current player's creation square
+	 *
+	 * @param pieceID     a,b,c,... the piece to get from. Case insensitive.
+	 *                    {@link PlayerData#unusedPieces}
+	 * @param orientation 0/90/180/270
+	 */
+	public void create(char pieceID, AbsDirection orientation) throws InvalidMoveException {
+		requireState(TurnState.CREATING_PIECE);
+
+		PlayerData player = getCurrentPlayerData();
+
+		BoardCell existingCell = board.getCellAt(
+				player.creationRow, player.creationCol
+		);
+		if (existingCell != null) {
+			throw new InvalidMoveException(
+					"There is a cell in your creation square"
+			);
+		}
+
+		board.addCell(
+				player.useUnusedPiece(pieceID), // throws
+				player.creationRow, player.creationCol
+		);
+
+// TODO: orientation
+
+		nextState();
+	}
+
+	public void move(char pieceID, AbsDirection direction) throws InvalidMoveException {
+		requireState(TurnState.MOVING_OR_ROTATING_PIECE);
+
+		PlayerData player = getCurrentPlayerData();
+		PieceCell piece = player.findUsedPiece(pieceID);
+		if (piece == null) {
+			throw new InvalidMoveException(
+					"You do not have a cell on the board under this name"
+			);
+		}
+
+		int[] position = board.positionOf(piece);
+		int[] newPosition = direction.shift(position);
+
+		board.removeCell(position[0], position[1]);
+		board.addCell(piece, newPosition[0], newPosition[1]);
+
+		nextState();
+		//TODO collisions
+	}
+
+	public TurnState getTurnState() {
+		return turnState;
+	}
+
+	public void passTurn() throws InvalidMoveException {
+		nextState();
+	}
+
+	private void nextState() throws InvalidMoveException {
+		if (!turnState.canMoveToNextState(this)) {
+			throw new InvalidMoveException("Can't move to the next state");
+		}
+
+		int current = turnState.ordinal();
+		int next = (current + 1) % TurnState.values().length;
+		turnState = TurnState.values()[next];
+
+		if (next < current) {
+			currentPlayerIndex++;
+			currentPlayerIndex %= playerData.size();
+		}
+	}
+
+	private void requireState(TurnState turnState) throws InvalidMoveException {
+		if (turnState != this.turnState) {
+			throw new InvalidMoveException(
+					"You can't performed this operation in this state"
+			);
+		}
 	}
 
 	private void setupPlayers() {
@@ -67,61 +156,7 @@ public class GameModel implements Textable {
 		}
 	}
 
-	@Override
-	public char[][] toTextualRep() {
-		return board.toTextualRep();
-	}
-
-	/**
-	 * Create a piece on the current player's creation square
-	 *
-	 * @param pieceID     a,b,c,... the piece to get from. Case insensitive.
-	 *                    {@link PlayerData#unusedPieces}
-	 * @param orientation 0/90/180/270
-	 */
-	public void create(char pieceID, int orientation) throws InvalidMoveException {
-		PlayerData player = getCurrentPlayerData();
-
-		if (player.isUppercase) {
-			pieceID = Character.toUpperCase(pieceID);
-		} else {
-			pieceID = Character.toLowerCase(pieceID);
-		}
-
-		BoardCell existingCell = board.getCellAt(
-				player.creationRow, player.creationCol
-		);
-		if (existingCell != null) {
-			throw new InvalidMoveException(
-					"There is a cell in your creation square"
-			);
-		}
-
-		board.addCell(
-				player.useUnusedPiece(pieceID), // throws
-				player.creationRow, player.creationCol
-		);
-
-// TODO: orientation
-	}
-
-	public void move(char pieceID, AbsDirection direction) throws InvalidMoveException {
-		PlayerData player = getCurrentPlayerData();
-		PieceCell piece = player.findUsedPiece(pieceID);
-		if (piece == null) {
-			throw new InvalidMoveException(
-					"You do not have a cell on the board under this name"
-			);
-		}
-
-		int[] position = board.positionOf(piece);
-		int[] newPosition = direction.shift(position);
-
-		board.removeCell(position[0], position[1]);
-		board.addCell(piece, newPosition[0], newPosition[1]);
-	}
-
-	private class PlayerData {
+	public class PlayerData {
 		private final PlayerCell playerCell;
 		private final boolean isUppercase;
 		private final int creationRow;
@@ -199,5 +234,51 @@ public class GameModel implements Textable {
 				return Character.toLowerCase(pieceID);
 			}
 		}
+
+		public String getName() {
+			return playerCell.getName();
+		}
+	}
+
+	/**
+	 * The state of the current players turn. It is the job of the controllers
+	 * to call the correct methods of the model for the current state
+	 *
+	 * This uses a visitor-like pattern to ensure that all controllers
+	 * implement a command for enum value.
+	 */
+	public enum TurnState {
+		CREATING_PIECE {
+			@Override
+			public <CommandT> CommandT getCommand(TurnStateCommandProvider<CommandT> provider) {
+				return provider.getCreatingPiecesCommand();
+			}
+
+			@Override
+			public boolean canMoveToNextState(GameModel gameModel) {
+				return true;
+			}
+		},
+		MOVING_OR_ROTATING_PIECE {
+			@Override
+			public <CommandT> CommandT getCommand(TurnStateCommandProvider<CommandT> provider) {
+				return provider.getMovingOrRotatingPieceCommand();
+			}
+
+			@Override
+			public boolean canMoveToNextState(GameModel gameModel) {
+				return true;
+			}
+		},
+		;
+
+		public abstract <CommandT> CommandT getCommand(TurnStateCommandProvider<CommandT> provider);
+
+		public abstract boolean canMoveToNextState(GameModel gameModel);
+	}
+
+	public interface TurnStateCommandProvider<CommandT> {
+		CommandT getCreatingPiecesCommand();
+		CommandT getMovingOrRotatingPieceCommand();
 	}
 }

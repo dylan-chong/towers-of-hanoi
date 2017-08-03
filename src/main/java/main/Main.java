@@ -35,7 +35,7 @@ public class Main {
 		GameTextController controller = new GameTextController(
 				new Scanner(System.in),
 				System.out,
-				new GameTextController.ProductionExceptionHandler(out),
+				new GameTextController.AppExceptionHandler(out),
 				game
 		);
 

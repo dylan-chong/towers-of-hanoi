@@ -31,7 +31,7 @@ public class GameModelTest {
 		GameModel gameModel = new GameModel(board);
 
 		char cellId = 'B';
-		gameModel.create(cellId, 0);
+		gameModel.create(cellId, AbsDirection.NORTH);
 
 		PieceCell newCell = (PieceCell) board.getCellAt(2, 2);
 		assertEquals(cellId, newCell.getId());

@@ -27,7 +27,7 @@ public interface Textable {
 			for (char c : row) {
 				builder.append(c);
 				if (withGap) {
-					builder.append(' ');
+					builder.append("  ");
 				}
 			}
 

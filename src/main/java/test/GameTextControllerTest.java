@@ -1,6 +1,7 @@
 package test;
 
 import main.AbsDirection;
+import main.Board;
 import main.GameModel;
 import main.GameTextController;
 import org.junit.Test;
@@ -19,12 +20,12 @@ public class GameTextControllerTest {
 	@Test
 	public void runUntilGameEnd_typeCreateCommand_gameCreateMethodCalled()
 			throws Exception {
-		List<String> input = Collections.singletonList("create a 0");
+		List<String> input = Collections.singletonList("create a up");
 
 		new TestRunUntilGameEnd(input) {
 			@Override
 			public void verify(GameModel gameSpy) throws Exception {
-				Mockito.verify(gameSpy).create('a', 0);
+				Mockito.verify(gameSpy).create('a', AbsDirection.NORTH);
 			}
 		}.run();
 	}
@@ -32,7 +33,7 @@ public class GameTextControllerTest {
 	@Test
 	public void runUntilGameEnd_typeMoveCommand_gameMoveMethodCalled()
 			throws Exception {
-		List<String> input = Arrays.asList("create a 0", "move a up");
+		List<String> input = Arrays.asList("create a up", "move a up");
 
 		new TestRunUntilGameEnd(input) {
 			@Override
@@ -52,8 +53,8 @@ public class GameTextControllerTest {
 		}
 
 		public void run() throws Exception {
-			GameModel gameSpy = Mockito.mock(GameModel.class);
-			Mockito.when(gameSpy.toTextualRep()).thenReturn(new char[1][1]);
+			GameModel gameSpy = Mockito.spy(new GameModel(new Board()));
+
 			GameTextController textBoardController = new GameTextController(
 					new Scanner(new StringReader(
 							String.join("\n", inputLines)

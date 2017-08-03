@@ -6,6 +6,12 @@ import java.util.Scanner;
 
 public class GameTextController {
 
+	private static final String PASS_COMMAND = "pass";
+	private static final String MOVE_COMMAND = "move";
+	private static final String CREATE_COMMAND = "create";
+
+	private final CommandProvider commandProvider = new CommandProvider();
+
 	private final Scanner textIn;
 	private final PrintStream textOut;
 	private final ExceptionHandler exceptionHandler;
@@ -29,8 +35,12 @@ public class GameTextController {
 
 		while (textIn.hasNext()) {
 			String line = textIn.nextLine();
+
+			GameModel.TurnState turnState = game.getTurnState();
+			TurnStateCommand command = turnState.getCommand(commandProvider);
+
 			try {
-				parseAndRunLine(line);
+				command.parseAndExecute(line);
 			} catch (ParseFormatException | InvalidMoveException e) {
 				exceptionHandler.handle(e);
 			} catch (RuntimeException | Error e) {
@@ -46,49 +56,14 @@ public class GameTextController {
 	}
 
 	private String getGameString() {
-		return Textable.convertToString(
-				this.game.toTextualRep(), true
-		);
+		return Textable.convertToString(game.toTextualRep(), true) +
+				"\nThe current player is: " + game.getCurrentPlayerData().getName();
 	}
 
-	private void parseAndRunLine(String line)
-			throws ParseFormatException, InvalidMoveException {
-		String[] tokens = Arrays
-				.stream(line.split(" "))
-				.map(String::trim)
-				.filter(token -> token.length() > 0)
-				.toArray(String[]::new);
-
-		String commandName = tokens[0];
-
-		switch (commandName) {
-			case "create": {
-				if (tokens.length != 3) {
-					throw new ParseFormatException("Invalid number of tokens");
-				}
-				char pieceID = tokens[1].charAt(0);
-				int orientation = Integer.parseInt(tokens[2]);
-				game.create(pieceID, orientation);
-				break;
-			}
-			case "move": {
-				if (tokens.length != 3) {
-					throw new ParseFormatException("Invalid number of tokens");
-				}
-				char pieceID = tokens[1].charAt(0);
-				AbsDirection orientation = AbsDirection.valueOfAlternateName(tokens[2]);
-				game.move(pieceID, orientation);
-				break;
-			}
-			default:
-				throw new ParseFormatException("Invalid command name");
-		}
-	}
-
-	public static class ProductionExceptionHandler implements ExceptionHandler {
+	public static class AppExceptionHandler implements ExceptionHandler {
 		private final PrintStream out;
 
-		public ProductionExceptionHandler(PrintStream out) {
+		public AppExceptionHandler(PrintStream out) {
 			this.out = out;
 		}
 
@@ -108,5 +83,84 @@ public class GameTextController {
 		}
 	}
 
+	private static abstract class TurnStateCommand {
+		/**
+		 * @param line The text the user entered
+		 */
+		public abstract void parseAndExecute(String line)
+				throws ParseFormatException, InvalidMoveException;
+
+		protected String[] requireTokens(int minTokens, int maxTokens, String line)
+				throws ParseFormatException {
+			String[] tokens = Arrays
+					.stream(line.split(" "))
+					.map(String::trim)
+					.filter(token -> token.length() > 0)
+					.toArray(String[]::new);
+
+			if (tokens.length < minTokens || tokens.length > maxTokens) {
+				throw new ParseFormatException("Invalid number of tokens");
+			}
+
+			return tokens;
+		}
+	}
+
+	private class CommandProvider
+			implements GameModel.TurnStateCommandProvider<TurnStateCommand> {
+		@Override
+		public TurnStateCommand getCreatingPiecesCommand() {
+			return new TurnStateCommand() {
+				@Override
+				public void parseAndExecute(String line)
+						throws ParseFormatException, InvalidMoveException {
+					String[] tokens = requireTokens(1, 3, line);
+					String command = tokens[0];
+
+					if (command.equals(PASS_COMMAND)) {
+						game.passTurn();
+						return;
+					}
+
+                    if (!command.equals(CREATE_COMMAND)) {
+						throw new ParseFormatException("Invalid command name");
+					}
+
+					char pieceID = tokens[1].charAt(0);
+
+					AbsDirection orientation = AbsDirection.valueOfAlternateName(tokens[2]);
+					game.create(pieceID, orientation);
+				}
+			};
+		}
+
+		@Override
+		public TurnStateCommand getMovingOrRotatingPieceCommand() {
+			return new TurnStateCommand() {
+				@Override
+				public void parseAndExecute(String line)
+						throws ParseFormatException, InvalidMoveException {
+					String[] tokens = requireTokens(1, 3, line);
+					String command = tokens[0];
+
+					if (command.equals(PASS_COMMAND)) {
+						game.passTurn();
+						return;
+					}
+
+                    if (!command.equals(MOVE_COMMAND)) {
+						throw new ParseFormatException("Invalid command name");
+					}
+
+					// TODO: 3/08/17 rotate
+
+					char pieceID = tokens[1].charAt(0);
+
+					AbsDirection orientation = AbsDirection.valueOfAlternateName(tokens[2]);
+					game.move(pieceID, orientation);
+				}
+			};
+		}
+	}
 }
 
