@@ -6,7 +6,16 @@ import java.util.Arrays;
  * An absolute direction - a direction that is not relative to anything
  * (as opposed to a relative direction)
  */
-public enum AbsDirection {
+public enum Direction {
+	NORTH("up") {
+		@Override
+		public int[] shift(int[] rowCol) {
+			return new int[]{
+					rowCol[0] - 1,
+					rowCol[1],
+			};
+		}
+	},
 	EAST("right") {
 		@Override
 		public int[] shift(int[] rowCol) {
@@ -34,18 +43,9 @@ public enum AbsDirection {
 			};
 		}
 	},
-	NORTH("up") {
-		@Override
-		public int[] shift(int[] rowCol) {
-			return new int[]{
-					rowCol[0] - 1,
-					rowCol[1],
-			};
-		}
-	},
 	;
 
-	public static AbsDirection valueOfAlternateName(String alternateName)
+	public static Direction valueOfAlternateName(String alternateName)
 			throws InvalidMoveException {
 		return Arrays.stream(values())
 				.filter(direction -> direction.alternateName.equals(alternateName))
@@ -55,14 +55,31 @@ public enum AbsDirection {
 				));
 	}
 
+	public static int clockwiseRotationsFromDegrees(int degrees) {
+		if (!isValidDegrees(degrees)) {
+			throw new IllegalArgumentException("Invalid degrees: " + degrees);
+		}
+		return degrees / 90;
+	}
+
+	public static boolean isValidDegrees(int degrees) {
+		return Arrays.stream(values())
+				.map(Direction::degrees)
+				.anyMatch(dirDegrees -> dirDegrees == degrees);
+	}
+
 	private final String alternateName;
 
-	AbsDirection(String alternateName) {
+	Direction(String alternateName) {
 		this.alternateName = alternateName;
 	}
 
 	public String getAlternateName() {
 		return alternateName;
+	}
+
+	public int degrees() {
+		return ordinal() * 90;
 	}
 
 	public abstract int[] shift(int[] rowCol);

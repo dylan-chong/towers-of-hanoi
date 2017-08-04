@@ -1,27 +1,30 @@
 package main.gamemodel.cells;
 
-import main.gamemodel.AbsDirection;
+import main.gamemodel.Direction;
 import main.gamemodel.Textable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Represents a cell with sword/shield parts
  */
 public class PieceCell extends BoardCell {
 	/**
-	 * These are relative to the piece's direction
-	 *
-	 * TODO this will break after adding rotation
+	 * These assume the piece is facing north
 	 */
 	private final SideCombination sides;
-
 	private final char id;
 
+	private Direction direction;
+
 	public PieceCell(char id, SideCombination sides) {
+		this(id, sides, Direction.NORTH);
+	}
+
+	public PieceCell(char id, SideCombination sides, Direction direction) {
 		this.id = id;
 		this.sides = sides;
+		this.direction = direction;
 	}
 
 	@Override
@@ -29,16 +32,12 @@ public class PieceCell extends BoardCell {
 		char[][] representation = blankCellTextualRep();
 		representation[1][1] = id; // middle
 
-		representation[1][0] = sides.left.toTextualRep(AbsDirection.WEST);
-		representation[0][1] = sides.up.toTextualRep(AbsDirection.NORTH);
-		representation[1][2] = sides.right.toTextualRep(AbsDirection.EAST);
-		representation[2][1] = sides.down.toTextualRep(AbsDirection.SOUTH);
+		representation[0][1] = getSide(Direction.NORTH).toTextualRep(Direction.NORTH);
+		representation[1][2] = getSide(Direction.EAST).toTextualRep(Direction.EAST);
+		representation[2][1] = getSide(Direction.SOUTH).toTextualRep(Direction.SOUTH);
+		representation[1][0] = getSide(Direction.WEST).toTextualRep(Direction.WEST);
 
 		return representation;
-	}
-
-	public SideCombination getOriginalSide() {
-		return sides;
 	}
 
 	public char getId() {
@@ -46,9 +45,33 @@ public class PieceCell extends BoardCell {
 	}
 
 	/**
+	 * @param newAbsoluteDirection This will effectively become the north of
+	 *                             this.sides
+	 */
+	public void setDirection(Direction newAbsoluteDirection) {
+		this.direction = newAbsoluteDirection;
+	}
+
+	public void rotateClockwise() {
+		int nextOrdinal = (direction.ordinal() + 1) % Direction.values().length;
+		direction = Direction.values()[nextOrdinal];
+	}
+
+	private SideType getSide(Direction absoluteDirection) {
+		int relativeSideOrdinal = (absoluteDirection.ordinal()
+				- this.direction.ordinal() + Direction.values().length)
+						% Direction.values().length;
+
+		// Direction that is relative to this.sides' north
+		Direction relativeDirection = Direction.values()[relativeSideOrdinal];
+
+		return sides.getSide(relativeDirection);
+	}
+
+	/**
 	 * The different amount of combinations of sword and shield
 	 *
-	 * Naming order: left, up, down, right.
+	 * Naming order: west, north, south, east
 	 * {@link SideType} in the name of each value for conciseness.
 	 */
 	public enum SideCombination {
@@ -87,7 +110,7 @@ public class PieceCell extends BoardCell {
 		SHIELD_EMPTY_SHIELD_SHIELD,
 		;
 
-		public final SideType left, up, down, right;
+		private final Map<Direction, SideType> relativeDirectionToSideType;
 
 		SideCombination() {
 			String name = this.name().toUpperCase();
@@ -101,10 +124,21 @@ public class PieceCell extends BoardCell {
 				throw new Error("Invalid SideCombination name");
 			}
 
-			this.left = sideTypes.get(0);
-			this.up = sideTypes.get(1);
-			this.down = sideTypes.get(2);
-			this.right = sideTypes.get(3);
+			SideType westSide = sideTypes.get(0);
+			SideType northSide = sideTypes.get(1);
+			SideType southSide = sideTypes.get(2);
+			SideType eastSide = sideTypes.get(3);
+
+			Map<Direction, SideType> sidesMap = new HashMap<>();
+			sidesMap.put(Direction.NORTH, northSide);
+			sidesMap.put(Direction.EAST, eastSide);
+			sidesMap.put(Direction.SOUTH, southSide);
+			sidesMap.put(Direction.WEST, westSide);
+			relativeDirectionToSideType = Collections.unmodifiableMap(sidesMap);
+		}
+
+		public SideType getSide(Direction relativeDirection) {
+			return relativeDirectionToSideType.get(relativeDirection);
 		}
 	}
 
@@ -114,15 +148,15 @@ public class PieceCell extends BoardCell {
 	public enum SideType {
 		EMPTY {
 			@Override
-			public char toTextualRep(AbsDirection direction) {
+			public char toTextualRep(Direction absoluteDirection) {
 				return Textable.BLANK_CELL_TEXT_REP_CHAR;
 			}
 		},
 		SWORD {
 			@Override
-			public char toTextualRep(AbsDirection direction) {
-				if (direction == AbsDirection.NORTH ||
-						direction == AbsDirection.SOUTH) {
+			public char toTextualRep(Direction absoluteDirection) {
+				if (absoluteDirection == Direction.NORTH ||
+						absoluteDirection == Direction.SOUTH) {
 					return '|';
 				}
 				return '-';
@@ -130,12 +164,12 @@ public class PieceCell extends BoardCell {
 		},
 		SHIELD {
 			@Override
-			public char toTextualRep(AbsDirection direction) {
+			public char toTextualRep(Direction absoluteDirection) {
 				return '#';
 			}
 		},
 		;
 
-		public abstract char toTextualRep(AbsDirection direction);
+		public abstract char toTextualRep(Direction absoluteDirection);
 	}
 }

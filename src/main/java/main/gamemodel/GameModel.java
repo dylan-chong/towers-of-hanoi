@@ -59,11 +59,13 @@ public class GameModel implements Textable {
 	/**
 	 * Create a piece on the current player's creation square
 	 *
-	 * @param pieceID     a,b,c,... the piece to get from. Case insensitive.
+	 * @param pieceId     a,b,c,... the piece to get from. Case insensitive.
 	 *                    {@link PlayerData#unusedPieces}
-	 * @param orientation 0/90/180/270
+	 * @param numberOfClockwiseRotations Used to sit the original orientation
+	 *                                   of the piece
 	 */
-	public void create(char pieceID, AbsDirection orientation) throws InvalidMoveException {
+	public void create(char pieceId, int numberOfClockwiseRotations)
+			throws InvalidMoveException {
 		requireState(TurnState.CREATING_PIECE);
 
 		PlayerData player = getCurrentPlayerData();
@@ -77,21 +79,25 @@ public class GameModel implements Textable {
 			);
 		}
 
+		PieceCell newPiece = player.useUnusedPiece(pieceId);
 		board.addCell(
-				player.useUnusedPiece(pieceID), // throws
+				newPiece, // throws
 				player.getCreationRow(), player.getCreationCol()
 		);
 
-// TODO: orientation
+		for (int i = 0; i < numberOfClockwiseRotations; i++) {
+			newPiece.rotateClockwise();
+		}
 
 		nextState();
 	}
 
-	public void move(char pieceID, AbsDirection direction) throws InvalidMoveException {
+	public void move(char pieceId, Direction direction)
+			throws InvalidMoveException {
 		requireState(TurnState.MOVING_OR_ROTATING_PIECE);
 
 		PlayerData player = getCurrentPlayerData();
-		PieceCell piece = player.findUsedPiece(pieceID);
+		PieceCell piece = player.findUsedPiece(pieceId);
 		if (piece == null) {
 			throw new InvalidMoveException(
 					"You do not have a cell on the board under this name"
@@ -105,7 +111,29 @@ public class GameModel implements Textable {
 		board.addCell(piece, newPosition[0], newPosition[1]);
 
 		nextState();
-		//TODO collisions
+	}
+
+	public void rotate(char pieceId, int clockwiseRotations)
+			throws InvalidMoveException {
+		if (clockwiseRotations < 1 || clockwiseRotations > 3) {
+			throw new InvalidMoveException("Invalid number of rotations");
+		}
+
+		requireState(TurnState.MOVING_OR_ROTATING_PIECE);
+
+		PlayerData player = getCurrentPlayerData();
+		PieceCell piece = player.findUsedPiece(pieceId);
+		if (piece == null) {
+			throw new InvalidMoveException(
+					"You do not have a cell on the board under this name"
+			);
+		}
+
+		for (int i = 0; i < clockwiseRotations; i++) {
+			piece.rotateClockwise();
+		}
+
+		nextState();
 	}
 
 	public TurnState getTurnState() {
@@ -155,5 +183,4 @@ public class GameModel implements Textable {
 			throw new Error(e);
 		}
 	}
-
 }

@@ -1,5 +1,6 @@
 package test;
 
+import main.gamemodel.Direction;
 import main.gamemodel.cells.PieceCell;
 import main.gamemodel.cells.PlayerCell;
 import org.junit.Test;
@@ -63,6 +64,49 @@ public class BoardCellTest {
 				"+++".toCharArray()
 		};
 		assertRepresentationEquals(expected, representation);
+	}
+
+	@Test
+	public void Piece_setRotation_east_rotatedProperlyWhenConvertedToText() {
+		testPieceSetRotation(Direction.EAST, new char[][]{
+				" | ".toCharArray(),
+				"#a-".toCharArray(),
+				" # ".toCharArray()
+		});
+	}
+
+	@Test
+	public void Piece_setRotation_west_rotatedProperlyWhenConvertedToText() {
+		testPieceSetRotation(Direction.WEST, new char[][]{
+				" # ".toCharArray(),
+				"-a#".toCharArray(),
+				" | ".toCharArray()
+		});
+	}
+
+	private void testPieceSetRotation(Direction newDirection,
+									  char[][] expectedTextRep) {
+		PieceCell piece = new PieceCell(
+				'a', PieceCell.SideCombination.SWORD_SWORD_SHIELD_SHIELD
+		);
+		piece.setDirection(newDirection);
+		char[][] representation = piece.toTextualRep();
+		assertRepresentationEquals(expectedTextRep, representation);
+	}
+
+	@Test
+	public void Piece_rotateClockwise_once_rotatedProperlyWhenConvertedToText() {
+		PieceCell piece = new PieceCell(
+				'a', PieceCell.SideCombination.SWORD_SWORD_SHIELD_SHIELD
+		);
+		piece.rotateClockwise();
+		char[][] representation = piece.toTextualRep();
+		char[][] expectedTextRep = {
+				" | ".toCharArray(),
+				"#a-".toCharArray(),
+				" # ".toCharArray()
+		};
+		assertRepresentationEquals(expectedTextRep, representation);
 	}
 
 }
