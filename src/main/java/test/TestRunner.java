@@ -3,8 +3,6 @@ package test;
 import org.junit.internal.TextListener;
 import org.junit.runner.JUnitCore;
 
-import java.util.Arrays;
-
 /**
  * The test runner
  */
@@ -16,12 +14,20 @@ public class TestRunner {
 	private static final Class<?>[] TEST_CLASSES = new Class[] {
 			BoardCellTest.class,
 			BoardTest.class,
+			GameModelTest.class,
 			GameTextControllerTest.class,
 	};
 
 	public static void run() {
+		System.out.println("Running tests in: ");
+		for (Class<?> testClass : TEST_CLASSES) {
+			System.out.println("- " + testClass.getSimpleName());
+		}
+
+		System.out.println();
+
 		JUnitCore junit = new JUnitCore();
 		junit.addListener(new TextListener(System.out));
-		Arrays.stream(TEST_CLASSES).forEach(junit::run);
+		junit.run(TEST_CLASSES);
 	}
 }
