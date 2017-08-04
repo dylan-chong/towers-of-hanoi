@@ -4,7 +4,9 @@ import main.gamemodel.cells.BoardCell;
 import main.gamemodel.cells.PieceCell;
 import main.gamemodel.cells.PlayerCell;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.List;
 
 public class GameModel implements Textable {
@@ -23,6 +25,9 @@ public class GameModel implements Textable {
 	 */
 	private int currentPlayerIndex;
 	private TurnState turnState = TurnState.CREATING_PIECE;
+	// TODO AFTER limit turns
+
+	private Deque<TurnCommand> undoStack = new ArrayDeque<>();
 
 	public GameModel(Board emptyBoard) {
 		assert emptyBoard.isEmpty();
@@ -47,6 +52,14 @@ public class GameModel implements Textable {
 		setupPlayers();
 	}
 
+	public void undo() throws InvalidMoveException {
+		if (undoStack.isEmpty()) {
+			throw new IllegalStateException("Nothing to undo");
+		}
+
+		undoStack.pop().undoWork();
+	}
+
 	public PlayerData getCurrentPlayerData() {
 		return playerData.get(currentPlayerIndex);
 	}
@@ -69,9 +82,11 @@ public class GameModel implements Textable {
 		requireState(TurnState.CREATING_PIECE);
 
 		PlayerData player = getCurrentPlayerData();
+		final int creationRow = player.getCreationRow();
+		final int creationCol = player.getCreationCol();
 
 		BoardCell existingCell = board.getCellAt(
-				player.getCreationRow(), player.getCreationCol()
+				creationRow, creationCol
 		);
 		if (existingCell != null) {
 			throw new InvalidMoveException(
@@ -80,16 +95,28 @@ public class GameModel implements Textable {
 		}
 
 		PieceCell newPiece = player.useUnusedPiece(pieceId);
-		board.addCell(
-				newPiece, // throws
-				player.getCreationRow(), player.getCreationCol()
-		);
 
-		for (int i = 0; i < numberOfClockwiseRotations; i++) {
-			newPiece.rotateClockwise();
-		}
+		doCommandWork(new TurnCommand() {
+			@Override
+			public void doWork() throws InvalidMoveException {
+				board.addCell(newPiece, creationRow, creationCol);
 
-		nextState();
+				for (int i = 0; i < numberOfClockwiseRotations; i++) {
+					newPiece.rotateClockwise();
+				}
+
+				turnState = TurnState.MOVING_OR_ROTATING_PIECE;
+			}
+
+			@Override
+			public void undoWork() throws InvalidMoveException {
+				board.removeCell(creationRow, creationCol);
+				player.unusedUsedPiece(newPiece);
+				newPiece.setDirection(Direction.NORTH);
+
+				turnState = TurnState.CREATING_PIECE;
+			}
+		});
 	}
 
 	public void move(char pieceId, Direction direction)
@@ -107,10 +134,23 @@ public class GameModel implements Textable {
 		int[] position = board.positionOf(piece);
 		int[] newPosition = direction.shift(position);
 
-		board.removeCell(position[0], position[1]);
-		board.addCell(piece, newPosition[0], newPosition[1]);
+		if (board.getCellAt(newPosition[0], newPosition[1]) != null) {
+			throw new InvalidMoveException("You can't move onto a cell");
+		}
 
-		nextState();
+		doCommandWork(new TurnCommand() {
+			@Override
+			public void doWork() throws InvalidMoveException {
+				board.removeCell(position[0], position[1]);
+				board.addCell(piece, newPosition[0], newPosition[1]);
+			}
+
+			@Override
+			public void undoWork() throws InvalidMoveException {
+				board.removeCell(newPosition[0], newPosition[1]);
+				board.addCell(piece, position[0], position[1]);
+			}
+		});
 	}
 
 	public void rotate(char pieceId, int clockwiseRotations)
@@ -129,34 +169,64 @@ public class GameModel implements Textable {
 			);
 		}
 
-		for (int i = 0; i < clockwiseRotations; i++) {
-			piece.rotateClockwise();
-		}
+		doCommandWork(new TurnCommand() {
+			@Override
+			public void doWork() throws InvalidMoveException {
+				for (int i = 0; i < clockwiseRotations; i++) {
+					piece.rotateClockwise();
+				}
+			}
 
-		nextState();
+			@Override
+			public void undoWork() throws InvalidMoveException {
+				for (int i = 0; i < 4 - clockwiseRotations; i++) {
+					piece.rotateClockwise();
+				}
+			}
+		});
 	}
 
 	public TurnState getTurnState() {
 		return turnState;
 	}
 
-	public void passTurn() throws InvalidMoveException {
-		nextState();
+	public void passTurnState() throws InvalidMoveException {
+		// TODO CommandProvider
+		doCommandWork(new TurnCommand() {
+			@Override
+			public void doWork() throws InvalidMoveException {
+				switch (turnState) {
+					case CREATING_PIECE:
+						turnState = TurnState.MOVING_OR_ROTATING_PIECE;
+						break;
+					case MOVING_OR_ROTATING_PIECE:
+						turnState = TurnState.CREATING_PIECE;
+						currentPlayerIndex++;
+						currentPlayerIndex %= playerData.size();
+						break;
+				}
+			}
+
+			@Override
+			public void undoWork() throws InvalidMoveException {
+				switch (turnState) {
+					case CREATING_PIECE:
+						turnState = TurnState.MOVING_OR_ROTATING_PIECE;
+						currentPlayerIndex--;
+						currentPlayerIndex += playerData.size();
+						currentPlayerIndex %= playerData.size();
+						break;
+					case MOVING_OR_ROTATING_PIECE:
+						turnState = TurnState.CREATING_PIECE;
+						break;
+				}
+			}
+		});
 	}
 
-	private void nextState() throws InvalidMoveException {
-		if (!turnState.canMoveToNextState(this)) {
-			throw new InvalidMoveException("Can't move to the next state");
-		}
-
-		int current = turnState.ordinal();
-		int next = (current + 1) % TurnState.values().length;
-		turnState = TurnState.values()[next];
-
-		if (next < current) {
-			currentPlayerIndex++;
-			currentPlayerIndex %= playerData.size();
-		}
+	private void doCommandWork(TurnCommand command) throws InvalidMoveException {
+		command.doWork();
+		undoStack.push(command);
 	}
 
 	private void requireState(TurnState turnState) throws InvalidMoveException {
@@ -165,6 +235,13 @@ public class GameModel implements Textable {
 					"You can't performed this operation in this state"
 			);
 		}
+	}
+
+	/**
+	 * Just for readability and consistency
+	 */
+	private void undoToPreviousState(TurnState turnState) {
+		this.turnState = turnState;
 	}
 
 	private void setupPlayers() {
@@ -182,5 +259,10 @@ public class GameModel implements Textable {
 		} catch (InvalidMoveException e) {
 			throw new Error(e);
 		}
+	}
+
+	private interface TurnCommand {
+		void doWork() throws InvalidMoveException;
+		void undoWork() throws InvalidMoveException;
 	}
 }

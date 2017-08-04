@@ -59,7 +59,7 @@ public class GameTextControllerTest {
 		new TestRunUntilGameEnd(input) {
 			@Override
 			public void runVerifications(GameModel gameSpy) throws Exception {
-				verify(gameSpy, times(2)).passTurn();
+				verify(gameSpy, times(2)).passTurnState();
 				verify(gameSpy, never()).create(anyChar(), anyInt());
 			}
 		}.run();

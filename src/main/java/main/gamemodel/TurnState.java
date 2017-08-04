@@ -13,29 +13,17 @@ public enum TurnState {
 		public <CommandT> CommandT getCommand(CommandProvider<CommandT> provider) {
 			return provider.getCreatingPiecesCommand();
 		}
-
-		@Override
-		public boolean canMoveToNextState(GameModel gameModel) {
-			return true;
-		}
 	},
 	MOVING_OR_ROTATING_PIECE {
 		@Override
 		public <CommandT> CommandT getCommand(CommandProvider<CommandT> provider) {
 			return provider.getMovingOrRotatingPieceCommand();
 		}
-
-		@Override
-		public boolean canMoveToNextState(GameModel gameModel) {
-			return true;
-		}
 	},
 	;
 
 	public abstract <CommandT> CommandT getCommand(CommandProvider<CommandT> provider);
 
-	public abstract boolean canMoveToNextState(GameModel gameModel);
-	
 	public interface CommandProvider<CommandT> {
 		CommandT getCreatingPiecesCommand();
 		CommandT getMovingOrRotatingPieceCommand();

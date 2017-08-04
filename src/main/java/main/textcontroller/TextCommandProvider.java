@@ -29,7 +29,7 @@ public class TextCommandProvider
 				String command = tokens[0];
 
 				if (command.equals(PASS_COMMAND)) {
-					game.passTurn();
+					game.passTurnState();
 					return;
 				}
 
@@ -70,7 +70,7 @@ public class TextCommandProvider
 
 				if (mustPass()) {
 					if (command.equals(PASS_COMMAND)) {
-						game.passTurn();
+						game.passTurnState();
 						return;
 					}
 

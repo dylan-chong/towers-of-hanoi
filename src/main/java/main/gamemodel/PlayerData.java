@@ -92,6 +92,11 @@ public class PlayerData {
 		return newCell;
 	}
 
+	public void unusedUsedPiece(PieceCell piece) {
+		usedPieces.remove(piece.getId());
+		unusedPieces.put(piece.getId(), piece);
+	}
+
 	/**
 	 * Finds a piece that is on the board
 	 * May return null
