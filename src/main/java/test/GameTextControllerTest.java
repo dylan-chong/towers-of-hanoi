@@ -4,7 +4,7 @@ import main.textcontroller.GameTextController;
 import main.gamemodel.Board;
 import main.gamemodel.Direction;
 import main.gamemodel.GameModel;
-import main.textcontroller.TextCommandProvider;
+import main.textcontroller.TextCommandStateMapper;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -52,8 +52,8 @@ public class GameTextControllerTest {
 	public void runUntilGameEnd_typePassCommand_gamePassMethodCalled()
 			throws Exception {
 		List<String> input = Arrays.asList(
-				TextCommandProvider.PASS_COMMAND,
-				TextCommandProvider.PASS_COMMAND
+				TextCommandStateMapper.PASS_COMMAND,
+				TextCommandStateMapper.PASS_COMMAND
 		);
 
 		new TestRunUntilGameEnd(input) {
@@ -99,7 +99,7 @@ public class GameTextControllerTest {
 					throwable -> {
 						throw new Error(throwable);
 					},
-					new TextCommandProvider(gameSpy),
+					new TextCommandStateMapper(gameSpy),
 					gameSpy
 			);
 

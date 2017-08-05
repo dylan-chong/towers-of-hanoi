@@ -5,27 +5,27 @@ package main.gamemodel;
  * to call the correct methods of the model for the current state
  *
  * This uses a visitor-like pattern to ensure that all controllers
- * implement a command for enum value.
+ * implement a command for enum value. (See {@link Mapper}).
  */
 public enum TurnState {
 	CREATING_PIECE {
 		@Override
-		public <CommandT> CommandT getCommand(CommandProvider<CommandT> provider) {
-			return provider.getCreatingPiecesCommand();
+		public <T> T getFromMap(Mapper<T> mapper) {
+			return mapper.getCreatingPiecesCommand();
 		}
 	},
 	MOVING_OR_ROTATING_PIECE {
 		@Override
-		public <CommandT> CommandT getCommand(CommandProvider<CommandT> provider) {
-			return provider.getMovingOrRotatingPieceCommand();
+		public <T> T getFromMap(Mapper<T> mapper) {
+			return mapper.getMovingOrRotatingPieceCommand();
 		}
 	},
 	;
 
-	public abstract <CommandT> CommandT getCommand(CommandProvider<CommandT> provider);
+	public abstract <T> T getFromMap(Mapper<T> mapper);
 
-	public interface CommandProvider<CommandT> {
-		CommandT getCreatingPiecesCommand();
-		CommandT getMovingOrRotatingPieceCommand();
+	public interface Mapper<T> {
+		T getCreatingPiecesCommand();
+		T getMovingOrRotatingPieceCommand();
 	}
 }

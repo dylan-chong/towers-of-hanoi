@@ -15,13 +15,13 @@ public class GameTextController {
 	private final Scanner textIn;
 	private final PrintStream textOut;
 	private final ExceptionHandler exceptionHandler;
-	private final TextCommandProvider commandProvider;
+	private final TextCommandStateMapper commandProvider;
 	private final GameModel game;
 
 	public GameTextController(Scanner textIn,
 							  PrintStream textOut,
 							  ExceptionHandler exceptionHandler,
-							  TextCommandProvider commandProvider,
+							  TextCommandStateMapper commandProvider,
 							  GameModel game) {
 		this.textIn = textIn;
 		this.textOut = textOut;
@@ -40,7 +40,7 @@ public class GameTextController {
 			String line = textIn.nextLine();
 
 			TurnState turnState = game.getTurnState();
-			TextCommand command = turnState.getCommand(commandProvider);
+			TextCommandState command = turnState.getFromMap(commandProvider);
 
 			try {
 				command.parseAndExecute(line);
@@ -64,7 +64,7 @@ public class GameTextController {
 		String playerName = game.getCurrentPlayerData().getName();
 
 		String instructions = game.getTurnState()
-				.getCommand(commandProvider)
+				.getFromMap(commandProvider)
 				.getInstructions();
 
 		return gameRep +

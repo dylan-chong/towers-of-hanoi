@@ -153,6 +153,7 @@ public class GameModelTest {
 			}
 		}.run();
 	}
+
 	private abstract class UndoTest {
 		public void run() throws Exception {
 			Board board = new Board(6, 6);

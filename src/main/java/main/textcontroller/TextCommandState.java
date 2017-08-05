@@ -9,11 +9,10 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public abstract class TextCommand {
+public abstract class TextCommandState {
 
-	protected static String[] requireTokens(int minTokens,
-											int maxTokens,
-											String line)
+	protected static String[] requireTokens(String line,
+											Integer... validNumTokens)
 			throws ParseFormatException {
 
 		String[] tokens = Arrays
@@ -22,7 +21,7 @@ public abstract class TextCommand {
 				.filter(token -> token.length() > 0)
 				.toArray(String[]::new);
 
-		if (tokens.length < minTokens || tokens.length > maxTokens) {
+		if (!Arrays.asList(validNumTokens).contains(tokens.length)) {
 			throw new ParseFormatException("Invalid number of tokens");
 		}
 

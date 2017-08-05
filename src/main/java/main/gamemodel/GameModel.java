@@ -4,10 +4,8 @@ import main.gamemodel.cells.BoardCell;
 import main.gamemodel.cells.PieceCell;
 import main.gamemodel.cells.PlayerCell;
 
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class GameModel implements Textable {
 
@@ -25,7 +23,7 @@ public class GameModel implements Textable {
 	 */
 	private int currentPlayerIndex;
 	private TurnState turnState = TurnState.CREATING_PIECE;
-	// TODO AFTER limit turns
+	private Collection<PieceCell> piecesPlayedThisTurn;
 
 	private Deque<TurnCommand> undoStack = new ArrayDeque<>();
 
@@ -105,7 +103,8 @@ public class GameModel implements Textable {
 					newPiece.rotateClockwise();
 				}
 
-				turnState = TurnState.MOVING_OR_ROTATING_PIECE;
+				// Don't add this to the undoStack
+				new NextTurnCommand().doWork();
 			}
 
 			@Override
@@ -114,7 +113,7 @@ public class GameModel implements Textable {
 				player.unusedUsedPiece(newPiece);
 				newPiece.setDirection(Direction.NORTH);
 
-				turnState = TurnState.CREATING_PIECE;
+				new NextTurnCommand().undoWork();
 			}
 		});
 	}
@@ -131,6 +130,12 @@ public class GameModel implements Textable {
 			);
 		}
 
+		if (piecesPlayedThisTurn.contains(piece)) {
+			throw new InvalidMoveException(
+					"Piece already moved"
+			);
+		}
+
 		int[] position = board.positionOf(piece);
 		int[] newPosition = direction.shift(position);
 
@@ -143,12 +148,14 @@ public class GameModel implements Textable {
 			public void doWork() throws InvalidMoveException {
 				board.removeCell(position[0], position[1]);
 				board.addCell(piece, newPosition[0], newPosition[1]);
+				piecesPlayedThisTurn.add(piece);
 			}
 
 			@Override
 			public void undoWork() throws InvalidMoveException {
 				board.removeCell(newPosition[0], newPosition[1]);
 				board.addCell(piece, position[0], position[1]);
+				piecesPlayedThisTurn.remove(piece);
 			}
 		});
 	}
@@ -169,12 +176,19 @@ public class GameModel implements Textable {
 			);
 		}
 
+		if (piecesPlayedThisTurn.contains(piece)) {
+			throw new InvalidMoveException(
+					"Piece already moved"
+			);
+		}
+
 		doCommandWork(new TurnCommand() {
 			@Override
 			public void doWork() throws InvalidMoveException {
 				for (int i = 0; i < clockwiseRotations; i++) {
 					piece.rotateClockwise();
 				}
+				piecesPlayedThisTurn.add(piece);
 			}
 
 			@Override
@@ -182,8 +196,24 @@ public class GameModel implements Textable {
 				for (int i = 0; i < 4 - clockwiseRotations; i++) {
 					piece.rotateClockwise();
 				}
+				piecesPlayedThisTurn.remove(piece);
 			}
 		});
+	}
+
+	public Collection<Character> getPlayablePieceIds() {
+		requireState(TurnState.MOVING_OR_ROTATING_PIECE);
+
+		PlayerData player = getCurrentPlayerData();
+		List<PieceCell> pieces = player.getUsedPieceIds()
+				.stream()
+				.map(player::findUsedPiece)
+				.collect(Collectors.toList());
+
+		pieces.removeAll(piecesPlayedThisTurn);
+		return pieces.stream()
+				.map(PieceCell::getId)
+				.collect(Collectors.toList());
 	}
 
 	public TurnState getTurnState() {
@@ -191,37 +221,8 @@ public class GameModel implements Textable {
 	}
 
 	public void passTurnState() throws InvalidMoveException {
-		// TODO CommandProvider
-		doCommandWork(new TurnCommand() {
-			@Override
-			public void doWork() throws InvalidMoveException {
-				switch (turnState) {
-					case CREATING_PIECE:
-						turnState = TurnState.MOVING_OR_ROTATING_PIECE;
-						break;
-					case MOVING_OR_ROTATING_PIECE:
-						turnState = TurnState.CREATING_PIECE;
-						currentPlayerIndex++;
-						currentPlayerIndex %= playerData.size();
-						break;
-				}
-			}
-
-			@Override
-			public void undoWork() throws InvalidMoveException {
-				switch (turnState) {
-					case CREATING_PIECE:
-						turnState = TurnState.MOVING_OR_ROTATING_PIECE;
-						currentPlayerIndex--;
-						currentPlayerIndex += playerData.size();
-						currentPlayerIndex %= playerData.size();
-						break;
-					case MOVING_OR_ROTATING_PIECE:
-						turnState = TurnState.CREATING_PIECE;
-						break;
-				}
-			}
-		});
+		// TODO Mapper
+		doCommandWork(new NextTurnCommand());
 	}
 
 	private void doCommandWork(TurnCommand command) throws InvalidMoveException {
@@ -229,19 +230,12 @@ public class GameModel implements Textable {
 		undoStack.push(command);
 	}
 
-	private void requireState(TurnState turnState) throws InvalidMoveException {
+	private void requireState(TurnState turnState) {
 		if (turnState != this.turnState) {
-			throw new InvalidMoveException(
+			throw new IllegalStateException(
 					"You can't performed this operation in this state"
 			);
 		}
-	}
-
-	/**
-	 * Just for readability and consistency
-	 */
-	private void undoToPreviousState(TurnState turnState) {
-		this.turnState = turnState;
 	}
 
 	private void setupPlayers() {
@@ -264,5 +258,44 @@ public class GameModel implements Textable {
 	private interface TurnCommand {
 		void doWork() throws InvalidMoveException;
 		void undoWork() throws InvalidMoveException;
+	}
+
+	private class NextTurnCommand implements TurnCommand {
+		private Collection<PieceCell> piecesPlayed;
+
+		@Override
+		public void doWork() throws InvalidMoveException {
+			switch (turnState) {
+				case CREATING_PIECE:
+					piecesPlayedThisTurn = new ArrayList<>();
+					turnState = TurnState.MOVING_OR_ROTATING_PIECE;
+					break;
+				case MOVING_OR_ROTATING_PIECE:
+					piecesPlayed = piecesPlayedThisTurn;
+					piecesPlayedThisTurn = null;
+					turnState = TurnState.CREATING_PIECE;
+					currentPlayerIndex++;
+					currentPlayerIndex %= playerData.size();
+					break;
+			}
+		}
+
+		@Override
+		public void undoWork() throws InvalidMoveException {
+			switch (turnState) {
+				case CREATING_PIECE:
+					turnState = TurnState.MOVING_OR_ROTATING_PIECE;
+					piecesPlayedThisTurn = piecesPlayed;
+					piecesPlayed = null;
+					currentPlayerIndex--;
+					currentPlayerIndex += playerData.size();
+					currentPlayerIndex %= playerData.size();
+					break;
+				case MOVING_OR_ROTATING_PIECE:
+					turnState = TurnState.CREATING_PIECE;
+					piecesPlayedThisTurn = null;
+					break;
+			}
+		}
 	}
 }
