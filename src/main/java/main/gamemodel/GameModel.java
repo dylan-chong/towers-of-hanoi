@@ -50,8 +50,12 @@ public class GameModel implements Textable {
 		setupPlayers();
 	}
 
+	public boolean canUndo() {
+		return !undoStack.isEmpty();
+	}
+
 	public void undo() throws InvalidMoveException {
-		if (undoStack.isEmpty()) {
+		if (!canUndo()) {
 			throw new IllegalStateException("Nothing to undo");
 		}
 

@@ -14,6 +14,7 @@ public class TextCommandStateMapper
 	public static final String MOVE_COMMAND = "move";
 	public static final String CREATE_COMMAND = "create";
 	public static final String ROTATE_COMMAND = "rotate";
+	public static final String UNDO_COMMAND = "undo";
 
 	private final GameModel game;
 
@@ -30,18 +31,20 @@ public class TextCommandStateMapper
 				String[] tokens = requireTokens(line, 1, 3);
 				String command = tokens[0];
 
-				if (command.equals(PASS_COMMAND)) {
-					game.passTurnState();
-					return;
+				switch (command) {
+					case PASS_COMMAND:
+						game.passTurnState();
+						break;
+					case CREATE_COMMAND:
+						char pieceID = tokens[1].charAt(0);
+						game.create(pieceID, rotationsFromDegrees(tokens[2]));
+						break;
+					case UNDO_COMMAND:
+						game.undo();
+						break;
+					default:
+						throw new ParseFormatException("Invalid command name");
 				}
-
-				if (!command.equals(CREATE_COMMAND)) {
-					throw new ParseFormatException("Invalid command name");
-				}
-
-				char pieceID = tokens[1].charAt(0);
-
-				game.create(pieceID, rotationsFromDegrees(tokens[2]));
 			}
 
 			@Override
@@ -51,12 +54,17 @@ public class TextCommandStateMapper
 						game.getCurrentPlayerData().getUnusedPieceIds(),
 						direction -> direction.degrees() + ""
 				);
-				return String.format(
-						"You can:\n- %s\n" +
+				String instructions = String.format(
+						"You can:\n" +
+								"- %s\n" +
 								"- %s",
 						commandInstructions,
 						PASS_COMMAND
 				);
+				if (game.canUndo()) {
+					instructions += "\n- " + UNDO_COMMAND;
+				}
+				return instructions;
 			}
 		};
 	}
@@ -69,15 +77,6 @@ public class TextCommandStateMapper
 					throws ParseFormatException, InvalidMoveException {
 				String[] tokens = requireTokens(line, 1, 3);
 				String command = tokens[0];
-
-				if (mustPass()) {
-					if (command.equals(PASS_COMMAND)) {
-						game.passTurnState();
-						return;
-					}
-
-					throw new ParseFormatException("Invalid command name");
-				}
 
 				switch (command) {
 					case MOVE_COMMAND: {
@@ -95,6 +94,10 @@ public class TextCommandStateMapper
 						game.passTurnState();
 						break;
 					}
+					case UNDO_COMMAND: {
+						game.undo();
+						break;
+					}
 					default:
 						throw new ParseFormatException("Invalid command name");
 				}
@@ -102,32 +105,32 @@ public class TextCommandStateMapper
 
 			@Override
 			public String getInstructions() {
-				if (mustPass()) {
-					return "You can:\n- " + PASS_COMMAND;
-				}
-
-				Collection<Character> pieceIds = game.getPlayablePieceIds();
-				String moveInstructions = commandInstructions(
-						MOVE_COMMAND,
-						pieceIds,
-						direction -> direction.getAlternateName().toLowerCase()
-				);
-				String rotateInstructions = commandInstructions(
-						ROTATE_COMMAND,
-						pieceIds,
-						direction -> direction.degrees() + ""
-				);
-				return "You can:" +
-						"\n- " + moveInstructions +
-						"\n- " + rotateInstructions +
+				String instructions = "You can:" +
 						"\n- " + PASS_COMMAND;
 
-				// TODO allow pass
+				Collection<Character> pieceIds = game.getPlayablePieceIds();
+				if (!pieceIds.isEmpty()) {
+					String moveInstructions = commandInstructions(
+							MOVE_COMMAND,
+							pieceIds,
+							direction -> direction.getAlternateName().toLowerCase()
+					);
+					String rotateInstructions = commandInstructions(
+							ROTATE_COMMAND,
+							pieceIds,
+							direction -> direction.degrees() + ""
+					);
+					instructions += "\n- " + moveInstructions +
+							"\n- " + rotateInstructions;
+				}
+
+				if (game.canUndo()) {
+					instructions += "\n- " + UNDO_COMMAND;
+				}
+
+				return instructions;
 			}
 
-			public boolean mustPass() {
-				return game.getPlayablePieceIds().isEmpty();
-			}
 		};
 	}
 }
