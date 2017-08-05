@@ -56,7 +56,7 @@ public class GameModel implements Textable {
 
 	public void undo() throws InvalidMoveException {
 		if (!canUndo()) {
-			throw new IllegalStateException("Nothing to undo");
+			throw new IllegalGameStateException("Nothing to undo");
 		}
 
 		undoStack.pop().undoWork();
@@ -108,7 +108,8 @@ public class GameModel implements Textable {
 				}
 
 				// Don't add this to the undoStack
-				new NextTurnCommand().doWork();
+				NextTurnStateCommandMapper mapper = new NextTurnStateCommandMapper();
+				turnState.getFromMap(mapper).doWork();
 			}
 
 			@Override
@@ -117,7 +118,8 @@ public class GameModel implements Textable {
 				player.unusedUsedPiece(newPiece);
 				newPiece.setDirection(Direction.NORTH);
 
-				new NextTurnCommand().undoWork();
+				NextTurnStateCommandMapper mapper = new NextTurnStateCommandMapper();
+				turnState.getFromMap(mapper).undoWork();
 			}
 		});
 	}
@@ -225,8 +227,19 @@ public class GameModel implements Textable {
 	}
 
 	public void passTurnState() throws InvalidMoveException {
-		// TODO Mapper
-		doCommandWork(new NextTurnCommand());
+		NextTurnStateCommandMapper mapper = new NextTurnStateCommandMapper();
+
+		doCommandWork(new TurnCommand() {
+			@Override
+			public void doWork() throws InvalidMoveException {
+				turnState.getFromMap(mapper).doWork();
+			}
+
+			@Override
+			public void undoWork() throws InvalidMoveException {
+				turnState.getFromMap(mapper).undoWork();
+			}
+		});
 	}
 
 	private void doCommandWork(TurnCommand command) throws InvalidMoveException {
@@ -236,7 +249,7 @@ public class GameModel implements Textable {
 
 	private void requireState(TurnState turnState) {
 		if (turnState != this.turnState) {
-			throw new IllegalStateException(
+			throw new IllegalGameStateException(
 					"You can't performed this operation in this state"
 			);
 		}
@@ -264,42 +277,54 @@ public class GameModel implements Textable {
 		void undoWork() throws InvalidMoveException;
 	}
 
-	private class NextTurnCommand implements TurnCommand {
+	private class NextTurnStateCommandMapper implements TurnState.Mapper<TurnCommand> {
 		private Collection<PieceCell> piecesPlayed;
 
 		@Override
-		public void doWork() throws InvalidMoveException {
-			switch (turnState) {
-				case CREATING_PIECE:
+		public TurnCommand getCreatingPiecesCommand() {
+			return new TurnCommand() {
+				@Override
+				public void doWork() throws InvalidMoveException {
 					piecesPlayedThisTurn = new ArrayList<>();
 					turnState = TurnState.MOVING_OR_ROTATING_PIECE;
-					break;
-				case MOVING_OR_ROTATING_PIECE:
-					piecesPlayed = piecesPlayedThisTurn;
-					piecesPlayedThisTurn = null;
-					turnState = TurnState.CREATING_PIECE;
-					currentPlayerIndex++;
-					currentPlayerIndex %= playerData.size();
-					break;
-			}
-		}
+				}
 
-		@Override
-		public void undoWork() throws InvalidMoveException {
-			switch (turnState) {
-				case CREATING_PIECE:
+				/**
+				 * NOTE: This gets called when trying to undo when the
+				 * {@link GameModel#turnState} is
+				 * {@link TurnState#CREATING_PIECE}.
+				 */
+				@Override
+				public void undoWork() throws InvalidMoveException {
 					turnState = TurnState.MOVING_OR_ROTATING_PIECE;
 					piecesPlayedThisTurn = piecesPlayed;
 					piecesPlayed = null;
 					currentPlayerIndex--;
 					currentPlayerIndex += playerData.size();
 					currentPlayerIndex %= playerData.size();
-					break;
-				case MOVING_OR_ROTATING_PIECE:
+				}
+			};
+		}
+
+		@Override
+		public TurnCommand getMovingOrRotatingPieceCommand() {
+			return new TurnCommand() {
+				@Override
+				public void doWork() throws InvalidMoveException {
+					piecesPlayed = piecesPlayedThisTurn;
+					piecesPlayedThisTurn = null;
+					turnState = TurnState.CREATING_PIECE;
+					currentPlayerIndex++;
+					currentPlayerIndex %= playerData.size();
+				}
+
+				@Override
+				public void undoWork() throws InvalidMoveException {
 					turnState = TurnState.CREATING_PIECE;
 					piecesPlayedThisTurn = null;
-					break;
-			}
+				}
+			};
 		}
 	}
+
 }

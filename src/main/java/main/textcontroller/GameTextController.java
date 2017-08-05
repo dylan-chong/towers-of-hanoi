@@ -2,10 +2,7 @@ package main.textcontroller;
 
 import main.ExceptionHandler;
 import main.Main;
-import main.gamemodel.GameModel;
-import main.gamemodel.InvalidMoveException;
-import main.gamemodel.Textable;
-import main.gamemodel.TurnState;
+import main.gamemodel.*;
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -44,7 +41,9 @@ public class GameTextController {
 
 			try {
 				command.parseAndExecute(line);
-			} catch (ParseFormatException | InvalidMoveException e) {
+			} catch (ParseFormatException |
+					InvalidMoveException |
+					IllegalGameStateException e) {
 				exceptionHandler.handle(e);
 			} catch (RuntimeException | Error e) {
 				String message = "There was an error making your move";
