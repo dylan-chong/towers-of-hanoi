@@ -12,10 +12,6 @@ public class TestRunner {
 	 * List all classes to test here
 	 */
 	private static final Class<?>[] TEST_CLASSES = new Class[] {
-			BoardCellTest.class,
-			BoardTest.class,
-			GameModelTest.class,
-			GameTextControllerTest.class,
 	};
 
 	public static void run() {
