@@ -37,7 +37,7 @@ public class ChapterExercise5_1And5_2 {
 			randomiseButton.addActionListener(e -> randomiseMissingSquare());
 			panel.add(randomiseButton);
 
-			for (int i = 1; i < 5; i++) {
+			for (int i = 1; i <= 10; i++) {
 				int n = (int) Math.pow(2, i);
 				JButton settingsButton = new JButton("n = " + n);
 				settingsButton.addActionListener(e -> {
@@ -51,8 +51,8 @@ public class ChapterExercise5_1And5_2 {
 			pack();
 		}
 
-		private int cellSize() {
-			return BOARD_SIZE / n;
+		private float cellSize() {
+			return 1f * BOARD_SIZE / n;
 		}
 
 		private void randomiseMissingSquare() {
@@ -78,7 +78,6 @@ public class ChapterExercise5_1And5_2 {
 				super.paintComponent(g);
 
 				Graphics2D g2d = (Graphics2D) g;
-				g2d.draw(new Rectangle(BOARD_SIZE, BOARD_SIZE)); // border
 
 				paintRectangleGroup(Arrays.asList(missingSquare), g2d);
 				for (Collection<Rectangle> rectangles : getTrominoRectangles()) {
@@ -96,10 +95,10 @@ public class ChapterExercise5_1And5_2 {
 						(float) Math.random()
 				));
 				for (Rectangle rectangle : rectangles) {
-					int x = rectangle.x * cellSize();
-					int y = BOARD_SIZE - (rectangle.y + 1) * cellSize();
-					int w = rectangle.width * cellSize();
-					int h = rectangle.height * cellSize();
+					int x = Math.round(rectangle.x * cellSize());
+					int y = Math.round(BOARD_SIZE - (rectangle.y + 1) * cellSize());
+					int w = Math.round(rectangle.width * cellSize());
+					int h = Math.round(rectangle.height * cellSize());
 					g2d.fill(new Rectangle(x, y, w, h));
 				}
 			}
