@@ -142,7 +142,7 @@ public class GameModel implements Textable {
 			);
 		}
 
-		int[] position = board.positionOf(piece);
+		int[] position = board.rowColOf(piece);
 		int[] newPosition = direction.shift(position);
 
 		if (board.getCellAt(newPosition[0], newPosition[1]) != null) {

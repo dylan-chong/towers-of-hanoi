@@ -59,9 +59,7 @@ public class GameTextController {
 
 	private String getGameString() {
 		String gameRep = Textable.convertToString(game.toTextualRep(), true);
-
 		String playerName = game.getCurrentPlayerData().getName();
-
 		String instructions = game.getTurnState()
 				.getFromMap(commandProvider)
 				.getInstructions();

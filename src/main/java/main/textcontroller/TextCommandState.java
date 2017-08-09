@@ -50,7 +50,7 @@ public abstract class TextCommandState {
 	}
 
 	protected static int rotationsFromDegrees(String degreesStr)
-		throws InvalidMoveException {
+			throws InvalidMoveException {
 		int degrees = Integer.parseInt(degreesStr);
 		if (!Direction.isValidDegrees(degrees)) {
 			throw new InvalidMoveException("Invalid angle: " + degrees);

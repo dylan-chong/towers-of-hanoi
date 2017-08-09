@@ -2,6 +2,9 @@ package main.gamemodel;
 
 import main.gamemodel.cells.BoardCell;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Board implements Textable {
@@ -67,7 +70,7 @@ public class Board implements Textable {
 		return count.get();
 	}
 
-	public int[] positionOf(BoardCell cell) {
+	public int[] rowColOf(BoardCell cell) {
 		for (int r = 0; r < cells.length; r++) {
 			BoardCell[] row = cells[r];
 			for (int c = 0; c < row.length; c++) {
@@ -113,6 +116,37 @@ public class Board implements Textable {
 		return representation;
 	}
 
+	/**
+	 * Two cells are touching if one is to the left of the other, or one is
+	 * below the other. Diagonals do not count.
+	 */
+	public Set<CellPair> findTouchingCellPairs() {
+		Set<CellPair> pairs = new HashSet<>();
+
+		for (int r = 0; r < cells.length; r++) {
+			for (int c = 0; c < cells[r].length; c++) {
+				BoardCell cell = cells[r][c];
+				if (cell == null) {
+					continue;
+				}
+
+				if (r + 1 < cells.length) {
+					BoardCell cellBelow = cells[r + 1][c];
+					if (cellBelow != null) {
+						pairs.add(new CellPair(cell, cellBelow));
+					}
+				}
+				if (c + 1 < cells[r].length) {
+					BoardCell cellToRight = cells[r][c + 1];
+					if (cellToRight != null) {
+						pairs.add(new CellPair(cell, cellToRight));
+					}
+				}
+			}
+		}
+
+		return pairs;
+	}
 
 	/**
 	 * This is here to reduce nested for loop
@@ -130,5 +164,39 @@ public class Board implements Textable {
 
 	interface CellConsumer {
 		void apply(BoardCell cell, int row, int col);
+	}
+
+	/**
+	 * Reaction between 2 {@link BoardCell} objects (they are next to each
+	 * other). cellA and cellB are in no particular order.
+	 */
+	public static class CellPair {
+		private final BoardCell cellA;
+		private final BoardCell cellB;
+
+		public CellPair(BoardCell cellA, BoardCell cellB) {
+			if (cellA.equals(cellB)) {
+				throw new IllegalArgumentException("Cells can't be the same");
+			}
+
+			this.cellA = cellA;
+			this.cellB = cellB;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+
+			CellPair cellPair = (CellPair) o;
+
+			return new HashSet<>(Arrays.asList(cellPair.cellA, cellPair.cellB))
+					.equals(new HashSet<>(Arrays.asList(cellA, cellB)));
+		}
+
+		@Override
+		public int hashCode() {
+			return cellA.hashCode() + cellB.hashCode();
+		}
 	}
 }
