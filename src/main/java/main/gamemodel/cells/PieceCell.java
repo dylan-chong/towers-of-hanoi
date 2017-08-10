@@ -40,6 +40,7 @@ public class PieceCell extends BoardCell {
 		return representation;
 	}
 
+	@Override
 	public char getId() {
 		return id;
 	}
@@ -66,6 +67,17 @@ public class PieceCell extends BoardCell {
 		Direction relativeDirection = Direction.values()[relativeSideOrdinal];
 
 		return sides.getSide(relativeDirection);
+	}
+
+	/**
+	 * Gets the side of this piece that is touching the other piece
+	 * @param thisRowCol Position of this (e.g. on a board)
+	 * @param otherRowCol Position of the other piece (e.g. on a board)
+	 */
+	public SideType getTouchingSide(int[] thisRowCol,
+									int[] otherRowCol) {
+		Direction dirToOtherPiece = Direction.fromAToB(thisRowCol, otherRowCol);
+		return getSide(dirToOtherPiece);
 	}
 
 	/**

@@ -4,6 +4,7 @@ import main.gamemodel.cells.BoardCell;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -168,7 +169,9 @@ public class Board implements Textable {
 
 	/**
 	 * Reaction between 2 {@link BoardCell} objects (they are next to each
-	 * other). cellA and cellB are in no particular order.
+	 * other).
+	 *
+	 * cellA should be above or to the left of cellB
 	 */
 	public static class CellPair {
 		private final BoardCell cellA;
@@ -190,13 +193,39 @@ public class Board implements Textable {
 
 			CellPair cellPair = (CellPair) o;
 
-			return new HashSet<>(Arrays.asList(cellPair.cellA, cellPair.cellB))
-					.equals(new HashSet<>(Arrays.asList(cellA, cellB)));
+			List<BoardCell> otherCells = Arrays.asList(cellPair.cellA, cellPair.cellB);
+			List<BoardCell> theseCells = Arrays.asList(cellA, cellB);
+			return new HashSet<>(theseCells).equals(new HashSet<>(otherCells));
 		}
 
 		@Override
 		public int hashCode() {
 			return cellA.hashCode() + cellB.hashCode();
+		}
+
+		@Override
+		public String toString() {
+			return String.format(
+					"CellPair{%c,%c}",
+					cellA.getId(),
+					cellB.getId()
+			);
+		}
+
+		public char getCellAId() {
+			return cellA.getId();
+		}
+
+		public char getCellBId() {
+			return cellB.getId();
+		}
+
+		public BoardCell getCellA() {
+			return cellA;
+		}
+
+		public BoardCell getCellB() {
+			return cellB;
 		}
 	}
 }

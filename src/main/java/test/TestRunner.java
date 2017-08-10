@@ -16,6 +16,7 @@ public class TestRunner {
 			BoardTest.class,
 			GameModelTest.class,
 			GameTextControllerTest.class,
+			DirectionTest.class,
 	};
 
 	public static void run() {

@@ -33,6 +33,11 @@ public class PlayerCell extends BoardCell {
 		return representation;
 	}
 
+	@Override
+	public char getId() {
+		return token.representation;
+	}
+
 	public String getName() {
 		return String.format("%s (%s)", token.name(), token.representation);
 	}

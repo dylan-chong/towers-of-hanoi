@@ -45,12 +45,11 @@ public enum Direction {
 	},
 	;
 
-	public static Direction valueOfAlternateName(String alternateName)
-			throws InvalidMoveException {
+	public static Direction valueOfAlternateName(String alternateName) {
 		return Arrays.stream(values())
 				.filter(direction -> direction.alternateName.equals(alternateName))
 				.findAny()
-				.orElseThrow(() -> new InvalidMoveException(
+				.orElseThrow(() -> new IllegalArgumentException(
 						"Invalid direction name: " + alternateName
 				));
 	}
@@ -66,6 +65,17 @@ public enum Direction {
 		return Arrays.stream(values())
 				.map(Direction::degrees)
 				.anyMatch(dirDegrees -> dirDegrees == degrees);
+	}
+
+	public static Direction fromAToB(int[] rowColA, int[] rowColB) {
+		for (Direction direction : values()) {
+			int[] shiftedA = direction.shift(rowColA);
+			if (Arrays.equals(shiftedA, rowColB)) {
+				return direction;
+			}
+		}
+
+		throw new IllegalArgumentException("Points are not touching");
 	}
 
 	private final String alternateName;

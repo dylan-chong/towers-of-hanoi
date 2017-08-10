@@ -35,6 +35,7 @@ public class GameTextController {
 
 		while (textIn.hasNext()) {
 			String line = textIn.nextLine();
+			textOut.println(line);
 
 			TurnState turnState = game.getTurnState();
 			TextCommandState command = turnState.getFromMap(commandProvider);

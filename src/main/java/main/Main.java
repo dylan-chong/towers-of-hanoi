@@ -36,9 +36,10 @@ public class Main {
 	private static void startApp() {
 		GameModel game = new GameModel(new Board());
 		PrintStream out = System.out;
+
 		GameTextController controller = new GameTextController(
 				new Scanner(System.in),
-				System.out,
+				out,
 				new GameTextController.AppExceptionHandler(out),
 				new TextCommandStateMapper(game),
 				game

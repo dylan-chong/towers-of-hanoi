@@ -2,6 +2,7 @@ package main.gamemodel;
 
 import main.gamemodel.cells.BoardCell;
 import main.gamemodel.cells.PieceCell;
+import main.gamemodel.cells.PieceCell.SideType;
 import main.gamemodel.cells.PlayerCell;
 
 import java.util.*;
@@ -23,6 +24,11 @@ public class GameModel implements Textable {
 	 */
 	private int currentPlayerIndex;
 	private TurnState turnState = TurnState.CREATING_PIECE;
+	/**
+	 * The user can move or rotate each piece they have on the board when the
+	 * state is MOVING_OR_ROTATING_PIECE. This variable is for keeping track of
+	 * which pieces have been played.
+	 */
 	private Collection<PieceCell> piecesPlayedThisTurn;
 
 	private Deque<TurnCommand> undoStack = new ArrayDeque<>();
@@ -97,7 +103,6 @@ public class GameModel implements Textable {
 		}
 
 		PieceCell newPiece = player.useUnusedPiece(pieceId);
-
 		TurnCommand nextTurnState = turnState.getFromMap(
 				new NextTurnStateCommandMapper()
 		);
@@ -111,7 +116,7 @@ public class GameModel implements Textable {
 					newPiece.rotateClockwise();
 				}
 
-				// Don't add this to the undoStack
+				// Don't add this to the undoStack,
 				nextTurnState.doWork();
 			}
 
@@ -229,9 +234,78 @@ public class GameModel implements Textable {
 	}
 
 	public void passTurnState() throws InvalidMoveException {
+		if (turnState == TurnState.RESOLVING_REACTIONS && hasReactions()) {
+			throw new InvalidMoveException(
+					"You can't pass when there are reactions to resolve"
+			);
+		}
+
 		doCommandWork(turnState.getFromMap(
 				new NextTurnStateCommandMapper()
 		));
+	}
+
+	public boolean hasReactions() {
+		return !getReactions().isEmpty();
+	}
+
+	public Set<Board.CellPair> getReactions() {
+		return board.findTouchingCellPairs()
+				.stream()
+				.filter(cellPair -> {
+					if (!areBothPieces(cellPair)) {
+						return true;
+					}
+					if (!isShieldVsShield(cellPair)) {
+						return true;
+					}
+					return false;
+				})
+				.collect(Collectors.toSet());
+	}
+
+	public void react(Board.CellPair cellPair) throws InvalidMoveException {
+		if (!getReactions().contains(cellPair)) {
+			throw new InvalidMoveException("These cells aren't able to react");
+		}
+
+		System.out.println("*************** Reaction: " + cellPair);
+		// TODO
+	}
+
+	private SideType[] getTouchingSides(PieceCell pieceA,
+										PieceCell pieceB) {
+		SideType sideA = pieceA.getTouchingSide(
+				board.rowColOf(pieceA),
+				board.rowColOf(pieceB)
+		);
+		SideType sideB = pieceA.getTouchingSide(
+				board.rowColOf(pieceB),
+				board.rowColOf(pieceA)
+		);
+		return new SideType[]{sideA, sideB};
+	}
+
+	private boolean areBothPieces(Board.CellPair pair) {
+		return pair.getCellA() instanceof PieceCell &&
+				pair.getCellB() instanceof PieceCell;
+	}
+
+	private boolean isShieldVsShield(Board.CellPair pair) {
+		if (!areBothPieces(pair)) {
+			throw new RuntimeException(
+					"One or more cells are not pieces so they both cannot be " +
+						"facing each other with shields"
+			);
+		}
+
+		SideType[] touchingSides = getTouchingSides(
+				(PieceCell) pair.getCellA(),
+				(PieceCell) pair.getCellB()
+		);
+		return Arrays
+				.stream(touchingSides)
+				.allMatch(sideType -> sideType == SideType.SHIELD);
 	}
 
 	private void doCommandWork(TurnCommand command) throws InvalidMoveException {
@@ -270,13 +344,20 @@ public class GameModel implements Textable {
 	}
 
 	private class NextTurnStateCommandMapper implements TurnState.Mapper<TurnCommand> {
+		/**
+		 * Assumes that there may be reactions
+		 */
 		@Override
-		public TurnCommand getCreatingPiecesCommand() {
+		public TurnCommand getCreatingPiecesValue() {
 			return new TurnCommand() {
 				@Override
 				public void doWork() throws InvalidMoveException {
-					piecesPlayedThisTurn = new ArrayList<>();
-					turnState = TurnState.MOVING_OR_ROTATING_PIECE;
+					if (!hasReactions()) {
+						piecesPlayedThisTurn = new ArrayList<>();
+						turnState = TurnState.MOVING_OR_ROTATING_PIECE;
+					} else {
+						turnState = TurnState.RESOLVING_REACTIONS;
+					}
 				}
 
 				/**
@@ -293,27 +374,56 @@ public class GameModel implements Textable {
 		}
 
 		@Override
-		public TurnCommand getMovingOrRotatingPieceCommand() {
+		public TurnCommand getMovingOrRotatingPieceValue() {
 			return new TurnCommand() {
 				private Collection<PieceCell> piecesPlayed;
 
 				@Override
 				public void doWork() throws InvalidMoveException {
+					if (hasReactions()) {
+						turnState = TurnState.RESOLVING_REACTIONS;
+						return;
+					}
+					turnState = TurnState.CREATING_PIECE;
 					piecesPlayed = piecesPlayedThisTurn;
 					piecesPlayedThisTurn = null;
-					turnState = TurnState.CREATING_PIECE;
 					currentPlayerIndex++;
 					currentPlayerIndex %= playerData.size();
 				}
 
 				@Override
 				public void undoWork() throws InvalidMoveException {
+					if (turnState == TurnState.RESOLVING_REACTIONS) {
+						turnState = TurnState.MOVING_OR_ROTATING_PIECE;
+						return;
+					}
 					turnState = TurnState.MOVING_OR_ROTATING_PIECE;
 					piecesPlayedThisTurn = piecesPlayed;
 					piecesPlayed = null;
 					currentPlayerIndex--;
 					currentPlayerIndex += playerData.size();
 					currentPlayerIndex %= playerData.size();
+				}
+			};
+		}
+
+		@Override
+		public TurnCommand getResolvingReactionsValue() {
+			return new TurnCommand() {
+				@Override
+				public void doWork() throws InvalidMoveException {
+					if (hasReactions()) {
+						throw new IllegalGameStateException(
+								"You must resolve the conflicts first"
+						);
+					}
+
+					turnState = TurnState.MOVING_OR_ROTATING_PIECE;
+				}
+
+				@Override
+				public void undoWork() throws InvalidMoveException {
+					turnState = TurnState.RESOLVING_REACTIONS;
 				}
 			};
 		}

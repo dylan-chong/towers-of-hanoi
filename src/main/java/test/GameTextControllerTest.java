@@ -1,9 +1,9 @@
 package test;
 
-import main.textcontroller.GameTextController;
 import main.gamemodel.Board;
 import main.gamemodel.Direction;
 import main.gamemodel.GameModel;
+import main.textcontroller.GameTextController;
 import main.textcontroller.TextCommandStateMapper;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -81,6 +81,51 @@ public class GameTextControllerTest {
 		}.run();
 	}
 
+
+	@Test
+	public void runUntilGameEnd_gameInputsWithReactions_doesntCrash() {
+		runUntilGameEnd_forInputLines_doesntCrash(
+				true,
+				"create a 0",
+				"move a down",
+				"pass",
+
+				"create a 0",
+				"move a up",
+				"pass",
+
+				"create b 0",
+				"react B A",
+				"pass"
+		);
+	}
+
+	private static void runUntilGameEnd_forInputLines_doesntCrash(
+			String... inputLines
+	) {
+		runUntilGameEnd_forInputLines_doesntCrash(false, inputLines);
+	}
+	private static void runUntilGameEnd_forInputLines_doesntCrash(
+			boolean printToStandardOut,
+			String... inputLines
+	) {
+		GameModel game = new GameModel(new Board());
+		GameTextController textBoardController = new GameTextController(
+				new Scanner(new StringReader(
+						String.join("\n", inputLines)
+				)),
+				printToStandardOut ?
+						System.out :
+						new PrintStream(new ByteArrayOutputStream()),
+				throwable -> {
+					throw new Error(throwable);
+				},
+				new TextCommandStateMapper(game),
+				game
+		);
+		textBoardController.runUntilGameEnd();
+	}
+
 	private abstract static class TestRunUntilGameEnd {
 		private final List<String> inputLines;
 
@@ -95,7 +140,7 @@ public class GameTextControllerTest {
 					new Scanner(new StringReader(
 							String.join("\n", inputLines)
 					)),
-					new PrintStream(new ByteArrayOutputStream()),
+					getTextOutput(),
 					throwable -> {
 						throw new Error(throwable);
 					},
@@ -106,6 +151,10 @@ public class GameTextControllerTest {
 			textBoardController.runUntilGameEnd();
 
 			runVerifications(gameSpy);
+		}
+
+		protected PrintStream getTextOutput() {
+			return new PrintStream(new ByteArrayOutputStream());
 		}
 
 		/**

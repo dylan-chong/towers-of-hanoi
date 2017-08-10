@@ -24,4 +24,6 @@ public abstract class BoardCell implements Textable {
 	 * The array is in char[row][col] format
 	 */
 	public abstract char[][] toTextualRep();
+
+	public abstract char getId();
 }
