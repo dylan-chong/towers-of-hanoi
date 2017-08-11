@@ -3,6 +3,8 @@ package test;
 import main.gamemodel.Board;
 import main.gamemodel.Direction;
 import main.gamemodel.GameModel;
+import main.gamemodel.TurnState;
+import main.gamemodel.cells.PlayerCell;
 import main.textcontroller.GameTextController;
 import main.textcontroller.TextCommandStateMapper;
 import org.junit.Test;
@@ -16,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyChar;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.*;
@@ -81,6 +84,33 @@ public class GameTextControllerTest {
 		}.run();
 	}
 
+	@Test
+	public void runUntilGameEnd_player1Dies_player0Wins()
+			throws Exception {
+		List<String> input = Arrays.asList(
+				"create A 0",
+				"move A up",
+				"react 1 A"
+		);
+
+		new TestRunUntilGameEnd(input) {
+			@Override
+			public void runVerifications(GameModel gameSpy) throws Exception {
+				assertEquals(TurnState.GAME_FINISHED, gameSpy.getTurnState());
+				assertEquals(
+						PlayerCell.Token.HAPPY,
+						gameSpy.getWinner()
+								.getPlayerCell()
+								.getToken()
+				);
+			}
+
+			@Override
+			protected PrintStream getTextOutput() {
+				return System.out; // TODO
+			}
+		}.run();
+	}
 
 	/**
 	 * Yea i know this is really lazy, but i was running out of time!
@@ -91,6 +121,8 @@ public class GameTextControllerTest {
 		runUntilGameEnd_forInputLines_doesntCrash(true, new String[]{
 				"see A",
 				"create A 0",
+				"move A down",
+				"undo",
 				"move A down",
 				"pass",
 
@@ -109,8 +141,11 @@ public class GameTextControllerTest {
 
 				"create c 0",
 				"react a c",
-				"pass"
+				"pass",
         });
+
+		// TODO test losing the game
+		// TODO implement bumped back
 	}
 
 	private static void runUntilGameEnd_forInputLines_doesntCrash(

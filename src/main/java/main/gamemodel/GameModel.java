@@ -168,10 +168,17 @@ public class GameModel implements Textable {
 				board.removeCell(position[0], position[1]);
 				board.addCell(piece, newPosition[0], newPosition[1]);
 				piecesPlayedThisTurn.add(piece);
+
+				if (hasReactions()) {
+					turnState = TurnState.RESOLVING_REACTIONS;
+				}
 			}
 
 			@Override
 			public void undoWork() throws InvalidMoveException {
+				if (hasReactions()) {
+					turnState = TurnState.MOVING_OR_ROTATING_PIECE;
+				}
 				board.removeCell(newPosition[0], newPosition[1]);
 				board.addCell(piece, position[0], position[1]);
 				piecesPlayedThisTurn.remove(piece);
@@ -208,6 +215,10 @@ public class GameModel implements Textable {
 					piece.rotateClockwise();
 				}
 				piecesPlayedThisTurn.add(piece);
+
+				if (hasReactions()) {
+					turnState = TurnState.RESOLVING_REACTIONS;
+				}
 			}
 
 			@Override
@@ -216,6 +227,10 @@ public class GameModel implements Textable {
 					piece.rotateClockwise();
 				}
 				piecesPlayedThisTurn.remove(piece);
+
+				if (hasReactions()) {
+					turnState = TurnState.MOVING_OR_ROTATING_PIECE;
+				}
 			}
 		});
 	}
@@ -290,7 +305,23 @@ public class GameModel implements Textable {
 		Command commandB = dataB.reaction
 				.getFromMap(reactionApplier)
 				.apply(dataB);
-		doCommandWork(new Command.Composite(commandA, commandB));
+		doCommandWork(new Command() {
+			@Override
+			public void doWork() throws InvalidMoveException {
+				commandA.doWork();
+				if (turnState != TurnState.GAME_FINISHED) {
+					commandB.doWork();
+				}
+			}
+
+			@Override
+			public void undoWork() throws InvalidMoveException {
+				if (turnState != TurnState.GAME_FINISHED) {
+					commandB.undoWork();
+				}
+				commandA.undoWork();
+			}
+		});
 	}
 
 	private PlayerData getPlayerOfCell(BoardCell cell) {
@@ -377,29 +408,6 @@ public class GameModel implements Textable {
 	private interface Command {
 		void doWork() throws InvalidMoveException;
 		void undoWork() throws InvalidMoveException;
-
-		class Composite implements Command {
-			private final Command[] commands;
-
-			public Composite(Command... commands) {
-				this.commands = commands;
-			}
-
-			@Override
-			public void doWork() throws InvalidMoveException {
-				for (Command command : commands) {
-					command.doWork();
-				}
-			}
-
-			@Override
-			public void undoWork() throws InvalidMoveException {
-				for (int i = commands.length - 1; i >= 0; i--) {
-					Command command = commands[i];
-					command.undoWork();
-				}
-			}
-		}
 	}
 
 	private class NextTurnStateCommandMapper implements TurnState.Mapper<Command> {
@@ -583,6 +591,7 @@ public class GameModel implements Textable {
 					}
 
 					winner = winners.get(0);
+					turnState = TurnState.GAME_FINISHED;
 					previousTurnState = turnState;
 				}
 

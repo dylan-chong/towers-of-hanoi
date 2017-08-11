@@ -76,6 +76,10 @@ public class PlayerCell extends BoardCell {
 		return String.format("%s (%s)", token.name(), token.representation);
 	}
 
+	public Token getToken() {
+		return token;
+	}
+
 	public enum Token {
 		HAPPY('0'),
 		ANGRY('1');
