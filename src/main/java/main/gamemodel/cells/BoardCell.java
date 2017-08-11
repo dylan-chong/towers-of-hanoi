@@ -1,5 +1,6 @@
 package main.gamemodel.cells;
 
+import main.gamemodel.Direction;
 import main.gamemodel.Textable;
 
 public abstract class BoardCell implements Textable {
@@ -26,4 +27,24 @@ public abstract class BoardCell implements Textable {
 	public abstract char[][] toTextualRep();
 
 	public abstract char getId();
+
+	/**
+	 * @param fromThisToCell The direction from this cell to the given cell
+	 */
+	public Reaction getReactionTo(BoardCell cell, Direction fromThisToCell) {
+		return cell.getReactionToByVisiting(this, fromThisToCell);
+	}
+
+	protected abstract Reaction getReactionToPieceCell(PieceCell cell,
+													   Direction fromThisToCell);
+	protected abstract Reaction getReactionToPlayerCell(PlayerCell cell,
+														Direction fromThisToCell);
+
+	/**
+	 * Call the corresponding method for this cell on the provided cell
+	 * @param fromCellToThis Pass this into the method you call on the given cell
+	 */
+	abstract Reaction getReactionToByVisiting(BoardCell cell,
+											  Direction fromCellToThis);
+
 }

@@ -28,7 +28,14 @@ public enum TurnState {
 		public <T> T getFromMap(Mapper<T> mapper) {
 			return mapper.getResolvingReactionsValue();
 		}
-	};
+	},
+	GAME_FINISHED {
+		@Override
+		public <T> T getFromMap(Mapper<T> mapper) {
+			return mapper.getGameFinishedValue();
+		}
+	},
+	;
 
 	public abstract <T> T getFromMap(Mapper<T> mapper);
 
@@ -36,5 +43,6 @@ public enum TurnState {
 		ValueT getCreatingPiecesValue();
 		ValueT getMovingOrRotatingPieceValue();
 		ValueT getResolvingReactionsValue();
+		ValueT getGameFinishedValue();
 	}
 }

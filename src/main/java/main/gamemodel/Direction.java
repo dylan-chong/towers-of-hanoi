@@ -92,5 +92,9 @@ public enum Direction {
 		return ordinal() * 90;
 	}
 
+	public Direction reversed() {
+		return values()[(ordinal() + 2) % values().length];
+	}
+
 	public abstract int[] shift(int[] rowCol);
 }

@@ -82,22 +82,31 @@ public class GameTextControllerTest {
 	}
 
 
+	/**
+	 * Yea i know this is really lazy, but i was running out of time!
+	 */
 	@Test
 	public void runUntilGameEnd_gameInputsWithReactions_doesntCrash() {
-		runUntilGameEnd_forInputLines_doesntCrash(
-				true,
-				"create a 0",
-				"move a down",
+		// noinspection RedundantArrayCreation because trailing commas!
+		runUntilGameEnd_forInputLines_doesntCrash(true, new String[]{
+				"create A 0",
+				"move A down",
 				"pass",
 
 				"create a 0",
 				"move a up",
 				"pass",
 
-				"create b 0",
+				"create B 0",
 				"react B A",
-				"pass"
-		);
+				"undo",
+				"react B A",
+				"undo",
+				"react B A",
+				"pass",
+
+
+        });
 	}
 
 	private static void runUntilGameEnd_forInputLines_doesntCrash(

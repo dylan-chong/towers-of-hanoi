@@ -45,6 +45,24 @@ public class PieceCell extends BoardCell {
 		return id;
 	}
 
+	@Override
+	protected Reaction getReactionToPieceCell(PieceCell cell, Direction fromThisToCell) {
+		SideType thisSide = getSide(fromThisToCell);
+		SideType cellSide = cell.getSide(fromThisToCell.reversed());
+
+		return PieceCellReactionDecider.getReaction(thisSide, cellSide);
+	}
+
+	@Override
+	protected Reaction getReactionToPlayerCell(PlayerCell cell, Direction fromThisToCell) {
+		return Reaction.DO_NOTHING;
+	}
+
+	@Override
+	Reaction getReactionToByVisiting(BoardCell cell, Direction fromCellToThis) {
+		return cell.getReactionToPieceCell(this, fromCellToThis);
+	}
+
 	/**
 	 * @param newAbsoluteDirection This will effectively become the north of
 	 *                             this.sides
@@ -58,7 +76,7 @@ public class PieceCell extends BoardCell {
 		direction = Direction.values()[nextOrdinal];
 	}
 
-	private SideType getSide(Direction absoluteDirection) {
+	public SideType getSide(Direction absoluteDirection) {
 		int relativeSideOrdinal = (absoluteDirection.ordinal()
 				- this.direction.ordinal() + Direction.values().length)
 						% Direction.values().length;
@@ -163,6 +181,11 @@ public class PieceCell extends BoardCell {
 			public char toTextualRep(Direction absoluteDirection) {
 				return Textable.BLANK_CELL_TEXT_REP_CHAR;
 			}
+
+			@Override
+			public <T> T getFromMap(Mapper<T> mapper) {
+				return mapper.getEmptyValue();
+			}
 		},
 		SWORD {
 			@Override
@@ -173,15 +196,33 @@ public class PieceCell extends BoardCell {
 				}
 				return '-';
 			}
+
+			@Override
+			public <T> T getFromMap(Mapper<T> mapper) {
+				return mapper.getSwordValue();
+			}
 		},
 		SHIELD {
 			@Override
 			public char toTextualRep(Direction absoluteDirection) {
 				return '#';
 			}
+
+			@Override
+			public <T> T getFromMap(Mapper<T> mapper) {
+				return mapper.getShieldValue();
+			}
 		},
 		;
 
 		public abstract char toTextualRep(Direction absoluteDirection);
+
+		public abstract <T> T getFromMap(Mapper<T> mapper);
+
+		public interface Mapper<ValueT> {
+			ValueT getEmptyValue();
+			ValueT getSwordValue();
+			ValueT getShieldValue();
+		}
 	}
 }

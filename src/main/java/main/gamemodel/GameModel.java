@@ -4,10 +4,15 @@ import main.gamemodel.cells.BoardCell;
 import main.gamemodel.cells.PieceCell;
 import main.gamemodel.cells.PieceCell.SideType;
 import main.gamemodel.cells.PlayerCell;
+import main.gamemodel.cells.Reaction;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * TODO: Split this class up using the state pattern
+ */
 public class GameModel implements Textable {
 
 	/**
@@ -17,10 +22,10 @@ public class GameModel implements Textable {
 	private static final int CREATION_CELL_OFFSET = 2;
 
 	private final Board board;
-	private final List<PlayerData> playerData;
+	private final List<PlayerData> players;
 
 	/**
-	 * Index in playerData
+	 * Index in players
 	 */
 	private int currentPlayerIndex;
 	private TurnState turnState = TurnState.CREATING_PIECE;
@@ -31,13 +36,14 @@ public class GameModel implements Textable {
 	 */
 	private Collection<PieceCell> piecesPlayedThisTurn;
 
-	private Deque<TurnCommand> undoStack = new ArrayDeque<>();
+	private Deque<Command> undoStack = new ArrayDeque<>();
+	private PlayerData winner;
 
 	public GameModel(Board emptyBoard) {
 		assert emptyBoard.isEmpty();
 
 		this.board = emptyBoard;
-		this.playerData = Arrays.asList(
+		this.players = Arrays.asList(
 				new PlayerData(
 						new PlayerCell(PlayerCell.Token.ANGRY),
 						true,
@@ -69,7 +75,7 @@ public class GameModel implements Textable {
 	}
 
 	public PlayerData getCurrentPlayerData() {
-		return playerData.get(currentPlayerIndex);
+		return players.get(currentPlayerIndex);
 	}
 
 	@Override
@@ -103,11 +109,11 @@ public class GameModel implements Textable {
 		}
 
 		PieceCell newPiece = player.useUnusedPiece(pieceId);
-		TurnCommand nextTurnState = turnState.getFromMap(
+		Command nextTurnState = turnState.getFromMap(
 				new NextTurnStateCommandMapper()
 		);
 
-		doCommandWork(new TurnCommand() {
+		doCommandWork(new Command() {
 			@Override
 			public void doWork() throws InvalidMoveException {
 				board.addCell(newPiece, creationRow, creationCol);
@@ -123,7 +129,7 @@ public class GameModel implements Textable {
 			@Override
 			public void undoWork() throws InvalidMoveException {
 				board.removeCell(creationRow, creationCol);
-				player.unusedUsedPiece(newPiece);
+				player.unuseUsedPiece(newPiece);
 				newPiece.setDirection(Direction.NORTH);
 
 				nextTurnState.undoWork();
@@ -156,7 +162,7 @@ public class GameModel implements Textable {
 			throw new InvalidMoveException("You can't move onto a cell");
 		}
 
-		doCommandWork(new TurnCommand() {
+		doCommandWork(new Command() {
 			@Override
 			public void doWork() throws InvalidMoveException {
 				board.removeCell(position[0], position[1]);
@@ -195,7 +201,7 @@ public class GameModel implements Textable {
 			);
 		}
 
-		doCommandWork(new TurnCommand() {
+		doCommandWork(new Command() {
 			@Override
 			public void doWork() throws InvalidMoveException {
 				for (int i = 0; i < clockwiseRotations; i++) {
@@ -234,12 +240,6 @@ public class GameModel implements Textable {
 	}
 
 	public void passTurnState() throws InvalidMoveException {
-		if (turnState == TurnState.RESOLVING_REACTIONS && hasReactions()) {
-			throw new InvalidMoveException(
-					"You can't pass when there are reactions to resolve"
-			);
-		}
-
 		doCommandWork(turnState.getFromMap(
 				new NextTurnStateCommandMapper()
 		));
@@ -269,8 +269,37 @@ public class GameModel implements Textable {
 			throw new InvalidMoveException("These cells aren't able to react");
 		}
 
-		System.out.println("*************** Reaction: " + cellPair);
-		// TODO
+		BoardCell cellA = cellPair.getCellA();
+		BoardCell cellB = cellPair.getCellB();
+		int[] cellARowCol = board.rowColOf(cellA);
+		int[] cellBRowCol = board.rowColOf(cellB);
+		ReactionCellData dataA = new ReactionCellData(
+				cellA, cellARowCol, cellB, cellBRowCol,
+				getPlayerOfCell(cellA)
+		);
+		ReactionCellData dataB = new ReactionCellData(
+				cellB, cellBRowCol, cellA, cellARowCol,
+				getPlayerOfCell(cellB)
+		);
+
+		ReactionApplier reactionApplier = new ReactionApplier();
+
+		Command commandA = dataA.reaction
+				.getFromMap(reactionApplier)
+				.apply(dataA);
+		Command commandB = dataB.reaction
+				.getFromMap(reactionApplier)
+				.apply(dataB);
+		doCommandWork(new Command.Composite(commandA, commandB));
+	}
+
+	private PlayerData getPlayerOfCell(BoardCell cell) {
+		return players.stream()
+				.filter(data -> data.ownsPiece(cell))
+				.findAny()
+				.orElseThrow(() -> new IllegalGameStateException(
+						"A player does not have the cell"
+				));
 	}
 
 	private SideType[] getTouchingSides(PieceCell pieceA,
@@ -308,7 +337,7 @@ public class GameModel implements Textable {
 				.allMatch(sideType -> sideType == SideType.SHIELD);
 	}
 
-	private void doCommandWork(TurnCommand command) throws InvalidMoveException {
+	private void doCommandWork(Command command) throws InvalidMoveException {
 		command.doWork();
 		undoStack.push(command);
 	}
@@ -324,12 +353,12 @@ public class GameModel implements Textable {
 	private void setupPlayers() {
 		try {
 			board.addCell(
-					playerData.get(0).getPlayerCell(),
+					players.get(0).getPlayerCell(),
 					PLAYER_CELL_OFFSET,
 					PLAYER_CELL_OFFSET
 			);
 			board.addCell(
-					playerData.get(1).getPlayerCell(),
+					players.get(1).getPlayerCell(),
 					board.getNumRows() - 1 - PLAYER_CELL_OFFSET,
 					board.getNumCols() - 1 - PLAYER_CELL_OFFSET
 			);
@@ -338,18 +367,48 @@ public class GameModel implements Textable {
 		}
 	}
 
-	private interface TurnCommand {
-		void doWork() throws InvalidMoveException;
-		void undoWork() throws InvalidMoveException;
+	public PlayerData getWinner() {
+		if (turnState != TurnState.GAME_FINISHED) {
+			throw new IllegalGameStateException("The game is not finished yet");
+		}
+		return winner;
 	}
 
-	private class NextTurnStateCommandMapper implements TurnState.Mapper<TurnCommand> {
+	private interface Command {
+		void doWork() throws InvalidMoveException;
+		void undoWork() throws InvalidMoveException;
+
+		class Composite implements Command {
+			private final Command[] commands;
+
+			public Composite(Command... commands) {
+				this.commands = commands;
+			}
+
+			@Override
+			public void doWork() throws InvalidMoveException {
+				for (Command command : commands) {
+					command.doWork();
+				}
+			}
+
+			@Override
+			public void undoWork() throws InvalidMoveException {
+				for (int i = commands.length - 1; i >= 0; i--) {
+					Command command = commands[i];
+					command.undoWork();
+				}
+			}
+		}
+	}
+
+	private class NextTurnStateCommandMapper implements TurnState.Mapper<Command> {
 		/**
 		 * Assumes that there may be reactions
 		 */
 		@Override
-		public TurnCommand getCreatingPiecesValue() {
-			return new TurnCommand() {
+		public Command getCreatingPiecesValue() {
+			return new Command() {
 				@Override
 				public void doWork() throws InvalidMoveException {
 					if (!hasReactions()) {
@@ -374,8 +433,8 @@ public class GameModel implements Textable {
 		}
 
 		@Override
-		public TurnCommand getMovingOrRotatingPieceValue() {
-			return new TurnCommand() {
+		public Command getMovingOrRotatingPieceValue() {
+			return new Command() {
 				private Collection<PieceCell> piecesPlayed;
 
 				@Override
@@ -388,7 +447,7 @@ public class GameModel implements Textable {
 					piecesPlayed = piecesPlayedThisTurn;
 					piecesPlayedThisTurn = null;
 					currentPlayerIndex++;
-					currentPlayerIndex %= playerData.size();
+					currentPlayerIndex %= players.size();
 				}
 
 				@Override
@@ -401,24 +460,26 @@ public class GameModel implements Textable {
 					piecesPlayedThisTurn = piecesPlayed;
 					piecesPlayed = null;
 					currentPlayerIndex--;
-					currentPlayerIndex += playerData.size();
-					currentPlayerIndex %= playerData.size();
+					currentPlayerIndex += players.size();
+					currentPlayerIndex %= players.size();
 				}
 			};
 		}
 
 		@Override
-		public TurnCommand getResolvingReactionsValue() {
-			return new TurnCommand() {
+		public Command getResolvingReactionsValue() {
+			return new Command() {
 				@Override
 				public void doWork() throws InvalidMoveException {
 					if (hasReactions()) {
 						throw new IllegalGameStateException(
-								"You must resolve the conflicts first"
+								"You must resolve the conflicts before passing"
 						);
 					}
 
 					turnState = TurnState.MOVING_OR_ROTATING_PIECE;
+					if (piecesPlayedThisTurn == null)
+						piecesPlayedThisTurn = new ArrayList<>();
 				}
 
 				@Override
@@ -427,6 +488,111 @@ public class GameModel implements Textable {
 				}
 			};
 		}
+
+		@Override
+		public Command getGameFinishedValue() {
+			throw new UnsupportedOperationException("Game has finished");
+		}
 	}
 
+	private static class ReactionCellData {
+		public final BoardCell cell;
+		public final int[] cellRowCol;
+		public final BoardCell cellReactedTo;
+		public final int[] cellReactedToRowCol;
+		public final Reaction reaction;
+		public final PlayerData cellPlayerData;
+
+		public ReactionCellData(BoardCell cell,
+								int[] cellRowCol,
+								BoardCell cellReactedTo,
+								int[] cellReactedToRowCol,
+								PlayerData cellPlayerData) {
+			this.cell = cell;
+			this.cellRowCol = cellRowCol;
+			this.cellReactedTo = cellReactedTo;
+			this.cellReactedToRowCol = cellReactedToRowCol;
+			this.cellPlayerData = cellPlayerData;
+			this.reaction = cell.getReactionTo(
+					cellReactedTo,
+					Direction.fromAToB(cellRowCol, cellReactedToRowCol)
+			);
+		}
+	}
+
+	private class ReactionApplier
+			implements Reaction.Mapper<Function<ReactionCellData, Command>> {
+
+		@Override
+		public Function<ReactionCellData, Command> getDoNothingValue() {
+			return reactionCellData -> new Command() {
+				@Override
+				public void doWork() throws InvalidMoveException {
+				}
+
+				@Override
+				public void undoWork() throws InvalidMoveException {
+				}
+			};
+		}
+
+		@Override
+		public Function<ReactionCellData, Command> getDieValue() {
+			return reactionCellData -> new Command() {
+				@Override
+				public void doWork() throws InvalidMoveException {
+					int[] rowCol = reactionCellData.cellRowCol;
+					board.removeCell(rowCol[0], rowCol[1]);
+
+					PlayerData player = reactionCellData.cellPlayerData;
+					player.killPiece((PieceCell) reactionCellData.cell);
+				}
+
+				@Override
+				public void undoWork() throws InvalidMoveException {
+					PieceCell cell = (PieceCell) reactionCellData.cell;
+					PlayerData player = reactionCellData.cellPlayerData;
+					player.revivePiece(cell);
+
+					int[] rowCol = reactionCellData.cellRowCol;
+					board.addCell(cell, rowCol[0], rowCol[1]);
+				}
+			};
+		}
+
+		@Override
+		public Function<ReactionCellData, Command> getGetBumpedBackValue() {
+			throw new RuntimeException("TODO");
+		}
+
+		@Override
+		public Function<ReactionCellData, Command> getLoseTheGameValue() {
+			return reactionCellData -> new Command() {
+				private TurnState previousTurnState;
+
+				@Override
+				public void doWork() throws InvalidMoveException {
+					List<PlayerData> winners = players.stream()
+							.filter(p -> p != reactionCellData.cellPlayerData)
+							.collect(Collectors.toList());
+					if (winners.size() != 1) {
+						throw new IllegalGameStateException(String.format(
+								"Somehow there were %d winners",
+								winners.size()
+						));
+					}
+
+					winner = winners.get(0);
+					previousTurnState = turnState;
+				}
+
+				@Override
+				public void undoWork() throws InvalidMoveException {
+					winner = null;
+					turnState = previousTurnState;
+					previousTurnState = null;
+				}
+			};
+		}
+	}
 }

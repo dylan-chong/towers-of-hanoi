@@ -152,6 +152,17 @@ public class TextCommandStateMapper
 					return;
 				}
 
+				if (mustPass()) {
+					if (command.equals(PASS_COMMAND)) {
+						game.passTurnState();
+						return;
+					} else {
+						throw new ParseFormatException("Invalid command");
+					}
+				}
+
+				requireTokens(line, 3);
+
 				List<Board.CellPair> matches = game.getReactions()
 						.stream()
 						.filter(cellPair ->
@@ -175,19 +186,51 @@ public class TextCommandStateMapper
 			public String getInstructions() {
 				String instructions = "You can:\n";
 
-				Set<Board.CellPair> reactions = game.getReactions();
-				Set<String> idPairs = new HashSet<>();
-				for (Board.CellPair reaction : reactions) {
-					idPairs.add(reaction.getCellAId() + " " + reaction.getCellBId());
+				if (mustPass()) {
+					instructions += "- " + PASS_COMMAND;
+				} else {
+					Set<Board.CellPair> reactions = game.getReactions();
+					Set<String> idPairs = new HashSet<>();
+					for (Board.CellPair reaction : reactions) {
+						idPairs.add(reaction.getCellAId() + " " + reaction.getCellBId());
+					}
+					instructions += String.format(
+							"- %s <%s> // NOTE: Case sensitive",
+							REACT_COMMAND,
+							String.join(",", idPairs)
+					);
 				}
-				instructions += String.format(
-						"- %s <%s> // NOTE: Case sensitive",
-						REACT_COMMAND,
-						String.join(",", idPairs)
-				);
 
 				instructions += "\n- " + UNDO_COMMAND;
 				return instructions;
+			}
+
+			private boolean mustPass() {
+				return game.getReactions().isEmpty();
+			}
+		};
+	}
+
+	@Override
+	public TextCommandState getGameFinishedValue() {
+		return new TextCommandState() {
+			@Override
+			public void parseAndExecute(String line) throws ParseFormatException, InvalidMoveException {
+				String command = requireTokens(line, 1)[0];
+				if (!command.equals(UNDO_COMMAND)) {
+					throw new ParseFormatException("Invalid command");
+				}
+
+				game.undo();
+			}
+
+			@Override
+			public String getInstructions() {
+				char winnerId = game.getWinner()
+						.getPlayerCell()
+						.getId();
+				return String.format("Player %c won!\n", winnerId) +
+						"You can: " + UNDO_COMMAND;
 			}
 		};
 	}

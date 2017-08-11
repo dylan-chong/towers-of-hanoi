@@ -1,5 +1,8 @@
 package main.gamemodel.cells;
 
+import main.gamemodel.Direction;
+import main.gamemodel.cells.PieceCell.SideType;
+
 /**
  * The player cell
  */
@@ -36,6 +39,37 @@ public class PlayerCell extends BoardCell {
 	@Override
 	public char getId() {
 		return token.representation;
+	}
+
+	@Override
+	protected Reaction getReactionToPieceCell(PieceCell cell, Direction fromThisToCell) {
+		SideType side = cell.getSide(fromThisToCell.reversed());
+		return side.getFromMap(new SideType.Mapper<Reaction>() {
+			@Override
+			public Reaction getEmptyValue() {
+				return Reaction.DO_NOTHING;
+			}
+
+			@Override
+			public Reaction getSwordValue() {
+				return Reaction.LOSE_THE_GAME;
+			}
+
+			@Override
+			public Reaction getShieldValue() {
+				return Reaction.DO_NOTHING;
+			}
+		});
+	}
+
+	@Override
+	protected Reaction getReactionToPlayerCell(PlayerCell cell, Direction fromThisToCell) {
+		return Reaction.DO_NOTHING;
+	}
+
+	@Override
+	Reaction getReactionToByVisiting(BoardCell cell, Direction fromCellToThis) {
+		return cell.getReactionToPlayerCell(this, fromCellToThis);
 	}
 
 	public String getName() {
