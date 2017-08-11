@@ -3,7 +3,6 @@ package main;
 import main.gamemodel.Board;
 import main.gamemodel.GameModel;
 import main.textcontroller.GameTextController;
-import main.textcontroller.TextCommandStateMapper;
 import test.TestRunner;
 
 import java.io.PrintStream;
@@ -41,7 +40,6 @@ public class Main {
 				new Scanner(System.in),
 				out,
 				new GameTextController.AppExceptionHandler(out),
-				new TextCommandStateMapper(game),
 				game
 		);
 

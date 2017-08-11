@@ -18,12 +18,11 @@ public class GameTextController {
 	public GameTextController(Scanner textIn,
 							  PrintStream textOut,
 							  ExceptionHandler exceptionHandler,
-							  TextCommandStateMapper commandProvider,
 							  GameModel game) {
 		this.textIn = textIn;
 		this.textOut = textOut;
 		this.exceptionHandler = exceptionHandler;
-		this.commandProvider = commandProvider;
+		this.commandProvider = new TextCommandStateMapper(game, textOut);
 		this.game = game;
 	}
 

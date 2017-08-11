@@ -89,6 +89,7 @@ public class GameTextControllerTest {
 	public void runUntilGameEnd_gameInputsWithReactions_doesntCrash() {
 		// noinspection RedundantArrayCreation because trailing commas!
 		runUntilGameEnd_forInputLines_doesntCrash(true, new String[]{
+				"see A",
 				"create A 0",
 				"move A down",
 				"pass",
@@ -104,8 +105,11 @@ public class GameTextControllerTest {
 				"undo",
 				"react B A",
 				"pass",
+				"pass",
 
-
+				"create c 0",
+				"react a c",
+				"pass"
         });
 	}
 
@@ -129,7 +133,6 @@ public class GameTextControllerTest {
 				throwable -> {
 					throw new Error(throwable);
 				},
-				new TextCommandStateMapper(game),
 				game
 		);
 		textBoardController.runUntilGameEnd();
@@ -153,7 +156,6 @@ public class GameTextControllerTest {
 					throwable -> {
 						throw new Error(throwable);
 					},
-					new TextCommandStateMapper(gameSpy),
 					gameSpy
 			);
 

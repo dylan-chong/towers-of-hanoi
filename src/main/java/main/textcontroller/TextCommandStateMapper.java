@@ -1,7 +1,9 @@
 package main.textcontroller;
 
 import main.gamemodel.*;
+import main.gamemodel.cells.PieceCell;
 
+import java.io.PrintStream;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -17,11 +19,14 @@ public class TextCommandStateMapper
 	public static final String ROTATE_COMMAND = "rotate";
 	public static final String UNDO_COMMAND = "undo";
 	public static final String REACT_COMMAND = "react";
+	public static final String SEE_COMMAND = "see";
 
 	private final GameModel game;
+	private final PrintStream textOut;
 
-	public TextCommandStateMapper(GameModel game) {
+	public TextCommandStateMapper(GameModel game, PrintStream textOut) {
 		this.game = game;
+		this.textOut = textOut;
 	}
 
 	@Override
@@ -30,12 +35,18 @@ public class TextCommandStateMapper
 			@Override
 			public void parseAndExecute(String line)
 					throws ParseFormatException, InvalidMoveException {
-				String[] tokens = requireTokens(line, 1, 3);
+				String[] tokens = requireTokens(line, 1, 2, 3);
 				String command = tokens[0];
 
-				// TODO add see piece
-
 				switch (command) {
+					case SEE_COMMAND:
+						PieceCell piece = game.getCurrentPlayerData()
+								.findUnusedPiece(tokens[1].charAt(0));
+						String pieceStr = Textable.convertToString(
+								piece.toTextualRep(), true
+						);
+						textOut.println(pieceStr);
+						break;
 					case PASS_COMMAND:
 						game.passTurnState();
 						break;
@@ -58,11 +69,26 @@ public class TextCommandStateMapper
 						game.getCurrentPlayerData().getUnusedPieceIds(),
 						direction -> direction.degrees() + ""
 				);
+				String seeInstructions = String.format(
+						"%s <%s>",
+						SEE_COMMAND,
+						String.join(
+								"/",
+								game.getCurrentPlayerData()
+										.getUnusedPieceIds()
+										.stream()
+										.map(Object::toString)
+										.sorted()
+										.collect(Collectors.toList())
+						)
+				);
 				String instructions = String.format(
 						"You can:\n" +
 								"- %s\n" +
+								"- %s\n" +
 								"- %s",
 						commandInstructions,
+						seeInstructions,
 						PASS_COMMAND
 				);
 				if (game.canUndo()) {

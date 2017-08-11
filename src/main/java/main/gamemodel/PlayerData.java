@@ -116,6 +116,7 @@ public class PlayerData {
 		deadPieces.remove(cell.getId());
 		usedPieces.put(cell.getId(), cell);
 	}
+
 	/**
 	 * Finds a piece that is on the board
 	 * May return null
@@ -123,6 +124,11 @@ public class PlayerData {
 	public PieceCell findUsedPiece(char pieceID) {
 		pieceID = ensureCase(pieceID);
 		return usedPieces.get(pieceID);
+	}
+
+	public PieceCell findUnusedPiece(char pieceID) {
+		pieceID = ensureCase(pieceID);
+		return unusedPieces.get(pieceID);
 	}
 
 	public String getName() {
