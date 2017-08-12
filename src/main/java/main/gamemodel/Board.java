@@ -173,7 +173,7 @@ public class Board implements Textable {
 		}
 	}
 
-	interface CellConsumer {
+	private interface CellConsumer {
 		void apply(BoardCell cell, int row, int col);
 	}
 
