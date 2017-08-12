@@ -184,8 +184,8 @@ public class Board implements Textable {
 	 * cellA should be above or to the left of cellB
 	 */
 	public static class CellPair {
-		private final BoardCell cellA;
-		private final BoardCell cellB;
+		public final BoardCell cellA;
+		public final BoardCell cellB;
 
 		public CellPair(BoardCell cellA, BoardCell cellB) {
 			if (cellA.equals(cellB)) {
@@ -220,22 +220,6 @@ public class Board implements Textable {
 					cellA.getId(),
 					cellB.getId()
 			);
-		}
-
-		public char getCellAId() {
-			return cellA.getId();
-		}
-
-		public char getCellBId() {
-			return cellB.getId();
-		}
-
-		public BoardCell getCellA() {
-			return cellA;
-		}
-
-		public BoardCell getCellB() {
-			return cellB;
 		}
 	}
 }

@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.mockito.Matchers.anyChar;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.*;
@@ -108,10 +109,28 @@ public class GameTextControllerTest {
 								.getToken()
 				);
 			}
+		}.run();
+	}
 
+	@Test
+	public void runUntilGameEnd_shieldTouchingShield_noReaction()
+			throws Exception {
+		List<String> input = Arrays.asList(
+				"create C 0",
+				"move C down",
+				"pass",
+
+				"create a 0",
+				"move a up",
+				"pass",
+
+				"create D 0" // D and C's shields touch
+		);
+
+		new TestRunUntilGameEnd(input) {
 			@Override
-			protected PrintStream getTextOutput() {
-				return System.out; // TODO
+			public void runVerifications(GameModel gameSpy) throws Exception {
+				assertNotEquals(TurnState.RESOLVING_REACTIONS, gameSpy.getTurnState());
 			}
 		}.run();
 	}
@@ -122,7 +141,7 @@ public class GameTextControllerTest {
 	@Test
 	public void runUntilGameEnd_gameInputsWithReactions_doesntCrash() {
 		// noinspection RedundantArrayCreation because trailing commas!
-		runUntilGameEnd_forInputLines_doesntCrash(true, new String[]{
+		runUntilGameEnd_forInputLines_doesntCrash(new String[]{
 				"see A",
 				"create A 0",
 				"move A down",
@@ -153,11 +172,10 @@ public class GameTextControllerTest {
         });
 	}
 
-	private static void runUntilGameEnd_forInputLines_doesntCrash(
-			String... inputLines
-	) {
+	private static void runUntilGameEnd_forInputLines_doesntCrash(String... inputLines) {
 		runUntilGameEnd_forInputLines_doesntCrash(false, inputLines);
 	}
+
 	private static void runUntilGameEnd_forInputLines_doesntCrash(
 			boolean printToStandardOut,
 			String... inputLines

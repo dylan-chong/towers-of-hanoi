@@ -2,7 +2,6 @@ package main.gamemodel;
 
 import main.gamemodel.cells.BoardCell;
 import main.gamemodel.cells.PieceCell;
-import main.gamemodel.cells.PieceCell.SideType;
 import main.gamemodel.cells.PlayerCell;
 import main.gamemodel.cells.Reaction;
 
@@ -264,40 +263,27 @@ public class GameModel implements Textable {
 		return !getReactions().isEmpty();
 	}
 
-	public Set<Board.CellPair> getReactions() {
+	public Collection<ReactionData.Pair> getReactions() {
 		return board.findTouchingCellPairs()
 				.stream()
-				.filter(cellPair -> {
-					if (!areBothPieces(cellPair)) {
-						return true;
-					}
-					if (!isShieldVsShield(cellPair)) {
-						return true;
-					}
-					return false;
-				})
-				.collect(Collectors.toSet());
+				.map(cellPair -> new ReactionData.Pair(
+						cellPair,
+						board::rowColOf,
+						this::getPlayerOfCell
+				))
+				.filter(pair -> !pair.isBlankReaction())
+				.collect(Collectors.toList());
 	}
 
-	public void react(Board.CellPair cellPair) throws InvalidMoveException {
-		if (!getReactions().contains(cellPair)) {
+	public void react(ReactionData.Pair reactionDataPair) throws InvalidMoveException {
+		if (!getReactions().contains(reactionDataPair)) {
 			throw new InvalidMoveException("These cells aren't able to react");
 		}
 
-		BoardCell cellA = cellPair.getCellA();
-		BoardCell cellB = cellPair.getCellB();
-		int[] cellARowCol = board.rowColOf(cellA);
-		int[] cellBRowCol = board.rowColOf(cellB);
-		ReactionCellData dataA = new ReactionCellData(
-				cellA, cellARowCol, cellB, cellBRowCol,
-				getPlayerOfCell(cellA)
-		);
-		ReactionCellData dataB = new ReactionCellData(
-				cellB, cellBRowCol, cellA, cellARowCol,
-				getPlayerOfCell(cellB)
-		);
-
 		ReactionApplier reactionApplier = new ReactionApplier();
+
+		ReactionData dataA = reactionDataPair.dataA;
+		ReactionData dataB = reactionDataPair.dataB;
 
 		Command commandA = dataA.reaction
 				.getFromMap(reactionApplier)
@@ -305,6 +291,7 @@ public class GameModel implements Textable {
 		Command commandB = dataB.reaction
 				.getFromMap(reactionApplier)
 				.apply(dataB);
+
 		doCommandWork(new Command() {
 			@Override
 			public void doWork() throws InvalidMoveException {
@@ -324,6 +311,13 @@ public class GameModel implements Textable {
 		});
 	}
 
+	public PlayerData getWinner() {
+		if (turnState != TurnState.GAME_FINISHED) {
+			throw new IllegalGameStateException("The game is not finished yet");
+		}
+		return winner;
+	}
+
 	private PlayerData getPlayerOfCell(BoardCell cell) {
 		return players.stream()
 				.filter(data -> data.ownsPiece(cell))
@@ -331,41 +325,6 @@ public class GameModel implements Textable {
 				.orElseThrow(() -> new IllegalGameStateException(
 						"A player does not have the cell"
 				));
-	}
-
-	private SideType[] getTouchingSides(PieceCell pieceA,
-										PieceCell pieceB) {
-		SideType sideA = pieceA.getTouchingSide(
-				board.rowColOf(pieceA),
-				board.rowColOf(pieceB)
-		);
-		SideType sideB = pieceA.getTouchingSide(
-				board.rowColOf(pieceB),
-				board.rowColOf(pieceA)
-		);
-		return new SideType[]{sideA, sideB};
-	}
-
-	private boolean areBothPieces(Board.CellPair pair) {
-		return pair.getCellA() instanceof PieceCell &&
-				pair.getCellB() instanceof PieceCell;
-	}
-
-	private boolean isShieldVsShield(Board.CellPair pair) {
-		if (!areBothPieces(pair)) {
-			throw new RuntimeException(
-					"One or more cells are not pieces so they both cannot be " +
-						"facing each other with shields"
-			);
-		}
-
-		SideType[] touchingSides = getTouchingSides(
-				(PieceCell) pair.getCellA(),
-				(PieceCell) pair.getCellB()
-		);
-		return Arrays
-				.stream(touchingSides)
-				.allMatch(sideType -> sideType == SideType.SHIELD);
 	}
 
 	private void doCommandWork(Command command) throws InvalidMoveException {
@@ -396,13 +355,6 @@ public class GameModel implements Textable {
 		} catch (InvalidMoveException e) {
 			throw new Error(e);
 		}
-	}
-
-	public PlayerData getWinner() {
-		if (turnState != TurnState.GAME_FINISHED) {
-			throw new IllegalGameStateException("The game is not finished yet");
-		}
-		return winner;
 	}
 
 	private interface Command {
@@ -503,37 +455,12 @@ public class GameModel implements Textable {
 		}
 	}
 
-	private static class ReactionCellData {
-		public final BoardCell cell;
-		public final int[] cellRowCol;
-		public final BoardCell cellReactedTo;
-		public final int[] cellReactedToRowCol;
-		public final Reaction reaction;
-		public final PlayerData cellPlayerData;
-
-		public ReactionCellData(BoardCell cell,
-								int[] cellRowCol,
-								BoardCell cellReactedTo,
-								int[] cellReactedToRowCol,
-								PlayerData cellPlayerData) {
-			this.cell = cell;
-			this.cellRowCol = cellRowCol;
-			this.cellReactedTo = cellReactedTo;
-			this.cellReactedToRowCol = cellReactedToRowCol;
-			this.cellPlayerData = cellPlayerData;
-			this.reaction = cell.getReactionTo(
-					cellReactedTo,
-					Direction.fromAToB(cellRowCol, cellReactedToRowCol)
-			);
-		}
-	}
-
 	private class ReactionApplier
-			implements Reaction.Mapper<Function<ReactionCellData, Command>> {
+			implements Reaction.Mapper<Function<ReactionData, Command>> {
 
 		@Override
-		public Function<ReactionCellData, Command> getDoNothingValue() {
-			return reactionCellData -> new Command() {
+		public Function<ReactionData, Command> getDoNothingValue() {
+			return reactionData -> new Command() {
 				@Override
 				public void doWork() throws InvalidMoveException {
 				}
@@ -545,41 +472,41 @@ public class GameModel implements Textable {
 		}
 
 		@Override
-		public Function<ReactionCellData, Command> getDieValue() {
-			return reactionCellData -> new Command() {
+		public Function<ReactionData, Command> getDieValue() {
+			return reactionData -> new Command() {
 				@Override
 				public void doWork() throws InvalidMoveException {
-					int[] rowCol = reactionCellData.cellRowCol;
+					int[] rowCol = reactionData.cellRowCol;
 					board.removeCell(rowCol[0], rowCol[1]);
 
-					PlayerData player = reactionCellData.cellPlayerData;
-					player.killPiece((PieceCell) reactionCellData.cell);
+					PlayerData player = reactionData.cellPlayerData;
+					player.killPiece((PieceCell) reactionData.cell);
 				}
 
 				@Override
 				public void undoWork() throws InvalidMoveException {
-					PieceCell cell = (PieceCell) reactionCellData.cell;
-					PlayerData player = reactionCellData.cellPlayerData;
+					PieceCell cell = (PieceCell) reactionData.cell;
+					PlayerData player = reactionData.cellPlayerData;
 					player.revivePiece(cell);
 
-					int[] rowCol = reactionCellData.cellRowCol;
+					int[] rowCol = reactionData.cellRowCol;
 					board.addCell(cell, rowCol[0], rowCol[1]);
 				}
 			};
 		}
 
 		@Override
-		public Function<ReactionCellData, Command> getGetBumpedBackValue() {
-			return reactionCellData -> new Command() {
+		public Function<ReactionData, Command> getGetBumpedBackValue() {
+			return reactionData -> new Command() {
 				// TODO stack
 				int[] originalRowCol;
 				int[] nextRowCol;
 
 				@Override
 				public void doWork() throws InvalidMoveException {
-					originalRowCol = reactionCellData.cellRowCol;
+					originalRowCol = reactionData.cellRowCol;
 					Direction moveDir = Direction.fromAToB(
-							reactionCellData.cellReactedToRowCol,
+							reactionData.cellReactedToRowCol,
 							originalRowCol
 					);
 					nextRowCol = moveDir.shift(originalRowCol);
@@ -597,14 +524,14 @@ public class GameModel implements Textable {
 					}
 
 					board.removeCell(originalRowCol[0], originalRowCol[1]);
-					board.addCell(reactionCellData.cell, nextRowCol[0], nextRowCol[1]);
+					board.addCell(reactionData.cell, nextRowCol[0], nextRowCol[1]);
 				}
 
 				@Override
 				public void undoWork() throws InvalidMoveException {
 					board.removeCell(nextRowCol[0], nextRowCol[1]);
 					board.addCell(
-							reactionCellData.cell,
+							reactionData.cell,
 							originalRowCol[0], originalRowCol[1]
 					);
 				}
@@ -612,14 +539,14 @@ public class GameModel implements Textable {
 		}
 
 		@Override
-		public Function<ReactionCellData, Command> getLoseTheGameValue() {
-			return reactionCellData -> new Command() {
+		public Function<ReactionData, Command> getLoseTheGameValue() {
+			return reactionData -> new Command() {
 				private TurnState previousTurnState;
 
 				@Override
 				public void doWork() throws InvalidMoveException {
 					List<PlayerData> winners = players.stream()
-							.filter(p -> p != reactionCellData.cellPlayerData)
+							.filter(p -> p != reactionData.cellPlayerData)
 							.collect(Collectors.toList());
 					if (winners.size() != 1) {
 						throw new IllegalGameStateException(String.format(

@@ -189,11 +189,11 @@ public class TextCommandStateMapper
 
 				requireTokens(line, 3);
 
-				List<Board.CellPair> matches = game.getReactions()
+				List<ReactionData.Pair> matches = game.getReactions()
 						.stream()
 						.filter(cellPair ->
-								cellPair.getCellAId() == tokens[1].charAt(0) &&
-								cellPair.getCellBId() == tokens[2].charAt(0)
+								cellPair.dataA.cell.getId() == tokens[1].charAt(0) &&
+								cellPair.dataB.cell.getId() == tokens[2].charAt(0)
 						)
 						.collect(Collectors.toList());
 				if (matches.isEmpty()) {
@@ -215,10 +215,14 @@ public class TextCommandStateMapper
 				if (mustPass()) {
 					instructions += "- " + PASS_COMMAND;
 				} else {
-					Set<Board.CellPair> reactions = game.getReactions();
+					Collection<ReactionData.Pair> reactions = game.getReactions();
 					Set<String> idPairs = new HashSet<>();
-					for (Board.CellPair reaction : reactions) {
-						idPairs.add(reaction.getCellAId() + " " + reaction.getCellBId());
+					for (ReactionData.Pair reactionPair : reactions) {
+						idPairs.add(String.format(
+								"%s %s",
+								reactionPair.dataA.cell.getId(),
+								reactionPair.dataA.cell.getId()
+						));
 					}
 					instructions += String.format(
 							"- %s <%s> // NOTE: Case sensitive",
