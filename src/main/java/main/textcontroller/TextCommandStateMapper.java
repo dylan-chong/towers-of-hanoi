@@ -256,7 +256,7 @@ public class TextCommandStateMapper
 						.getPlayerCell()
 						.getId();
 				return String.format("Player %c won!\n", winnerId) +
-						"You can: " + UNDO_COMMAND;
+						"You can:\n- " + UNDO_COMMAND;
 			}
 		};
 	}

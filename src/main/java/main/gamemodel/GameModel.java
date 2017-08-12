@@ -629,8 +629,8 @@ public class GameModel implements Textable {
 					}
 
 					winner = winners.get(0);
-					turnState = TurnState.GAME_FINISHED;
 					previousTurnState = turnState;
+					turnState = TurnState.GAME_FINISHED;
 				}
 
 				@Override

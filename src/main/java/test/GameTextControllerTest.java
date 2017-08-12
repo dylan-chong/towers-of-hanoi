@@ -90,6 +90,10 @@ public class GameTextControllerTest {
 		List<String> input = Arrays.asList(
 				"create A 0",
 				"move A up",
+				"react 1 A",
+				"undo",
+				"react 1 A",
+				"undo",
 				"react 1 A"
 		);
 
@@ -147,9 +151,6 @@ public class GameTextControllerTest {
 				"react a c",
 				"pass",
         });
-
-		// TODO test losing the game
-		// TODO implement bumped back
 	}
 
 	private static void runUntilGameEnd_forInputLines_doesntCrash(
