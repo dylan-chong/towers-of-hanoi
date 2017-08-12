@@ -498,7 +498,6 @@ public class GameModel implements Textable {
 		@Override
 		public Function<ReactionData, Command> getGetBumpedBackValue() {
 			return reactionData -> new Command() {
-				// TODO stack
 				int[] originalRowCol;
 				int[] nextRowCol;
 
@@ -542,6 +541,7 @@ public class GameModel implements Textable {
 		public Function<ReactionData, Command> getLoseTheGameValue() {
 			return reactionData -> new Command() {
 				private TurnState previousTurnState;
+				private int[] loserCellRowCol;
 
 				@Override
 				public void doWork() throws InvalidMoveException {
@@ -558,13 +558,25 @@ public class GameModel implements Textable {
 					winner = winners.get(0);
 					previousTurnState = turnState;
 					turnState = TurnState.GAME_FINISHED;
+
+					loserCellRowCol = board.rowColOf(
+							reactionData.cellPlayerData.getPlayerCell()
+					);
+					board.removeCell(loserCellRowCol[0], loserCellRowCol[1]);
 				}
 
 				@Override
 				public void undoWork() throws InvalidMoveException {
+					board.addCell(
+							reactionData.cellPlayerData.getPlayerCell(),
+							loserCellRowCol[0], loserCellRowCol[1]
+					);
+
 					winner = null;
 					turnState = previousTurnState;
+
 					previousTurnState = null;
+					loserCellRowCol = null;
 				}
 			};
 		}

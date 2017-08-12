@@ -16,7 +16,6 @@ import java.util.Scanner;
 public class Main {
 	public static void main(String[] args) {
 		List<String> argsList = Arrays.asList(args);
-
 		if (argsList.contains("--test")) {
 			TestRunner.run();
 		} else {

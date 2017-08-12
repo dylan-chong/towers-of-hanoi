@@ -47,7 +47,8 @@ public class GameTextController {
 				exceptionHandler.handle(e);
 			} catch (RuntimeException | Error e) {
 				String message = "There was an error making your move";
-				if (e.getMessage() != null) {
+				if (!(e instanceof ArrayIndexOutOfBoundsException) &&
+                        e.getMessage() != null) {
 					message += ": " + e.getMessage();
 				}
 				exceptionHandler.handle(new Exception(message, e));
@@ -60,12 +61,17 @@ public class GameTextController {
 	private String getGameString() {
 		String gameRep = Textable.convertToString(game.toTextualRep(), true);
 		String playerName = game.getCurrentPlayerData().getName();
+		String gameStateName = game.getTurnState()
+				.name()
+				.replaceAll("_", " ")
+				.trim();
 		String instructions = game.getTurnState()
 				.getFromMap(commandProvider)
 				.getInstructions();
 
 		return gameRep +
 				"\nThe current player is: " + playerName +
+				"\nThe current state is: " + gameStateName +
 				"\n" + instructions;
 	}
 

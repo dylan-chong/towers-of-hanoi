@@ -137,6 +137,9 @@ public class GameTextControllerTest {
 
 	/**
 	 * Yea i know this is really lazy, but i was running out of time!
+	 *
+	 * On the other hand, let's call this an integration test.
+	 * A do-almost-all-the-things integration test. That sounds better!
 	 */
 	@Test
 	public void runUntilGameEnd_gameInputsWithReactions_doesntCrash() {

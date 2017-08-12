@@ -221,7 +221,7 @@ public class TextCommandStateMapper
 						idPairs.add(String.format(
 								"%s %s",
 								reactionPair.dataA.cell.getId(),
-								reactionPair.dataA.cell.getId()
+								reactionPair.dataB.cell.getId()
 						));
 					}
 					instructions += String.format(
