@@ -4,10 +4,8 @@ import main.gamemodel.cells.BoardCell;
 import main.gamemodel.cells.PieceCell;
 import main.gamemodel.cells.PlayerCell;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Stream;
 
 import static main.gamemodel.cells.PieceCell.SideCombination;
 
@@ -140,7 +138,9 @@ public class PlayerData {
 			return true;
 		}
 
-		return ensureCase(cell.getId()) == cell.getId();
+		return Stream.of(unusedPieces, usedPieces, deadPieces)
+				.anyMatch(map -> map.containsKey(cell.getId()));
+
 	}
 
 	private char ensureCase(char pieceID) {

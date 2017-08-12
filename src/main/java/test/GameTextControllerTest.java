@@ -113,6 +113,36 @@ public class GameTextControllerTest {
 	}
 
 	@Test
+	public void runUntilGameEnd_player0Dies_player1Wins()
+			throws Exception {
+		List<String> input = Arrays.asList(
+				"pass",
+				"pass",
+
+				"create a 90",
+				"move a down",
+				"react a 0",
+				"undo",
+				"react a 0",
+				"undo",
+				"react a 0"
+		);
+
+		new TestRunUntilGameEnd(input) {
+			@Override
+			public void runVerifications(GameModel gameSpy) throws Exception {
+				assertEquals(TurnState.GAME_FINISHED, gameSpy.getTurnState());
+				assertEquals(
+						PlayerCell.Token.ANGRY,
+						gameSpy.getWinner()
+								.getPlayerCell()
+								.getToken()
+				);
+			}
+		}.run();
+	}
+
+	@Test
 	public void runUntilGameEnd_shieldTouchingShield_noReaction()
 			throws Exception {
 		List<String> input = Arrays.asList(

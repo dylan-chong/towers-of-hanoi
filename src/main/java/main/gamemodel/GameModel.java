@@ -293,17 +293,21 @@ public class GameModel implements Textable {
 				.apply(dataB);
 
 		doCommandWork(new Command() {
+			boolean didRunCommandB = false;
+
 			@Override
 			public void doWork() throws InvalidMoveException {
 				commandA.doWork();
+				didRunCommandB = false;
 				if (turnState != TurnState.GAME_FINISHED) {
 					commandB.doWork();
+					didRunCommandB = true;
 				}
 			}
 
 			@Override
 			public void undoWork() throws InvalidMoveException {
-				if (turnState != TurnState.GAME_FINISHED) {
+				if (didRunCommandB) {
 					commandB.undoWork();
 				}
 				commandA.undoWork();
