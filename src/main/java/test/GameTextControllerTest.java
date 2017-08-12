@@ -141,6 +141,10 @@ public class GameTextControllerTest {
 
 				"create c 0",
 				"react a c",
+				"undo",
+				"react a c",
+				"undo",
+				"react a c",
 				"pass",
         });
 

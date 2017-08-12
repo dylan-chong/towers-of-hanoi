@@ -20,8 +20,4 @@ public class TestUtils {
 		String arrayStr = convertToString(actualArray);
 		assertNotEquals(expectedStr, arrayStr);
 	}
-
-	public interface ThrowingConsumer<T> {
-		void accept(T param) throws Exception;
-	}
 }

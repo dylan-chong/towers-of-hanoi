@@ -149,6 +149,16 @@ public class Board implements Textable {
 		return pairs;
 	}
 
+	public boolean isInside(int row, int col) {
+		try {
+			// noinspection unused
+			BoardCell boardCell = cells[row][col];
+			return true;
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return false;
+		}
+	}
+
 	/**
 	 * This is here to reduce nested for loop
 	 * @param consumer A function that does stuff to each cell

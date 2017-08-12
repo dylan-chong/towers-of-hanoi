@@ -570,7 +570,45 @@ public class GameModel implements Textable {
 
 		@Override
 		public Function<ReactionCellData, Command> getGetBumpedBackValue() {
-			throw new RuntimeException("TODO");
+			return reactionCellData -> new Command() {
+				// TODO stack
+				int[] originalRowCol;
+				int[] nextRowCol;
+
+				@Override
+				public void doWork() throws InvalidMoveException {
+					originalRowCol = reactionCellData.cellRowCol;
+					Direction moveDir = Direction.fromAToB(
+							reactionCellData.cellReactedToRowCol,
+							originalRowCol
+					);
+					nextRowCol = moveDir.shift(originalRowCol);
+
+					if (!board.isInside(nextRowCol[0], nextRowCol[1])) {
+						throw new InvalidMoveException(
+								"Can't push a cell outside the board (TODO)"
+						);
+					}
+
+					if (board.getCellAt(nextRowCol[0], nextRowCol[1]) != null) {
+						throw new InvalidMoveException(
+								"Can't push a cell into another cell (TODO)"
+						);
+					}
+
+					board.removeCell(originalRowCol[0], originalRowCol[1]);
+					board.addCell(reactionCellData.cell, nextRowCol[0], nextRowCol[1]);
+				}
+
+				@Override
+				public void undoWork() throws InvalidMoveException {
+					board.removeCell(nextRowCol[0], nextRowCol[1]);
+					board.addCell(
+							reactionCellData.cell,
+							originalRowCol[0], originalRowCol[1]
+					);
+				}
+			};
 		}
 
 		@Override
