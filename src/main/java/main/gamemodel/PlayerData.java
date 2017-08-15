@@ -71,6 +71,14 @@ public class PlayerData {
 		return Collections.unmodifiableSet(usedPieces.keySet());
 	}
 
+	public Collection<Character> getDeadPieceIds() {
+		return Collections.unmodifiableSet(deadPieces.keySet());
+	}
+
+	public int getTotalNumPieces() {
+		return SideCombination.values().length;
+	}
+
 	/**
 	 * @param pieceID Case insensitive
 	 * @return The piece if it is unused, null if the piece is already used
@@ -127,6 +135,11 @@ public class PlayerData {
 	public PieceCell findUnusedPiece(char pieceID) {
 		pieceID = ensureCase(pieceID);
 		return unusedPieces.get(pieceID);
+	}
+
+	public PieceCell findDeadPiece(char pieceID) {
+		pieceID = ensureCase(pieceID);
+		return deadPieces.get(pieceID);
 	}
 
 	public String getName() {

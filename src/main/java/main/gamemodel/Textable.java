@@ -1,5 +1,12 @@
 package main.gamemodel;
 
+import main.gamemodel.cells.BoardCell;
+
+import java.util.List;
+
+import static main.gamemodel.cells.BoardCell.TEXTUAL_REP_HEIGHT;
+import static main.gamemodel.cells.BoardCell.TEXTUAL_REP_WIDTH;
+
 /**
  * Something that can be represented by text
  */
@@ -69,6 +76,19 @@ public interface Textable {
 				largerRep[largerRow][largerCol] = toCopy[r][c];
 			}
 		}
+	}
+
+	static char[][] copyRowIntoRep(List<? extends BoardCell> cells) {
+		char[][] rep = Textable.blankTextualRep(
+				TEXTUAL_REP_HEIGHT,
+				TEXTUAL_REP_WIDTH * cells.size()
+		);
+		for (int i = 0; i < cells.size(); i++) {
+			char[][] chars = cells.get(i).toTextualRep();
+			Textable.copyRepIntoRep(chars, rep, 0, i * TEXTUAL_REP_WIDTH);
+		}
+
+		return rep;
 	}
 
 	/**

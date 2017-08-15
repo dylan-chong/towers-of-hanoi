@@ -3,11 +3,17 @@ package main.textcontroller;
 import main.ExceptionHandler;
 import main.Main;
 import main.gamemodel.*;
+import main.gamemodel.cells.PieceCell;
 
 import java.io.PrintStream;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class GameTextController {
+
+	private static final boolean WITH_GAP = true;
 
 	private final Scanner textIn;
 	private final PrintStream textOut;
@@ -59,7 +65,6 @@ public class GameTextController {
 	}
 
 	private String getGameString() {
-		String gameRep = Textable.convertToString(game.toTextualRep(), true);
 		String playerName = game.getCurrentPlayerData().getName();
 		String gameStateName = game.getTurnState()
 				.name()
@@ -69,10 +74,46 @@ public class GameTextController {
 				.getFromMap(commandProvider)
 				.getInstructions();
 
-		return gameRep +
+		return getGameRepresentation() +
 				"\nThe current player is: " + playerName +
 				"\nThe current state is: " + gameStateName +
 				"\n" + instructions;
+	}
+
+	private String getGameRepresentation() {
+		PlayerData player = game.getCurrentPlayerData();
+		List<PieceCell> unusedCells = player.getUnusedPieceIds()
+				.stream()
+				.map(player::findUnusedPiece)
+				.sorted(Comparator.comparingInt(PieceCell::getId))
+				.collect(Collectors.toList());
+
+		List<List<PieceCell>> deadPieces = game.getPlayers()
+				.stream()
+				.map(playerData -> playerData.getDeadPieceIds()
+						.stream()
+						.map(playerData::findDeadPiece)
+						.sorted(Comparator.comparingInt(PieceCell::getId))
+						.collect(Collectors.toList())
+				)
+				.collect(Collectors.toList());
+
+		StringBuilder representation = new StringBuilder(
+				Textable.convertToString(game.toTextualRep(), WITH_GAP)
+		);
+
+		representation.append("\nYour unused cells:\n");
+		representation.append(Textable.convertToString(
+				Textable.copyRowIntoRep(unusedCells), WITH_GAP
+		));
+
+		representation.append("\nCemetery\n");
+		for (List<PieceCell> deadPieceList : deadPieces) {
+			char[][] rep = Textable.copyRowIntoRep(deadPieceList);
+			representation.append(Textable.convertToString(rep, WITH_GAP));
+		}
+
+		return representation.toString();
 	}
 
 	public static class AppExceptionHandler implements ExceptionHandler {

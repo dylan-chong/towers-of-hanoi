@@ -77,6 +77,10 @@ public class GameModel implements Textable {
 		return players.get(currentPlayerIndex);
 	}
 
+	public List<PlayerData> getPlayers() {
+		return Collections.unmodifiableList(players);
+	}
+
 	@Override
 	public char[][] toTextualRep() {
 		return board.toTextualRep();
