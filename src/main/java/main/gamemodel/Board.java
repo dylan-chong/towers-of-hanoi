@@ -10,8 +10,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Board implements Textable {
 
-	private static final int DEFAULT_NUM_COLS = 10;
-	private static final int DEFAULT_NUM_ROWS = 10;
+	public static final int DEFAULT_NUM_COLS = 10;
+	public static final int DEFAULT_NUM_ROWS = 10;
 
 	private final BoardCell[][] cells;
 
