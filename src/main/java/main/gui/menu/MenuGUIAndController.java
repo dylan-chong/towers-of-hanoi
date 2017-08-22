@@ -5,6 +5,8 @@ import main.gui.cardview.GUICardName;
 import main.gui.cardview.GUICardView;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 
 /**
@@ -14,6 +16,7 @@ import java.awt.event.ActionEvent;
 public class MenuGUIAndController implements GUICard {
 	private static final String INFO_TITLE = "Info";
 	private static final String INFO_MESSAGE = "By Dylan Chong";
+	private static final int BORDER_SIZE = 30;
 
 	private final GUICardView guiCardView;
 	private final JPanel rootJPanel;
@@ -23,18 +26,34 @@ public class MenuGUIAndController implements GUICard {
 
 		rootJPanel = new JPanel();
 		rootJPanel.setLayout(new BoxLayout(rootJPanel, BoxLayout.Y_AXIS));
+		rootJPanel.setBorder(new EmptyBorder(
+				BORDER_SIZE,
+				BORDER_SIZE,
+				BORDER_SIZE,
+				BORDER_SIZE
+		));
+
+		JLabel gameTitle = new JLabel(GUICardView.GAME_NAME);
+		gameTitle.setFont(new Font(null, Font.BOLD, 30));
+		addMenuComponent(gameTitle);
 
 		JButton beginNewGameButton = new JButton("Begin new game");
 		beginNewGameButton.addActionListener(this::beginGameButtonClicked);
-		rootJPanel.add(beginNewGameButton);
+		addMenuComponent(beginNewGameButton);
 
 		JButton infoButton = new JButton("Info");
 		infoButton.addActionListener(this::infoButtonClicked);
-		rootJPanel.add(infoButton);
+		addMenuComponent(infoButton);
 
 		JButton quitButton = new JButton("Quit");
 		quitButton.addActionListener(this::quitButtonClicked);
-		rootJPanel.add(quitButton);
+		addMenuComponent(quitButton);
+	}
+
+	public void addMenuComponent(JComponent jComponent) {
+		jComponent.setAlignmentX(Component.CENTER_ALIGNMENT);
+		jComponent.setAlignmentY(Component.CENTER_ALIGNMENT);
+		rootJPanel.add(jComponent);
 	}
 
 	@Override

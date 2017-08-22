@@ -7,7 +7,8 @@ import java.awt.*;
  * The main frame and layout for the gui
  */
 public class GUICardView {
-	private static final String WINDOW_TITLE = "Swords and Shields";
+	public static final String GAME_NAME = "Swords and Shields";
+	public static final String WINDOW_TITLE = GAME_NAME;
 
 	private final JPanel jPanel;
 	private final JFrame jFrame;
