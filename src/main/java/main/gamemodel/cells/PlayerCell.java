@@ -72,6 +72,11 @@ public class PlayerCell extends BoardCell {
 		return cell.getReactionToPlayerCell(this, fromCellToThis);
 	}
 
+	@Override
+	public <ReturnT> ReturnT accept(BoardCellGenericGetter<ReturnT> getter) {
+		return getter.visitPlayerCell(this);
+	}
+
 	public String getName() {
 		return String.format("%s (%s)", token.name(), token.representation);
 	}

@@ -47,4 +47,5 @@ public abstract class BoardCell implements Textable {
 	abstract Reaction getReactionToByVisiting(BoardCell cell,
 											  Direction fromCellToThis);
 
+	public abstract <ReturnT> ReturnT accept(BoardCellGenericGetter<ReturnT> getter);
 }

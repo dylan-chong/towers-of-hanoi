@@ -46,6 +46,11 @@ public class PieceCell extends BoardCell {
 	}
 
 	@Override
+	public <ReturnT> ReturnT accept(BoardCellGenericGetter<ReturnT> getter) {
+		return getter.visitPieceCell(this);
+	}
+
+	@Override
 	protected Reaction getReactionToPieceCell(PieceCell cell, Direction fromThisToCell) {
 		SideType thisSide = getSide(fromThisToCell);
 		SideType cellSide = cell.getSide(fromThisToCell.reversed());
