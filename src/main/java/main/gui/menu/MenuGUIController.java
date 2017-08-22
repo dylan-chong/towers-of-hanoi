@@ -1,6 +1,7 @@
 package main.gui.menu;
 
 import main.gui.GUICardManager;
+import main.gui.GUICardName;
 
 import java.awt.event.ActionEvent;
 
@@ -15,7 +16,7 @@ public class MenuGUIController {
 	}
 
 	public void beginGameButtonClicked(ActionEvent actionEvent) {
-		// TODO
+		guiCardManager.setCurrentView(GUICardName.GAME);
 	}
 
 	public void infoButtonClicked(ActionEvent actionEvent) {

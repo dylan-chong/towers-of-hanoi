@@ -1,6 +1,10 @@
 package main;
 
+import main.gamemodel.Board;
+import main.gamemodel.GameModel;
 import main.gui.GUICardManager;
+import main.gui.game.GameGUI;
+import main.gui.game.GameGUIController;
 import main.gui.menu.MenuGUI;
 import main.gui.menu.MenuGUIController;
 import main.gui.menu.MenuModel;
@@ -40,6 +44,11 @@ public class Main {
 		);
 		MenuGUI menuGUI = new MenuGUI(menuModel, menuGUIController);
 		guiCardManager.addView(menuGUI);
+
+		GameModel gameModel = new GameModel(new Board());
+		GameGUIController gameGUIController = new GameGUIController(gameModel);
+		GameGUI gameGUI = new GameGUI(gameGUIController);
+		guiCardManager.addView(gameGUI);
 
 		guiCardManager.setCurrentView(menuGUI);
 		guiCardManager.show();
