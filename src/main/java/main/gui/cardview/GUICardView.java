@@ -1,8 +1,11 @@
-package main.gui;
+package main.gui.cardview;
 
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The main frame and layout for the gui
+ */
 public class GUICardView {
 	private static final String WINDOW_TITLE = "Swords and Shields";
 

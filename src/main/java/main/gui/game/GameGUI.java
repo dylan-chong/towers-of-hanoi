@@ -1,10 +1,11 @@
 package main.gui.game;
 
 import main.gamemodel.GameModel;
-import main.gui.GUICard;
-import main.gui.GUICardName;
+import main.gui.cardview.GUICard;
+import main.gui.cardview.GUICardName;
 
 import javax.swing.*;
+import java.util.Observable;
 import java.util.Observer;
 
 public class GameGUI implements GUICard, Observer {
@@ -27,5 +28,10 @@ public class GameGUI implements GUICard, Observer {
 	@Override
 	public GUICardName getCardName() {
 		return GUICardName.GAME;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO LATER
 	}
 }

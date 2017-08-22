@@ -2,12 +2,10 @@ package main;
 
 import main.gamemodel.Board;
 import main.gamemodel.GameModel;
-import main.gui.GUICardView;
+import main.gui.cardview.GUICardView;
 import main.gui.game.GameGUI;
 import main.gui.game.GameGUIController;
-import main.gui.menu.MenuGUI;
-import main.gui.menu.MenuGUIController;
-import main.gui.menu.MenuModel;
+import main.gui.menu.MenuGUIAndController;
 import test.TestRunner;
 
 import java.util.Arrays;
@@ -38,12 +36,9 @@ public class Main {
 	private static void startApp() {
 		GUICardView guiCardView = new GUICardView();
 
-		MenuModel menuModel = new MenuModel();
-		MenuGUIController menuGUIController = new MenuGUIController(
-				menuModel, guiCardView
-		);
-		MenuGUI menuGUI = new MenuGUI(menuModel, menuGUIController);
-		guiCardView.addView(menuGUI);
+		MenuGUIAndController menuGUIAndController =
+				new MenuGUIAndController(guiCardView);
+		guiCardView.addView(menuGUIAndController);
 
 		// TODO LATER create a new game each time
 		GameModel gameModel = new GameModel(new Board());
@@ -51,7 +46,7 @@ public class Main {
 		GameGUI gameGUI = new GameGUI(gameModel, gameGUIController);
 		guiCardView.addView(gameGUI);
 
-		guiCardView.setCurrentView(menuGUI);
+		guiCardView.setCurrentView(menuGUIAndController);
 		guiCardView.show();
 	}
 
