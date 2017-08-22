@@ -3,14 +3,14 @@ package main.gui;
 import javax.swing.*;
 import java.awt.*;
 
-public class GUICardManager {
+public class GUICardView {
 	private static final String WINDOW_TITLE = "Swords and Shields";
 
 	private final JPanel jPanel;
 	private final JFrame jFrame;
 	private final CardLayout cardLayout;
 
-	public GUICardManager() {
+	public GUICardView() {
 		jFrame = new JFrame(WINDOW_TITLE);
 
 		cardLayout = new CardLayout();

@@ -1,6 +1,6 @@
 package main.gui.menu;
 
-import main.gui.GUICardManager;
+import main.gui.GUICardView;
 import main.gui.GUICardName;
 
 import java.awt.event.ActionEvent;
@@ -8,15 +8,15 @@ import java.awt.event.ActionEvent;
 public class MenuGUIController {
 
 	private final MenuModel menuModel;
-	private final GUICardManager guiCardManager;
+	private final GUICardView guiCardView;
 
-	public MenuGUIController(MenuModel menuModel, GUICardManager guiCardManager) {
+	public MenuGUIController(MenuModel menuModel, GUICardView guiCardView) {
 		this.menuModel = menuModel;
-		this.guiCardManager = guiCardManager;
+		this.guiCardView = guiCardView;
 	}
 
 	public void beginGameButtonClicked(ActionEvent actionEvent) {
-		guiCardManager.setCurrentView(GUICardName.GAME);
+		guiCardView.setCurrentView(GUICardName.GAME);
 	}
 
 	public void infoButtonClicked(ActionEvent actionEvent) {
@@ -24,6 +24,6 @@ public class MenuGUIController {
 	}
 
 	public void quitButtonClicked(ActionEvent actionEvent) {
-		guiCardManager.quit();
+		guiCardView.quit();
 	}
 }
