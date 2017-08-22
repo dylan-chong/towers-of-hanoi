@@ -1,19 +1,19 @@
 package main;
 
-import main.gamemodel.Board;
-import main.gamemodel.GameModel;
-import main.textcontroller.GameTextController;
+import main.gui.GUICardManager;
+import main.gui.menu.MenuGUI;
+import main.gui.menu.MenuGUIController;
+import main.gui.menu.MenuModel;
 import test.TestRunner;
 
-import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * Delete this when you put your assignments here
  */
 public class Main {
+
 	public static void main(String[] args) {
 		List<String> argsList = Arrays.asList(args);
 		if (argsList.contains("--test")) {
@@ -32,16 +32,17 @@ public class Main {
 	}
 
 	private static void startApp() {
-		GameModel game = new GameModel(new Board());
-		PrintStream out = System.out;
+		GUICardManager guiCardManager = new GUICardManager();
 
-		GameTextController controller = new GameTextController(
-				new Scanner(System.in),
-				out,
-				new GameTextController.AppExceptionHandler(out),
-				game
+		MenuModel menuModel = new MenuModel();
+		MenuGUIController menuGUIController = new MenuGUIController(
+				menuModel, guiCardManager
 		);
+		MenuGUI menuGUI = new MenuGUI(menuModel, menuGUIController);
+		guiCardManager.addView(menuGUI);
 
-		controller.runUntilGameEnd();
+		guiCardManager.setCurrentView(menuGUI);
+		guiCardManager.show();
 	}
+
 }
