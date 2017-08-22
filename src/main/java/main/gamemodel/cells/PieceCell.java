@@ -46,8 +46,8 @@ public class PieceCell extends BoardCell {
 	}
 
 	@Override
-	public <ReturnT> ReturnT accept(BoardCellGenericGetter<ReturnT> getter) {
-		return getter.visitPieceCell(this);
+	public <ReturnT> ReturnT getValue(BoardCellMapper<ReturnT> getter) {
+		return getter.valueOfPieceCell(this);
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class PieceCell extends BoardCell {
 	}
 
 	@Override
-	Reaction getReactionToByVisiting(BoardCell cell, Direction fromCellToThis) {
+	protected Reaction getReactionToByVisiting(BoardCell cell, Direction fromCellToThis) {
 		return cell.getReactionToPieceCell(this, fromCellToThis);
 	}
 

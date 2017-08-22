@@ -3,6 +3,8 @@ package main.gamemodel.cells;
 import main.gamemodel.Direction;
 import main.gamemodel.cells.PieceCell.SideType;
 
+import java.awt.*;
+
 /**
  * The player cell
  */
@@ -68,13 +70,13 @@ public class PlayerCell extends BoardCell {
 	}
 
 	@Override
-	Reaction getReactionToByVisiting(BoardCell cell, Direction fromCellToThis) {
+	protected Reaction getReactionToByVisiting(BoardCell cell, Direction fromCellToThis) {
 		return cell.getReactionToPlayerCell(this, fromCellToThis);
 	}
 
 	@Override
-	public <ReturnT> ReturnT accept(BoardCellGenericGetter<ReturnT> getter) {
-		return getter.visitPlayerCell(this);
+	public <ReturnT> ReturnT getValue(BoardCellMapper<ReturnT> getter) {
+		return getter.valueOfPlayerCell(this);
 	}
 
 	public String getName() {
@@ -86,13 +88,15 @@ public class PlayerCell extends BoardCell {
 	}
 
 	public enum Token {
-		HAPPY('0'),
-		ANGRY('1');
+		HAPPY('0', new Color(244, 200, 48)),
+		ANGRY('1', new Color(19, 151, 23));
 
-		Token(char representation) {
+		Token(char representation, Color color) {
 			this.representation = representation;
+			this.color = color;
 		}
 
 		public final char representation;
+		public final Color color;
 	}
 }

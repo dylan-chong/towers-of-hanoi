@@ -1,8 +1,12 @@
 package main.gui.game;
 
+import main.gamemodel.Direction;
 import main.gamemodel.GameModel;
+import main.gamemodel.InvalidMoveException;
+import main.gamemodel.PlayerData;
 import main.gui.cardview.GUICard;
 import main.gui.cardview.GUICardName;
+import main.gui.game.drawers.BoardCellDrawer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,10 +19,14 @@ public class GameGUI implements GUICard, Observer {
 	private final JPanel rootJPanel;
 	private final GameModel gameModel;
 	private final GameGUIController gameGUIController;
+	private final BoardCellDrawer boardCellDrawer;
 
-	public GameGUI(GameModel gameModel, GameGUIController gameGUIController) {
+	public GameGUI(GameModel gameModel,
+				   GameGUIController gameGUIController,
+				   BoardCellDrawer boardCellDrawer) {
 		this.gameModel = gameModel;
 		this.gameGUIController = gameGUIController;
+		this.boardCellDrawer = boardCellDrawer;
 
 		rootJPanel = new JPanel();
 
@@ -52,19 +60,20 @@ public class GameGUI implements GUICard, Observer {
 		@Override
         protected void paintComponent(Graphics g) {
             Graphics2D graphics2D = (Graphics2D) g;
-            float size = PREFERRED_BOARD_CELL_SIZE;
-            gameModel.getBoard().forEachCell((cell, row, col) -> {
+			gameModel.getBoard().forEachCell((cell, row, col) -> {
 				if (cell == null) {
 					return;
 				}
 
-				graphics2D.fillOval(
-						(int) (col * size),
-						(int) (row * size),
-						(int) (size),
-						(int) (size)
+				PlayerData player = gameModel.getPlayerOfCell(cell);
+				boardCellDrawer.valueOf(cell).draw(
+						player,
+						graphics2D,
+						col,
+						row,
+						PREFERRED_BOARD_CELL_SIZE
 				);
 			});
-        }
+		}
 	}
 }

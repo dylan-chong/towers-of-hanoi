@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 /**
  * TODO: Split this class up using the state pattern
  */
-public class GameModel implements Textable {
+public class GameModel extends Observable implements Textable {
 
 	/**
 	 * The offsets from the corners of the board
@@ -75,6 +75,8 @@ public class GameModel implements Textable {
 		}
 
 		undoStack.pop().undoWork();
+		setChanged();
+		notifyObservers();
 	}
 
 	public PlayerData getCurrentPlayerData() {
@@ -330,7 +332,7 @@ public class GameModel implements Textable {
 		return winner;
 	}
 
-	private PlayerData getPlayerOfCell(BoardCell cell) {
+	public PlayerData getPlayerOfCell(BoardCell cell) {
 		return players.stream()
 				.filter(data -> data.ownsPiece(cell))
 				.findAny()
@@ -342,6 +344,8 @@ public class GameModel implements Textable {
 	private void doCommandWork(Command command) throws InvalidMoveException {
 		command.doWork();
 		undoStack.push(command);
+		setChanged();
+		notifyObservers();
 	}
 
 	private void requireState(TurnState turnState) {

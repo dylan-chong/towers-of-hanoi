@@ -5,6 +5,7 @@ import main.gamemodel.GameModel;
 import main.gui.cardview.GUICardView;
 import main.gui.game.GameGUI;
 import main.gui.game.GameGUIController;
+import main.gui.game.drawers.BoardCellDrawer;
 import main.gui.menu.MenuGUIAndController;
 import test.TestRunner;
 
@@ -45,7 +46,11 @@ public class Main {
 			// TODO LATER create a new game each time
 			GameModel gameModel = new GameModel(new Board());
 			GameGUIController gameGUIController = new GameGUIController(gameModel);
-			GameGUI gameGUI = new GameGUI(gameModel, gameGUIController);
+			GameGUI gameGUI = new GameGUI(
+					gameModel,
+					gameGUIController,
+					new BoardCellDrawer()
+			);
 			guiCardView.addView(gameGUI);
 
 			guiCardView.setCurrentView(menuGUIAndController);

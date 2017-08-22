@@ -44,8 +44,8 @@ public abstract class BoardCell implements Textable {
 	 * Call the corresponding method for this cell on the provided cell
 	 * @param fromCellToThis Pass this into the method you call on the given cell
 	 */
-	abstract Reaction getReactionToByVisiting(BoardCell cell,
-											  Direction fromCellToThis);
+	protected abstract Reaction getReactionToByVisiting(BoardCell cell,
+														Direction fromCellToThis);
 
-	public abstract <ReturnT> ReturnT accept(BoardCellGenericGetter<ReturnT> getter);
+	public abstract <ReturnT> ReturnT getValue(BoardCellMapper<ReturnT> getter);
 }
