@@ -61,6 +61,10 @@ public class GameModel implements Textable {
 		setupPlayers();
 	}
 
+	public Board getBoard() {
+		return board;
+	}
+
 	public boolean canUndo() {
 		return !undoStack.isEmpty();
 	}

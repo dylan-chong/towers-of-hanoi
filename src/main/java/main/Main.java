@@ -8,6 +8,7 @@ import main.gui.game.GameGUIController;
 import main.gui.menu.MenuGUIAndController;
 import test.TestRunner;
 
+import javax.swing.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,20 +35,22 @@ public class Main {
 	}
 
 	private static void startApp() {
-		GUICardView guiCardView = new GUICardView();
+		SwingUtilities.invokeLater(() -> {
+			GUICardView guiCardView = new GUICardView();
 
-		MenuGUIAndController menuGUIAndController =
-				new MenuGUIAndController(guiCardView);
-		guiCardView.addView(menuGUIAndController);
+			MenuGUIAndController menuGUIAndController =
+					new MenuGUIAndController(guiCardView);
+			guiCardView.addView(menuGUIAndController);
 
-		// TODO LATER create a new game each time
-		GameModel gameModel = new GameModel(new Board());
-		GameGUIController gameGUIController = new GameGUIController(gameModel);
-		GameGUI gameGUI = new GameGUI(gameModel, gameGUIController);
-		guiCardView.addView(gameGUI);
+			// TODO LATER create a new game each time
+			GameModel gameModel = new GameModel(new Board());
+			GameGUIController gameGUIController = new GameGUIController(gameModel);
+			GameGUI gameGUI = new GameGUI(gameModel, gameGUIController);
+			guiCardView.addView(gameGUI);
 
-		guiCardView.setCurrentView(menuGUIAndController);
-		guiCardView.show();
+			guiCardView.setCurrentView(menuGUIAndController);
+			guiCardView.show();
+		});
 	}
 
 }

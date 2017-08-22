@@ -163,7 +163,7 @@ public class Board implements Textable {
 	 * This is here to reduce nested for loop
 	 * @param consumer A function that does stuff to each cell
 	 */
-	private void forEachCell(CellConsumer consumer) {
+	public void forEachCell(CellConsumer consumer) {
 		for (int r = 0; r < cells.length; r++) {
 			BoardCell[] row = cells[r];
 			for (int c = 0; c < row.length; c++) {
@@ -173,7 +173,7 @@ public class Board implements Textable {
 		}
 	}
 
-	private interface CellConsumer {
+	public interface CellConsumer {
 		void apply(BoardCell cell, int row, int col);
 	}
 
