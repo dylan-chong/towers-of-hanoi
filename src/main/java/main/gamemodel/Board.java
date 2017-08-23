@@ -173,10 +173,6 @@ public class Board implements Textable {
 		}
 	}
 
-	public interface CellConsumer {
-		void apply(BoardCell cell, int row, int col);
-	}
-
 	/**
 	 * Reaction between 2 {@link BoardCell} objects (they are next to each
 	 * other).

@@ -3,7 +3,7 @@ package main.gamemodel.cells;
 import main.gamemodel.Direction;
 import main.gamemodel.Textable;
 
-public abstract class BoardCell implements Textable {
+public abstract class BoardCell implements Textable, Comparable<BoardCell> {
 	public static final int TEXTUAL_REP_WIDTH = 3;
 	public static final int TEXTUAL_REP_HEIGHT = 3;
 
@@ -48,4 +48,13 @@ public abstract class BoardCell implements Textable {
 														Direction fromCellToThis);
 
 	public abstract <ReturnT> ReturnT getValue(BoardCellMapper<ReturnT> getter);
+
+	@Override
+	public int compareTo(BoardCell o) {
+		int result = getId() - o.getId();
+		if (result == 0 && o != this) {
+			throw new IllegalStateException();
+		}
+		return result;
+	}
 }

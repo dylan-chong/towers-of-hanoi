@@ -1,6 +1,8 @@
 package main.gui.game;
 
+import main.GameUtils;
 import main.gamemodel.*;
+import main.gamemodel.cells.BoardCell;
 import main.gui.cardview.GUICard;
 import main.gui.cardview.GUICardName;
 import main.gui.game.drawers.BoardCellDrawer;
@@ -8,11 +10,15 @@ import main.gui.game.drawers.BoardCellDrawer;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class GameGUI implements GUICard, Observer {
 	private static final int PREFERRED_BOARD_CELL_SIZE = 50;
+	private static final int CREATION_GRID_COLUMNS = 2;
 
 	private final JPanel rootJPanel;
 	private final GameModel gameModel;
@@ -42,8 +48,26 @@ public class GameGUI implements GUICard, Observer {
 
 		// Board
 
-		JComponent boardCanvas = new BoardCanvas();
+		Board board = gameModel.getBoard();
+
+		BoardCanvas boardCanvas = new BoardCanvas(board);
 		rootJPanel.add(boardCanvas);
+
+		for (PlayerData player : gameModel.getPlayers()) {
+			GridCanvas creationCanvas = new GridCanvas(
+					board.getNumRows(),
+					CREATION_GRID_COLUMNS,
+					(columns) -> GameUtils.packCells(
+							player.getUnusedPieces()
+									.values()
+									.stream()
+									.sorted()
+									.collect(Collectors.toList()),
+							columns
+					)
+			);
+			rootJPanel.add(creationCanvas);
+		}
 
 		try {
 			// TODO remove
@@ -65,7 +89,7 @@ public class GameGUI implements GUICard, Observer {
 	}
 
 	private ActionListener performGameAction(GameAction action) {
-		return (event) ->  {
+		return (event) -> {
 			try {
 				action.perform();
 			} catch (Exception e) {
@@ -109,20 +133,55 @@ public class GameGUI implements GUICard, Observer {
 		}
 	}
 
-	private class BoardCanvas extends JComponent {
-		public BoardCanvas() {
+	/**
+	 * Draws a grid of board cells
+	 */
+	private abstract class BoardCellCanvas extends JComponent {
+		public BoardCellCanvas(int preferredRows, int preferredColumns) {
 			setPreferredSize(new Dimension(
-					gameModel.getBoard().getNumCols() * PREFERRED_BOARD_CELL_SIZE,
-					gameModel.getBoard().getNumRows() * PREFERRED_BOARD_CELL_SIZE
+					preferredColumns * PREFERRED_BOARD_CELL_SIZE,
+					preferredRows * PREFERRED_BOARD_CELL_SIZE
 			));
 		}
 
 		@Override
         protected void paintComponent(Graphics g) {
             Graphics2D graphics2D = (Graphics2D) g;
-			Board board = gameModel.getBoard();
+
+			forEachCell((cell, row, col) -> {
+				if (cell == null) {
+					return;
+				}
+
+				PlayerData player = gameModel.getPlayerOfCell(cell);
+				boardCellDrawer.valueOf(cell).draw(
+						player,
+						graphics2D,
+						col,
+						row,
+						PREFERRED_BOARD_CELL_SIZE
+				);
+			});
+		}
+
+		protected abstract void forEachCell(CellConsumer cellConsumer);
+	}
+
+	private class BoardCanvas extends BoardCellCanvas {
+
+		private final Board board;
+
+		public BoardCanvas(Board board) {
+			super(board.getNumRows(), board.getNumCols());
+			this.board = board;
+		}
+
+		@Override
+		protected void paintComponent(Graphics g) {
+			Graphics2D graphics2D = (Graphics2D) g;
 			int cellSize = PREFERRED_BOARD_CELL_SIZE;
 
+			// Draw chequered grid
 			for (int r = 0; r < board.getNumRows(); r++) {
 				boolean isDark = r % 2 == 0;
 				for (int c = 0; c < board.getNumCols(); c++) {
@@ -137,21 +196,45 @@ public class GameGUI implements GUICard, Observer {
 				}
 			}
 
-			board.forEachCell((cell, row, col) -> {
-				if (cell == null) {
-					return;
-				}
-
-				PlayerData player = gameModel.getPlayerOfCell(cell);
-				boardCellDrawer.valueOf(cell).draw(
-						player,
-						graphics2D,
-						col,
-						row,
-						cellSize
-				);
-			});
+			super.paintComponent(g);
 		}
+
+		@Override
+		protected void forEachCell(CellConsumer cellConsumer) {
+			board.forEachCell(cellConsumer);
+		}
+	}
+
+	private class GridCanvas extends BoardCellCanvas {
+
+		private final GridSupplier gridSupplier;
+
+		public GridCanvas(int preferredRows,
+						  int preferredColumns,
+						  GridSupplier gridSupplier) {
+			super(preferredRows, preferredColumns);
+			this.gridSupplier = gridSupplier;
+		}
+
+		@Override
+		protected void forEachCell(CellConsumer cellConsumer) {
+			List<? extends List<? extends BoardCell>> cellRows =
+					gridSupplier.apply(2);
+
+			// TODO don't use 2
+
+			for (int r = 0; r < cellRows.size(); r++) {
+				List<? extends BoardCell> row = cellRows.get(r);
+				for (int c = 0; c < row.size(); c++) {
+					BoardCell cell = row.get(c);
+					cellConsumer.apply(cell, r, c);
+				}
+			}
+		}
+	}
+
+	private interface GridSupplier extends
+			Function<Integer, List<? extends List<? extends BoardCell>>> {
 	}
 
 	private interface GameAction {

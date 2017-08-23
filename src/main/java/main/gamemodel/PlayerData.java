@@ -51,6 +51,18 @@ public class PlayerData {
 		}
 	}
 
+	public Map<Character, PieceCell> getUnusedPieces() {
+		return Collections.unmodifiableMap(unusedPieces);
+	}
+
+	public Map<Character, PieceCell> getUsedPieces() {
+		return Collections.unmodifiableMap(usedPieces);
+	}
+
+	public Map<Character, PieceCell> getDeadPieces() {
+		return Collections.unmodifiableMap(deadPieces);
+	}
+
 	public PlayerCell getPlayerCell() {
 		return playerCell;
 	}

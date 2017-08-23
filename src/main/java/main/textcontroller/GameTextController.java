@@ -1,13 +1,15 @@
 package main.textcontroller;
 
 import main.ExceptionHandler;
+import main.GameUtils;
 import main.Main;
 import main.gamemodel.*;
 import main.gamemodel.cells.BoardCell;
-import main.gamemodel.cells.PieceCell;
 
 import java.io.PrintStream;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class GameTextController {
@@ -87,12 +89,13 @@ public class GameTextController {
 		);
 
 		if (game.getTurnState() == TurnState.CREATING_PIECE) {
-			List<List<BoardCell>> unusedCells = packCells(
-					Arrays.asList(player.getUnusedPieceIds()
+			List<List<BoardCell>> unusedCells = GameUtils.packCells(
+					player.getUnusedPieceIds()
 							.stream()
 							.map(player::findUnusedPiece)
-							.sorted(Comparator.comparingInt(PieceCell::getId))
-							.collect(Collectors.toList()))
+							.sorted()
+							.collect(Collectors.toList()),
+					Board.DEFAULT_NUM_COLS
 			);
 			representation.append("\nYour unused cells:\n");
 			for (List<BoardCell> pieceList : unusedCells) {
@@ -101,15 +104,17 @@ public class GameTextController {
 			}
 		}
 
-		List<List<BoardCell>> deadPieces = packCells(game.getPlayers()
-				.stream()
-				.map(playerData -> playerData.getDeadPieceIds()
+		List<List<BoardCell>> deadPieces = GameUtils.packCells(
+				game.getPlayers()
 						.stream()
-						.map(playerData::findDeadPiece)
-						.sorted(Comparator.comparingInt(PieceCell::getId))
-						.collect(Collectors.toList())
-				)
-				.collect(Collectors.toList()));
+						.flatMap(playerData -> playerData.getDeadPieceIds()
+								.stream()
+								.map(playerData::findDeadPiece)
+								.sorted()
+						)
+						.collect(Collectors.toList()),
+				Board.DEFAULT_NUM_COLS
+		);
 		if (deadPieces.stream().mapToLong(Collection::size).sum() > 0) {
 			representation.append("\nCemetery\n");
 			for (List<BoardCell> pieceList : deadPieces) {
@@ -119,29 +124,6 @@ public class GameTextController {
 		}
 
 		return representation.toString();
-	}
-
-	private List<List<BoardCell>> packCells(List<List<? extends BoardCell>> cells) {
-		LinkedList<List<BoardCell>> packedCells = new LinkedList<>();
-		for (List<? extends BoardCell> cellList : cells) {
-			for (BoardCell cell : cellList) {
-				List<BoardCell> lastPackList;
-
-				if (packedCells.isEmpty()) {
-					lastPackList = new ArrayList<>();
-					packedCells.add(lastPackList);
-				} else {
-					lastPackList = packedCells.getLast();
-					if (lastPackList.size() == Board.DEFAULT_NUM_COLS) {
-						lastPackList = new ArrayList<>();
-						packedCells.add(lastPackList);
-					}
-				}
-
-				lastPackList.add(cell);
-			}
-		}
-		return packedCells;
 	}
 
 	public static class AppExceptionHandler implements ExceptionHandler {
