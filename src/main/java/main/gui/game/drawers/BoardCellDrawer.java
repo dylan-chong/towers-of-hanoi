@@ -15,6 +15,8 @@ public class BoardCellDrawer implements
 	private static final float STROKE_WIDTH = 5;
 	private static final Color SWORD_AND_SHIELD_COLOUR = new Color(252, 14, 27);
 	private static final float FACE_STROKE_WIDTH = 1.5f;
+	private static final float SHIELD_DISTANCE_FROM_CENTRE = 0.40f;
+	private static final float SWORD_DISTANCE_FROM_CENTRE = 0.40f;
 
 	@Override
 	public DrawFunction valueOfPieceCell(PieceCell cell) {
@@ -47,45 +49,50 @@ public class BoardCellDrawer implements
 			graphics2D.setStroke(new BasicStroke(STROKE_WIDTH));
 			for (Direction sideDir : Direction.values()) {
 				PieceCell.SideType side = cell.getSide(sideDir);
-				float[] middleOfSide = sideDir.shift(centre, 0.5f * size);
 
-				side.getFromMap(new PieceCell.SideType.Mapper<Runnable>() {
+				side.getFromMap(new PieceCell.SideType.Mapper<Void>() {
 					@Override
-					public Runnable getEmptyValue() {
-						return () -> {};
+					public Void getEmptyValue() {
+						return null;
 					}
 
 					@Override
-					public Runnable getSwordValue() {
-						return () -> graphics2D.drawLine(
-                                (int) centre[0],
-                                (int) centre[1],
-                                (int) middleOfSide[0],
-                                (int) middleOfSide[1]
-                        );
+					public Void getSwordValue() {
+						float[] middleOfSide = sideDir.shift(
+								centre,
+								SWORD_DISTANCE_FROM_CENTRE * size
+						);
+						graphics2D.drawLine(
+								(int) centre[0],
+								(int) centre[1],
+								(int) middleOfSide[0],
+								(int) middleOfSide[1]
+						);
+						return null;
 					}
 
 					@Override
-					public Runnable getShieldValue() {
-						return () -> {
-							float[] cornerOne = Direction
-									.values()[(sideDir.ordinal() + 3)
-                                            % Direction.values().length]
-									.shift(middleOfSide, 0.5f * size);
-							float[] cornerTwo = Direction
-									.values()[(sideDir.ordinal() + 1)
-                                            % Direction.values().length]
-									.shift(middleOfSide, 0.5f * size);
+					public Void getShieldValue() {
+						float distance = SHIELD_DISTANCE_FROM_CENTRE;
+						float[] middleOfSide = sideDir.shift(centre, distance * size);
+						float[] cornerOne = Direction
+								.values()[(sideDir.ordinal() + 3)
+								% Direction.values().length]
+								.shift(middleOfSide, distance * size);
+						float[] cornerTwo = Direction
+								.values()[(sideDir.ordinal() + 1)
+								% Direction.values().length]
+								.shift(middleOfSide, distance * size);
 
-							graphics2D.drawLine(
-									(int) cornerOne[0],
-									(int) cornerOne[1],
-									(int) cornerTwo[0],
-									(int) cornerTwo[1]
-							);
-						};
+						graphics2D.drawLine(
+								(int) cornerOne[0],
+								(int) cornerOne[1],
+								(int) cornerTwo[0],
+								(int) cornerTwo[1]
+						);
+						return null;
 					}
-				}).run();
+				});
 			}
 		};
 	}
