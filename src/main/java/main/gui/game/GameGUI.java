@@ -1,9 +1,6 @@
 package main.gui.game;
 
-import main.gamemodel.Direction;
-import main.gamemodel.GameModel;
-import main.gamemodel.InvalidMoveException;
-import main.gamemodel.PlayerData;
+import main.gamemodel.*;
 import main.gui.cardview.GUICard;
 import main.gui.cardview.GUICardName;
 import main.gui.game.drawers.BoardCellDrawer;
@@ -72,7 +69,24 @@ public class GameGUI implements GUICard, Observer {
 		@Override
         protected void paintComponent(Graphics g) {
             Graphics2D graphics2D = (Graphics2D) g;
-			gameModel.getBoard().forEachCell((cell, row, col) -> {
+			Board board = gameModel.getBoard();
+			int cellSize = PREFERRED_BOARD_CELL_SIZE;
+
+			for (int r = 0; r < board.getNumRows(); r++) {
+				boolean isDark = r % 2 == 0;
+				for (int c = 0; c < board.getNumCols(); c++) {
+					graphics2D.setColor(isDark ? Color.GRAY : Color.WHITE);
+					graphics2D.fillRect(
+							r * cellSize,
+							c * cellSize,
+							cellSize,
+							cellSize
+					);
+					isDark = !isDark;
+				}
+			}
+
+			board.forEachCell((cell, row, col) -> {
 				if (cell == null) {
 					return;
 				}
@@ -83,7 +97,7 @@ public class GameGUI implements GUICard, Observer {
 						graphics2D,
 						col,
 						row,
-						PREFERRED_BOARD_CELL_SIZE
+						cellSize
 				);
 			});
 		}
