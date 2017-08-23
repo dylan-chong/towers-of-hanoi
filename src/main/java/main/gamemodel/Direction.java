@@ -9,37 +9,37 @@ import java.util.Arrays;
 public enum Direction {
 	NORTH("up") {
 		@Override
-		public int[] shift(int[] rowCol) {
-			return new int[]{
-					rowCol[0] - 1,
+		public float[] shift(float[] rowCol, float amount) {
+			return new float[]{
+					rowCol[0] - amount,
 					rowCol[1],
 			};
 		}
 	},
 	EAST("right") {
 		@Override
-		public int[] shift(int[] rowCol) {
-			return new int[]{
+		public float[] shift(float[] rowCol, float amount) {
+			return new float[]{
 					rowCol[0],
-					rowCol[1] + 1,
+					rowCol[1] + amount,
 			};
 		}
 	},
 	SOUTH("down") {
 		@Override
-		public int[] shift(int[] rowCol) {
-			return new int[]{
-					rowCol[0] + 1,
+		public float[] shift(float[] rowCol, float amount) {
+			return new float[]{
+					rowCol[0] + amount,
 					rowCol[1],
 			};
 		}
 	},
 	WEST("left") {
 		@Override
-		public int[] shift(int[] rowCol) {
-			return new int[]{
+		public float[] shift(float[] rowCol, float amount) {
+			return new float[]{
 					rowCol[0],
-					rowCol[1] - 1,
+					rowCol[1] - amount,
 			};
 		}
 	},
@@ -96,5 +96,17 @@ public enum Direction {
 		return values()[(ordinal() + 2) % values().length];
 	}
 
-	public abstract int[] shift(int[] rowCol);
+	public int[] shift(int[] rowCol) {
+		float[] shifted = shift(new float[]{
+				rowCol[0],
+				rowCol[1]
+		}, 1);
+
+		return new int[]{
+				(int) shifted[0],
+				(int) shifted[1]
+		};
+	}
+
+	public abstract float[] shift(float[] rowCol, float amount);
 }

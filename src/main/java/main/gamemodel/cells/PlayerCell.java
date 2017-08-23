@@ -88,8 +88,18 @@ public class PlayerCell extends BoardCell {
 	}
 
 	public enum Token {
-		HAPPY('0', new Color(244, 200, 48)),
-		ANGRY('1', new Color(19, 151, 23));
+		HAPPY('0', new Color(244, 200, 48)) {
+			@Override
+			public <T> T getFromMap(Mapper<T> mapper) {
+				return mapper.getHappyValue();
+			}
+		},
+		ANGRY('1', new Color(19, 151, 23)) {
+			@Override
+			public <T> T getFromMap(Mapper<T> mapper) {
+				return mapper.getAngry();
+			}
+		};
 
 		Token(char representation, Color color) {
 			this.representation = representation;
@@ -98,5 +108,12 @@ public class PlayerCell extends BoardCell {
 
 		public final char representation;
 		public final Color color;
+
+		public abstract <T> T getFromMap(Mapper<T> mapper);
+
+		public interface Mapper<ValueT> {
+			ValueT getHappyValue();
+			ValueT getAngry();
+		}
 	}
 }

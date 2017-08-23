@@ -32,6 +32,18 @@ public class GameGUI implements GUICard, Observer {
 
 		JComponent boardCanvas = new BoardCanvas();
 		rootJPanel.add(boardCanvas);
+
+		try {
+			// TODO remove
+			gameModel.create('a', 0);
+			gameModel.move('a', Direction.SOUTH);
+			gameModel.passTurnState();
+			gameModel.create('c', 0);
+			gameModel.move('c', Direction.NORTH);
+		} catch (InvalidMoveException e) {
+			throw new RuntimeException(e);
+		}
+
 	}
 
 	@Override
