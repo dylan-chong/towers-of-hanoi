@@ -20,6 +20,7 @@ public class TextCommandStateMapper
 	public static final String UNDO_COMMAND = "undo";
 	public static final String REACT_COMMAND = "react";
 	public static final String SEE_COMMAND = "see";
+	public static final String SURRENDER_COMMAND = "surrender";
 
 	private final GameModel game;
 	private final PrintStream textOut;
@@ -56,6 +57,9 @@ public class TextCommandStateMapper
 						break;
 					case UNDO_COMMAND:
 						game.undo();
+						break;
+					case SURRENDER_COMMAND:
+						game.surrender();
 						break;
 					default:
 						throw new ParseFormatException("Invalid command name");
@@ -128,6 +132,10 @@ public class TextCommandStateMapper
 						game.undo();
 						break;
 					}
+					case SURRENDER_COMMAND: {
+						game.surrender();
+						break;
+					}
 					default:
 						throw new ParseFormatException("Invalid command name");
 				}
@@ -175,6 +183,11 @@ public class TextCommandStateMapper
 
 				if (command.equals(UNDO_COMMAND)) {
 					game.undo();
+					return;
+				}
+
+				if (command.equals(SURRENDER_COMMAND)) {
+					game.surrender();
 					return;
 				}
 

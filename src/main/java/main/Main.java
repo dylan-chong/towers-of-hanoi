@@ -7,11 +7,14 @@ import main.gui.game.GameGUI;
 import main.gui.game.GameGUIController;
 import main.gui.game.drawers.BoardCellDrawer;
 import main.gui.menu.MenuGUIAndController;
+import main.textcontroller.GameTextController;
 import test.TestRunner;
 
 import javax.swing.*;
+import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Delete this when you put your assignments here
@@ -22,6 +25,8 @@ public class Main {
 		List<String> argsList = Arrays.asList(args);
 		if (argsList.contains("--test")) {
 			TestRunner.run();
+		} else if (argsList.contains("--text")){
+			startTextApp();
 		} else {
 			startApp();
 		}
@@ -58,4 +63,17 @@ public class Main {
 		});
 	}
 
+	private static void startTextApp() {
+             GameModel game = new GameModel(new Board());
+             PrintStream out = System.out;
+
+             GameTextController controller = new GameTextController(
+                             new Scanner(System.in),
+                             out,
+                             new GameTextController.AppExceptionHandler(out),
+                             game
+             );
+
+             controller.runUntilGameEnd();
+	}
 }

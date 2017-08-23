@@ -102,7 +102,7 @@ public class GameModel extends Observable implements Textable {
 	 */
 	public void create(char pieceId, int numberOfClockwiseRotations)
 			throws InvalidMoveException {
-		requireState(TurnState.CREATING_PIECE);
+		requireState(TurnState.CREATING_PIECE, null);
 
 		PlayerData player = getCurrentPlayerData();
 		final int creationRow = player.getCreationRow();
@@ -148,7 +148,7 @@ public class GameModel extends Observable implements Textable {
 
 	public void move(char pieceId, Direction direction)
 			throws InvalidMoveException {
-		requireState(TurnState.MOVING_OR_ROTATING_PIECE);
+		requireState(TurnState.MOVING_OR_ROTATING_PIECE, null);
 
 		PlayerData player = getCurrentPlayerData();
 		PieceCell piece = player.findUsedPiece(pieceId);
@@ -201,7 +201,7 @@ public class GameModel extends Observable implements Textable {
 			throw new InvalidMoveException("Invalid number of rotations");
 		}
 
-		requireState(TurnState.MOVING_OR_ROTATING_PIECE);
+		requireState(TurnState.MOVING_OR_ROTATING_PIECE, null);
 
 		PlayerData player = getCurrentPlayerData();
 		PieceCell piece = player.findUsedPiece(pieceId);
@@ -245,7 +245,7 @@ public class GameModel extends Observable implements Textable {
 	}
 
 	public Collection<Character> getPlayablePieceIds() {
-		requireState(TurnState.MOVING_OR_ROTATING_PIECE);
+		requireState(TurnState.MOVING_OR_ROTATING_PIECE, null);
 
 		PlayerData player = getCurrentPlayerData();
 		List<PieceCell> pieces = player.getUsedPieceIds()
@@ -329,6 +329,7 @@ public class GameModel extends Observable implements Textable {
 		if (turnState != TurnState.GAME_FINISHED) {
 			throw new IllegalGameStateException("The game is not finished yet");
 		}
+
 		return winner;
 	}
 
@@ -341,6 +342,15 @@ public class GameModel extends Observable implements Textable {
 				));
 	}
 
+	public void surrender() throws InvalidMoveException {
+		if (turnState == TurnState.GAME_FINISHED) {
+			throw new InvalidMoveException("Game is already finished");
+		}
+
+		PlayerData newLoser = getCurrentPlayerData();
+		doCommandWork(new LoseGame(newLoser));
+	}
+
 	private void doCommandWork(Command command) throws InvalidMoveException {
 		command.doWork();
 		undoStack.push(command);
@@ -348,11 +358,12 @@ public class GameModel extends Observable implements Textable {
 		notifyObservers();
 	}
 
-	private void requireState(TurnState turnState) {
+	private void requireState(TurnState turnState, String messageOrNull) {
+		if (messageOrNull == null) {
+			messageOrNull = "You can't performed this operation in this state";
+		}
 		if (turnState != this.turnState) {
-			throw new IllegalGameStateException(
-					"You can't performed this operation in this state"
-			);
+			throw new IllegalGameStateException(messageOrNull);
 		}
 	}
 
@@ -376,6 +387,50 @@ public class GameModel extends Observable implements Textable {
 	private interface Command {
 		void doWork() throws InvalidMoveException;
 		void undoWork() throws InvalidMoveException;
+	}
+
+	public class LoseGame implements Command {
+		private final PlayerData loser;
+
+		private TurnState previousTurnState;
+		private int[] loserCellRowCol;
+
+		public LoseGame(PlayerData loser) {
+			this.loser = loser;
+		}
+
+		@Override
+		public void doWork() throws InvalidMoveException {
+			List<PlayerData> winners = players.stream()
+					.filter(p -> p != loser)
+					.collect(Collectors.toList());
+			if (winners.size() != 1) {
+				throw new IllegalGameStateException(String.format(
+						"Somehow there were %d winners",
+						winners.size()
+				));
+			}
+			winner = winners.get(0);
+			previousTurnState = turnState;
+			turnState = TurnState.GAME_FINISHED;
+
+			loserCellRowCol = board.rowColOf(loser.getPlayerCell());
+			board.removeCell(loserCellRowCol[0], loserCellRowCol[1]);
+		}
+
+		@Override
+		public void undoWork() throws InvalidMoveException {
+			board.addCell(
+					loser.getPlayerCell(),
+					loserCellRowCol[0], loserCellRowCol[1]
+			);
+
+			winner = null;
+			turnState = previousTurnState;
+
+			previousTurnState = null;
+			loserCellRowCol = null;
+		}
 	}
 
 	private class NextTurnStateCommandMapper implements TurnState.Mapper<Command> {
@@ -555,46 +610,7 @@ public class GameModel extends Observable implements Textable {
 
 		@Override
 		public Function<ReactionData, Command> getLoseTheGameValue() {
-			return reactionData -> new Command() {
-				private TurnState previousTurnState;
-				private int[] loserCellRowCol;
-
-				@Override
-				public void doWork() throws InvalidMoveException {
-					List<PlayerData> winners = players.stream()
-							.filter(p -> p != reactionData.cellPlayerData)
-							.collect(Collectors.toList());
-					if (winners.size() != 1) {
-						throw new IllegalGameStateException(String.format(
-								"Somehow there were %d winners",
-								winners.size()
-						));
-					}
-
-					winner = winners.get(0);
-					previousTurnState = turnState;
-					turnState = TurnState.GAME_FINISHED;
-
-					loserCellRowCol = board.rowColOf(
-							reactionData.cellPlayerData.getPlayerCell()
-					);
-					board.removeCell(loserCellRowCol[0], loserCellRowCol[1]);
-				}
-
-				@Override
-				public void undoWork() throws InvalidMoveException {
-					board.addCell(
-							reactionData.cellPlayerData.getPlayerCell(),
-							loserCellRowCol[0], loserCellRowCol[1]
-					);
-
-					winner = null;
-					turnState = previousTurnState;
-
-					previousTurnState = null;
-					loserCellRowCol = null;
-				}
-			};
+			return reactionData -> new LoseGame(reactionData.cellPlayerData);
 		}
 	}
 }

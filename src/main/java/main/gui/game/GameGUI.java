@@ -7,6 +7,7 @@ import main.gui.game.drawers.BoardCellDrawer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -17,6 +18,7 @@ public class GameGUI implements GUICard, Observer {
 	private final GameModel gameModel;
 	private final GameGUIController gameGUIController;
 	private final BoardCellDrawer boardCellDrawer;
+	private final JToolBar jToolBar;
 
 	public GameGUI(GameModel gameModel,
 				   GameGUIController gameGUIController,
@@ -24,8 +26,21 @@ public class GameGUI implements GUICard, Observer {
 		this.gameModel = gameModel;
 		this.gameGUIController = gameGUIController;
 		this.boardCellDrawer = boardCellDrawer;
+		gameModel.addObserver(this);
 
 		rootJPanel = new JPanel();
+		rootJPanel.setLayout(new BoxLayout(rootJPanel, BoxLayout.Y_AXIS));
+
+		// Toolbar
+
+		jToolBar = new JToolBar();
+		rootJPanel.add(jToolBar);
+
+		addToolbarButton("Undo", gameModel::undo);
+		addToolbarButton("Pass", gameModel::passTurnState);
+		addToolbarButton("Surrender", gameModel::surrender);
+
+		// Board
 
 		JComponent boardCanvas = new BoardCanvas();
 		rootJPanel.add(boardCanvas);
@@ -43,6 +58,32 @@ public class GameGUI implements GUICard, Observer {
 
 	}
 
+	private void addToolbarButton(String title, GameAction action) {
+		JButton button = new JButton(title);
+		button.addActionListener(performGameAction(action));
+		jToolBar.add(button);
+	}
+
+	private ActionListener performGameAction(GameAction action) {
+		return (event) ->  {
+			try {
+				action.perform();
+			} catch (Exception e) {
+				String message = "There was an error making your move";
+				if (!(e instanceof ArrayIndexOutOfBoundsException) &&
+						e.getMessage() != null) {
+					message += ":\n" + e.getMessage();
+				}
+				JOptionPane.showMessageDialog(
+						rootJPanel,
+						message,
+						"Error",
+						JOptionPane.ERROR_MESSAGE
+				);
+			}
+		};
+	}
+
 	@Override
 	public JComponent getRootComponent() {
 		return rootJPanel;
@@ -56,6 +97,16 @@ public class GameGUI implements GUICard, Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		rootJPanel.repaint();
+
+		if (gameModel.getTurnState() == TurnState.GAME_FINISHED) {
+			PlayerData winner = gameModel.getWinner();
+			JOptionPane.showMessageDialog(
+					rootJPanel,
+					String.format("Player '%s' won!", winner.getName()),
+					"Game Finished",
+					JOptionPane.PLAIN_MESSAGE
+			);
+		}
 	}
 
 	private class BoardCanvas extends JComponent {
@@ -101,5 +152,9 @@ public class GameGUI implements GUICard, Observer {
 				);
 			});
 		}
+	}
+
+	private interface GameAction {
+		void perform() throws Exception;
 	}
 }
