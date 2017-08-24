@@ -6,6 +6,9 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+	maven {
+		url "https://jitpack.io"
+	}
 }
 
 dependencies {
@@ -13,10 +16,13 @@ dependencies {
 	// for example, put this:
 	// compile group: 'com.google.code.gson', name: 'gson', version: '1.7.1'
 	// to include this library https://github.com/google/gson if you like ...
+	compile group: 'com.github.AurelienRibon', name: 'sliding-layout', version: '+'
+	compile group: 'com.github.arcnor', name: 'universal-tween-engine', version: '+'
 
     // Required dependencies for assignments:
 	// Include libraries in 'lib' directory
     compile fileTree(dir: 'lib', include: ['*.jar'])
+
 	// Tests are run in main module (which is unusual, but that's how SWEN221 is)
     compile group: 'junit', name: 'junit', version: '4.11'
 	compile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
