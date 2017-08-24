@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 public class GameGUI implements GUICard, Observer {
 	public static final int PREFERRED_BOARD_CELL_SIZE = 50;
-	public static final int CREATION_GRID_COLUMNS = 2;
 
 	private final GameModel gameModel;
 	private final GameGUIController gameGUIController;
@@ -65,7 +64,9 @@ public class GameGUI implements GUICard, Observer {
 		rootJPanel.add(boardCellCanvasesJPanel);
 
 		Board board = gameModel.getBoard();
-		BoardCanvas boardCanvas = new BoardCanvas(board, gameModel, boardCellDrawer);
+		BoardCanvas boardCanvas = new BoardCanvas(
+				board, gameModel, boardCellDrawer, "Board"
+		);
 
 		List<Player> players = gameModel.getPlayers();
 		if (players.size() != 2) {
@@ -86,28 +87,35 @@ public class GameGUI implements GUICard, Observer {
 	}
 
 	private List<? extends JComponent> getPlayerCanvases(Player player) {
+		String name = player.getPlayerCell().getToken().name();
 		return Arrays.asList(
-				newGridCanvas(player.getUnusedPieces()::values),
-				newGridCanvas(player.getDeadPieces()::values)
+				newGridCanvas(
+						player.getUnusedPieces()::values,
+						String.format("Creatable (%s)", name)
+				),
+				newGridCanvas(
+						player.getDeadPieces()::values,
+						String.format("Dead (%s)", name)
+				)
 		);
 	}
 
 	private GridCanvas newGridCanvas(
-			Supplier<Collection<? extends BoardCell>> cellGetter
+			Supplier<Collection<? extends BoardCell>> cellGetter,
+			String title
 	) {
 		 return new GridCanvas(
-				gameModel.getBoard().getNumRows(),
-				CREATION_GRID_COLUMNS,
-				(columns) -> GameUtils.packCells(
-						cellGetter.get()
-								.stream()
-								.sorted()
-								.collect(Collectors.toList()),
-						columns
-				),
-				gameModel,
-				boardCellDrawer
-		);
+				 (columns) -> GameUtils.packCells(
+						 cellGetter.get()
+								 .stream()
+								 .sorted()
+								 .collect(Collectors.toList()),
+						 columns
+				 ),
+				 gameModel,
+				 boardCellDrawer,
+				 title
+		 );
 	}
 
 	private void setupToolbar() {

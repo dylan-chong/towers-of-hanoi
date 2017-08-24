@@ -12,13 +12,12 @@ public class GridCanvas extends BoardCellCanvas {
     private final GridSupplier gridSupplier;
 
     public GridCanvas(
-            int preferredRows,
-            int preferredColumns,
             GridSupplier gridSupplier,
             GameModel gameModel,
-            BoardCellDrawer boardCellDrawer
+            BoardCellDrawer boardCellDrawer,
+			String titleOrNull
     ) {
-        super(preferredRows, preferredColumns, gameModel, boardCellDrawer);
+        super(gameModel, boardCellDrawer, titleOrNull);
         this.gridSupplier = gridSupplier;
     }
 

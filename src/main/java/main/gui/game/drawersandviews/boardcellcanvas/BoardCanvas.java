@@ -15,9 +15,10 @@ public class BoardCanvas extends BoardCellCanvas {
     public BoardCanvas(
             Board board,
             GameModel gameModel,
-            BoardCellDrawer boardCellDrawer
+            BoardCellDrawer boardCellDrawer,
+			String titleOrNull
     ) {
-        super(board.getNumRows(), board.getNumCols(), gameModel, boardCellDrawer);
+        super(gameModel, boardCellDrawer, titleOrNull);
         this.board = board;
     }
 
