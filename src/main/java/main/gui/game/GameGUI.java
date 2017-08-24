@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -97,36 +98,39 @@ public class GameGUI implements GUICard, Observer {
 		return Arrays.asList(
 				newGridCanvas(
 						player.getUnusedPieces()::values,
-						String.format("Creatable (%s)", name)
+						String.format("Creatable (%s)", name),
+						gameGUIController::onCreationCellClick
 				),
 				newGridCanvas(
 						player.getDeadPieces()::values,
-						String.format("Dead (%s)", name)
+						String.format("Dead (%s)", name),
+						(cell, mouseEvent) -> {}
 				)
 		);
 	}
 
 	private GridCanvas newGridCanvas(
 			Supplier<Collection<? extends Cell>> cellGetter,
-			String title
+			String title,
+			BiConsumer<Cell, MouseEvent> onClickHandler
 	) {
-		 return new GridCanvas(
-				 (columns) -> GameUtils.packCells(
-						 cellGetter.get()
-								 .stream()
-								 .sorted()
-								 .collect(Collectors.toList()),
-						 columns
-				 ),
-				 gameModel,
-				 cellDrawer,
-				 title
-		 ) {
-			 @Override
-			 protected void onCellClick(Cell cell, MouseEvent e) {
-			 	gameGUIController.onCreationCellClick(cell, e);
-			 }
-		 };
+		return new GridCanvas(
+				(columns) -> GameUtils.packCells(
+						cellGetter.get()
+								.stream()
+								.sorted()
+								.collect(Collectors.toList()),
+						columns
+				),
+				gameModel,
+				cellDrawer,
+				title
+		) {
+			@Override
+			protected void onCellClick(Cell cell, MouseEvent e) {
+				onClickHandler.accept(cell, e);
+			}
+		};
 	}
 
 	private void setupToolbar() {
