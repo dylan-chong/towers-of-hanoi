@@ -17,4 +17,8 @@ public class GameGUIController {
 	public void onCreationCellClick(Cell cell, MouseEvent e) {
 		System.out.println(cell.getId());
 	}
+
+	public void onCreationRotationCellClick(Cell cell, MouseEvent mouseEvent) {
+		System.out.println(cell.getId());
+	}
 }
