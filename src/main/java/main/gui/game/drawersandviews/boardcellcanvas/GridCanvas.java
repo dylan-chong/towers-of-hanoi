@@ -7,7 +7,7 @@ import main.gui.game.drawersandviews.BoardCellDrawer;
 
 import java.util.List;
 
-public class GridCanvas extends BoardCellCanvas {
+public abstract class GridCanvas extends BoardCellCanvas {
 
     private final GridSupplier gridSupplier;
 

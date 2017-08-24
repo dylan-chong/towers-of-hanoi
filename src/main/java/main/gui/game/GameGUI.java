@@ -11,6 +11,7 @@ import main.gui.game.drawersandviews.boardcellcanvas.GridCanvas;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -66,7 +67,12 @@ public class GameGUI implements GUICard, Observer {
 		Board board = gameModel.getBoard();
 		BoardCanvas boardCanvas = new BoardCanvas(
 				board, gameModel, boardCellDrawer, "Board"
-		);
+		) {
+			@Override
+			protected void onCellClick(BoardCell cell, MouseEvent e) {
+				gameGUIController.onBoardCellClick(cell, e);
+			}
+		};
 
 		List<Player> players = gameModel.getPlayers();
 		if (players.size() != 2) {
@@ -115,7 +121,12 @@ public class GameGUI implements GUICard, Observer {
 				 gameModel,
 				 boardCellDrawer,
 				 title
-		 );
+		 ) {
+			 @Override
+			 protected void onCellClick(BoardCell cell, MouseEvent e) {
+			 	gameGUIController.onCreationCellClick(cell, e);
+			 }
+		 };
 	}
 
 	private void setupToolbar() {

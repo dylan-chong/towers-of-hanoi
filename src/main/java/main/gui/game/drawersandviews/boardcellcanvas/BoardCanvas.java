@@ -8,7 +8,7 @@ import main.gui.game.drawersandviews.BoardCellDrawer;
 
 import java.awt.*;
 
-public class BoardCanvas extends BoardCellCanvas {
+public abstract class BoardCanvas extends BoardCellCanvas {
 
     private final Board board;
 
