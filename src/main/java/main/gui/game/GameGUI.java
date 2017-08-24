@@ -2,12 +2,12 @@ package main.gui.game;
 
 import main.GameUtils;
 import main.gamemodel.*;
-import main.gamemodel.cells.BoardCell;
+import main.gamemodel.cells.Cell;
 import main.gui.cardview.GUICard;
 import main.gui.cardview.GUICardName;
-import main.gui.game.drawersandviews.BoardCellDrawer;
-import main.gui.game.drawersandviews.boardcellcanvas.BoardCanvas;
-import main.gui.game.drawersandviews.boardcellcanvas.GridCanvas;
+import main.gui.game.drawersandviews.CellDrawer;
+import main.gui.game.drawersandviews.cellcanvas.BoardCanvas;
+import main.gui.game.drawersandviews.cellcanvas.GridCanvas;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -21,20 +21,20 @@ public class GameGUI implements GUICard, Observer {
 
 	private final GameModel gameModel;
 	private final GameGUIController gameGUIController;
-	private final BoardCellDrawer boardCellDrawer;
+	private final CellDrawer cellDrawer;
 
 	private final JPanel rootJPanel;
 	private JToolBar jToolBar;
-	private JPanel boardCellCanvasesJPanel;
+	private JPanel cellCanvasesJPanel;
 
 	public GameGUI(
 			GameModel gameModel,
 			GameGUIController gameGUIController,
-			BoardCellDrawer boardCellDrawer
+			CellDrawer cellDrawer
 	) {
 		this.gameModel = gameModel;
 		this.gameGUIController = gameGUIController;
-		this.boardCellDrawer = boardCellDrawer;
+		this.cellDrawer = cellDrawer;
 
 		gameModel.addObserver(this);
 
@@ -42,7 +42,7 @@ public class GameGUI implements GUICard, Observer {
 		rootJPanel.setLayout(new BoxLayout(rootJPanel, BoxLayout.Y_AXIS));
 
 		setupToolbar();
-		setupBoardCellCanvases();
+		setupCellCanvases();
 
 		try {
 			// TODO remove
@@ -57,19 +57,19 @@ public class GameGUI implements GUICard, Observer {
 
 	}
 
-	private void setupBoardCellCanvases() {
-		boardCellCanvasesJPanel = new JPanel();
-		boardCellCanvasesJPanel.setLayout(
-				new BoxLayout(boardCellCanvasesJPanel, BoxLayout.X_AXIS)
+	private void setupCellCanvases() {
+		cellCanvasesJPanel = new JPanel();
+		cellCanvasesJPanel.setLayout(
+				new BoxLayout(cellCanvasesJPanel, BoxLayout.X_AXIS)
 		);
-		rootJPanel.add(boardCellCanvasesJPanel);
+		rootJPanel.add(cellCanvasesJPanel);
 
 		Board board = gameModel.getBoard();
 		BoardCanvas boardCanvas = new BoardCanvas(
-				board, gameModel, boardCellDrawer, "Board"
+				board, gameModel, cellDrawer, "Board"
 		) {
 			@Override
-			protected void onCellClick(BoardCell cell, MouseEvent e) {
+			protected void onCellClick(Cell cell, MouseEvent e) {
 				gameGUIController.onBoardCellClick(cell, e);
 			}
 		};
@@ -84,11 +84,11 @@ public class GameGUI implements GUICard, Observer {
 				.collect(Collectors.toList());
 
 		for (int i = 0; i < playerCanvases.get(0).size(); i++) {
-			boardCellCanvasesJPanel.add(playerCanvases.get(0).get(i));
+			cellCanvasesJPanel.add(playerCanvases.get(0).get(i));
 		}
-		boardCellCanvasesJPanel.add(boardCanvas);
+		cellCanvasesJPanel.add(boardCanvas);
 		for (int i = playerCanvases.get(1).size() - 1; i >= 0; i--) {
-			boardCellCanvasesJPanel.add(playerCanvases.get(1).get(i));
+			cellCanvasesJPanel.add(playerCanvases.get(1).get(i));
 		}
 	}
 
@@ -107,7 +107,7 @@ public class GameGUI implements GUICard, Observer {
 	}
 
 	private GridCanvas newGridCanvas(
-			Supplier<Collection<? extends BoardCell>> cellGetter,
+			Supplier<Collection<? extends Cell>> cellGetter,
 			String title
 	) {
 		 return new GridCanvas(
@@ -119,11 +119,11 @@ public class GameGUI implements GUICard, Observer {
 						 columns
 				 ),
 				 gameModel,
-				 boardCellDrawer,
+				 cellDrawer,
 				 title
 		 ) {
 			 @Override
-			 protected void onCellClick(BoardCell cell, MouseEvent e) {
+			 protected void onCellClick(Cell cell, MouseEvent e) {
 			 	gameGUIController.onCreationCellClick(cell, e);
 			 }
 		 };

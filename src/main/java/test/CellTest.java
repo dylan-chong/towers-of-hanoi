@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import static test.TestUtils.assertRepresentationEquals;
 
-public class BoardCellTest {
+public class CellTest {
 
 	@Test
 	public void Piece_toTextualRep_noSwordOrShield_returnsGridWithIdInMiddle() {

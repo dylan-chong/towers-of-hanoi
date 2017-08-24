@@ -4,7 +4,7 @@ import main.gamemodel.Direction;
 import main.gamemodel.IllegalGameStateException;
 import main.gamemodel.Textable;
 
-public abstract class BoardCell implements Textable, Comparable<BoardCell> {
+public abstract class Cell implements Textable, Comparable<Cell> {
 	public static final int TEXTUAL_REP_WIDTH = 3;
 	public static final int TEXTUAL_REP_HEIGHT = 3;
 
@@ -32,7 +32,7 @@ public abstract class BoardCell implements Textable, Comparable<BoardCell> {
 	/**
 	 * @param fromThisToCell The direction from this cell to the given cell
 	 */
-	public Reaction getReactionTo(BoardCell cell, Direction fromThisToCell) {
+	public Reaction getReactionTo(Cell cell, Direction fromThisToCell) {
 		return cell.getReactionToByVisiting(this, fromThisToCell);
 	}
 
@@ -45,17 +45,26 @@ public abstract class BoardCell implements Textable, Comparable<BoardCell> {
 	 * Call the corresponding method for this cell on the provided cell
 	 * @param fromCellToThis Pass this into the method you call on the given cell
 	 */
-	protected abstract Reaction getReactionToByVisiting(BoardCell cell,
+	protected abstract Reaction getReactionToByVisiting(Cell cell,
 														Direction fromCellToThis);
 
-	public abstract <ReturnT> ReturnT getValue(BoardCellMapper<ReturnT> getter);
+	public abstract <ReturnT> ReturnT getValue(Mapper<ReturnT> getter);
 
 	@Override
-	public int compareTo(BoardCell o) {
+	public int compareTo(Cell o) {
 		int result = getId() - o.getId();
 		if (result == 0 && o != this) {
 			throw new IllegalGameStateException("Two cells can't have the same ID");
 		}
 		return result;
+	}
+
+	public interface Mapper<ReturnT> {
+		default ReturnT valueOf(Cell cell) {
+			return cell.getValue(this);
+		}
+
+		ReturnT valueOfPieceCell(PieceCell cell);
+		ReturnT valueOfPlayerCell(PlayerCell cell);
 	}
 }

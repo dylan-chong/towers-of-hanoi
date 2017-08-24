@@ -4,7 +4,7 @@ import main.ExceptionHandler;
 import main.GameUtils;
 import main.Main;
 import main.gamemodel.*;
-import main.gamemodel.cells.BoardCell;
+import main.gamemodel.cells.Cell;
 
 import java.io.PrintStream;
 import java.util.Collection;
@@ -89,7 +89,7 @@ public class GameTextController {
 		);
 
 		if (game.getTurnState() == TurnState.CREATING_PIECE) {
-			List<List<BoardCell>> unusedCells = GameUtils.packCells(
+			List<List<Cell>> unusedCells = GameUtils.packCells(
 					player.getUnusedPieceIds()
 							.stream()
 							.map(player::findUnusedPiece)
@@ -98,13 +98,13 @@ public class GameTextController {
 					Board.DEFAULT_NUM_COLS
 			);
 			representation.append("\nYour unused cells:\n");
-			for (List<BoardCell> pieceList : unusedCells) {
+			for (List<Cell> pieceList : unusedCells) {
 				char[][] rep = Textable.copyRowIntoRep(pieceList);
 				representation.append(Textable.convertToString(rep, WITH_GAP));
 			}
 		}
 
-		List<List<BoardCell>> deadPieces = GameUtils.packCells(
+		List<List<Cell>> deadPieces = GameUtils.packCells(
 				game.getPlayers()
 						.stream()
 						.flatMap(playerData -> playerData.getDeadPieceIds()
@@ -117,7 +117,7 @@ public class GameTextController {
 		);
 		if (deadPieces.stream().mapToLong(Collection::size).sum() > 0) {
 			representation.append("\nCemetery\n");
-			for (List<BoardCell> pieceList : deadPieces) {
+			for (List<Cell> pieceList : deadPieces) {
 				char[][] rep = Textable.copyRowIntoRep(pieceList);
 				representation.append(Textable.convertToString(rep, WITH_GAP));
 			}

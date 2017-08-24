@@ -1,6 +1,6 @@
 package main.gamemodel;
 
-import main.gamemodel.cells.BoardCell;
+import main.gamemodel.cells.Cell;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -13,10 +13,10 @@ public class Board implements Textable {
 	public static final int DEFAULT_NUM_COLS = 10;
 	public static final int DEFAULT_NUM_ROWS = 10;
 
-	private final BoardCell[][] cells;
+	private final Cell[][] cells;
 
 	public Board(int numRows, int numCols) {
-		this.cells = new BoardCell[numRows][numCols];
+		this.cells = new Cell[numRows][numCols];
 	}
 
 	public Board() {
@@ -31,17 +31,17 @@ public class Board implements Textable {
 		return cells[0].length;
 	}
 
-	public void addCell(BoardCell boardCell, int row, int col)
+	public void addCell(Cell cell, int row, int col)
 			throws InvalidMoveException {
 		if (getCellAt(row, col) != null) {
 			throw new InvalidMoveException("There is already cell there");
 		}
 
-		cells[row][col] = boardCell;
+		cells[row][col] = cell;
 	}
 
-	public BoardCell removeCell(int row, int col) throws InvalidMoveException {
-		BoardCell cell = getCellAt(row , col);
+	public Cell removeCell(int row, int col) throws InvalidMoveException {
+		Cell cell = getCellAt(row , col);
 		if (cell == null) {
 			throw new InvalidMoveException("There is no cell there");
 		}
@@ -53,7 +53,7 @@ public class Board implements Textable {
 	/**
 	 * To be used for testing only. Underscore is used to show privacy
 	 */
-	public BoardCell getCellAt(int row, int col) {
+	public Cell getCellAt(int row, int col) {
 		return cells[row][col];
 	}
 
@@ -71,11 +71,11 @@ public class Board implements Textable {
 		return count.get();
 	}
 
-	public int[] rowColOf(BoardCell cell) {
+	public int[] rowColOf(Cell cell) {
 		for (int r = 0; r < cells.length; r++) {
-			BoardCell[] row = cells[r];
+			Cell[] row = cells[r];
 			for (int c = 0; c < row.length; c++) {
-				BoardCell currentCell = cells[r][c];
+				Cell currentCell = cells[r][c];
 				if (cell == currentCell) {
 					return new int[]{r, c};
 				}
@@ -88,13 +88,13 @@ public class Board implements Textable {
 	/**
 	 * Convert this board, and the cells inside the board to a textual
 	 * representation (grid of characters), where every
-	 * cell takes up {@link BoardCell#TEXTUAL_REP_WIDTH} chars in width
-	 * and {@link BoardCell#TEXTUAL_REP_HEIGHT} cells in height.
+	 * cell takes up {@link Cell#TEXTUAL_REP_WIDTH} chars in width
+	 * and {@link Cell#TEXTUAL_REP_HEIGHT} cells in height.
 	 */
 	@Override
 	public char[][] toTextualRep() {
-		int height = cells.length * BoardCell.TEXTUAL_REP_HEIGHT;
-		int width = cells[0].length * BoardCell.TEXTUAL_REP_WIDTH;
+		int height = cells.length * Cell.TEXTUAL_REP_HEIGHT;
+		int width = cells[0].length * Cell.TEXTUAL_REP_WIDTH;
 
 		char[][] representation =
 				Textable.blankTextualRep(height, width);
@@ -108,8 +108,8 @@ public class Board implements Textable {
 			Textable.copyRepIntoRep(
 					cellRep,
 					representation,
-					row * BoardCell.TEXTUAL_REP_HEIGHT,
-					col * BoardCell.TEXTUAL_REP_WIDTH
+					row * Cell.TEXTUAL_REP_HEIGHT,
+					col * Cell.TEXTUAL_REP_WIDTH
 			);
 
 		});
@@ -126,19 +126,19 @@ public class Board implements Textable {
 
 		for (int r = 0; r < cells.length; r++) {
 			for (int c = 0; c < cells[r].length; c++) {
-				BoardCell cell = cells[r][c];
+				Cell cell = cells[r][c];
 				if (cell == null) {
 					continue;
 				}
 
 				if (r + 1 < cells.length) {
-					BoardCell cellBelow = cells[r + 1][c];
+					Cell cellBelow = cells[r + 1][c];
 					if (cellBelow != null) {
 						pairs.add(new CellPair(cell, cellBelow));
 					}
 				}
 				if (c + 1 < cells[r].length) {
-					BoardCell cellToRight = cells[r][c + 1];
+					Cell cellToRight = cells[r][c + 1];
 					if (cellToRight != null) {
 						pairs.add(new CellPair(cell, cellToRight));
 					}
@@ -152,7 +152,7 @@ public class Board implements Textable {
 	public boolean isInside(int row, int col) {
 		try {
 			// noinspection unused
-			BoardCell boardCell = cells[row][col];
+			Cell cell = cells[row][col];
 			return true;
 		} catch (ArrayIndexOutOfBoundsException e) {
 			return false;
@@ -165,25 +165,25 @@ public class Board implements Textable {
 	 */
 	public void forEachCell(CellConsumer consumer) {
 		for (int r = 0; r < cells.length; r++) {
-			BoardCell[] row = cells[r];
+			Cell[] row = cells[r];
 			for (int c = 0; c < row.length; c++) {
-				BoardCell cell = cells[r][c];
+				Cell cell = cells[r][c];
 				consumer.apply(cell, r, c);
 			}
 		}
 	}
 
 	/**
-	 * Reaction between 2 {@link BoardCell} objects (they are next to each
+	 * Reaction between 2 {@link Cell} objects (they are next to each
 	 * other).
 	 *
 	 * cellA should be above or to the left of cellB
 	 */
 	public static class CellPair {
-		public final BoardCell cellA;
-		public final BoardCell cellB;
+		public final Cell cellA;
+		public final Cell cellB;
 
-		public CellPair(BoardCell cellA, BoardCell cellB) {
+		public CellPair(Cell cellA, Cell cellB) {
 			if (cellA.equals(cellB)) {
 				throw new IllegalArgumentException("Cells can't be the same");
 			}
@@ -199,8 +199,8 @@ public class Board implements Textable {
 
 			CellPair cellPair = (CellPair) o;
 
-			List<BoardCell> otherCells = Arrays.asList(cellPair.cellA, cellPair.cellB);
-			List<BoardCell> theseCells = Arrays.asList(cellA, cellB);
+			List<Cell> otherCells = Arrays.asList(cellPair.cellA, cellPair.cellB);
+			List<Cell> theseCells = Arrays.asList(cellA, cellB);
 			return new HashSet<>(theseCells).equals(new HashSet<>(otherCells));
 		}
 

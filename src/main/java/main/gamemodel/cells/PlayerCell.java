@@ -8,7 +8,7 @@ import java.awt.*;
 /**
  * The player cell
  */
-public class PlayerCell extends BoardCell {
+public class PlayerCell extends Cell {
 
 	/**
 	 * Char to go around {@link Token#representation} icon
@@ -70,12 +70,12 @@ public class PlayerCell extends BoardCell {
 	}
 
 	@Override
-	protected Reaction getReactionToByVisiting(BoardCell cell, Direction fromCellToThis) {
+	protected Reaction getReactionToByVisiting(Cell cell, Direction fromCellToThis) {
 		return cell.getReactionToPlayerCell(this, fromCellToThis);
 	}
 
 	@Override
-	public <ReturnT> ReturnT getValue(BoardCellMapper<ReturnT> getter) {
+	public <ReturnT> ReturnT getValue(Mapper<ReturnT> getter) {
 		return getter.valueOfPlayerCell(this);
 	}
 

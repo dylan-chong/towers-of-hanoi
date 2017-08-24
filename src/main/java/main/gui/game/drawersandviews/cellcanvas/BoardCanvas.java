@@ -1,24 +1,24 @@
-package main.gui.game.drawersandviews.boardcellcanvas;
+package main.gui.game.drawersandviews.cellcanvas;
 
 import main.gamemodel.Board;
 import main.gamemodel.CellConsumer;
 import main.gamemodel.GameModel;
 import main.gui.game.GameGUI;
-import main.gui.game.drawersandviews.BoardCellDrawer;
+import main.gui.game.drawersandviews.CellDrawer;
 
 import java.awt.*;
 
-public abstract class BoardCanvas extends BoardCellCanvas {
+public abstract class BoardCanvas extends CellCanvas {
 
     private final Board board;
 
     public BoardCanvas(
             Board board,
             GameModel gameModel,
-            BoardCellDrawer boardCellDrawer,
+            CellDrawer cellDrawer,
 			String titleOrNull
     ) {
-        super(gameModel, boardCellDrawer, titleOrNull);
+        super(gameModel, cellDrawer, titleOrNull);
         this.board = board;
     }
 

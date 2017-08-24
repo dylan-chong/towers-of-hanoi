@@ -1,6 +1,6 @@
 package main.gamemodel;
 
-import main.gamemodel.cells.BoardCell;
+import main.gamemodel.cells.Cell;
 import main.gamemodel.cells.PieceCell;
 import main.gamemodel.cells.PlayerCell;
 import main.gamemodel.cells.Reaction;
@@ -108,7 +108,7 @@ public class GameModel extends Observable implements Textable {
 		final int creationRow = player.getCreationRow();
 		final int creationCol = player.getCreationCol();
 
-		BoardCell existingCell = board.getCellAt(
+		Cell existingCell = board.getCellAt(
 				creationRow, creationCol
 		);
 		if (existingCell != null) {
@@ -333,7 +333,7 @@ public class GameModel extends Observable implements Textable {
 		return winner;
 	}
 
-	public Player getPlayerOfCell(BoardCell cell) {
+	public Player getPlayerOfCell(Cell cell) {
 		return players.stream()
 				.filter(data -> data.ownsPiece(cell))
 				.findAny()

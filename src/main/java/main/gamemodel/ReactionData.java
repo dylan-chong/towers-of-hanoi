@@ -1,21 +1,21 @@
 package main.gamemodel;
 
-import main.gamemodel.cells.BoardCell;
+import main.gamemodel.cells.Cell;
 import main.gamemodel.cells.Reaction;
 
 import java.util.function.Function;
 
 public class ReactionData {
-	public final BoardCell cell;
+	public final Cell cell;
 	public final int[] cellRowCol;
-	public final BoardCell cellReactedTo;
+	public final Cell cellReactedTo;
 	public final int[] cellReactedToRowCol;
 	public final Reaction reaction;
 	public final Player cellPlayer;
 
-	public ReactionData(BoardCell cell,
+	public ReactionData(Cell cell,
 						int[] cellRowCol,
-						BoardCell cellReactedTo,
+						Cell cellReactedTo,
 						int[] cellReactedToRowCol,
 						Player cellPlayer) {
 		this.cell = cell;
@@ -36,11 +36,11 @@ public class ReactionData {
 		private final Board.CellPair cellPair;
 
 		public Pair(Board.CellPair cellPair,
-					Function<BoardCell, int[]> getRowColOfCell,
-					Function<BoardCell, Player> getPlayerOfCell) {
+					Function<Cell, int[]> getRowColOfCell,
+					Function<Cell, Player> getPlayerOfCell) {
 			this.cellPair = cellPair;
-			BoardCell cellA = cellPair.cellA;
-			BoardCell cellB = cellPair.cellB;
+			Cell cellA = cellPair.cellA;
+			Cell cellB = cellPair.cellB;
 
 			int[] cellARowCol = getRowColOfCell.apply(cellA);
 			int[] cellBRowCol = getRowColOfCell.apply(cellB);

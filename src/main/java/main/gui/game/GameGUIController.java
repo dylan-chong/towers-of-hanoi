@@ -1,7 +1,7 @@
 package main.gui.game;
 
 import main.gamemodel.GameModel;
-import main.gamemodel.cells.BoardCell;
+import main.gamemodel.cells.Cell;
 
 import java.awt.event.MouseEvent;
 
@@ -10,11 +10,11 @@ public class GameGUIController {
 
 	}
 
-	public void onBoardCellClick(BoardCell cell, MouseEvent e) {
+	public void onBoardCellClick(Cell cell, MouseEvent e) {
 		System.out.println(cell.getId());
 	}
 
-	public void onCreationCellClick(BoardCell cell, MouseEvent e) {
+	public void onCreationCellClick(Cell cell, MouseEvent e) {
 		System.out.println(cell.getId());
 	}
 }

@@ -2,15 +2,15 @@ package main.gui.game.drawersandviews;
 
 import main.gamemodel.Direction;
 import main.gamemodel.Player;
-import main.gamemodel.cells.BoardCellMapper;
+import main.gamemodel.cells.Cell;
 import main.gamemodel.cells.PieceCell;
 import main.gamemodel.cells.PlayerCell;
 
 import java.awt.*;
 import java.util.Arrays;
 
-public class BoardCellDrawer implements
-		BoardCellMapper<BoardCellDrawer.DrawFunction> {
+public class CellDrawer implements
+		Cell.Mapper<CellDrawer.DrawFunction> {
 
 	private static final float STROKE_WIDTH = 5;
 	private static final Color SWORD_AND_SHIELD_COLOUR = new Color(252, 14, 27);

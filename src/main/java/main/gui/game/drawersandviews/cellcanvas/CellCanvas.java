@@ -1,11 +1,11 @@
-package main.gui.game.drawersandviews.boardcellcanvas;
+package main.gui.game.drawersandviews.cellcanvas;
 
 import main.gamemodel.CellConsumer;
 import main.gamemodel.GameModel;
 import main.gamemodel.Player;
-import main.gamemodel.cells.BoardCell;
+import main.gamemodel.cells.Cell;
 import main.gui.game.GameGUI;
-import main.gui.game.drawersandviews.BoardCellDrawer;
+import main.gui.game.drawersandviews.CellDrawer;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -18,17 +18,17 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Draws a grid of board cells
  */
-public abstract class BoardCellCanvas extends JPanel {
+public abstract class CellCanvas extends JPanel {
 	protected final GameModel gameModel;
-	protected final BoardCellDrawer boardCellDrawer;
+	protected final CellDrawer cellDrawer;
 
-	public BoardCellCanvas(
+	public CellCanvas(
 			GameModel gameModel,
-			BoardCellDrawer boardCellDrawer,
+			CellDrawer cellDrawer,
 			String titleOrNull
 	) {
 		this.gameModel = gameModel;
-		this.boardCellDrawer = boardCellDrawer;
+		this.cellDrawer = cellDrawer;
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(new LineBorder(Color.GRAY, 1));
@@ -81,7 +81,7 @@ public abstract class BoardCellCanvas extends JPanel {
 			}
 
 			Player player = gameModel.getPlayerOfCell(cell);
-			boardCellDrawer.valueOf(cell).draw(
+			cellDrawer.valueOf(cell).draw(
 					player,
 					graphics2D,
 					col,
@@ -107,7 +107,7 @@ public abstract class BoardCellCanvas extends JPanel {
 	/**
 	 * To be implemented by clients for this class
 	 */
-	protected abstract void onCellClick(BoardCell cell, MouseEvent e);
+	protected abstract void onCellClick(Cell cell, MouseEvent e);
 
 	private void onClickCellCanvas(MouseEvent e) {
 
@@ -115,14 +115,14 @@ public abstract class BoardCellCanvas extends JPanel {
 		int col = e.getX() / size;
 		int row = e.getY() / size;
 
-		Optional<BoardCell> clickedCell = getCellAt(row, col);
+		Optional<Cell> clickedCell = getCellAt(row, col);
 		clickedCell.ifPresent(cell -> {
 			onCellClick(cell, e);
 		});
 	}
 
-	private Optional<BoardCell> getCellAt(int targetRow, int targetCol) {
-		AtomicReference<BoardCell> resultCell = new AtomicReference<>();
+	private Optional<Cell> getCellAt(int targetRow, int targetCol) {
+		AtomicReference<Cell> resultCell = new AtomicReference<>();
 
 		forEachCell((cell, row, col) -> {
 			if (row == targetRow && col == targetCol) {

@@ -3,7 +3,7 @@ package test;
 import main.gamemodel.Board;
 import main.gamemodel.InvalidMoveException;
 import main.gamemodel.Textable;
-import main.gamemodel.cells.BoardCell;
+import main.gamemodel.cells.Cell;
 import main.gamemodel.cells.PieceCell;
 import main.gamemodel.cells.PieceCell.SideCombination;
 import org.junit.Test;
@@ -30,8 +30,8 @@ public class BoardTest {
 
 		char[][] representation = board.toTextualRep();
 		char[][] expected = Textable.blankTextualRep(
-				rows * BoardCell.TEXTUAL_REP_HEIGHT,
-				cols * BoardCell.TEXTUAL_REP_WIDTH
+				rows * Cell.TEXTUAL_REP_HEIGHT,
+				cols * Cell.TEXTUAL_REP_WIDTH
 		);
 		assertRepresentationEquals(expected, representation);
 	}

@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * Represents a cell with sword/shield parts
  */
-public class PieceCell extends BoardCell {
+public class PieceCell extends Cell {
 	/**
 	 * These assume the piece is facing north
 	 */
@@ -46,7 +46,7 @@ public class PieceCell extends BoardCell {
 	}
 
 	@Override
-	public <ReturnT> ReturnT getValue(BoardCellMapper<ReturnT> getter) {
+	public <ReturnT> ReturnT getValue(Mapper<ReturnT> getter) {
 		return getter.valueOfPieceCell(this);
 	}
 
@@ -64,7 +64,7 @@ public class PieceCell extends BoardCell {
 	}
 
 	@Override
-	protected Reaction getReactionToByVisiting(BoardCell cell, Direction fromCellToThis) {
+	protected Reaction getReactionToByVisiting(Cell cell, Direction fromCellToThis) {
 		return cell.getReactionToPieceCell(this, fromCellToThis);
 	}
 

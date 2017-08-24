@@ -1,11 +1,11 @@
 package main.gamemodel;
 
-import main.gamemodel.cells.BoardCell;
+import main.gamemodel.cells.Cell;
 
 import java.util.List;
 
-import static main.gamemodel.cells.BoardCell.TEXTUAL_REP_HEIGHT;
-import static main.gamemodel.cells.BoardCell.TEXTUAL_REP_WIDTH;
+import static main.gamemodel.cells.Cell.TEXTUAL_REP_HEIGHT;
+import static main.gamemodel.cells.Cell.TEXTUAL_REP_WIDTH;
 
 /**
  * Something that can be represented by text
@@ -78,7 +78,7 @@ public interface Textable {
 		}
 	}
 
-	static char[][] copyRowIntoRep(List<? extends BoardCell> cells) {
+	static char[][] copyRowIntoRep(List<? extends Cell> cells) {
 		char[][] rep = Textable.blankTextualRep(
 				TEXTUAL_REP_HEIGHT,
 				TEXTUAL_REP_WIDTH * cells.size()

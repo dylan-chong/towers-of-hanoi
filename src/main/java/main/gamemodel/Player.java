@@ -1,6 +1,6 @@
 package main.gamemodel;
 
-import main.gamemodel.cells.BoardCell;
+import main.gamemodel.cells.Cell;
 import main.gamemodel.cells.PieceCell;
 import main.gamemodel.cells.PlayerCell;
 
@@ -158,7 +158,7 @@ public class Player {
 		return playerCell.getName();
 	}
 
-	public boolean ownsPiece(BoardCell cell) {
+	public boolean ownsPiece(Cell cell) {
 		if (cell == playerCell) {
 			return true;
 		}

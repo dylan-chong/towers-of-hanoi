@@ -1,8 +1,8 @@
 package main.gamemodel;
 
-import main.gamemodel.cells.BoardCell;
+import main.gamemodel.cells.Cell;
 
 public interface CellConsumer {
-	void apply(BoardCell cell, int row, int col);
+	void apply(Cell cell, int row, int col);
 }
 
