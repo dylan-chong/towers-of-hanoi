@@ -82,7 +82,7 @@ public class GameTextController {
 	}
 
 	private String getGameRepresentation() {
-		PlayerData player = game.getCurrentPlayerData();
+		Player player = game.getCurrentPlayerData();
 
 		StringBuilder representation = new StringBuilder(
 				Textable.convertToString(game.toTextualRep(), WITH_GAP)

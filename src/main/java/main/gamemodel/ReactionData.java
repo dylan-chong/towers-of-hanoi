@@ -11,18 +11,18 @@ public class ReactionData {
 	public final BoardCell cellReactedTo;
 	public final int[] cellReactedToRowCol;
 	public final Reaction reaction;
-	public final PlayerData cellPlayerData;
+	public final Player cellPlayer;
 
 	public ReactionData(BoardCell cell,
 						int[] cellRowCol,
 						BoardCell cellReactedTo,
 						int[] cellReactedToRowCol,
-						PlayerData cellPlayerData) {
+						Player cellPlayer) {
 		this.cell = cell;
 		this.cellRowCol = cellRowCol;
 		this.cellReactedTo = cellReactedTo;
 		this.cellReactedToRowCol = cellReactedToRowCol;
-		this.cellPlayerData = cellPlayerData;
+		this.cellPlayer = cellPlayer;
 		this.reaction = cell.getReactionTo(
 				cellReactedTo,
 				Direction.fromAToB(cellRowCol, cellReactedToRowCol)
@@ -37,7 +37,7 @@ public class ReactionData {
 
 		public Pair(Board.CellPair cellPair,
 					Function<BoardCell, int[]> getRowColOfCell,
-					Function<BoardCell, PlayerData> getPlayerOfCell) {
+					Function<BoardCell, Player> getPlayerOfCell) {
 			this.cellPair = cellPair;
 			BoardCell cellA = cellPair.cellA;
 			BoardCell cellB = cellPair.cellB;

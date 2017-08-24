@@ -12,7 +12,7 @@ import static main.gamemodel.cells.PieceCell.SideCombination;
 /**
  * Represents a single player in the game
  */
-public class PlayerData {
+public class Player {
 
 	private final PlayerCell playerCell;
 	private final boolean isUppercase;
@@ -29,10 +29,10 @@ public class PlayerData {
 	private Map<Character, PieceCell> usedPieces = new HashMap<>();
 	private Map<Character, PieceCell> deadPieces = new HashMap<>();
 
-	public PlayerData(PlayerCell playerCell,
-					  boolean isUppercase,
-					  int creationRow,
-					  int creationCol) {
+	public Player(PlayerCell playerCell,
+				  boolean isUppercase,
+				  int creationRow,
+				  int creationCol) {
 		this.playerCell = playerCell;
 		this.isUppercase = isUppercase;
 		this.creationRow = creationRow;

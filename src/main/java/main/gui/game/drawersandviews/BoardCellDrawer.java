@@ -1,7 +1,7 @@
-package main.gui.game.drawers;
+package main.gui.game.drawersandviews;
 
 import main.gamemodel.Direction;
-import main.gamemodel.PlayerData;
+import main.gamemodel.Player;
 import main.gamemodel.cells.BoardCellMapper;
 import main.gamemodel.cells.PieceCell;
 import main.gamemodel.cells.PlayerCell;
@@ -14,9 +14,10 @@ public class BoardCellDrawer implements
 
 	private static final float STROKE_WIDTH = 5;
 	private static final Color SWORD_AND_SHIELD_COLOUR = new Color(252, 14, 27);
-	private static final float FACE_STROKE_WIDTH = 1.5f;
 	private static final float SHIELD_DISTANCE_FROM_CENTRE = 0.40f;
 	private static final float SWORD_DISTANCE_FROM_CENTRE = 0.40f;
+
+	private static final float FACE_STROKE_WIDTH = 1.5f;
 
 	@Override
 	public DrawFunction valueOfPieceCell(PieceCell cell) {
@@ -166,7 +167,7 @@ public class BoardCellDrawer implements
 
 	public interface DrawFunction {
 		void draw(
-				PlayerData playerData,
+				Player player,
 				Graphics2D graphics2D,
 				int col,
 				int row,

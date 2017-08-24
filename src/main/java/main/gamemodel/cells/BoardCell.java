@@ -1,6 +1,7 @@
 package main.gamemodel.cells;
 
 import main.gamemodel.Direction;
+import main.gamemodel.IllegalGameStateException;
 import main.gamemodel.Textable;
 
 public abstract class BoardCell implements Textable, Comparable<BoardCell> {
@@ -53,7 +54,7 @@ public abstract class BoardCell implements Textable, Comparable<BoardCell> {
 	public int compareTo(BoardCell o) {
 		int result = getId() - o.getId();
 		if (result == 0 && o != this) {
-			throw new IllegalStateException();
+			throw new IllegalGameStateException("Two cells can't have the same ID");
 		}
 		return result;
 	}

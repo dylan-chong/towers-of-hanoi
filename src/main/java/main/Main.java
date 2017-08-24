@@ -5,7 +5,7 @@ import main.gamemodel.GameModel;
 import main.gui.cardview.GUICardView;
 import main.gui.game.GameGUI;
 import main.gui.game.GameGUIController;
-import main.gui.game.drawers.BoardCellDrawer;
+import main.gui.game.drawersandviews.BoardCellDrawer;
 import main.gui.menu.MenuGUIAndController;
 import main.textcontroller.GameTextController;
 import test.TestRunner;
@@ -64,16 +64,16 @@ public class Main {
 	}
 
 	private static void startTextApp() {
-             GameModel game = new GameModel(new Board());
-             PrintStream out = System.out;
+		GameModel game = new GameModel(new Board());
+		PrintStream out = System.out;
 
-             GameTextController controller = new GameTextController(
-                             new Scanner(System.in),
-                             out,
-                             new GameTextController.AppExceptionHandler(out),
-                             game
-             );
+		GameTextController controller = new GameTextController(
+				new Scanner(System.in),
+				out,
+				new GameTextController.AppExceptionHandler(out),
+				game
+		);
 
-             controller.runUntilGameEnd();
+		controller.runUntilGameEnd();
 	}
 }

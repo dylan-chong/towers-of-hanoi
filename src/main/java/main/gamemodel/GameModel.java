@@ -21,7 +21,7 @@ public class GameModel extends Observable implements Textable {
 	private static final int CREATION_CELL_OFFSET = 2;
 
 	private final Board board;
-	private final List<PlayerData> players;
+	private final List<Player> players;
 
 	/**
 	 * Index in players
@@ -36,20 +36,20 @@ public class GameModel extends Observable implements Textable {
 	private Collection<PieceCell> piecesPlayedThisTurn;
 
 	private Deque<Command> undoStack = new ArrayDeque<>();
-	private PlayerData winner;
+	private Player winner;
 
 	public GameModel(Board emptyBoard) {
 		assert emptyBoard.isEmpty();
 
 		this.board = emptyBoard;
 		this.players = Arrays.asList(
-				new PlayerData(
+				new Player(
 						new PlayerCell(PlayerCell.Token.ANGRY),
 						true,
 						CREATION_CELL_OFFSET,
 						CREATION_CELL_OFFSET
 				),
-				new PlayerData(
+				new Player(
 						new PlayerCell(PlayerCell.Token.HAPPY),
 						false,
 						emptyBoard.getNumRows() - 1 - CREATION_CELL_OFFSET,
@@ -79,11 +79,11 @@ public class GameModel extends Observable implements Textable {
 		notifyObservers();
 	}
 
-	public PlayerData getCurrentPlayerData() {
+	public Player getCurrentPlayerData() {
 		return players.get(currentPlayerIndex);
 	}
 
-	public List<PlayerData> getPlayers() {
+	public List<Player> getPlayers() {
 		return Collections.unmodifiableList(players);
 	}
 
@@ -96,7 +96,7 @@ public class GameModel extends Observable implements Textable {
 	 * Create a piece on the current player's creation square
 	 *
 	 * @param pieceId     a,b,c,... the piece to get from. Case insensitive.
-	 *                    {@link PlayerData#unusedPieces}
+	 *                    {@link Player#unusedPieces}
 	 * @param numberOfClockwiseRotations Used to sit the original orientation
 	 *                                   of the piece
 	 */
@@ -104,7 +104,7 @@ public class GameModel extends Observable implements Textable {
 			throws InvalidMoveException {
 		requireState(TurnState.CREATING_PIECE, null);
 
-		PlayerData player = getCurrentPlayerData();
+		Player player = getCurrentPlayerData();
 		final int creationRow = player.getCreationRow();
 		final int creationCol = player.getCreationCol();
 
@@ -150,7 +150,7 @@ public class GameModel extends Observable implements Textable {
 			throws InvalidMoveException {
 		requireState(TurnState.MOVING_OR_ROTATING_PIECE, null);
 
-		PlayerData player = getCurrentPlayerData();
+		Player player = getCurrentPlayerData();
 		PieceCell piece = player.findUsedPiece(pieceId);
 		if (piece == null) {
 			throw new InvalidMoveException(
@@ -203,7 +203,7 @@ public class GameModel extends Observable implements Textable {
 
 		requireState(TurnState.MOVING_OR_ROTATING_PIECE, null);
 
-		PlayerData player = getCurrentPlayerData();
+		Player player = getCurrentPlayerData();
 		PieceCell piece = player.findUsedPiece(pieceId);
 		if (piece == null) {
 			throw new InvalidMoveException(
@@ -247,7 +247,7 @@ public class GameModel extends Observable implements Textable {
 	public Collection<Character> getPlayablePieceIds() {
 		requireState(TurnState.MOVING_OR_ROTATING_PIECE, null);
 
-		PlayerData player = getCurrentPlayerData();
+		Player player = getCurrentPlayerData();
 		List<PieceCell> pieces = player.getUsedPieceIds()
 				.stream()
 				.map(player::findUsedPiece)
@@ -325,7 +325,7 @@ public class GameModel extends Observable implements Textable {
 		});
 	}
 
-	public PlayerData getWinner() {
+	public Player getWinner() {
 		if (turnState != TurnState.GAME_FINISHED) {
 			throw new IllegalGameStateException("The game is not finished yet");
 		}
@@ -333,7 +333,7 @@ public class GameModel extends Observable implements Textable {
 		return winner;
 	}
 
-	public PlayerData getPlayerOfCell(BoardCell cell) {
+	public Player getPlayerOfCell(BoardCell cell) {
 		return players.stream()
 				.filter(data -> data.ownsPiece(cell))
 				.findAny()
@@ -347,7 +347,7 @@ public class GameModel extends Observable implements Textable {
 			throw new InvalidMoveException("Game is already finished");
 		}
 
-		PlayerData newLoser = getCurrentPlayerData();
+		Player newLoser = getCurrentPlayerData();
 		doCommandWork(new LoseGame(newLoser));
 	}
 
@@ -390,18 +390,18 @@ public class GameModel extends Observable implements Textable {
 	}
 
 	public class LoseGame implements Command {
-		private final PlayerData loser;
+		private final Player loser;
 
 		private TurnState previousTurnState;
 		private int[] loserCellRowCol;
 
-		public LoseGame(PlayerData loser) {
+		public LoseGame(Player loser) {
 			this.loser = loser;
 		}
 
 		@Override
 		public void doWork() throws InvalidMoveException {
-			List<PlayerData> winners = players.stream()
+			List<Player> winners = players.stream()
 					.filter(p -> p != loser)
 					.collect(Collectors.toList());
 			if (winners.size() != 1) {
@@ -550,14 +550,14 @@ public class GameModel extends Observable implements Textable {
 					int[] rowCol = reactionData.cellRowCol;
 					board.removeCell(rowCol[0], rowCol[1]);
 
-					PlayerData player = reactionData.cellPlayerData;
+					Player player = reactionData.cellPlayer;
 					player.killPiece((PieceCell) reactionData.cell);
 				}
 
 				@Override
 				public void undoWork() throws InvalidMoveException {
 					PieceCell cell = (PieceCell) reactionData.cell;
-					PlayerData player = reactionData.cellPlayerData;
+					Player player = reactionData.cellPlayer;
 					player.revivePiece(cell);
 
 					int[] rowCol = reactionData.cellRowCol;
@@ -610,7 +610,7 @@ public class GameModel extends Observable implements Textable {
 
 		@Override
 		public Function<ReactionData, Command> getLoseTheGameValue() {
-			return reactionData -> new LoseGame(reactionData.cellPlayerData);
+			return reactionData -> new LoseGame(reactionData.cellPlayer);
 		}
 	}
 }

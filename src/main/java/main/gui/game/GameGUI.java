@@ -5,69 +5,44 @@ import main.gamemodel.*;
 import main.gamemodel.cells.BoardCell;
 import main.gui.cardview.GUICard;
 import main.gui.cardview.GUICardName;
-import main.gui.game.drawers.BoardCellDrawer;
+import main.gui.game.drawersandviews.BoardCellDrawer;
+import main.gui.game.drawersandviews.boardcellcanvas.BoardCanvas;
+import main.gui.game.drawersandviews.boardcellcanvas.GridCanvas;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.function.Function;
+import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class GameGUI implements GUICard, Observer {
-	private static final int PREFERRED_BOARD_CELL_SIZE = 50;
-	private static final int CREATION_GRID_COLUMNS = 2;
+	public static final int PREFERRED_BOARD_CELL_SIZE = 50;
+	public static final int CREATION_GRID_COLUMNS = 2;
 
-	private final JPanel rootJPanel;
 	private final GameModel gameModel;
 	private final GameGUIController gameGUIController;
 	private final BoardCellDrawer boardCellDrawer;
-	private final JToolBar jToolBar;
 
-	public GameGUI(GameModel gameModel,
-				   GameGUIController gameGUIController,
-				   BoardCellDrawer boardCellDrawer) {
+	private final JPanel rootJPanel;
+	private JToolBar jToolBar;
+	private JPanel boardCellCanvasesJPanel;
+
+	public GameGUI(
+			GameModel gameModel,
+			GameGUIController gameGUIController,
+			BoardCellDrawer boardCellDrawer
+	) {
 		this.gameModel = gameModel;
 		this.gameGUIController = gameGUIController;
 		this.boardCellDrawer = boardCellDrawer;
+
 		gameModel.addObserver(this);
 
 		rootJPanel = new JPanel();
 		rootJPanel.setLayout(new BoxLayout(rootJPanel, BoxLayout.Y_AXIS));
 
-		// Toolbar
-
-		jToolBar = new JToolBar();
-		rootJPanel.add(jToolBar);
-
-		addToolbarButton("Undo", gameModel::undo);
-		addToolbarButton("Pass", gameModel::passTurnState);
-		addToolbarButton("Surrender", gameModel::surrender);
-
-		// Board
-
-		Board board = gameModel.getBoard();
-
-		BoardCanvas boardCanvas = new BoardCanvas(board);
-		rootJPanel.add(boardCanvas);
-
-		for (PlayerData player : gameModel.getPlayers()) {
-			GridCanvas creationCanvas = new GridCanvas(
-					board.getNumRows(),
-					CREATION_GRID_COLUMNS,
-					(columns) -> GameUtils.packCells(
-							player.getUnusedPieces()
-									.values()
-									.stream()
-									.sorted()
-									.collect(Collectors.toList()),
-							columns
-					)
-			);
-			rootJPanel.add(creationCanvas);
-		}
+		setupToolbar();
+		setupBoardCellCanvases();
 
 		try {
 			// TODO remove
@@ -80,6 +55,68 @@ public class GameGUI implements GUICard, Observer {
 			throw new RuntimeException(e);
 		}
 
+	}
+
+	private void setupBoardCellCanvases() {
+		boardCellCanvasesJPanel = new JPanel();
+		boardCellCanvasesJPanel.setLayout(
+				new BoxLayout(boardCellCanvasesJPanel, BoxLayout.X_AXIS)
+		);
+		rootJPanel.add(boardCellCanvasesJPanel);
+
+		Board board = gameModel.getBoard();
+		BoardCanvas boardCanvas = new BoardCanvas(board, gameModel, boardCellDrawer);
+
+		List<Player> players = gameModel.getPlayers();
+		if (players.size() != 2) {
+			throw new IllegalGameStateException("Must be 2 players");
+		}
+		List<List<? extends JComponent>> playerCanvases = players
+				.stream()
+				.map(this::getPlayerCanvases)
+				.collect(Collectors.toList());
+
+		for (int i = 0; i < playerCanvases.get(0).size(); i++) {
+			boardCellCanvasesJPanel.add(playerCanvases.get(0).get(i));
+		}
+		boardCellCanvasesJPanel.add(boardCanvas);
+		for (int i = playerCanvases.get(1).size() - 1; i >= 0; i--) {
+			boardCellCanvasesJPanel.add(playerCanvases.get(1).get(i));
+		}
+	}
+
+	private List<? extends JComponent> getPlayerCanvases(Player player) {
+		return Arrays.asList(
+				newGridCanvas(player.getUnusedPieces()::values),
+				newGridCanvas(player.getDeadPieces()::values)
+		);
+	}
+
+	private GridCanvas newGridCanvas(
+			Supplier<Collection<? extends BoardCell>> cellGetter
+	) {
+		 return new GridCanvas(
+				gameModel.getBoard().getNumRows(),
+				CREATION_GRID_COLUMNS,
+				(columns) -> GameUtils.packCells(
+						cellGetter.get()
+								.stream()
+								.sorted()
+								.collect(Collectors.toList()),
+						columns
+				),
+				gameModel,
+				boardCellDrawer
+		);
+	}
+
+	private void setupToolbar() {
+		jToolBar = new JToolBar();
+		rootJPanel.add(jToolBar);
+
+		addToolbarButton("Undo", gameModel::undo);
+		addToolbarButton("Pass", gameModel::passTurnState);
+		addToolbarButton("Surrender", gameModel::surrender);
 	}
 
 	private void addToolbarButton(String title, GameAction action) {
@@ -123,7 +160,7 @@ public class GameGUI implements GUICard, Observer {
 		rootJPanel.repaint();
 
 		if (gameModel.getTurnState() == TurnState.GAME_FINISHED) {
-			PlayerData winner = gameModel.getWinner();
+			Player winner = gameModel.getWinner();
 			JOptionPane.showMessageDialog(
 					rootJPanel,
 					String.format("Player '%s' won!", winner.getName()),
@@ -131,110 +168,6 @@ public class GameGUI implements GUICard, Observer {
 					JOptionPane.PLAIN_MESSAGE
 			);
 		}
-	}
-
-	/**
-	 * Draws a grid of board cells
-	 */
-	private abstract class BoardCellCanvas extends JComponent {
-		public BoardCellCanvas(int preferredRows, int preferredColumns) {
-			setPreferredSize(new Dimension(
-					preferredColumns * PREFERRED_BOARD_CELL_SIZE,
-					preferredRows * PREFERRED_BOARD_CELL_SIZE
-			));
-		}
-
-		@Override
-        protected void paintComponent(Graphics g) {
-            Graphics2D graphics2D = (Graphics2D) g;
-
-			forEachCell((cell, row, col) -> {
-				if (cell == null) {
-					return;
-				}
-
-				PlayerData player = gameModel.getPlayerOfCell(cell);
-				boardCellDrawer.valueOf(cell).draw(
-						player,
-						graphics2D,
-						col,
-						row,
-						PREFERRED_BOARD_CELL_SIZE
-				);
-			});
-		}
-
-		protected abstract void forEachCell(CellConsumer cellConsumer);
-	}
-
-	private class BoardCanvas extends BoardCellCanvas {
-
-		private final Board board;
-
-		public BoardCanvas(Board board) {
-			super(board.getNumRows(), board.getNumCols());
-			this.board = board;
-		}
-
-		@Override
-		protected void paintComponent(Graphics g) {
-			Graphics2D graphics2D = (Graphics2D) g;
-			int cellSize = PREFERRED_BOARD_CELL_SIZE;
-
-			// Draw chequered grid
-			for (int r = 0; r < board.getNumRows(); r++) {
-				boolean isDark = r % 2 == 0;
-				for (int c = 0; c < board.getNumCols(); c++) {
-					graphics2D.setColor(isDark ? Color.GRAY : Color.WHITE);
-					graphics2D.fillRect(
-							r * cellSize,
-							c * cellSize,
-							cellSize,
-							cellSize
-					);
-					isDark = !isDark;
-				}
-			}
-
-			super.paintComponent(g);
-		}
-
-		@Override
-		protected void forEachCell(CellConsumer cellConsumer) {
-			board.forEachCell(cellConsumer);
-		}
-	}
-
-	private class GridCanvas extends BoardCellCanvas {
-
-		private final GridSupplier gridSupplier;
-
-		public GridCanvas(int preferredRows,
-						  int preferredColumns,
-						  GridSupplier gridSupplier) {
-			super(preferredRows, preferredColumns);
-			this.gridSupplier = gridSupplier;
-		}
-
-		@Override
-		protected void forEachCell(CellConsumer cellConsumer) {
-			List<? extends List<? extends BoardCell>> cellRows =
-					gridSupplier.apply(2);
-
-			// TODO don't use 2
-
-			for (int r = 0; r < cellRows.size(); r++) {
-				List<? extends BoardCell> row = cellRows.get(r);
-				for (int c = 0; c < row.size(); c++) {
-					BoardCell cell = row.get(c);
-					cellConsumer.apply(cell, r, c);
-				}
-			}
-		}
-	}
-
-	private interface GridSupplier extends
-			Function<Integer, List<? extends List<? extends BoardCell>>> {
 	}
 
 	private interface GameAction {
