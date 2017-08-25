@@ -2,7 +2,6 @@ package main.gui.game;
 
 import aurelienribon.slidinglayout.*;
 import main.GameUtils;
-import main.gamemodel.GameModel;
 import main.gamemodel.Player;
 import main.gamemodel.cells.Cell;
 import main.gui.game.drawersandviews.CellDrawer;
@@ -26,7 +25,7 @@ class PlayerComponents {
     private final SLConfig createCreationConfig;
     private final SLConfig createRotationConfig;
 
-	private final GameModel gameModel;
+	private final GameGUIModel gameModel;
 	private final CellDrawer cellDrawer;
 
     private SLConfig currentCreateConfig;
@@ -34,10 +33,10 @@ class PlayerComponents {
 	public PlayerComponents(
 			Player player,
 			GameGUIController gameGUIController,
-			GameModel gameModel,
+			GameGUIModel gameGUIModel,
 			CellDrawer cellDrawer
 	) {
-		this.gameModel = gameModel;
+		this.gameModel = gameGUIModel;
 		this.cellDrawer = cellDrawer;
 		String name = player.getPlayerCell().getToken().name();
 
@@ -121,7 +120,7 @@ class PlayerComponents {
                                 .collect(Collectors.toList()),
                         columns
                 ),
-                gameModel,
+                gameModel.getGameModel(),
                 cellDrawer,
                 title
         ) {

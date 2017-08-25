@@ -9,7 +9,9 @@ import java.util.List;
 
 public abstract class GridCanvas extends CellCanvas {
 
-    private final GridSupplier gridSupplier;
+	private static final int DEFAULT_NUM_COLS = 3;
+
+	private final GridSupplier gridSupplier;
 
     public GridCanvas(
             GridSupplier gridSupplier,
@@ -24,9 +26,7 @@ public abstract class GridCanvas extends CellCanvas {
     @Override
     protected void forEachCell(CellConsumer cellConsumer) {
         List<? extends List<? extends Cell>> cellRows =
-                gridSupplier.apply(2);
-
-        // TODO don't use 2
+                gridSupplier.apply(DEFAULT_NUM_COLS);
 
         for (int r = 0; r < cellRows.size(); r++) {
             List<? extends Cell> row = cellRows.get(r);

@@ -5,6 +5,7 @@ import main.gamemodel.GameModel;
 import main.gui.cardview.GUICardView;
 import main.gui.game.GameGUI;
 import main.gui.game.GameGUIController;
+import main.gui.game.GameGUIModel;
 import main.gui.game.drawersandviews.CellDrawer;
 import main.gui.menu.MenuGUIAndController;
 import main.textcontroller.GameTextController;
@@ -15,6 +16,7 @@ import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.Supplier;
 
 /**
  * Delete this when you put your assignments here
@@ -48,11 +50,11 @@ public class Main {
 					new MenuGUIAndController(guiCardView);
 			guiCardView.addView(menuGUIAndController);
 
-			// TODO LATER create a new game each time
-			GameModel gameModel = new GameModel(new Board());
-			GameGUIController gameGUIController = new GameGUIController(gameModel);
+			Supplier<GameModel> gameModelFactory = () -> new GameModel(new Board());
+			GameGUIModel gameGUIModel = new GameGUIModel(gameModelFactory);
+			GameGUIController gameGUIController = new GameGUIController(gameGUIModel);
 			GameGUI gameGUI = new GameGUI(
-					gameModel,
+					gameGUIModel,
 					gameGUIController,
 					new CellDrawer()
 			);
