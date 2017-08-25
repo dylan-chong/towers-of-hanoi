@@ -89,7 +89,7 @@ class PlayerComponents {
 			return Collections.emptyList();
 		}
 
-		return GameGUIModel.getRotatedCopies(baseCell);
+		return gameGUIModel.calculateRotatedCopiesOfSelectedCell();
 	}
 
 	public List<? extends JComponent> getAllComponents() {
@@ -141,7 +141,7 @@ class PlayerComponents {
                                 .collect(Collectors.toList()),
                         columns
                 ),
-                gameGUIModel.getGameModel(),
+                gameGUIModel,
                 cellDrawer,
                 title
         ) {

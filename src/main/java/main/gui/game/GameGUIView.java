@@ -78,7 +78,7 @@ public class GameGUIView implements GUICard, Observer {
 
 		Board board = gameGUIModel.getGameModel().getBoard();
 		BoardCanvas boardCanvas = new BoardCanvas(
-				board, gameGUIModel.getGameModel(), cellDrawer, "Board"
+				board, gameGUIModel, cellDrawer, "Board"
 		) {
 			@Override
 			protected void onCellClick(Cell cell, MouseEvent e) {

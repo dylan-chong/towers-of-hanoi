@@ -1,6 +1,5 @@
 package main.gui.game;
 
-import main.gamemodel.Direction;
 import main.gamemodel.Player;
 import main.gamemodel.cells.Cell;
 import main.gamemodel.cells.PieceCell;
@@ -30,32 +29,13 @@ public class GameGUIController {
 		}
 
 		gameGUIModel.setCreationSelectedCell((PieceCell) cell);
-		gameGUIModel.setGuiState(GUIState.CREATE_PIECE_ROTATION);
 	}
 
 	public void onCreationRotationCellClick(
 			Cell rotatedCellCopy,
 			MouseEvent mouseEvent
 	) {
-		if (gameGUIModel.getGuiState() != GUIState.CREATE_PIECE_ROTATION) {
-			return;
-		}
-
-		PieceCell rotatedPieceCopy = (PieceCell) rotatedCellCopy;
-		PieceCell baseCell = gameGUIModel.getCreationSelectedCell();
-
-		if (rotatedPieceCopy.getSideCombination() != baseCell.getSideCombination()) {
-			throw new IllegalArgumentException("Somehow wrong cell was selected");
-		}
-
-		Direction direction = rotatedPieceCopy.getDirection();
-
-		gameGUIModel.performGameAction(() ->
-			gameGUIModel
-					.getGameModel()
-					.create(baseCell.getId(), direction.ordinal())
-		);
-
+		gameGUIModel.createPiece(rotatedCellCopy);
 		// TODO AFTER draw special board stuff
 	}
 

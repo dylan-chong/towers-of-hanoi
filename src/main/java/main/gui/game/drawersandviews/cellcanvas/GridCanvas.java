@@ -1,8 +1,8 @@
 package main.gui.game.drawersandviews.cellcanvas;
 
 import main.gamemodel.CellConsumer;
-import main.gamemodel.GameModel;
 import main.gamemodel.cells.Cell;
+import main.gui.game.GameGUIModel;
 import main.gui.game.drawersandviews.CellDrawer;
 
 import java.util.List;
@@ -15,11 +15,11 @@ public abstract class GridCanvas extends CellCanvas {
 
     public GridCanvas(
             GridSupplier gridSupplier,
-            GameModel gameModel,
+            GameGUIModel gameGUIModel,
             CellDrawer cellDrawer,
 			String titleOrNull
     ) {
-        super(gameModel, cellDrawer, titleOrNull);
+        super(gameGUIModel, cellDrawer, titleOrNull);
         this.gridSupplier = gridSupplier;
     }
 

@@ -2,7 +2,7 @@ package main.gui.game.drawersandviews.cellcanvas;
 
 import main.gamemodel.Board;
 import main.gamemodel.CellConsumer;
-import main.gamemodel.GameModel;
+import main.gui.game.GameGUIModel;
 import main.gui.game.GameGUIView;
 import main.gui.game.drawersandviews.CellDrawer;
 
@@ -14,11 +14,11 @@ public abstract class BoardCanvas extends CellCanvas {
 
     public BoardCanvas(
             Board board,
-            GameModel gameModel,
+            GameGUIModel gameGUIModel,
             CellDrawer cellDrawer,
 			String titleOrNull
     ) {
-        super(gameModel, cellDrawer, titleOrNull);
+        super(gameGUIModel, cellDrawer, titleOrNull);
         this.board = board;
     }
 

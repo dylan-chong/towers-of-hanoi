@@ -1,9 +1,9 @@
 package main.gui.game.drawersandviews.cellcanvas;
 
 import main.gamemodel.CellConsumer;
-import main.gamemodel.GameModel;
 import main.gamemodel.Player;
 import main.gamemodel.cells.Cell;
+import main.gui.game.GameGUIModel;
 import main.gui.game.GameGUIView;
 import main.gui.game.drawersandviews.CellDrawer;
 
@@ -19,15 +19,15 @@ import java.util.concurrent.atomic.AtomicReference;
  * Draws a grid of board cells
  */
 public abstract class CellCanvas extends JPanel {
-	protected final GameModel gameModel;
+	protected final GameGUIModel gameGUIModel;
 	protected final CellDrawer cellDrawer;
 
 	public CellCanvas(
-			GameModel gameModel,
+			GameGUIModel gameGUIModel,
 			CellDrawer cellDrawer,
 			String titleOrNull
 	) {
-		this.gameModel = gameModel;
+		this.gameGUIModel = gameGUIModel;
 		this.cellDrawer = cellDrawer;
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -80,7 +80,7 @@ public abstract class CellCanvas extends JPanel {
 				return;
 			}
 
-			Player player = gameModel.getPlayerOfCell(cell);
+			Player player = gameGUIModel.getPlayerOfCellOrRotatedCopy(cell);
 			cellDrawer.valueOf(cell).draw(
 					player,
 					graphics2D,

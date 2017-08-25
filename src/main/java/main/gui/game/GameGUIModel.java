@@ -1,9 +1,7 @@
 package main.gui.game;
 
-import main.gamemodel.Direction;
-import main.gamemodel.GameModel;
-import main.gamemodel.Player;
-import main.gamemodel.TurnState;
+import main.gamemodel.*;
+import main.gamemodel.cells.Cell;
 import main.gamemodel.cells.PieceCell;
 
 import javax.swing.*;
@@ -27,12 +25,13 @@ public class GameGUIModel extends Observable implements Observer {
 		return rotatedCopies;
 	}
 
-
 	private final Supplier<GameModel> gameModelFactory;
 
 	private GameModel gameModel;
 	private GUIState guiState;
+
 	private PieceCell creationSelectedCell;
+	private List<PieceCell> creationSelectedCellRotatedCopies;
 
 	public GameGUIModel(Supplier<GameModel> gameModelFactory) {
 		this.gameModelFactory = gameModelFactory;
@@ -52,11 +51,41 @@ public class GameGUIModel extends Observable implements Observer {
 	}
 
 	public void setCreationSelectedCell(PieceCell creationSelectedCell) {
+		if (guiState != GUIState.CREATE_PIECE_CREATION) {
+			throw new IllegalGameStateException("Not allowed to be called in this state");
+		}
+
 		this.creationSelectedCell = creationSelectedCell;
+		setGuiState(GUIState.CREATE_PIECE_ROTATION);
+	}
+
+	public List<PieceCell> calculateRotatedCopiesOfSelectedCell() {
+		if (guiState != GUIState.CREATE_PIECE_ROTATION) {
+			throw new IllegalGameStateException("Not allowed to be called in this state");
+		}
+
+		if (creationSelectedCellRotatedCopies == null) {
+			creationSelectedCellRotatedCopies = getRotatedCopies(
+					Objects.requireNonNull(creationSelectedCell)
+			);
+		}
+
+		return creationSelectedCellRotatedCopies;
 	}
 
 	public Player getCurrentPlayer() {
 		return gameModel.getCurrentPlayerData();
+	}
+
+	public Player getPlayerOfCellOrRotatedCopy(Cell cell) {
+		if (creationSelectedCellRotatedCopies != null &&
+				creationSelectedCellRotatedCopies.stream()
+						.anyMatch(copy -> cell == copy)
+				) {
+			return getCurrentPlayer();
+		}
+
+		return gameModel.getPlayerOfCell(cell);
 	}
 
 	@Override
@@ -78,7 +107,8 @@ public class GameGUIModel extends Observable implements Observer {
 		}
 
 		if (this.guiState == GUIState.CREATE_PIECE_ROTATION) {
-			setCreationSelectedCell(null);
+			creationSelectedCell = null;
+			creationSelectedCellRotatedCopies = null;
 		}
 
 		this.guiState = guiState;
@@ -95,11 +125,29 @@ public class GameGUIModel extends Observable implements Observer {
 		}
 	}
 
+	public void createPiece(Cell rotatedCellCopy) {
+		if (guiState != GUIState.CREATE_PIECE_ROTATION) {
+			return;
+		}
+
+		PieceCell rotatedPieceCopy = (PieceCell) rotatedCellCopy;
+		PieceCell baseCell = creationSelectedCell;
+
+		if (rotatedPieceCopy.getSideCombination() != baseCell.getSideCombination()) {
+			throw new IllegalArgumentException("Somehow wrong cell was selected");
+		}
+
+		Direction direction = rotatedPieceCopy.getDirection();
+
+		performGameAction(() -> gameModel.create(
+				baseCell.getId(),
+				direction.ordinal()
+		));
+	}
+
 	private void resetGuiState() {
 		List<GUIState> validStates = gameModel.getTurnState()
 				.getFromMap(new TurnStateToGUIState());
-
-		// TODO next state?
 
 		if (validStates.contains(guiState)) {
 			// No need to change
