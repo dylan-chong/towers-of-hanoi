@@ -1,32 +1,41 @@
 package main.gui.game;
 
+import main.gamemodel.Direction;
 import main.gamemodel.GameModel;
+import main.gamemodel.Player;
 import main.gamemodel.TurnState;
+import main.gamemodel.cells.PieceCell;
 
 import javax.swing.*;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class GameGUIModel extends Observable implements Observer {
+
+	public static List<PieceCell> getRotatedCopies(PieceCell baseCell) {
+		List<PieceCell> rotatedCopies = new ArrayList<>();
+
+		for (int rotations = 0; rotations < Direction.values().length; rotations++) {
+			PieceCell cell = new PieceCell(
+					(char) ('a' + rotations), // Assume we don't show these
+					baseCell.getSideCombination(),
+					Direction.values()[rotations]
+			);
+			rotatedCopies.add(cell);
+		}
+
+		return rotatedCopies;
+	}
+
+
 	private final Supplier<GameModel> gameModelFactory;
 
 	private GameModel gameModel;
 	private GUIState guiState;
+	private PieceCell creationSelectedCell;
 
 	public GameGUIModel(Supplier<GameModel> gameModelFactory) {
 		this.gameModelFactory = gameModelFactory;
-
-		new Timer(3000, e -> {
-			if (guiState == GUIState.CREATE_PIECE_ROTATION)
-				guiState = GUIState.CREATE_PIECE_CREATION;
-			else if (guiState == GUIState.CREATE_PIECE_CREATION)
-				guiState = GUIState.CREATE_PIECE_ROTATION;
-			setChanged();
-			notifyObservers();
-		}).start();
 	}
 
 	public GameModel getGameModel() {
@@ -36,6 +45,18 @@ public class GameGUIModel extends Observable implements Observer {
 			resetGuiState();
 		}
 		return gameModel;
+	}
+
+	public PieceCell getCreationSelectedCell() {
+		return creationSelectedCell;
+	}
+
+	public void setCreationSelectedCell(PieceCell creationSelectedCell) {
+		this.creationSelectedCell = creationSelectedCell;
+	}
+
+	public Player getCurrentPlayer() {
+		return gameModel.getCurrentPlayerData();
 	}
 
 	@Override
@@ -49,6 +70,16 @@ public class GameGUIModel extends Observable implements Observer {
 
 	public GUIState getGuiState() {
 		return guiState;
+	}
+
+	public void setGuiState(GUIState guiState) {
+		if (this.guiState == guiState) {
+			return;
+		}
+
+		this.guiState = guiState;
+		setChanged();
+		notifyObservers();
 	}
 
 	private void resetGuiState() {

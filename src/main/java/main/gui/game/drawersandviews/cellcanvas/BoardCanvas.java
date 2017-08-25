@@ -3,7 +3,7 @@ package main.gui.game.drawersandviews.cellcanvas;
 import main.gamemodel.Board;
 import main.gamemodel.CellConsumer;
 import main.gamemodel.GameModel;
-import main.gui.game.GameGUI;
+import main.gui.game.GameGUIView;
 import main.gui.game.drawersandviews.CellDrawer;
 
 import java.awt.*;
@@ -25,7 +25,7 @@ public abstract class BoardCanvas extends CellCanvas {
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D graphics2D = (Graphics2D) g;
-        int cellSize = GameGUI.PREFERRED_BOARD_CELL_SIZE;
+        int cellSize = GameGUIView.PREFERRED_BOARD_CELL_SIZE;
 
         // Draw chequered grid
         for (int r = 0; r < board.getNumRows(); r++) {

@@ -1,11 +1,13 @@
 package main.gui.game;
 
+import main.gamemodel.IllegalGameStateException;
 import main.gamemodel.Player;
 import main.gamemodel.cells.Cell;
+import main.gamemodel.cells.PieceCell;
 
 import java.awt.event.MouseEvent;
 
-import static main.gui.game.GameGUIModel.*;
+import static main.gui.game.GameGUIModel.GUIState;
 
 public class GameGUIController {
 	private final GameGUIModel gameGUIModel;
@@ -23,11 +25,35 @@ public class GameGUIController {
 		}
 
 		Player currentPlayer = getCurrentPlayer();
-		//TODO next
+		if (!currentPlayer.ownsPiece(cell)) {
+			return;
+		}
+
+		gameGUIModel.setCreationSelectedCell((PieceCell) cell);
+		gameGUIModel.setGuiState(GUIState.CREATE_PIECE_ROTATION);
+		System.out.println("ROT NOW" + cell.getId());
 	}
 
-	public void onCreationRotationCellClick(Cell cell, MouseEvent mouseEvent) {
-		System.out.println(cell.getId());
+	public void onCreationRotationCellClick(
+			Cell rotatedCellCopy,
+			MouseEvent mouseEvent
+	) {
+		if (gameGUIModel.getGuiState() != GUIState.CREATE_PIECE_ROTATION) {
+			return;
+		}
+
+		PieceCell rotatedPieceCopy = (PieceCell) rotatedCellCopy;
+		PieceCell baseCell = gameGUIModel.getCreationSelectedCell();
+
+		if (rotatedPieceCopy.getSideCombination() != baseCell.getSideCombination()) {
+			throw new IllegalGameStateException("Somehow wrong cell was selected");
+		}
+
+		// TODO NEXT create rotation copies
+		// TODO AFTER do create
+
+		gameGUIModel.setCreationSelectedCell(null);
+		System.out.println("CREATE!" + baseCell.getId());
 	}
 
 	private Player getCurrentPlayer() {

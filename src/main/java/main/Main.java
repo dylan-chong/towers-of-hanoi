@@ -3,7 +3,7 @@ package main;
 import main.gamemodel.Board;
 import main.gamemodel.GameModel;
 import main.gui.cardview.GUICardView;
-import main.gui.game.GameGUI;
+import main.gui.game.GameGUIView;
 import main.gui.game.GameGUIController;
 import main.gui.game.GameGUIModel;
 import main.gui.game.drawersandviews.CellDrawer;
@@ -53,12 +53,12 @@ public class Main {
 			Supplier<GameModel> gameModelFactory = () -> new GameModel(new Board());
 			GameGUIModel gameGUIModel = new GameGUIModel(gameModelFactory);
 			GameGUIController gameGUIController = new GameGUIController(gameGUIModel);
-			GameGUI gameGUI = new GameGUI(
+			GameGUIView gameGUIView = new GameGUIView(
 					gameGUIModel,
 					gameGUIController,
 					new CellDrawer()
 			);
-			guiCardView.addView(gameGUI);
+			guiCardView.addView(gameGUIView);
 
 			guiCardView.setCurrentView(menuGUIAndController);
 			guiCardView.show();

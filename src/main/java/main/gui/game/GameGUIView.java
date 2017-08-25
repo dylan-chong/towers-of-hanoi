@@ -14,7 +14,7 @@ import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class GameGUI implements GUICard, Observer {
+public class GameGUIView implements GUICard, Observer {
 	public static final int PREFERRED_BOARD_CELL_SIZE = 50;
 	public static final int TRANSITION_DURATION = 1;
 
@@ -28,7 +28,7 @@ public class GameGUI implements GUICard, Observer {
 	private Map<Player, PlayerComponents> playerComponents;
 	private GameGUIModel.GUIState currentGuiState;
 
-	public GameGUI(
+	public GameGUIView(
 			GameGUIModel gameGUIModel,
 			GameGUIController gameGUIController,
 			CellDrawer cellDrawer
@@ -58,10 +58,6 @@ public class GameGUI implements GUICard, Observer {
 				throw new RuntimeException(e);
 			}}
 		);
-	}
-
-	private Player getCurrentPlayer() {
-		return gameGUIModel.getGameModel().getCurrentPlayerData();
 	}
 
 	private void setupCellCanvases() {
@@ -214,7 +210,7 @@ public class GameGUI implements GUICard, Observer {
 				public void onEnter() {
 					// This should already be showing, but code is here
 					playerComponents
-							.get(getCurrentPlayer())
+							.get(gameGUIModel.getCurrentPlayer())
 							.showCreateCreationCanvas();
 				}
 
@@ -230,14 +226,14 @@ public class GameGUI implements GUICard, Observer {
 				@Override
 				public void onEnter() {
 					playerComponents
-							.get(getCurrentPlayer())
+							.get(gameGUIModel.getCurrentPlayer())
 							.showCreateRotationCanvas();
 				}
 
 				@Override
 				public void onExit() {
 					playerComponents
-							.get(getCurrentPlayer())
+							.get(gameGUIModel.getCurrentPlayer())
 							.showCreateCreationCanvas();
 				}
 			};

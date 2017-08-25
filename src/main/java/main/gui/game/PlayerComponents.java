@@ -4,6 +4,7 @@ import aurelienribon.slidinglayout.*;
 import main.GameUtils;
 import main.gamemodel.Player;
 import main.gamemodel.cells.Cell;
+import main.gamemodel.cells.PieceCell;
 import main.gui.game.drawersandviews.CellDrawer;
 import main.gui.game.drawersandviews.cellcanvas.GridCanvas;
 
@@ -11,10 +12,13 @@ import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import static main.gui.game.GameGUIModel.GUIState;
 
 class PlayerComponents {
 
@@ -25,10 +29,11 @@ class PlayerComponents {
     private final SLConfig createCreationConfig;
     private final SLConfig createRotationConfig;
 
-	private final GameGUIModel gameModel;
+	private final GameGUIModel gameGUIModel;
 	private final CellDrawer cellDrawer;
+	private final Player player;
 
-    private SLConfig currentCreateConfig;
+	private SLConfig currentCreateConfig;
 
 	public PlayerComponents(
 			Player player,
@@ -36,8 +41,10 @@ class PlayerComponents {
 			GameGUIModel gameGUIModel,
 			CellDrawer cellDrawer
 	) {
-		this.gameModel = gameGUIModel;
+		this.gameGUIModel = gameGUIModel;
 		this.cellDrawer = cellDrawer;
+		this.player = player;
+
 		String name = player.getPlayerCell().getToken().name();
 
         createCreationCanvas = newGridCanvas(
@@ -46,7 +53,7 @@ class PlayerComponents {
                 gameGUIController::onCreationCellClick
         );
         createRotationsCanvas = newGridCanvas(
-                player.getUnusedPieces()::values,// TODO
+        		this::getRotatedCopiesOfSelectedPiece,
                 String.format("Select Rotation (%s)", name),
                 gameGUIController::onCreationRotationCellClick
         );
@@ -71,7 +78,21 @@ class PlayerComponents {
         );
 	}
 
-    public List<? extends JComponent> getAllComponents() {
+	private Collection<? extends Cell> getRotatedCopiesOfSelectedPiece() {
+		if (gameGUIModel.getGuiState() != GUIState.CREATE_PIECE_ROTATION
+				 || gameGUIModel.getCurrentPlayer() != player) {
+			return Collections.emptyList();
+		}
+
+		PieceCell baseCell = gameGUIModel.getCreationSelectedCell();
+		if (baseCell == null) {
+			return Collections.emptyList();
+		}
+
+		return GameGUIModel.getRotatedCopies(baseCell);
+	}
+
+	public List<? extends JComponent> getAllComponents() {
         return Arrays.asList(createPanel, cemeteryCanvas);
     }
 
@@ -83,7 +104,7 @@ class PlayerComponents {
         currentCreateConfig = createCreationConfig;
 
         SLKeyframe keyframe =
-                new SLKeyframe(createCreationConfig, GameGUI.TRANSITION_DURATION)
+                new SLKeyframe(createCreationConfig, GameGUIView.TRANSITION_DURATION)
                         .setStartSide(SLSide.LEFT, createCreationCanvas)
                         .setEndSide(SLSide.RIGHT, createRotationsCanvas);
         createPanel.createTransition()
@@ -99,7 +120,7 @@ class PlayerComponents {
         currentCreateConfig = createRotationConfig;
 
         SLKeyframe keyframe =
-                new SLKeyframe(createRotationConfig, GameGUI.TRANSITION_DURATION)
+                new SLKeyframe(createRotationConfig, GameGUIView.TRANSITION_DURATION)
                         .setStartSide(SLSide.RIGHT, createRotationsCanvas)
                         .setEndSide(SLSide.LEFT, createCreationCanvas);
         createPanel.createTransition()
@@ -120,7 +141,7 @@ class PlayerComponents {
                                 .collect(Collectors.toList()),
                         columns
                 ),
-                gameModel.getGameModel(),
+                gameGUIModel.getGameModel(),
                 cellDrawer,
                 title
         ) {

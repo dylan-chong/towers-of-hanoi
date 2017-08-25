@@ -18,7 +18,7 @@ public class PieceCell extends Cell {
 	private Direction direction;
 
 	public PieceCell(char id, SideCombination sides) {
-		this(id, sides, Direction.NORTH);
+		this(id, sides, Direction.values()[0]);
 	}
 
 	public PieceCell(char id, SideCombination sides, Direction direction) {
@@ -38,6 +38,10 @@ public class PieceCell extends Cell {
 		representation[1][0] = getSide(Direction.WEST).toTextualRep(Direction.WEST);
 
 		return representation;
+	}
+
+	public SideCombination getSideCombination() {
+		return sides;
 	}
 
 	@Override

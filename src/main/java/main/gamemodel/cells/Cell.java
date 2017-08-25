@@ -51,7 +51,7 @@ public abstract class Cell implements Textable, Comparable<Cell> {
 	public abstract <ReturnT> ReturnT getValue(Mapper<ReturnT> getter);
 
 	@Override
-	public int compareTo(Cell o) {
+	public final int compareTo(Cell o) {
 		int result = getId() - o.getId();
 		if (result == 0 && o != this) {
 			throw new IllegalGameStateException("Two cells can't have the same ID");

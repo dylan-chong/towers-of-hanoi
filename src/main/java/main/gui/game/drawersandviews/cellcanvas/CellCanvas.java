@@ -4,7 +4,7 @@ import main.gamemodel.CellConsumer;
 import main.gamemodel.GameModel;
 import main.gamemodel.Player;
 import main.gamemodel.cells.Cell;
-import main.gui.game.GameGUI;
+import main.gui.game.GameGUIView;
 import main.gui.game.drawersandviews.CellDrawer;
 
 import javax.swing.*;
@@ -50,8 +50,8 @@ public abstract class CellCanvas extends JPanel {
 			public Dimension getPreferredSize() {
 				int[] preferredRowsCols = calculatePreferredRowsCols();
 				return new Dimension(
-						preferredRowsCols[1] * GameGUI.PREFERRED_BOARD_CELL_SIZE,
-						preferredRowsCols[0] * GameGUI.PREFERRED_BOARD_CELL_SIZE
+						preferredRowsCols[1] * GameGUIView.PREFERRED_BOARD_CELL_SIZE,
+						preferredRowsCols[0] * GameGUIView.PREFERRED_BOARD_CELL_SIZE
 				);
 			}
 		};
@@ -134,6 +134,6 @@ public abstract class CellCanvas extends JPanel {
 	}
 
 	private int getCellSize() {
-		return GameGUI.PREFERRED_BOARD_CELL_SIZE;
+		return GameGUIView.PREFERRED_BOARD_CELL_SIZE;
 	}
 }
