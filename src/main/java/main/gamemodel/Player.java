@@ -158,6 +158,10 @@ public class Player {
 		return playerCell.getName();
 	}
 
+	public String getNameWithoutNumber() {
+		return playerCell.getToken().name();
+	}
+
 	public boolean ownsPiece(Cell cell) {
 		if (cell == playerCell) {
 			return true;

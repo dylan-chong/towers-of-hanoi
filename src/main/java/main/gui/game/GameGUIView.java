@@ -8,8 +8,10 @@ import main.gui.game.drawersandviews.CellDrawer;
 import main.gui.game.drawersandviews.cellcanvas.BoardCanvas;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class GameGUIView implements GUICard, Observer {
@@ -25,6 +27,7 @@ public class GameGUIView implements GUICard, Observer {
 	private JPanel cellCanvasesJPanel;
 	private Map<Player, PlayerComponents> playerComponents;
 	private GameGUIModel.GUIState currentGuiState;
+	private JLabel stateReporterLabel;
 
 	public GameGUIView(
 			GameGUIModel gameGUIModel,
@@ -41,6 +44,7 @@ public class GameGUIView implements GUICard, Observer {
 		rootJPanel.setLayout(new BoxLayout(rootJPanel, BoxLayout.Y_AXIS));
 
 		setupToolbar();
+		setUpStateReporter();
 		setupCellCanvases();
 
 		SwingUtilities.invokeLater(() -> {
@@ -56,6 +60,13 @@ public class GameGUIView implements GUICard, Observer {
 				throw new RuntimeException(e);
 			}}
 		);
+	}
+
+	private void setUpStateReporter() {
+		stateReporterLabel = new JLabel();
+		stateReporterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		stateReporterLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		rootJPanel.add(stateReporterLabel);
 	}
 
 	private void setupCellCanvases() {
@@ -172,11 +183,26 @@ public class GameGUIView implements GUICard, Observer {
 		nextStateHooks.onEnter();
 
 		currentGuiState = nextGuiState;
+		updateStateReporterLabel();
 	}
 
-	/**
-	 * TODO move to controller?
-	 */
+	private void updateStateReporterLabel() {
+		String text = String.format(
+				"<html>\n" +
+						"<p style='text-align: center;'>\n" +
+						"\tCurrent Player: <b>%s</b>\n" +
+						"\t<br>\n" +
+						"\tGame State: <b>%s</b>\n" +
+						"</p></html>",
+				gameGUIModel.getCurrentPlayer()
+						.getNameWithoutNumber(),
+				gameGUIModel.getGuiState()
+						.name()
+						.replaceAll("_", " ")
+		);
+		stateReporterLabel.setText(text);
+	}
+
 	private class StateHooksMapper implements GameGUIModel.GUIState.Mapper<StateHooks> {
 		@Override
 		public StateHooks getCreatePieceCreationValue() {
@@ -252,9 +278,10 @@ public class GameGUIView implements GUICard, Observer {
 				@Override
 				public void onEnter() {
 					Player winner = gameGUIModel.getGameModel().getWinner();
+					String name = winner.getNameWithoutNumber();
 					JOptionPane.showMessageDialog(
 							rootJPanel,
-							String.format("Player '%s' won!", winner.getName()),
+							String.format("Player '%s' won!", name),
 							"Game Finished",
 							JOptionPane.PLAIN_MESSAGE
 					);
