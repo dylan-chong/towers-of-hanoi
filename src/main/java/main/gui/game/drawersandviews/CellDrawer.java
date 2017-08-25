@@ -23,16 +23,16 @@ public class CellDrawer implements
 	public DrawFunction valueOfPieceCell(PieceCell cell) {
 		return (playerData, graphics2D, col, row, size) -> {
 			float[] centre = {
-					(col + 0.5f) * size,
 					(row + 0.5f) * size,
+					(col + 0.5f) * size,
 			};
 
 			// Fill circle in cell
 
 			Color color = playerData.getPlayerCell().getToken().color;
 			graphics2D.setPaint(new RadialGradientPaint(
-					centre[0],
 					centre[1],
+					centre[0],
 					size / 2,
 					new float[]{0, 1},
 					new Color[]{color.brighter(), color}
@@ -64,10 +64,10 @@ public class CellDrawer implements
 								SWORD_DISTANCE_FROM_CENTRE * size
 						);
 						graphics2D.drawLine(
-								(int) centre[0],
 								(int) centre[1],
-								(int) middleOfSide[0],
-								(int) middleOfSide[1]
+								(int) centre[0],
+								(int) middleOfSide[1],
+								(int) middleOfSide[0]
 						);
 						return null;
 					}
@@ -86,10 +86,10 @@ public class CellDrawer implements
 								.shift(middleOfSide, distance * size);
 
 						graphics2D.drawLine(
-								(int) cornerOne[0],
 								(int) cornerOne[1],
-								(int) cornerTwo[0],
-								(int) cornerTwo[1]
+								(int) cornerOne[0],
+								(int) cornerTwo[1],
+								(int) cornerTwo[0]
 						);
 						return null;
 					}

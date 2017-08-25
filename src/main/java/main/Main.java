@@ -7,7 +7,7 @@ import main.gui.game.GameGUIView;
 import main.gui.game.GameGUIController;
 import main.gui.game.GameGUIModel;
 import main.gui.game.drawersandviews.CellDrawer;
-import main.gui.menu.MenuGUIAndController;
+import main.gui.menu.MenuGUIViewAndController;
 import main.textcontroller.GameTextController;
 import test.TestRunner;
 
@@ -46,9 +46,9 @@ public class Main {
 		SwingUtilities.invokeLater(() -> {
 			GUICardView guiCardView = new GUICardView();
 
-			MenuGUIAndController menuGUIAndController =
-					new MenuGUIAndController(guiCardView);
-			guiCardView.addView(menuGUIAndController);
+			MenuGUIViewAndController menuGUIViewAndController =
+					new MenuGUIViewAndController(guiCardView);
+			guiCardView.addView(menuGUIViewAndController);
 
 			Supplier<GameModel> gameModelFactory = () -> new GameModel(new Board());
 			GameGUIModel gameGUIModel = new GameGUIModel(gameModelFactory);
@@ -60,7 +60,7 @@ public class Main {
 			);
 			guiCardView.addView(gameGUIView);
 
-			guiCardView.setCurrentView(menuGUIAndController);
+			guiCardView.setCurrentView(menuGUIViewAndController);
 			guiCardView.show();
 		});
 	}

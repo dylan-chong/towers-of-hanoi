@@ -13,7 +13,7 @@ import java.awt.event.ActionEvent;
  * The menu is pretty simplistic that is no need for separate control and
  * model classes
  */
-public class MenuGUIAndController implements GUICard {
+public class MenuGUIViewAndController implements GUICard {
 	private static final String INFO_TITLE = "Info";
 	private static final String INFO_MESSAGE = "By Dylan Chong";
 	private static final int BORDER_SIZE = 20;
@@ -21,7 +21,7 @@ public class MenuGUIAndController implements GUICard {
 	private final GUICardView guiCardView;
 	private final JPanel rootJPanel;
 
-	public MenuGUIAndController(GUICardView guiCardView) {
+	public MenuGUIViewAndController(GUICardView guiCardView) {
 		this.guiCardView = guiCardView;
 
 		rootJPanel = new JPanel();
