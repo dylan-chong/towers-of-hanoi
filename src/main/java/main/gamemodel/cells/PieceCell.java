@@ -80,6 +80,10 @@ public class PieceCell extends Cell {
 		this.direction = newAbsoluteDirection;
 	}
 
+	public Direction getDirection() {
+		return direction;
+	}
+
 	public void rotateClockwise() {
 		int nextOrdinal = (direction.ordinal() + 1) % Direction.values().length;
 		direction = Direction.values()[nextOrdinal];
@@ -94,17 +98,6 @@ public class PieceCell extends Cell {
 		Direction relativeDirection = Direction.values()[relativeSideOrdinal];
 
 		return sides.getSide(relativeDirection);
-	}
-
-	/**
-	 * Gets the side of this piece that is touching the other piece
-	 * @param thisRowCol Position of this (e.g. on a board)
-	 * @param otherRowCol Position of the other piece (e.g. on a board)
-	 */
-	public SideType getTouchingSide(int[] thisRowCol,
-									int[] otherRowCol) {
-		Direction dirToOtherPiece = Direction.fromAToB(thisRowCol, otherRowCol);
-		return getSide(dirToOtherPiece);
 	}
 
 	/**

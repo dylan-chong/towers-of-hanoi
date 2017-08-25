@@ -1,6 +1,5 @@
 package main.gui.game;
 
-import aurelienribon.slidinglayout.SLAnimator;
 import main.gamemodel.*;
 import main.gamemodel.cells.Cell;
 import main.gui.cardview.GUICard;
@@ -9,7 +8,6 @@ import main.gui.game.drawersandviews.CellDrawer;
 import main.gui.game.drawersandviews.cellcanvas.BoardCanvas;
 
 import javax.swing.*;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -92,7 +90,6 @@ public class GameGUIView implements GUICard, Observer {
 								cellDrawer
 						)
 				));
-		SLAnimator.start();
 
 		// Add player zero components, the board, then player one
 
@@ -123,28 +120,10 @@ public class GameGUIView implements GUICard, Observer {
 
 	private void addToolbarButton(String title, GameAction action) {
 		JButton button = new JButton(title);
-		button.addActionListener(performGameAction(action));
+		button.addActionListener((event) ->
+				gameGUIModel.performGameAction(action)
+		);
 		jToolBar.add(button);
-	}
-
-	private ActionListener performGameAction(GameAction action) {
-		return (event) -> {
-			try {
-				action.perform();
-			} catch (Exception e) {
-				String message = "There was an error making your move";
-				if (!(e instanceof ArrayIndexOutOfBoundsException) &&
-						e.getMessage() != null) {
-					message += ":\n" + e.getMessage();
-				}
-				JOptionPane.showMessageDialog(
-						rootJPanel,
-						message,
-						"Error",
-						JOptionPane.ERROR_MESSAGE
-				);
-			}
-		};
 	}
 
 	@Override
@@ -160,19 +139,24 @@ public class GameGUIView implements GUICard, Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		SwingUtilities.invokeLater(() -> {
+			if (arg instanceof Exception) {
+				Exception e = (Exception) arg;
+				String message = "There was an error making your move";
+				if (!(e instanceof ArrayIndexOutOfBoundsException) &&
+						e.getMessage() != null) {
+					message += ":\n" + e.getMessage();
+				}
+				JOptionPane.showMessageDialog(
+						rootJPanel,
+						message,
+						"Error",
+						JOptionPane.ERROR_MESSAGE
+				);
+			}
+
 			updateState();
 
 			rootJPanel.repaint();
-
-			if (gameGUIModel.getGameModel().getTurnState() == TurnState.GAME_FINISHED) {
-				Player winner = gameGUIModel.getGameModel().getWinner();
-				JOptionPane.showMessageDialog(
-						rootJPanel,
-						String.format("Player '%s' won!", winner.getName()),
-						"Game Finished",
-						JOptionPane.PLAIN_MESSAGE
-				);
-			}
 		});
 	}
 
@@ -190,15 +174,6 @@ public class GameGUIView implements GUICard, Observer {
 		currentGuiState = nextGuiState;
 	}
 
-	private interface GameAction {
-		void perform() throws Exception;
-	}
-
-	private interface StateHooks {
-		void onEnter();
-		void onExit();
-	}
-
 	/**
 	 * TODO move to controller?
 	 */
@@ -208,7 +183,8 @@ public class GameGUIView implements GUICard, Observer {
 			return new StateHooks() {
 				@Override
 				public void onEnter() {
-					// This should already be showing, but code is here
+					// This should already be showing, but code is here to
+					// ensure it is showing
 					playerComponents
 							.get(gameGUIModel.getCurrentPlayer())
 							.showCreateCreationCanvas();
@@ -216,6 +192,7 @@ public class GameGUIView implements GUICard, Observer {
 
 				@Override
 				public void onExit() {
+					// Do nothing
 				}
 			};
 		}
@@ -241,17 +218,53 @@ public class GameGUIView implements GUICard, Observer {
 
 		@Override
 		public StateHooks getMovingOrRotatingPieceValue() {
-			return null;
+			return new StateHooks() {
+				@Override
+				public void onEnter() {
+					// TODO
+				}
+
+				@Override
+				public void onExit() {
+					// TODO
+				}
+			};
 		}
 
 		@Override
 		public StateHooks getResolvingReactionsValue() {
-			return null;
+			return new StateHooks() {
+				@Override
+				public void onEnter() {
+					// TODO
+				}
+
+				@Override
+				public void onExit() {
+					// TODO
+				}
+			};
 		}
 
 		@Override
 		public StateHooks getGameFinishedValue() {
-			return null;
+			return new StateHooks() {
+				@Override
+				public void onEnter() {
+					Player winner = gameGUIModel.getGameModel().getWinner();
+					JOptionPane.showMessageDialog(
+							rootJPanel,
+							String.format("Player '%s' won!", winner.getName()),
+							"Game Finished",
+							JOptionPane.PLAIN_MESSAGE
+					);
+				}
+
+				@Override
+				public void onExit() {
+					// TODO
+				}
+			};
 		}
 	}
 }

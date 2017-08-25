@@ -1,5 +1,6 @@
 package main;
 
+import aurelienribon.slidinglayout.SLAnimator;
 import main.gamemodel.Board;
 import main.gamemodel.GameModel;
 import main.gui.cardview.GUICardView;
@@ -62,6 +63,8 @@ public class Main {
 
 			guiCardView.setCurrentView(menuGUIViewAndController);
 			guiCardView.show();
+
+			SLAnimator.start();
 		});
 	}
 

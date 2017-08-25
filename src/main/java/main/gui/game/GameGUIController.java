@@ -1,6 +1,6 @@
 package main.gui.game;
 
-import main.gamemodel.IllegalGameStateException;
+import main.gamemodel.Direction;
 import main.gamemodel.Player;
 import main.gamemodel.cells.Cell;
 import main.gamemodel.cells.PieceCell;
@@ -31,7 +31,6 @@ public class GameGUIController {
 
 		gameGUIModel.setCreationSelectedCell((PieceCell) cell);
 		gameGUIModel.setGuiState(GUIState.CREATE_PIECE_ROTATION);
-		System.out.println("ROT NOW" + cell.getId());
 	}
 
 	public void onCreationRotationCellClick(
@@ -46,14 +45,18 @@ public class GameGUIController {
 		PieceCell baseCell = gameGUIModel.getCreationSelectedCell();
 
 		if (rotatedPieceCopy.getSideCombination() != baseCell.getSideCombination()) {
-			throw new IllegalGameStateException("Somehow wrong cell was selected");
+			throw new IllegalArgumentException("Somehow wrong cell was selected");
 		}
 
-		// TODO NEXT create rotation copies
-		// TODO AFTER do create
+		Direction direction = rotatedPieceCopy.getDirection();
 
-		gameGUIModel.setCreationSelectedCell(null);
-		System.out.println("CREATE!" + baseCell.getId());
+		gameGUIModel.performGameAction(() ->
+			gameGUIModel
+					.getGameModel()
+					.create(baseCell.getId(), direction.ordinal())
+		);
+
+		// TODO AFTER draw special board stuff
 	}
 
 	private Player getCurrentPlayer() {

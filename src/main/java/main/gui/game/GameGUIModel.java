@@ -77,9 +77,22 @@ public class GameGUIModel extends Observable implements Observer {
 			return;
 		}
 
+		if (this.guiState == GUIState.CREATE_PIECE_ROTATION) {
+			setCreationSelectedCell(null);
+		}
+
 		this.guiState = guiState;
 		setChanged();
 		notifyObservers();
+	}
+
+	public void performGameAction(GameAction action) {
+		try {
+			action.perform();
+		} catch (Exception e) {
+			setChanged();
+			notifyObservers(e);
+		}
 	}
 
 	private void resetGuiState() {
