@@ -23,7 +23,7 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 			if (model == null) {
 				model = gameModelFactory.get();
 				model.addObserver(GameGUIModel.this);
-				resetGuiState();
+				resetGuiState(false);
 			}
 			return model;
 		}
@@ -97,7 +97,7 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 	@Override
 	public void update(Observable o, Object arg) {
 		SwingUtilities.invokeLater(() -> {
-			resetGuiState();
+			resetGuiState(arg == GameModel.UNDO_UPDATE_KEY);
 			setChanged();
 			notifyObservers(arg);
 		});
@@ -189,7 +189,7 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 		}
 	}
 
-	private void resetGuiState() {
+	private void resetGuiState(boolean forceReset) {
 		List<GUIState> validStates = getGameModel()
 				.getTurnState()
 				.getFromMap(new TurnStateToGUIState());
@@ -198,7 +198,7 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 		creationSelectedCell = null;
 		movementSelectedCell = null;
 
-		if (validStates.contains(guiState)) {
+		if (!forceReset && validStates.contains(guiState)) {
 			// No need to change
 			return;
 		}

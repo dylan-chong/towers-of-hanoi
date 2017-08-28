@@ -19,6 +19,7 @@ public class GameModel extends Observable implements Textable {
 	 */
 	public static final int PLAYER_CELL_OFFSET = 1;
 	public static final int CREATION_CELL_OFFSET = 2;
+	public static final Object UNDO_UPDATE_KEY = new Object();
 
 	private final Board board;
 	private final List<Player> players;
@@ -76,7 +77,7 @@ public class GameModel extends Observable implements Textable {
 
 		undoStack.pop().undoWork();
 		setChanged();
-		notifyObservers();
+		notifyObservers(UNDO_UPDATE_KEY);
 	}
 
 	public Player getCurrentPlayerData() {
