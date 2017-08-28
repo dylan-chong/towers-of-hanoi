@@ -3,10 +3,9 @@ package main.gui.game;
 import main.gamemodel.Player;
 import main.gamemodel.cells.Cell;
 import main.gamemodel.cells.PieceCell;
+import main.gui.game.GameGUIModel.GUIState;
 
 import java.awt.event.MouseEvent;
-
-import static main.gui.game.GameGUIModel.GUIState;
 
 public class GameGUIController {
 	private final GameGUIModel gameGUIModel;
@@ -16,36 +15,47 @@ public class GameGUIController {
 	}
 
 	public void onBoardCellClick(Cell cell, MouseEvent e) {
+		gameGUIModel.performGameAction(() -> {
+			if (gameGUIModel.getGuiState() != GUIState.MOVING_OR_ROTATING_PIECE) {
+				return;
+			}
+			Player currentPlayer = gameGUIModel.getCurrentPlayer();
+			if (!currentPlayer.ownsPiece(cell)) {
+				return;
+			}
+			if (!(cell instanceof PieceCell)) {
+				return;
+			}
+
+			gameGUIModel.setMovementSelectedCell((PieceCell) cell);
+		});
 	}
 
 	public void onCreationCellClick(Cell cell, MouseEvent e) {
-		if (gameGUIModel.getGuiState() != GUIState.CREATE_PIECE_CREATION) {
-			return;
-		}
+		gameGUIModel.performGameAction(() -> {
+			if (gameGUIModel.getGuiState() != GUIState.CREATE_PIECE_CREATION) {
+				return;
+			}
 
-		Player currentPlayer = gameGUIModel.getCurrentPlayer();
-		if (!currentPlayer.ownsPiece(cell)) {
-			return;
-		}
+			Player currentPlayer = gameGUIModel.getCurrentPlayer();
+			if (!currentPlayer.ownsPiece(cell)) {
+				return;
+			}
 
-		gameGUIModel.setCreationSelectedCell((PieceCell) cell);
+			gameGUIModel
+					.getGameModel()
+					.requireCanCreatePiece();
+
+			gameGUIModel.setCreationSelectedCell((PieceCell) cell);
+		});
 	}
 
 	public void onCreationRotationCellClick(
 			Cell rotatedCellCopy,
 			MouseEvent mouseEvent
 	) {
-		gameGUIModel.createPiece(rotatedCellCopy);
-
-
-
-
-
-		// TODO NEXT draw special board stuff
-
-
-
-
-
+		gameGUIModel.performGameAction(() -> {
+			gameGUIModel.createPiece(rotatedCellCopy);
+		});
 	}
 }

@@ -35,6 +35,7 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 
 	private PieceCell creationSelectedCell;
 	private List<PieceCell> creationSelectedCellRotatedCopies;
+	private PieceCell movementSelectedCell;
 
 	public GameGUIModel(Supplier<GameModel> gameModelFactory) {
 		this.gameModelFactory = gameModelFactory;
@@ -54,18 +55,26 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 	}
 
 	public void setCreationSelectedCell(PieceCell creationSelectedCell) {
-		if (guiState != GUIState.CREATE_PIECE_CREATION) {
-			throw new IllegalGameStateException("Not allowed to be called in this state");
-		}
+		requireState(GUIState.CREATE_PIECE_CREATION);
 
 		this.creationSelectedCell = creationSelectedCell;
 		setGuiState(GUIState.CREATE_PIECE_ROTATION);
 	}
 
+	public PieceCell getMovementSelectedCell() {
+		return movementSelectedCell;
+	}
+
+	public void setMovementSelectedCell(PieceCell movementSelectedCell) {
+		requireState(GUIState.MOVING_OR_ROTATING_PIECE);
+
+		this.movementSelectedCell = movementSelectedCell;
+		setChanged();
+		notifyObservers();
+	}
+
 	public List<PieceCell> calculateRotatedCopiesOfSelectedCell() {
-		if (guiState != GUIState.CREATE_PIECE_ROTATION) {
-			throw new IllegalGameStateException("Not allowed to be called in this state");
-		}
+		requireState(GUIState.CREATE_PIECE_ROTATION);
 
 		if (creationSelectedCellRotatedCopies == null) {
 			creationSelectedCellRotatedCopies = getRotatedCopies(
@@ -110,8 +119,13 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 		}
 
 		if (this.guiState == GUIState.CREATE_PIECE_ROTATION) {
+			// Leaving this state
 			creationSelectedCell = null;
 			creationSelectedCellRotatedCopies = null;
+		}
+		if (this.guiState == GUIState.MOVING_OR_ROTATING_PIECE) {
+			// Leaving this state
+			movementSelectedCell = null;
 		}
 
 		this.guiState = guiState;
@@ -150,11 +164,28 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 
 	@Override
 	public Color process(Color color, Cell cell) {
-		if (cell == creationSelectedCell) {
+		if (cell == creationSelectedCell || cell == movementSelectedCell) {
 			return color.brighter();
 		}
 
+		if (gameModel.getTurnState() == TurnState.MOVING_OR_ROTATING_PIECE) {
+			Collection<PieceCell> played = getGameModel().getPiecesPlayedThisTurn();
+			if (cell instanceof PieceCell && played.contains(cell)) {
+				return color.darker();
+			}
+		}
+
 		return color;
+	}
+
+	private void requireState(GUIState... states) {
+		String msg = String.format(
+				"Not allowed to be called in state %s",
+				guiState.name()
+		);
+		if (!Arrays.asList(states).contains(guiState)) {
+			throw new IllegalGameStateException(msg);
+		}
 	}
 
 	private void resetGuiState() {

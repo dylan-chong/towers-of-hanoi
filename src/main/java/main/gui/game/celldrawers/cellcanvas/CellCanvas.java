@@ -110,7 +110,6 @@ public abstract class CellCanvas extends JPanel {
 	protected abstract void onCellClick(Cell cell, MouseEvent e);
 
 	private void onClickCellCanvas(MouseEvent e) {
-
 		int size = getCellSize();
 		int col = e.getX() / size;
 		int row = e.getY() / size;

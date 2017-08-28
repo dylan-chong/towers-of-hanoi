@@ -20,7 +20,10 @@ import java.util.stream.Collectors;
 
 import static main.gui.game.GameGUIModel.GUIState;
 
-class PlayerComponents {
+/**
+ * All the components for displaying the data for a given player
+ */
+public class PlayerComponents {
 
     public final SLPanel createPanel;
     public final GridCanvas createCreationCanvas;
@@ -57,6 +60,14 @@ class PlayerComponents {
                 String.format("Select Rotation (%s)", name),
                 gameGUIController::onCreationRotationCellClick
         );
+		cemeteryCanvas = newGridCanvas(
+				player.getDeadPieces()::values,
+				String.format("Dead (%s)", name),
+				(cell, mouseEvent) -> {}
+		);
+
+		// Animation panel
+
         createPanel = new SLPanel();
         createPanel.setPreferredSize(createCreationCanvas.getPreferredSize());
         createPanel.setTweenManager(SLAnimator.createTweenManager());
@@ -70,12 +81,6 @@ class PlayerComponents {
                 .place(0, 0, createRotationsCanvas);
         currentCreateConfig = createCreationConfig;
         createPanel.initialize(createCreationConfig);
-
-        cemeteryCanvas = newGridCanvas(
-                player.getDeadPieces()::values,
-                String.format("Dead (%s)", name),
-                (cell, mouseEvent) -> {}
-        );
 	}
 
 	private Collection<? extends Cell> getRotatedCopiesOfSelectedPiece() {

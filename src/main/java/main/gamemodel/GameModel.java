@@ -87,9 +87,28 @@ public class GameModel extends Observable implements Textable {
 		return Collections.unmodifiableList(players);
 	}
 
+	public Collection<PieceCell> getPiecesPlayedThisTurn() {
+		return piecesPlayedThisTurn;
+	}
+
 	@Override
 	public char[][] toTextualRep() {
 		return board.toTextualRep();
+	}
+
+	public void requireCanCreatePiece() throws InvalidMoveException {
+		requireState(TurnState.CREATING_PIECE, null);
+
+		Player player = getCurrentPlayerData();
+		final int creationRow = player.getCreationRow();
+		final int creationCol = player.getCreationCol();
+
+		Cell existingCell = board.getCellAt(creationRow, creationCol);
+		if (existingCell != null) {
+			throw new InvalidMoveException(
+					"There is a cell in your creation square"
+			);
+		}
 	}
 
 	/**
@@ -103,19 +122,11 @@ public class GameModel extends Observable implements Textable {
 	public void create(char pieceId, int numberOfClockwiseRotations)
 			throws InvalidMoveException {
 		requireState(TurnState.CREATING_PIECE, null);
+		requireCanCreatePiece();
 
 		Player player = getCurrentPlayerData();
 		final int creationRow = player.getCreationRow();
 		final int creationCol = player.getCreationCol();
-
-		Cell existingCell = board.getCellAt(
-				creationRow, creationCol
-		);
-		if (existingCell != null) {
-			throw new InvalidMoveException(
-					"There is a cell in your creation square"
-			);
-		}
 
 		PieceCell newPiece = player.useUnusedPiece(pieceId);
 		Command nextTurnState = turnState.getFromMap(
