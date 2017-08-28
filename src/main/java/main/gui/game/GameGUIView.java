@@ -1,6 +1,8 @@
 package main.gui.game;
 
-import main.gamemodel.*;
+import main.gamemodel.Board;
+import main.gamemodel.IllegalGameStateException;
+import main.gamemodel.Player;
 import main.gamemodel.cells.Cell;
 import main.gui.cardview.GUICard;
 import main.gui.cardview.GUICardName;
@@ -26,7 +28,7 @@ public class GameGUIView implements GUICard, Observer {
 	private JToolBar jToolBar;
 	private JPanel cellCanvasesJPanel;
 	private Map<Player, PlayerComponents> playerComponents;
-	private GameGUIModel.GUIState currentGuiState;
+	private GUIState currentGuiState;
 	private JLabel stateReporterLabel;
 
 	public GameGUIView(
@@ -42,10 +44,12 @@ public class GameGUIView implements GUICard, Observer {
 
 		rootJPanel = new JPanel();
 		rootJPanel.setLayout(new BoxLayout(rootJPanel, BoxLayout.Y_AXIS));
+		rootJPanel.setFocusable(true);
 
-		setupToolbar();
+		setUpToolbar();
 		setUpStateReporter();
-		setupCellCanvases();
+		setUpCellCanvases();
+		setUpKeyBindings();
 	}
 
 	private void setUpStateReporter() {
@@ -55,7 +59,7 @@ public class GameGUIView implements GUICard, Observer {
 		rootJPanel.add(stateReporterLabel);
 	}
 
-	private void setupCellCanvases() {
+	private void setUpCellCanvases() {
 		cellCanvasesJPanel = new JPanel();
 		cellCanvasesJPanel.setLayout(
 				new BoxLayout(cellCanvasesJPanel, BoxLayout.X_AXIS)
@@ -106,7 +110,7 @@ public class GameGUIView implements GUICard, Observer {
 		player1Components.forEach(cellCanvasesJPanel::add);
 	}
 
-	private void setupToolbar() {
+	private void setUpToolbar() {
 		jToolBar = new JToolBar();
 		rootJPanel.add(jToolBar);
 
@@ -115,11 +119,24 @@ public class GameGUIView implements GUICard, Observer {
 		addToolbarButton("Surrender", gameGUIModel.getGameModel()::surrender);
 	}
 
+	private void setUpKeyBindings() {
+		gameGUIController.addActions((keyStroke, action) -> {
+			Object actionKey = keyStroke;
+			rootJPanel
+					.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+					.put(keyStroke, actionKey);
+			rootJPanel
+					.getActionMap()
+					.put(actionKey, action);
+		});
+	}
+
 	private void addToolbarButton(String title, GameAction action) {
 		JButton button = new JButton(title);
 		button.addActionListener((event) ->
 				gameGUIModel.performGameAction(action)
 		);
+		button.setFocusable(false);
 		jToolBar.add(button);
 	}
 
@@ -137,28 +154,40 @@ public class GameGUIView implements GUICard, Observer {
 	public void update(Observable o, Object arg) {
 		SwingUtilities.invokeLater(() -> {
 			if (arg instanceof Exception) {
-				Exception e = (Exception) arg;
-				String message = "There was an error making your move";
-				if (!(e instanceof ArrayIndexOutOfBoundsException) &&
-						e.getMessage() != null) {
-					message += ":\n" + e.getMessage();
-				}
-				JOptionPane.showMessageDialog(
-						rootJPanel,
-						message,
-						"Error",
-						JOptionPane.ERROR_MESSAGE
-				);
+				showExceptionErrorMsg((Exception) arg);
+				return;
 			}
 
 			updateState();
 
+			rootJPanel.revalidate();
 			rootJPanel.repaint();
 		});
 	}
 
+	private void showExceptionErrorMsg(Exception e) {
+		String message = "There was an error making your move";
+		if (!(e instanceof ArrayIndexOutOfBoundsException) &&
+				e.getMessage() != null) {
+			message += ":\n" + e.getMessage();
+		}
+		String finalMessage = message;
+		SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(
+				rootJPanel,
+				finalMessage,
+				"Error",
+				JOptionPane.ERROR_MESSAGE
+		));
+		rootJPanel.revalidate();
+		rootJPanel.repaint();
+	}
+
 	private void updateState() {
-		GameGUIModel.GUIState nextGuiState = gameGUIModel.getGuiState();
+		GUIState nextGuiState = gameGUIModel.getGuiState();
+		if (nextGuiState == currentGuiState) {
+			return;
+		}
+
 		StateHooksMapper hooksMapper = new StateHooksMapper();
 
 		if (currentGuiState != null) {
@@ -189,7 +218,13 @@ public class GameGUIView implements GUICard, Observer {
 		stateReporterLabel.setText(text);
 	}
 
-	private class StateHooksMapper implements GameGUIModel.GUIState.Mapper<StateHooks> {
+	private void showBothCreationCanvases() {
+		for (PlayerComponents pc : playerComponents.values()) {
+			pc.showCreateCreationCanvas();
+		}
+	}
+
+	private class StateHooksMapper implements GUIState.Mapper<StateHooks> {
 		@Override
 		public StateHooks getCreatePieceCreationValue() {
 			return new StateHooks() {
@@ -197,9 +232,7 @@ public class GameGUIView implements GUICard, Observer {
 				public void onEnter() {
 					// This should already be showing, but code is here to
 					// ensure it is showing
-					playerComponents
-							.get(gameGUIModel.getCurrentPlayer())
-							.showCreateCreationCanvas();
+					showBothCreationCanvases();
 				}
 
 				@Override
@@ -221,15 +254,13 @@ public class GameGUIView implements GUICard, Observer {
 
 				@Override
 				public void onExit() {
-					playerComponents
-							.get(gameGUIModel.getCurrentPlayer())
-							.showCreateCreationCanvas();
+					showBothCreationCanvases();
 				}
 			};
 		}
 
 		@Override
-		public StateHooks getMovingOrRotatingPieceValue() {
+		public StateHooks getMovingOrRotatingPieceSelectionValue() {
 			return new StateHooks() {
 				@Override
 				public void onEnter() {
@@ -243,6 +274,20 @@ public class GameGUIView implements GUICard, Observer {
 			};
 		}
 
+		@Override
+		public StateHooks getMovingOrRotatingPieceApplyingValue() {
+			return new StateHooks() {
+				@Override
+				public void onEnter() {
+					// TODO
+				}
+
+				@Override
+				public void onExit() {
+					// TODO
+				}
+			};
+		}
 		@Override
 		public StateHooks getResolvingReactionsValue() {
 			return new StateHooks() {
@@ -265,12 +310,12 @@ public class GameGUIView implements GUICard, Observer {
 				public void onEnter() {
 					Player winner = gameGUIModel.getGameModel().getWinner();
 					String name = winner.getNameWithoutNumber();
-					JOptionPane.showMessageDialog(
+					SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(
 							rootJPanel,
 							String.format("Player '%s' won!", name),
 							"Game Finished",
 							JOptionPane.PLAIN_MESSAGE
-					);
+					));
 				}
 
 				@Override

@@ -100,6 +100,21 @@ public class PieceCell extends Cell {
 		return sides.getSide(relativeDirection);
 	}
 
+	public List<PieceCell> getRotatedCopies() {
+		List<PieceCell> rotatedCopies = new ArrayList<>();
+
+		for (int rotations = 0; rotations < Direction.values().length; rotations++) {
+			PieceCell cell = new PieceCell(
+					(char) ('a' + rotations), // Assume we don't show the ids
+					sides,
+					Direction.values()[rotations]
+			);
+			rotatedCopies.add(cell);
+		}
+
+		return rotatedCopies;
+	}
+
 	/**
 	 * The different amount of combinations of sword and shield
 	 *

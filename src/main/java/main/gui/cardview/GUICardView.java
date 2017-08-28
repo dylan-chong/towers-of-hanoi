@@ -18,9 +18,12 @@ public class GUICardView {
 		jFrame = new JFrame(WINDOW_TITLE);
 
 		cardLayout = new CardLayout();
+
 		jPanel = new JPanel(cardLayout);
 		jFrame.add(jPanel);
+
 		jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		jFrame.setFocusable(true);
 	}
 
 	public void addView(GUICard guiCard) {

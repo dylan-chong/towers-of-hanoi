@@ -2,6 +2,7 @@ package main.gui.game;
 
 import aurelienribon.slidinglayout.*;
 import main.GameUtils;
+import main.gamemodel.InvalidMoveException;
 import main.gamemodel.Player;
 import main.gamemodel.cells.Cell;
 import main.gamemodel.cells.PieceCell;
@@ -17,8 +18,6 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-
-import static main.gui.game.GameGUIModel.GUIState;
 
 /**
  * All the components for displaying the data for a given player
@@ -94,7 +93,13 @@ public class PlayerComponents {
 			return Collections.emptyList();
 		}
 
-		return gameGUIModel.calculateRotatedCopiesOfSelectedCell();
+		try {
+			return gameGUIModel.calculateRotatedCopiesOfSelectedCell();
+		} catch (InvalidMoveException e) {
+			// Shouldn't happen
+			e.printStackTrace();
+			return Collections.emptyList();
+		}
 	}
 
 	public List<? extends JComponent> getAllComponents() {

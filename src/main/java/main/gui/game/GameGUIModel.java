@@ -13,24 +13,22 @@ import java.util.function.Supplier;
 
 public class GameGUIModel extends Observable implements Observer, CellColorProcessor {
 
-	public static List<PieceCell> getRotatedCopies(PieceCell baseCell) {
-		List<PieceCell> rotatedCopies = new ArrayList<>();
-
-		for (int rotations = 0; rotations < Direction.values().length; rotations++) {
-			PieceCell cell = new PieceCell(
-					(char) ('a' + rotations), // Assume we don't show these
-					baseCell.getSideCombination(),
-					Direction.values()[rotations]
-			);
-			rotatedCopies.add(cell);
-		}
-
-		return rotatedCopies;
-	}
-
 	private final Supplier<GameModel> gameModelFactory;
 
-	private GameModel gameModel;
+	private final Supplier<GameModel> gameModel = new Supplier<GameModel>() {
+		public GameModel model;
+
+		@Override
+		public GameModel get() {
+			if (model == null) {
+				model = gameModelFactory.get();
+				model.addObserver(GameGUIModel.this);
+				resetGuiState();
+			}
+			return model;
+		}
+	};
+
 	private GUIState guiState;
 
 	private PieceCell creationSelectedCell;
@@ -42,62 +40,58 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 	}
 
 	public GameModel getGameModel() {
-		if (gameModel == null) {
-			gameModel = gameModelFactory.get();
-			gameModel.addObserver(this);
-			resetGuiState();
-		}
-		return gameModel;
+		return gameModel.get();
 	}
 
 	public PieceCell getCreationSelectedCell() {
 		return creationSelectedCell;
 	}
 
-	public void setCreationSelectedCell(PieceCell creationSelectedCell) {
+	public void setCreationSelectedCell(PieceCell creationSelectedCell)
+			throws InvalidMoveException {
 		requireState(GUIState.CREATE_PIECE_CREATION);
 
 		this.creationSelectedCell = creationSelectedCell;
 		setGuiState(GUIState.CREATE_PIECE_ROTATION);
 	}
 
-	public PieceCell getMovementSelectedCell() {
-		return movementSelectedCell;
-	}
-
-	public void setMovementSelectedCell(PieceCell movementSelectedCell) {
-		requireState(GUIState.MOVING_OR_ROTATING_PIECE);
+	public void setMovementSelectedCell(PieceCell movementSelectedCell)
+			throws InvalidMoveException {
+		requireState(GUIState.MOVING_OR_ROTATING_PIECE_SELECTION);
+		if (getGameModel().getPiecesPlayedThisTurn().contains(movementSelectedCell)) {
+			throw new InvalidMoveException("You have already moved this cell");
+		}
 
 		this.movementSelectedCell = movementSelectedCell;
-		setChanged();
-		notifyObservers();
+		setGuiState(GUIState.MOVING_OR_ROTATING_PIECE_APPLYING);
 	}
 
-	public List<PieceCell> calculateRotatedCopiesOfSelectedCell() {
+	public List<PieceCell> calculateRotatedCopiesOfSelectedCell()
+			throws InvalidMoveException {
 		requireState(GUIState.CREATE_PIECE_ROTATION);
 
 		if (creationSelectedCellRotatedCopies == null) {
-			creationSelectedCellRotatedCopies = getRotatedCopies(
-					Objects.requireNonNull(creationSelectedCell)
-			);
+			creationSelectedCellRotatedCopies =
+					creationSelectedCell.getRotatedCopies();
 		}
 
 		return creationSelectedCellRotatedCopies;
 	}
 
 	public Player getCurrentPlayer() {
-		return gameModel.getCurrentPlayerData();
+		return getGameModel().getCurrentPlayerData();
 	}
 
 	public Player getPlayerOfCellOrRotatedCopy(Cell cell) {
 		if (creationSelectedCellRotatedCopies != null &&
-				creationSelectedCellRotatedCopies.stream()
+				creationSelectedCellRotatedCopies
+						.stream()
 						.anyMatch(copy -> cell == copy)
 				) {
 			return getCurrentPlayer();
 		}
 
-		return gameModel.getPlayerOfCell(cell);
+		return getGameModel().getPlayerOfCell(cell);
 	}
 
 	@Override
@@ -123,7 +117,7 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 			creationSelectedCell = null;
 			creationSelectedCellRotatedCopies = null;
 		}
-		if (this.guiState == GUIState.MOVING_OR_ROTATING_PIECE) {
+		if (this.guiState == GUIState.MOVING_OR_ROTATING_PIECE_APPLYING) {
 			// Leaving this state
 			movementSelectedCell = null;
 		}
@@ -137,15 +131,16 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 		try {
 			action.perform();
 		} catch (Exception e) {
+			if (e instanceof RuntimeException) {
+				e.printStackTrace();
+			}
 			setChanged();
 			notifyObservers(e);
 		}
 	}
 
-	public void createPiece(Cell rotatedCellCopy) {
-		if (guiState != GUIState.CREATE_PIECE_ROTATION) {
-			return;
-		}
+	public void createPiece(Cell rotatedCellCopy) throws InvalidMoveException {
+		requireState(GUIState.CREATE_PIECE_ROTATION);
 
 		PieceCell rotatedPieceCopy = (PieceCell) rotatedCellCopy;
 		PieceCell baseCell = creationSelectedCell;
@@ -156,10 +151,16 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 
 		Direction direction = rotatedPieceCopy.getDirection();
 
-		performGameAction(() -> gameModel.create(
-				baseCell.getId(),
-				direction.ordinal()
-		));
+		getGameModel().create(baseCell.getId(), direction.ordinal());
+		creationSelectedCell = null;
+	}
+
+	public void move(Direction moveDirection) throws InvalidMoveException {
+		requireState(GUIState.MOVING_OR_ROTATING_PIECE_APPLYING);
+
+		getGameModel().move(movementSelectedCell.getId(), moveDirection);
+		movementSelectedCell = null;
+		setGuiState(GUIState.MOVING_OR_ROTATING_PIECE_SELECTION);
 	}
 
 	@Override
@@ -168,7 +169,7 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 			return color.brighter();
 		}
 
-		if (gameModel.getTurnState() == TurnState.MOVING_OR_ROTATING_PIECE) {
+		if (getGameModel().getTurnState() == TurnState.MOVING_OR_ROTATING_PIECE) {
 			Collection<PieceCell> played = getGameModel().getPiecesPlayedThisTurn();
 			if (cell instanceof PieceCell && played.contains(cell)) {
 				return color.darker();
@@ -178,19 +179,24 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 		return color;
 	}
 
-	private void requireState(GUIState... states) {
+	private void requireState(GUIState... states) throws InvalidMoveException {
 		String msg = String.format(
 				"Not allowed to be called in state %s",
 				guiState.name()
 		);
 		if (!Arrays.asList(states).contains(guiState)) {
-			throw new IllegalGameStateException(msg);
+			throw new InvalidMoveException(msg);
 		}
 	}
 
 	private void resetGuiState() {
-		List<GUIState> validStates = gameModel.getTurnState()
+		List<GUIState> validStates = getGameModel()
+				.getTurnState()
 				.getFromMap(new TurnStateToGUIState());
+
+		// Deselect on undo
+		creationSelectedCell = null;
+		movementSelectedCell = null;
 
 		if (validStates.contains(guiState)) {
 			// No need to change
@@ -200,51 +206,6 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 		setGuiState(validStates.get(0));
 		setChanged();
 		notifyObservers();
-	}
-
-	// TODO map from TurnState
-	public enum GUIState {
-		CREATE_PIECE_CREATION {
-			@Override
-			public <T> T getFromMap(Mapper<T> mapper) {
-				return mapper.getCreatePieceCreationValue();
-			}
-		},
-		CREATE_PIECE_ROTATION {
-			@Override
-			public <T> T getFromMap(Mapper<T> mapper) {
-				return mapper.getCreatePieceRotationValue();
-			}
-		},
-		MOVING_OR_ROTATING_PIECE {
-			@Override
-			public <T> T getFromMap(Mapper<T> mapper) {
-				return mapper.getMovingOrRotatingPieceValue();
-			}
-		},
-		RESOLVING_REACTIONS {
-			@Override
-			public <T> T getFromMap(Mapper<T> mapper) {
-				return mapper.getResolvingReactionsValue();
-			}
-		},
-		GAME_FINISHED {
-			@Override
-			public <T> T getFromMap(Mapper<T> mapper) {
-				return mapper.getGameFinishedValue();
-			}
-		}
-		;
-
-		public abstract <T> T getFromMap(Mapper<T> mapper);
-
-		public interface Mapper<ValueT> {
-			ValueT getCreatePieceCreationValue();
-			ValueT getCreatePieceRotationValue();
-			ValueT getMovingOrRotatingPieceValue();
-			ValueT getResolvingReactionsValue();
-			ValueT getGameFinishedValue();
-		}
 	}
 
 	/**
@@ -265,7 +226,8 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 		@Override
 		public List<GUIState> getMovingOrRotatingPieceValue() {
 			return Arrays.asList(
-					GUIState.MOVING_OR_ROTATING_PIECE
+					GUIState.MOVING_OR_ROTATING_PIECE_SELECTION,
+					GUIState.MOVING_OR_ROTATING_PIECE_APPLYING
 			);
 		}
 
