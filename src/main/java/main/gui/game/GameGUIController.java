@@ -23,7 +23,7 @@ public class GameGUIController {
 			return;
 		}
 
-		Player currentPlayer = getCurrentPlayer();
+		Player currentPlayer = gameGUIModel.getCurrentPlayer();
 		if (!currentPlayer.ownsPiece(cell)) {
 			return;
 		}
@@ -36,10 +36,16 @@ public class GameGUIController {
 			MouseEvent mouseEvent
 	) {
 		gameGUIModel.createPiece(rotatedCellCopy);
-		// TODO AFTER draw special board stuff
-	}
 
-	private Player getCurrentPlayer() {
-		return gameGUIModel.getGameModel().getCurrentPlayerData();
+
+
+
+
+		// TODO NEXT draw special board stuff
+
+
+
+
+
 	}
 }

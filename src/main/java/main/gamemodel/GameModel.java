@@ -17,8 +17,8 @@ public class GameModel extends Observable implements Textable {
 	/**
 	 * The offsets from the corners of the board
 	 */
-	private static final int PLAYER_CELL_OFFSET = 1;
-	private static final int CREATION_CELL_OFFSET = 2;
+	public static final int PLAYER_CELL_OFFSET = 1;
+	public static final int CREATION_CELL_OFFSET = 2;
 
 	private final Board board;
 	private final List<Player> players;

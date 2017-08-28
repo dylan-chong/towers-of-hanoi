@@ -46,20 +46,6 @@ public class GameGUIView implements GUICard, Observer {
 		setupToolbar();
 		setUpStateReporter();
 		setupCellCanvases();
-
-		SwingUtilities.invokeLater(() -> {
-			try {
-				// TODO remove
-				gameGUIModel.getGameModel().create('a', 0);
-				gameGUIModel.getGameModel().move('a', Direction.SOUTH);
-				gameGUIModel.getGameModel().passTurnState();
-				gameGUIModel.getGameModel().create('c', 0);
-				gameGUIModel.getGameModel().move('c', Direction.NORTH);
-				gameGUIModel.getGameModel().passTurnState();
-			} catch (InvalidMoveException e) {
-				throw new RuntimeException(e);
-			}}
-		);
 	}
 
 	private void setUpStateReporter() {
