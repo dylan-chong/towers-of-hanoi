@@ -1,11 +1,11 @@
-package main.gui.game.drawersandviews.cellcanvas;
+package main.gui.game.celldrawers.cellcanvas;
 
 import main.gamemodel.Board;
 import main.gamemodel.CellConsumer;
 import main.gamemodel.GameModel;
 import main.gui.game.GameGUIModel;
 import main.gui.game.GameGUIView;
-import main.gui.game.drawersandviews.CellDrawer;
+import main.gui.game.celldrawers.CellDrawer;
 
 import java.awt.*;
 import java.util.List;
@@ -50,13 +50,17 @@ public abstract class BoardCanvas extends CellCanvas {
 		List<Color> playerColours = gameGUIModel.getGameModel()
 				.getPlayers()
 				.stream()
-				.map(p -> p.getPlayerCell().getToken().color)
+				.map(p -> p.getPlayerCell()
+						.getToken()
+						.color
+						.darker()
+				)
 				.collect(Collectors.toList());
 		int rows = board.getNumRows();
 		int cols = board.getNumCols();
 		int off = GameModel.CREATION_CELL_OFFSET;
 
-		fillSquare(2, 2, graphics2D, playerColours.get(0));
+		fillSquare(off, off, graphics2D, playerColours.get(0));
 		fillSquare(rows - off - 1, cols - off - 1, graphics2D, playerColours.get(1));
 
 	}

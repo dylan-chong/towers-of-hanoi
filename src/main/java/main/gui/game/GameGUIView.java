@@ -4,8 +4,8 @@ import main.gamemodel.*;
 import main.gamemodel.cells.Cell;
 import main.gui.cardview.GUICard;
 import main.gui.cardview.GUICardName;
-import main.gui.game.drawersandviews.CellDrawer;
-import main.gui.game.drawersandviews.cellcanvas.BoardCanvas;
+import main.gui.game.celldrawers.CellDrawer;
+import main.gui.game.celldrawers.cellcanvas.BoardCanvas;
 
 import javax.swing.*;
 import java.awt.*;

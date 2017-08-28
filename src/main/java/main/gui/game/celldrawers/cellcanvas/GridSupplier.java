@@ -1,4 +1,4 @@
-package main.gui.game.drawersandviews.cellcanvas;
+package main.gui.game.celldrawers.cellcanvas;
 
 import main.gamemodel.cells.Cell;
 

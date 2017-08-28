@@ -5,8 +5,8 @@ import main.GameUtils;
 import main.gamemodel.Player;
 import main.gamemodel.cells.Cell;
 import main.gamemodel.cells.PieceCell;
-import main.gui.game.drawersandviews.CellDrawer;
-import main.gui.game.drawersandviews.cellcanvas.GridCanvas;
+import main.gui.game.celldrawers.CellDrawer;
+import main.gui.game.celldrawers.cellcanvas.GridCanvas;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;

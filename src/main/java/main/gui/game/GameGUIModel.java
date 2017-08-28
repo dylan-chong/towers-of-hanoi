@@ -3,12 +3,15 @@ package main.gui.game;
 import main.gamemodel.*;
 import main.gamemodel.cells.Cell;
 import main.gamemodel.cells.PieceCell;
+import main.gui.game.celldrawers.CellColorProcessor;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.function.Supplier;
 
-public class GameGUIModel extends Observable implements Observer {
+public class GameGUIModel extends Observable implements Observer, CellColorProcessor {
 
 	public static List<PieceCell> getRotatedCopies(PieceCell baseCell) {
 		List<PieceCell> rotatedCopies = new ArrayList<>();
@@ -145,6 +148,15 @@ public class GameGUIModel extends Observable implements Observer {
 		));
 	}
 
+	@Override
+	public Color process(Color color, Cell cell) {
+		if (cell == creationSelectedCell) {
+			return color.brighter();
+		}
+
+		return color;
+	}
+
 	private void resetGuiState() {
 		List<GUIState> validStates = gameModel.getTurnState()
 				.getFromMap(new TurnStateToGUIState());
@@ -154,7 +166,7 @@ public class GameGUIModel extends Observable implements Observer {
 			return;
 		}
 
-		guiState = validStates.get(0);
+		setGuiState(validStates.get(0));
 		setChanged();
 		notifyObservers();
 	}

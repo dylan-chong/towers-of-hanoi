@@ -1,4 +1,4 @@
-package main.gui.game.drawersandviews;
+package main.gui.game.celldrawers;
 
 import main.gamemodel.Direction;
 import main.gamemodel.Player;
@@ -19,6 +19,12 @@ public class CellDrawer implements
 
 	private static final float FACE_STROKE_WIDTH = 1.5f;
 
+	private final CellColorProcessor colorProcessor;
+
+	public CellDrawer(CellColorProcessor colorProcessor) {
+		this.colorProcessor = colorProcessor;
+	}
+
 	@Override
 	public DrawFunction valueOfPieceCell(PieceCell cell) {
 		return (playerData, graphics2D, col, row, size) -> {
@@ -30,6 +36,7 @@ public class CellDrawer implements
 			// Fill circle in cell
 
 			Color color = playerData.getPlayerCell().getToken().color;
+			color = colorProcessor.process(color, cell);
 			graphics2D.setPaint(new RadialGradientPaint(
 					centre[1],
 					centre[0],
@@ -46,7 +53,7 @@ public class CellDrawer implements
 
 			// Swords and shields
 
-			graphics2D.setPaint(SWORD_AND_SHIELD_COLOUR);
+			graphics2D.setPaint(colorProcessor.process(SWORD_AND_SHIELD_COLOUR, cell));
 			graphics2D.setStroke(new BasicStroke(STROKE_WIDTH));
 			for (Direction sideDir : Direction.values()) {
 				PieceCell.SideType side = cell.getSide(sideDir);
@@ -101,7 +108,9 @@ public class CellDrawer implements
 	@Override
 	public DrawFunction valueOfPlayerCell(PlayerCell cell) {
 		return (playerData, graphics2D, col, row, size) -> {
-			graphics2D.setColor(playerData.getPlayerCell().getToken().color);
+			Color faceColor = playerData.getPlayerCell().getToken().color;
+			faceColor = colorProcessor.process(faceColor, cell);
+			graphics2D.setColor(faceColor);
 			graphics2D.fillOval(
 					(int) (col * size),
 					(int) (row * size),
@@ -115,7 +124,7 @@ public class CellDrawer implements
 			};
 
 			graphics2D.setStroke(new BasicStroke(FACE_STROKE_WIDTH));
-			graphics2D.setColor(Color.BLACK);
+			graphics2D.setColor(colorProcessor.process(Color.BLACK, cell));
 			cell.getToken().getFromMap(new PlayerCell.Token.Mapper<Void>() {
 				@Override
 				public Void getHappyValue() {

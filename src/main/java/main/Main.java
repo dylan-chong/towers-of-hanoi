@@ -7,8 +7,8 @@ import main.gui.cardview.GUICardView;
 import main.gui.game.GameGUIView;
 import main.gui.game.GameGUIController;
 import main.gui.game.GameGUIModel;
-import main.gui.game.drawersandviews.CellDrawer;
-import main.gui.menu.MenuGUIViewAndController;
+import main.gui.game.celldrawers.CellDrawer;
+import main.gui.menu.MenuGUI;
 import main.textcontroller.GameTextController;
 import test.TestRunner;
 
@@ -47,9 +47,8 @@ public class Main {
 		SwingUtilities.invokeLater(() -> {
 			GUICardView guiCardView = new GUICardView();
 
-			MenuGUIViewAndController menuGUIViewAndController =
-					new MenuGUIViewAndController(guiCardView);
-			guiCardView.addView(menuGUIViewAndController);
+			MenuGUI menuGUI = new MenuGUI(guiCardView);
+			guiCardView.addView(menuGUI);
 
 			Supplier<GameModel> gameModelFactory = () -> new GameModel(new Board());
 			GameGUIModel gameGUIModel = new GameGUIModel(gameModelFactory);
@@ -57,11 +56,11 @@ public class Main {
 			GameGUIView gameGUIView = new GameGUIView(
 					gameGUIModel,
 					gameGUIController,
-					new CellDrawer()
+					new CellDrawer(gameGUIModel)
 			);
 			guiCardView.addView(gameGUIView);
 
-			guiCardView.setCurrentView(menuGUIViewAndController);
+			guiCardView.setCurrentView(menuGUI);
 			guiCardView.show();
 
 			SLAnimator.start();

@@ -1,11 +1,11 @@
-package main.gui.game.drawersandviews.cellcanvas;
+package main.gui.game.celldrawers.cellcanvas;
 
 import main.gamemodel.CellConsumer;
 import main.gamemodel.Player;
 import main.gamemodel.cells.Cell;
 import main.gui.game.GameGUIModel;
 import main.gui.game.GameGUIView;
-import main.gui.game.drawersandviews.CellDrawer;
+import main.gui.game.celldrawers.CellDrawer;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;

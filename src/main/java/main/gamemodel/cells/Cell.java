@@ -59,6 +59,15 @@ public abstract class Cell implements Textable, Comparable<Cell> {
 		return result;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Cell)) {
+			return false;
+		}
+		Cell cell = (Cell) obj;
+		return cell.getId() == getId();
+	}
+
 	public interface Mapper<ReturnT> {
 		default ReturnT valueOf(Cell cell) {
 			return cell.getValue(this);
