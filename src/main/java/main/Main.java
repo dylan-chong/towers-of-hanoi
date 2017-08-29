@@ -4,12 +4,7 @@ import aurelienribon.slidinglayout.SLAnimator;
 import main.gamemodel.Board;
 import main.gamemodel.GameModel;
 import main.gui.cardview.GUICardFrame;
-import main.gui.cardview.GUICardName;
-import main.gui.game.CellRotationDialogShower;
-import main.gui.game.GameGUIController;
-import main.gui.game.GameGUIModel;
-import main.gui.game.GameGUIView;
-import main.gui.game.celldrawers.CellDrawer;
+import main.gui.game.GameGUIResetter;
 import main.gui.menu.MenuGUI;
 import main.textcontroller.GameTextController;
 import test.TestRunner;
@@ -60,32 +55,15 @@ public class Main {
 
 			Supplier<GameModel> gameModelFactory = () -> new GameModel(new Board());
 
-			// Reset the game gui
-			eventGameReset.registerListener((aVoid) -> {
-				guiCardFrame.removeView(GUICardName.GAME);
-
-				GameGUIModel gameGUIModel = new GameGUIModel(gameModelFactory.get());
-				GameGUIController gameGUIController = new GameGUIController(
-						gameGUIModel,
-						eventReactionClicked
-				);
-				CellDrawer cellDrawer = new CellDrawer(gameGUIModel);
-				CellRotationDialogShower cellRotationDialogShower =
-						new CellRotationDialogShower(cellDrawer, guiCardFrame);
-				GameGUIView gameGUIView = new GameGUIView(
-						gameGUIModel,
-						gameGUIController,
-						cellDrawer,
-						cellRotationDialogShower,
-						eventGameGUIViewUpdated,
-						eventReactionClicked,
-						eventGameReset,
-						guiCardFrame
-				);
-				guiCardFrame.addView(gameGUIView);
-			});
-
-			eventGameReset.broadcast(null); // create game gui stuff
+			// The GameGUIResetter serves as part of the DI container
+			GameGUIResetter gameGUIResetter = new GameGUIResetter(
+					eventGameReset,
+					eventGameGUIViewUpdated,
+					eventReactionClicked,
+					guiCardFrame,
+					gameModelFactory
+			);
+			gameGUIResetter.reset();
 
 			guiCardFrame.setCurrentView(menuGUI);
 			guiCardFrame.show();

@@ -22,8 +22,11 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 
 	public GameGUIModel(GameModel gameModel) {
 		this.gameModel = gameModel;
-		gameModel.addObserver(GameGUIModel.this);
-		resetGuiState(false);
+
+		SwingUtilities.invokeLater(() -> {
+			gameModel.addObserver(GameGUIModel.this);
+			resetGuiState(false);
+		});
 	}
 
 	public GameModel getGameModel() {
