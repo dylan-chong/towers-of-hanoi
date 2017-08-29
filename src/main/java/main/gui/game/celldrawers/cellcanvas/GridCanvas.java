@@ -7,7 +7,7 @@ import main.gui.game.celldrawers.CellDrawer;
 
 import java.util.List;
 
-public abstract class GridCanvas extends CellCanvas {
+public class GridCanvas extends CellCanvas {
 
 	private static final int DEFAULT_NUM_COLS = 3;
 

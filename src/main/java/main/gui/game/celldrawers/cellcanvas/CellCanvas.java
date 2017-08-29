@@ -1,8 +1,10 @@
 package main.gui.game.celldrawers.cellcanvas;
 
 import main.gamemodel.CellConsumer;
+import main.gamemodel.Direction;
 import main.gamemodel.Player;
 import main.gamemodel.cells.Cell;
+import main.gui.game.GameGUIController;
 import main.gui.game.GameGUIModel;
 import main.gui.game.GameGUIView;
 import main.gui.game.celldrawers.CellDrawer;
@@ -12,7 +14,9 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -21,6 +25,9 @@ import java.util.concurrent.atomic.AtomicReference;
 public abstract class CellCanvas extends JPanel {
 	protected final GameGUIModel gameGUIModel;
 	protected final CellDrawer cellDrawer;
+
+	private final Collection<CellClickListener> listeners =
+			Collections.synchronizedList(new ArrayList<>());
 
 	public CellCanvas(
 			GameGUIModel gameGUIModel,
@@ -65,6 +72,10 @@ public abstract class CellCanvas extends JPanel {
 		add(cellCanvas);
 	}
 
+	public void addCellClickListener(CellClickListener listener) {
+		listeners.add(listener);
+	}
+
 	protected void paintCanvasComponent(Graphics2D graphics2D) {
 		int[] rowsCols = calculatePreferredRowsCols();
 		graphics2D.setColor(Color.GRAY);
@@ -104,23 +115,24 @@ public abstract class CellCanvas extends JPanel {
 		return rowsCols;
 	}
 
-	/**
-	 * To be implemented by clients for this class
-	 */
-	protected abstract void onCellClick(Cell cell, MouseEvent e);
-
 	private void onClickCellCanvas(MouseEvent e) {
 		int size = getCellSize();
 		int col = e.getX() / size;
 		int row = e.getY() / size;
+		float colOffset = ((e.getX() % size) * 1f) / size;
+		float rowOffset = ((e.getY() % size) * 1f) / size;
 
-		Optional<Cell> clickedCell = getCellAt(row, col);
-		clickedCell.ifPresent(cell -> {
-			onCellClick(cell, e);
-		});
+		Cell clickedCell = getCellAt(row, col);
+		synchronized (listeners) {
+			for (CellClickListener listener : listeners) {
+				listener.onCellClick(clickedCell, new CellClickEvent(
+						e, row, col, rowOffset, colOffset
+				));
+			}
+		}
 	}
 
-	private Optional<Cell> getCellAt(int targetRow, int targetCol) {
+	private Cell getCellAt(int targetRow, int targetCol) {
 		AtomicReference<Cell> resultCell = new AtomicReference<>();
 
 		forEachCell((cell, row, col) -> {
@@ -129,10 +141,51 @@ public abstract class CellCanvas extends JPanel {
 			}
 		});
 
-		return Optional.ofNullable(resultCell.get());
+		return resultCell.get();
 	}
 
 	private int getCellSize() {
 		return GameGUIView.PREFERRED_BOARD_CELL_SIZE;
+	}
+
+	public interface CellClickListener {
+		void onCellClick(Cell cellOrNull, CellClickEvent e);
+	}
+
+	public static class CellClickEvent {
+		public final MouseEvent e;
+		public final int row;
+		public final int col;
+		public final float rowOffset;
+		public final float colOffset;
+
+		public CellClickEvent(
+				MouseEvent e,
+				int row,
+				int col,
+				float rowOffset,
+				float colOffset
+		) {
+			this.e = e;
+			this.row = row;
+			this.col = col;
+			this.rowOffset = rowOffset;
+			this.colOffset = colOffset;
+		}
+
+		public Direction getClickedEdge() {
+			double distance = GameGUIController.MOVE_CLICK_EDGE_DISTANCE;
+			if (rowOffset < distance) {
+				return Direction.NORTH;
+			} else if (rowOffset > 1 - distance) {
+				return Direction.SOUTH;
+			} else if (colOffset < distance) {
+				return Direction.WEST;
+			} else if (colOffset > 1 - distance) {
+				return Direction.EAST;
+			}
+
+			return null;
+		}
 	}
 }

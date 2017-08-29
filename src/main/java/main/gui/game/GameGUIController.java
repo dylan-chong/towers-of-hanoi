@@ -4,13 +4,15 @@ import main.gamemodel.Direction;
 import main.gamemodel.Player;
 import main.gamemodel.cells.Cell;
 import main.gamemodel.cells.PieceCell;
+import main.gui.game.celldrawers.cellcanvas.CellCanvas;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
 import java.util.function.BiConsumer;
 
 public class GameGUIController {
+	public static final double MOVE_CLICK_EDGE_DISTANCE = 0.3;
+
 	private final GameGUIModel gameGUIModel;
 
 	public GameGUIController(GameGUIModel gameGUIModel) {
@@ -24,8 +26,23 @@ public class GameGUIController {
 		actionAdder.accept(KeyStroke.getKeyStroke("RIGHT"), new MoveAction(Direction.EAST));
 	}
 
-	public void onBoardCellClick(Cell cell, MouseEvent e) {
+	public void onBoardCellClick(Cell cell, CellCanvas.CellClickEvent e) {
 		gameGUIModel.performGameAction(() -> {
+			if (cell == null) {
+				return;
+			}
+
+			if (gameGUIModel.getGuiState() == GUIState.MOVING_OR_ROTATING_PIECE_APPLYING) {
+				gameGUIModel.performGameAction(() -> {
+					Direction clickedEdge = e.getClickedEdge();
+					if (clickedEdge == null) {
+						return;
+					}
+					gameGUIModel.move(clickedEdge);
+				});
+				return;
+			}
+
 			if (gameGUIModel.getGuiState() != GUIState.MOVING_OR_ROTATING_PIECE_SELECTION) {
 				return;
 			}
@@ -41,8 +58,12 @@ public class GameGUIController {
 		});
 	}
 
-	public void onCreationCellClick(Cell cell, MouseEvent e) {
+	public void onCreationCellClick(Cell cell, CellCanvas.CellClickEvent e) {
 		gameGUIModel.performGameAction(() -> {
+			if (cell == null) {
+				return;
+			}
+
 			if (gameGUIModel.getGuiState() != GUIState.CREATE_PIECE_CREATION) {
 				return;
 			}
@@ -62,13 +83,17 @@ public class GameGUIController {
 
 	public void onCreationRotationCellClick(
 			Cell rotatedCellCopy,
-			MouseEvent mouseEvent
+			CellCanvas.CellClickEvent mouseEvent
 	) {
-		if (gameGUIModel.getGuiState() != GUIState.CREATE_PIECE_ROTATION) {
-			return;
-		}
-
 		gameGUIModel.performGameAction(() -> {
+			if (rotatedCellCopy == null) {
+				return;
+			}
+
+			if (gameGUIModel.getGuiState() != GUIState.CREATE_PIECE_ROTATION) {
+				return;
+			}
+
 			gameGUIModel.createPiece(rotatedCellCopy);
 		});
 	}

@@ -3,7 +3,6 @@ package main.gui.game;
 import main.gamemodel.Board;
 import main.gamemodel.IllegalGameStateException;
 import main.gamemodel.Player;
-import main.gamemodel.cells.Cell;
 import main.gui.cardview.GUICard;
 import main.gui.cardview.GUICardName;
 import main.gui.game.celldrawers.CellDrawer;
@@ -11,7 +10,6 @@ import main.gui.game.celldrawers.cellcanvas.BoardCanvas;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -69,12 +67,8 @@ public class GameGUIView implements GUICard, Observer {
 		Board board = gameGUIModel.getGameModel().getBoard();
 		BoardCanvas boardCanvas = new BoardCanvas(
 				board, gameGUIModel, cellDrawer, "Board"
-		) {
-			@Override
-			protected void onCellClick(Cell cell, MouseEvent e) {
-				gameGUIController.onBoardCellClick(cell, e);
-			}
-		};
+		);
+		boardCanvas.addCellClickListener(gameGUIController::onBoardCellClick);
 
 		List<Player> players = gameGUIModel.getGameModel().getPlayers();
 		if (players.size() != 2) {

@@ -7,15 +7,14 @@ import main.gamemodel.Player;
 import main.gamemodel.cells.Cell;
 import main.gamemodel.cells.PieceCell;
 import main.gui.game.celldrawers.CellDrawer;
+import main.gui.game.celldrawers.cellcanvas.CellCanvas;
 import main.gui.game.celldrawers.cellcanvas.GridCanvas;
 
 import javax.swing.*;
-import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -52,12 +51,12 @@ public class PlayerComponents {
         createCreationCanvas = newGridCanvas(
                 player.getUnusedPieces()::values,
                 String.format("Creatable (%s)", name),
-                gameGUIController::onCreationCellClick
+				gameGUIController::onCreationCellClick
         );
         createRotationsCanvas = newGridCanvas(
         		this::getRotatedCopiesOfSelectedPiece,
                 String.format("Select Rotation (%s)", name),
-                gameGUIController::onCreationRotationCellClick
+				gameGUIController::onCreationRotationCellClick
         );
 		cemeteryCanvas = newGridCanvas(
 				player.getDeadPieces()::values,
@@ -141,25 +140,22 @@ public class PlayerComponents {
     private GridCanvas newGridCanvas(
             Supplier<Collection<? extends Cell>> cellGetter,
             String title,
-            BiConsumer<Cell, MouseEvent> onClickHandler
+            CellCanvas.CellClickListener cellClickListener
     ) {
-        return new GridCanvas(
-                (columns) -> GameUtils.packCells(
-                        cellGetter.get()
-                                .stream()
-                                .sorted()
-                                .collect(Collectors.toList()),
-                        columns
-                ),
-                gameGUIModel,
-                cellDrawer,
-                title
-        ) {
-            @Override
-            protected void onCellClick(Cell cell, MouseEvent e) {
-                onClickHandler.accept(cell, e);
-            }
-        };
+		GridCanvas gridCanvas = new GridCanvas(
+				(columns) -> GameUtils.packCells(
+						cellGetter.get()
+								.stream()
+								.sorted()
+								.collect(Collectors.toList()),
+						columns
+				),
+				gameGUIModel,
+				cellDrawer,
+				title
+		);
+		gridCanvas.addCellClickListener(cellClickListener);
+		return gridCanvas;
     }
 
 }

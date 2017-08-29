@@ -11,7 +11,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class BoardCanvas extends CellCanvas {
+public class BoardCanvas extends CellCanvas {
 
 	private final Board board;
 
