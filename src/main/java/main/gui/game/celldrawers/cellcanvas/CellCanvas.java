@@ -4,26 +4,26 @@ import main.gamemodel.CellConsumer;
 import main.gamemodel.Direction;
 import main.gamemodel.Player;
 import main.gamemodel.cells.Cell;
+import main.gui.game.Events.EventGameGUIViewUpdated;
 import main.gui.game.GameGUIController;
 import main.gui.game.GameGUIModel;
 import main.gui.game.GameGUIView;
 import main.gui.game.celldrawers.CellDrawer;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
-
-import static java.awt.Color.RED;
 
 /**
  * Draws a grid of board cells (by delegating to {@link InnerCellCanvas}
@@ -32,56 +32,68 @@ public abstract class CellCanvas extends JLayeredPane {
 	protected final GameGUIModel gameGUIModel;
 	protected final CellDrawer cellDrawer;
 
-	protected final JPanel defaultLayerPanel;
-	protected final JPanel paletteLayerPanel;
-
+	private final EventGameGUIViewUpdated eventGameGUIViewUpdated;
+	private final JPanel defaultLayerPanel;
+	private final JPanel paletteLayerPanel;
 	private final Collection<CellClickListener> listeners =
 			Collections.synchronizedList(new ArrayList<>());
+	private final JLabel titleLabel;
 
 	public CellCanvas(
 			GameGUIModel gameGUIModel,
 			CellDrawer cellDrawer,
-			String titleOrNull
+			String titleOrNull,
+			EventGameGUIViewUpdated eventGameGUIViewUpdated
 	) {
 		this.gameGUIModel = gameGUIModel;
 		this.cellDrawer = cellDrawer;
+		this.eventGameGUIViewUpdated = eventGameGUIViewUpdated;
 
 		setResizeOnChange();
 
 		setBorder(new LineBorder(Color.GRAY, 1));
 
-		defaultLayerPanel = new JPanel();
-		defaultLayerPanel.setLayout(new BoxLayout(defaultLayerPanel, BoxLayout.Y_AXIS));
-		add(defaultLayerPanel, DEFAULT_LAYER);
+		// Default layer
+		{
+			defaultLayerPanel = new JPanel();
+			defaultLayerPanel.setLayout(new BoxLayout(defaultLayerPanel, BoxLayout.Y_AXIS));
+			add(defaultLayerPanel, DEFAULT_LAYER);
 
-		paletteLayerPanel = new JPanel() {
-			@Override
-			public Dimension getPreferredSize() {
-				return CellCanvas.this.getPreferredSize();
+			if (titleOrNull != null) {
+				titleLabel = new JLabel(titleOrNull, SwingConstants.CENTER);
+				titleLabel.setAlignmentX(CENTER_ALIGNMENT);
+				defaultLayerPanel.add(titleLabel);
+			} else {
+				titleLabel = null;
 			}
-		};
-		paletteLayerPanel.setLayout(null);
-		paletteLayerPanel.setOpaque(false);
-		add(paletteLayerPanel, PALETTE_LAYER);
 
-		if (titleOrNull != null) {
-			JLabel titleLabel = new JLabel(titleOrNull, SwingConstants.CENTER);
-			titleLabel.setAlignmentX(CENTER_ALIGNMENT);
-			defaultLayerPanel.add(titleLabel);
-			titleLabel.setBackground(RED);
+			JComponent cellCanvas = new InnerCellCanvas();
+			cellCanvas.setAlignmentX(CENTER_ALIGNMENT);
+			cellCanvas.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					onClickCellCanvas(e);
+				}
+			});
+			defaultLayerPanel.add(cellCanvas);
 		}
 
-		JComponent cellCanvas = new InnerCellCanvas();
-		cellCanvas.setAlignmentX(CENTER_ALIGNMENT);
-		cellCanvas.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				onClickCellCanvas(e);
-			}
-		});
-		defaultLayerPanel.add(cellCanvas);
+		// Palette layer
+		{
+			paletteLayerPanel = new JPanel() {
+				@Override
+				public Dimension getPreferredSize() {
+					return CellCanvas.this.getPreferredSize();
+				}
+			};
+			paletteLayerPanel.setLayout(null);
+			paletteLayerPanel.setOpaque(false);
+			add(paletteLayerPanel, PALETTE_LAYER);
+		}
 
-		SwingUtilities.invokeLater(this::resizeChildren);
+		// TODO Remove listener on dispose?
+		eventGameGUIViewUpdated.registerListener((param) -> this.refreshChildren());
+		SwingUtilities.invokeLater(this::refreshChildren);
 	}
 
 	@Override
@@ -136,6 +148,21 @@ public abstract class CellCanvas extends JLayeredPane {
 		return rowsCols;
 	}
 
+	/**
+	 * Override this to use your own elements
+	 */
+	protected void updatePalette(JPanel paletteLayerPanel) {
+		int labelHeight = titleLabel == null ? 0 : titleLabel.getSize().height;
+		paletteLayerPanel.setBorder(new EmptyBorder(
+				labelHeight,
+				0, 0, 0
+		));
+	}
+
+	protected int getCellSize() {
+		return GameGUIView.PREFERRED_BOARD_CELL_SIZE;
+	}
+
 	private void onClickCellCanvas(MouseEvent e) {
 		int size = getCellSize();
 		int col = e.getX() / size;
@@ -165,38 +192,52 @@ public abstract class CellCanvas extends JLayeredPane {
 		return resultCell.get();
 	}
 
-	private void resizeChildren() {
+	private void refreshChildren() {
 		for (Component comp : getComponents()) {
 			Dimension size = comp.getPreferredSize();
 			Insets insets = getInsets();
 			comp.setBounds(insets.left, insets.top, size.width, size.height);
 		}
-		repaint();
-	}
 
-	private int getCellSize() {
-		return GameGUIView.PREFERRED_BOARD_CELL_SIZE;
+		updatePalette(paletteLayerPanel);
 	}
 
 	private void setResizeOnChange() {
 		addAncestorListener(new AncestorListener() {
 			@Override
 			public void ancestorAdded(AncestorEvent event) {
-				resizeChildren();
+				refreshChildren();
 			}
 
 			@Override
 			public void ancestorRemoved(AncestorEvent event) {
+				refreshChildren();
 			}
 
 			@Override
 			public void ancestorMoved(AncestorEvent event) {
+				refreshChildren();
 			}
 		});
-		addComponentListener(new ComponentAdapter() {
+		addComponentListener(new ComponentListener() {
 			@Override
 			public void componentResized(ComponentEvent e) {
-				resizeChildren();
+				refreshChildren();
+			}
+
+			@Override
+			public void componentMoved(ComponentEvent e) {
+				refreshChildren();
+			}
+
+			@Override
+			public void componentShown(ComponentEvent e) {
+				refreshChildren();
+			}
+
+			@Override
+			public void componentHidden(ComponentEvent e) {
+				refreshChildren();
 			}
 		});
 	}

@@ -22,10 +22,12 @@ public class GameTextController {
 	private final TextCommandStateMapper commandProvider;
 	private final GameModel game;
 
-	public GameTextController(Scanner textIn,
-							  PrintStream textOut,
-							  ExceptionHandler exceptionHandler,
-							  GameModel game) {
+	public GameTextController(
+			Scanner textIn,
+			PrintStream textOut,
+			ExceptionHandler exceptionHandler,
+			GameModel game
+	) {
 		this.textIn = textIn;
 		this.textOut = textOut;
 		this.exceptionHandler = exceptionHandler;

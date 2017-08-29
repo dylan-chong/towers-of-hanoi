@@ -2,12 +2,10 @@ package main;
 
 import aurelienribon.slidinglayout.SLAnimator;
 import main.gamemodel.Board;
+import main.gamemodel.Direction;
 import main.gamemodel.GameModel;
 import main.gui.cardview.GUICardFrame;
-import main.gui.game.CellRotationDialogShower;
-import main.gui.game.GameGUIView;
-import main.gui.game.GameGUIController;
-import main.gui.game.GameGUIModel;
+import main.gui.game.*;
 import main.gui.game.celldrawers.CellDrawer;
 import main.gui.menu.MenuGUI;
 import main.textcontroller.GameTextController;
@@ -19,6 +17,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.function.Supplier;
+
+import static main.gui.game.Events.*;
 
 /**
  * Delete this when you put your assignments here
@@ -46,6 +46,9 @@ public class Main {
 
 	private static void startApp() {
 		SwingUtilities.invokeLater(() -> {
+			EventGameGUIViewUpdated eventGameGUIViewUpdated = new EventGameGUIViewUpdated();
+			EventReactionClicked eventReactionClicked = new EventReactionClicked();
+
 			GUICardFrame guiCardFrame = new GUICardFrame();
 
 			MenuGUI menuGUI = new MenuGUI(guiCardFrame);
@@ -53,13 +56,18 @@ public class Main {
 
 			Supplier<GameModel> gameModelFactory = () -> new GameModel(new Board());
 			GameGUIModel gameGUIModel = new GameGUIModel(gameModelFactory);
-			GameGUIController gameGUIController = new GameGUIController(gameGUIModel);
+			GameGUIController gameGUIController = new GameGUIController(
+					gameGUIModel,
+					eventReactionClicked
+			);
 			CellDrawer cellDrawer = new CellDrawer(gameGUIModel);
 			GameGUIView gameGUIView = new GameGUIView(
 					gameGUIModel,
 					gameGUIController,
 					cellDrawer,
-					new CellRotationDialogShower(cellDrawer, guiCardFrame)
+					new CellRotationDialogShower(cellDrawer, guiCardFrame),
+					eventGameGUIViewUpdated,
+					eventReactionClicked
 			);
 			guiCardFrame.addView(gameGUIView);
 
@@ -67,6 +75,20 @@ public class Main {
 			guiCardFrame.show();
 
 			SLAnimator.start();
+
+			SwingUtilities.invokeLater(() -> {
+				gameGUIModel.performGameAction(() -> {
+					gameGUIModel.getGameModel().create('a', 0);
+					gameGUIModel.getGameModel().move('a', Direction.SOUTH);
+					gameGUIModel.getGameModel().passTurnState();
+
+					gameGUIModel.getGameModel().create('c', 0);
+					gameGUIModel.getGameModel().move('c', Direction.NORTH);
+					gameGUIModel.getGameModel().passTurnState();
+
+					gameGUIModel.getGameModel().create('b', 0);
+				});
+			});
 		});
 	}
 

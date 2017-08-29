@@ -2,6 +2,7 @@ package main.gui.game;
 
 import main.gamemodel.Direction;
 import main.gamemodel.Player;
+import main.gamemodel.ReactionData;
 import main.gamemodel.cells.Cell;
 import main.gamemodel.cells.PieceCell;
 import main.gui.game.celldrawers.cellcanvas.CellCanvas;
@@ -10,13 +11,20 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.function.BiConsumer;
 
+import static main.gui.game.Events.*;
+
 public class GameGUIController {
 	public static final double MOVE_CLICK_EDGE_DISTANCE = 0.3;
 
 	private final GameGUIModel gameGUIModel;
 
-	public GameGUIController(GameGUIModel gameGUIModel) {
+	public GameGUIController(
+			GameGUIModel gameGUIModel,
+			EventReactionClicked eventReactionClicked
+	) {
 		this.gameGUIModel = gameGUIModel;
+
+		eventReactionClicked.registerListener(this::onReactionClick);
 	}
 
 	public void addActions(BiConsumer<KeyStroke, Action> actionAdder) {
@@ -94,6 +102,16 @@ public class GameGUIController {
 			}
 
 			gameGUIModel.createPiece(rotatedCellCopy);
+		});
+	}
+
+	private void onReactionClick(ReactionData.Pair pair) {
+		if (gameGUIModel.getGuiState() != GUIState.RESOLVING_REACTIONS) {
+			return;
+		}
+
+		gameGUIModel.performGameAction(() -> {
+			gameGUIModel.getGameModel().react(pair);
 		});
 	}
 

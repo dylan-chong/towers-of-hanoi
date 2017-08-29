@@ -12,7 +12,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
+
+import static main.gui.game.Events.*;
 
 public class GameGUIView implements GUICard, Observer {
 	public static final int PREFERRED_BOARD_CELL_SIZE = 50;
@@ -22,6 +25,8 @@ public class GameGUIView implements GUICard, Observer {
 	private final GameGUIController gameGUIController;
 	private final CellDrawer cellDrawer;
 	private final CellRotationDialogShower cellRotationDialogShower;
+	private final EventGameGUIViewUpdated eventGameGUIViewUpdated;
+	private final EventReactionClicked eventReactionClicked;
 
 	private final JPanel rootJPanel;
 	private JToolBar jToolBar;
@@ -34,12 +39,16 @@ public class GameGUIView implements GUICard, Observer {
 			GameGUIModel gameGUIModel,
 			GameGUIController gameGUIController,
 			CellDrawer cellDrawer,
-			CellRotationDialogShower cellRotationDialogShower
+			CellRotationDialogShower cellRotationDialogShower,
+			EventGameGUIViewUpdated eventGameGUIViewUpdated,
+			EventReactionClicked eventReactionClicked
 	) {
 		this.gameGUIModel = gameGUIModel;
 		this.gameGUIController = gameGUIController;
 		this.cellDrawer = cellDrawer;
 		this.cellRotationDialogShower = cellRotationDialogShower;
+		this.eventGameGUIViewUpdated = eventGameGUIViewUpdated;
+		this.eventReactionClicked = eventReactionClicked;
 
 		gameGUIModel.addObserver(this);
 
@@ -69,7 +78,12 @@ public class GameGUIView implements GUICard, Observer {
 
 		Board board = gameGUIModel.getGameModel().getBoard();
 		BoardCanvas boardCanvas = new BoardCanvas(
-				board, gameGUIModel, cellDrawer, "Board"
+				board,
+				gameGUIModel,
+				cellDrawer,
+				"Board",
+				eventGameGUIViewUpdated,
+				eventReactionClicked
 		);
 		boardCanvas.addCellClickListener(gameGUIController::onBoardCellClick);
 
@@ -85,7 +99,8 @@ public class GameGUIView implements GUICard, Observer {
 								player,
 								gameGUIController,
 								gameGUIModel,
-								cellDrawer
+								cellDrawer,
+								eventGameGUIViewUpdated
 						)
 				));
 
@@ -112,7 +127,11 @@ public class GameGUIView implements GUICard, Observer {
 		rootJPanel.add(jToolBar);
 
 		addToolbarButton("Undo", gameGUIModel.getGameModel()::undo);
-		addToolbarButton("Pass", gameGUIModel.getGameModel()::passTurnState);
+		addToolbarButton(
+				"Pass",
+				gameGUIModel.getGameModel()::passTurnState,
+				jButton -> jButton.setFont(new Font("Default", Font.BOLD, 20))
+		);
 		addToolbarButton("Surrender", gameGUIModel.getGameModel()::surrender);
 	}
 
@@ -129,11 +148,20 @@ public class GameGUIView implements GUICard, Observer {
 	}
 
 	private void addToolbarButton(String title, GameAction action) {
+		addToolbarButton(title, action, (button) -> {});
+	}
+
+	private void addToolbarButton(
+			String title,
+			GameAction action,
+			Consumer<JButton> buttonConfigurer
+	) {
 		JButton button = new JButton(title);
 		button.addActionListener((event) ->
 				gameGUIModel.performGameAction(action)
 		);
 		button.setFocusable(false);
+		buttonConfigurer.accept(button);
 		jToolBar.add(button);
 	}
 
@@ -152,14 +180,19 @@ public class GameGUIView implements GUICard, Observer {
 		SwingUtilities.invokeLater(() -> {
 			if (arg instanceof Exception) {
 				showExceptionErrorMsg((Exception) arg);
+				updateComponents();
 				return;
 			}
 
 			updateState();
-
-			rootJPanel.revalidate();
-			rootJPanel.repaint();
+			updateComponents();
 		});
+	}
+
+	private void updateComponents() {
+		rootJPanel.revalidate();
+		rootJPanel.repaint();
+		eventGameGUIViewUpdated.broadcast(null);
 	}
 
 	private void showExceptionErrorMsg(Exception e) {
@@ -175,8 +208,6 @@ public class GameGUIView implements GUICard, Observer {
 				"Error",
 				JOptionPane.ERROR_MESSAGE
 		));
-		rootJPanel.revalidate();
-		rootJPanel.repaint();
 	}
 
 	private void updateState() {

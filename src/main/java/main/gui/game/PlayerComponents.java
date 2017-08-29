@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static main.gui.game.Events.*;
+
 /**
  * All the components for displaying the data for a given player
  */
@@ -33,6 +35,7 @@ public class PlayerComponents {
 	private final GameGUIModel gameGUIModel;
 	private final CellDrawer cellDrawer;
 	private final Player player;
+	private final EventGameGUIViewUpdated eventGameGUIViewUpdated;
 
 	private SLConfig currentCreateConfig;
 
@@ -40,11 +43,13 @@ public class PlayerComponents {
 			Player player,
 			GameGUIController gameGUIController,
 			GameGUIModel gameGUIModel,
-			CellDrawer cellDrawer
+			CellDrawer cellDrawer,
+			EventGameGUIViewUpdated eventGameGUIViewUpdated
 	) {
 		this.gameGUIModel = gameGUIModel;
 		this.cellDrawer = cellDrawer;
 		this.player = player;
+		this.eventGameGUIViewUpdated = eventGameGUIViewUpdated;
 
 		String name = player.getPlayerCell().getToken().name();
 
@@ -152,7 +157,8 @@ public class PlayerComponents {
 				),
 				gameGUIModel,
 				cellDrawer,
-				title
+				title,
+				eventGameGUIViewUpdated
 		);
 		gridCanvas.addCellClickListener(cellClickListener);
 		return gridCanvas;

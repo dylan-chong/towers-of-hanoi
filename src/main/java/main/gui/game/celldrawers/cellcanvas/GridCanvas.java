@@ -2,6 +2,7 @@ package main.gui.game.celldrawers.cellcanvas;
 
 import main.gamemodel.CellConsumer;
 import main.gamemodel.cells.Cell;
+import main.gui.game.Events.EventGameGUIViewUpdated;
 import main.gui.game.GameGUIModel;
 import main.gui.game.celldrawers.CellDrawer;
 
@@ -17,9 +18,10 @@ public class GridCanvas extends CellCanvas {
             GridSupplier gridSupplier,
             GameGUIModel gameGUIModel,
             CellDrawer cellDrawer,
-			String titleOrNull
+			String titleOrNull,
+			EventGameGUIViewUpdated eventGameGUIViewUpdated
     ) {
-        super(gameGUIModel, cellDrawer, titleOrNull);
+        super(gameGUIModel, cellDrawer, titleOrNull, eventGameGUIViewUpdated);
         this.gridSupplier = gridSupplier;
     }
 

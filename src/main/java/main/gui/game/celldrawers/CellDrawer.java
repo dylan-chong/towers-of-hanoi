@@ -12,8 +12,9 @@ import java.util.Arrays;
 public class CellDrawer implements
 		Cell.Mapper<CellDrawer.DrawFunction> {
 
+	public static final Color SWORD_AND_SHIELD_COLOUR = new Color(252, 14, 27);
+
 	private static final float STROKE_WIDTH = 5;
-	private static final Color SWORD_AND_SHIELD_COLOUR = new Color(252, 14, 27);
 	private static final float SHIELD_DISTANCE_FROM_CENTRE = 0.40f;
 	private static final float SWORD_DISTANCE_FROM_CENTRE = 0.40f;
 

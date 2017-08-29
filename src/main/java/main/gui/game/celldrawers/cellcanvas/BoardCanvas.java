@@ -1,28 +1,36 @@
 package main.gui.game.celldrawers.cellcanvas;
 
-import main.gamemodel.Board;
-import main.gamemodel.CellConsumer;
-import main.gamemodel.GameModel;
+import main.gamemodel.*;
+import main.gui.game.Events.EventGameGUIViewUpdated;
+import main.gui.game.Events.EventReactionClicked;
 import main.gui.game.GameGUIModel;
 import main.gui.game.GameGUIView;
 import main.gui.game.celldrawers.CellDrawer;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class BoardCanvas extends CellCanvas {
 
 	private final Board board;
+	private final EventReactionClicked eventReactionClicked;
 
 	public BoardCanvas(
 			Board board,
 			GameGUIModel gameGUIModel,
 			CellDrawer cellDrawer,
-			String titleOrNull
+			String titleOrNull,
+			EventGameGUIViewUpdated eventGameGUIViewUpdated,
+			EventReactionClicked eventReactionClicked
 	) {
-		super(gameGUIModel, cellDrawer, titleOrNull);
+		super(gameGUIModel, cellDrawer, titleOrNull, eventGameGUIViewUpdated);
 		this.board = board;
+		this.eventReactionClicked = eventReactionClicked;
 	}
 
 	@Override
@@ -44,6 +52,32 @@ public class BoardCanvas extends CellCanvas {
 	@Override
 	protected void forEachCell(CellConsumer cellConsumer) {
 		board.forEachCell(cellConsumer);
+	}
+
+	@Override
+	protected void updatePalette(JPanel paletteLayerPanel) {
+		super.updatePalette(paletteLayerPanel);
+
+		Set<ReactionData.Pair> reactions;
+		if (gameGUIModel.getGameModel().getTurnState() == TurnState.RESOLVING_REACTIONS) {
+			reactions = new HashSet<>(gameGUIModel
+					.getGameModel()
+					.getReactions());
+		} else {
+			reactions = Collections.emptySet();
+		}
+
+		// TODO SOMETIME check equals
+
+		Arrays.stream(paletteLayerPanel.getComponents())
+				.filter(ReactionHighlighter.class::isInstance)
+				.forEach(paletteLayerPanel::remove);
+
+		reactions.stream()
+				.map(reaction -> new ReactionHighlighter(
+						reaction, paletteLayerPanel.getInsets()
+				))
+				.forEach(paletteLayerPanel::add);
 	}
 
 	private void drawCreationSquares(Graphics2D graphics2D) {
@@ -74,5 +108,56 @@ public class BoardCanvas extends CellCanvas {
 				cellSize,
 				cellSize
 		);
+	}
+
+	private class ReactionHighlighter extends JComponent {
+		private static final int STROKE_WIDTH = 8;
+		private final int[] startRC;
+		private final int[] endRC;
+
+		private ReactionHighlighter(
+				ReactionData.Pair reaction,
+				Insets containerInsets
+		) {
+			startRC = reaction.dataA.cellRowCol;
+			endRC = Arrays.stream(reaction.dataB.cellRowCol)
+					.map(ordinate -> ordinate + 1)
+					.toArray();
+
+			setBounds(
+					containerInsets.left + startRC[1] * getCellSize(),
+					containerInsets.top + startRC[0] * getCellSize(),
+					(endRC[1] - startRC[1]) * getCellSize(),
+					(endRC[0] - startRC[0]) * getCellSize()
+			);
+
+
+			addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					eventReactionClicked.broadcast(reaction);
+				}
+			});
+		}
+
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+
+			Graphics2D graphics2D = (Graphics2D) g;
+			graphics2D.setColor(new Color(255, 0, 255, 200));
+			graphics2D.setStroke(new BasicStroke(STROKE_WIDTH));
+
+			int w = (endRC[1] - startRC[1]);
+			int h = (endRC[0] - startRC[0]);
+			int off = STROKE_WIDTH;
+
+			graphics2D.drawOval(
+					off,
+					off,
+					w * getCellSize() - (2 * off),
+					h * getCellSize() - (2 * off)
+			);
+		}
 	}
 }
