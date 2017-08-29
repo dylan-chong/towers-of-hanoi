@@ -25,6 +25,12 @@ public enum GUIState {
 			return mapper.getMovingOrRotatingPieceApplyingValue();
 		}
 	},
+	MOVING_OR_ROTATING_PIECE_ROTATING {
+		@Override
+		public <T> T getFromMap(Mapper<T> mapper) {
+			return mapper.getMovingOrRotatingPieceRotatingValue();
+		}
+	},
 	RESOLVING_REACTIONS {
 		@Override
 		public <T> T getFromMap(Mapper<T> mapper) {
@@ -36,7 +42,7 @@ public enum GUIState {
 		public <T> T getFromMap(Mapper<T> mapper) {
 			return mapper.getGameFinishedValue();
 		}
-	}
+	},
 	;
 
 	public abstract <T> T getFromMap(Mapper<T> mapper);
@@ -46,6 +52,7 @@ public enum GUIState {
 		ValueT getCreatePieceRotationValue();
 		ValueT getMovingOrRotatingPieceSelectionValue();
 		ValueT getMovingOrRotatingPieceApplyingValue();
+		ValueT getMovingOrRotatingPieceRotatingValue();
 		ValueT getResolvingReactionsValue();
 		ValueT getGameFinishedValue();
 	}

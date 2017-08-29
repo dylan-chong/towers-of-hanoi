@@ -115,6 +115,14 @@ public class PieceCell extends Cell {
 		return rotatedCopies;
 	}
 
+	public PieceCell createCopy() {
+		return new PieceCell(
+				id,
+				sides,
+				direction
+		);
+	}
+
 	/**
 	 * The different amount of combinations of sword and shield
 	 *

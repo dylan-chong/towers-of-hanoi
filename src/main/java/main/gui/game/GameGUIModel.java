@@ -33,7 +33,7 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 
 	private PieceCell creationSelectedCell;
 	private List<PieceCell> creationSelectedCellRotatedCopies;
-	private PieceCell movementSelectedCell;
+	private PieceCell movementOrRotationSelectedCell;
 
 	public GameGUIModel(Supplier<GameModel> gameModelFactory) {
 		this.gameModelFactory = gameModelFactory;
@@ -55,14 +55,14 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 		setGuiState(GUIState.CREATE_PIECE_ROTATION);
 	}
 
-	public void setMovementSelectedCell(PieceCell movementSelectedCell)
+	public void setMovementOrRotationSelectedCell(PieceCell newVal)
 			throws InvalidMoveException {
 		requireState(GUIState.MOVING_OR_ROTATING_PIECE_SELECTION);
-		if (getGameModel().getPiecesPlayedThisTurn().contains(movementSelectedCell)) {
+		if (getGameModel().getPiecesPlayedThisTurn().contains(newVal)) {
 			throw new InvalidMoveException("You have already moved this cell");
 		}
 
-		this.movementSelectedCell = movementSelectedCell;
+		this.movementOrRotationSelectedCell = newVal;
 		setGuiState(GUIState.MOVING_OR_ROTATING_PIECE_APPLYING);
 	}
 
@@ -107,26 +107,6 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 		return guiState;
 	}
 
-	public void setGuiState(GUIState guiState) {
-		if (this.guiState == guiState) {
-			return;
-		}
-
-		if (this.guiState == GUIState.CREATE_PIECE_ROTATION) {
-			// Leaving this state
-			creationSelectedCell = null;
-			creationSelectedCellRotatedCopies = null;
-		}
-		if (this.guiState == GUIState.MOVING_OR_ROTATING_PIECE_APPLYING) {
-			// Leaving this state
-			movementSelectedCell = null;
-		}
-
-		this.guiState = guiState;
-		setChanged();
-		notifyObservers();
-	}
-
 	public void performGameAction(GameAction action) {
 		try {
 			action.perform();
@@ -158,14 +138,19 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 	public void move(Direction moveDirection) throws InvalidMoveException {
 		requireState(GUIState.MOVING_OR_ROTATING_PIECE_APPLYING);
 
-		getGameModel().move(movementSelectedCell.getId(), moveDirection);
-		movementSelectedCell = null;
+		getGameModel().move(movementOrRotationSelectedCell.getId(), moveDirection);
+		movementOrRotationSelectedCell = null;
 		setGuiState(GUIState.MOVING_OR_ROTATING_PIECE_SELECTION);
+	}
+
+	public void enterRotationMode() throws InvalidMoveException {
+		requireState(GUIState.MOVING_OR_ROTATING_PIECE_APPLYING);
+		setGuiState(GUIState.MOVING_OR_ROTATING_PIECE_ROTATING);
 	}
 
 	@Override
 	public Color process(Color color, Cell cell) {
-		if (cell == creationSelectedCell || cell == movementSelectedCell) {
+		if (cell == creationSelectedCell || cell == movementOrRotationSelectedCell) {
 			return color.brighter();
 		}
 
@@ -196,7 +181,7 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 
 		// Deselect on undo
 		creationSelectedCell = null;
-		movementSelectedCell = null;
+		movementOrRotationSelectedCell = null;
 
 		if (!forceReset && validStates.contains(guiState)) {
 			// No need to change
@@ -208,6 +193,30 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 		notifyObservers();
 	}
 
+	private void setGuiState(GUIState guiState) {
+		if (this.guiState == guiState) {
+			return;
+		}
+
+		if (this.guiState == GUIState.CREATE_PIECE_ROTATION) {
+			// Leaving this state
+			creationSelectedCell = null;
+			creationSelectedCellRotatedCopies = null;
+		}
+		if (this.guiState == GUIState.MOVING_OR_ROTATING_PIECE_APPLYING) {
+			// Leaving this state
+			movementOrRotationSelectedCell = null;
+		}
+
+		this.guiState = guiState;
+		setChanged();
+		notifyObservers();
+	}
+
+	public PieceCell getCopyOfMovementOrRotationSelectedCell() {
+		return movementOrRotationSelectedCell.createCopy();
+	}
+
 	/**
 	 * Finds the possible GUIStates for a given {@link GameModel}'s
 	 * {@link TurnState}. The first item in the list that this mapper returns
@@ -215,6 +224,23 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 	 * the state corresponding to the method.
 	 */
 	private static class TurnStateToGUIState implements TurnState.Mapper<List<GUIState>> {
+		static {
+			List<GUIState> usedGuiStates = new ArrayList<>();
+			for (TurnState turnState : TurnState.values()) {
+				List<GUIState> guiStates = turnState.getFromMap(
+						new TurnStateToGUIState()
+				);
+				usedGuiStates.addAll(guiStates);
+			}
+
+			usedGuiStates.sort(Comparator.naturalOrder());
+			List<GUIState> allGuiStates = Arrays.asList(GUIState.values());
+
+			if (!allGuiStates.equals(usedGuiStates)) {
+				throw new AssertionError("Not all gui states have been used");
+			}
+		}
+
 		@Override
 		public List<GUIState> getCreatingPiecesValue() {
 			return Arrays.asList(
@@ -227,7 +253,8 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 		public List<GUIState> getMovingOrRotatingPieceValue() {
 			return Arrays.asList(
 					GUIState.MOVING_OR_ROTATING_PIECE_SELECTION,
-					GUIState.MOVING_OR_ROTATING_PIECE_APPLYING
+					GUIState.MOVING_OR_ROTATING_PIECE_APPLYING,
+					GUIState.MOVING_OR_ROTATING_PIECE_ROTATING
 			);
 		}
 

@@ -28,7 +28,7 @@ public class GameGUIController {
 
 	public void onBoardCellClick(Cell cell, CellCanvas.CellClickEvent e) {
 		gameGUIModel.performGameAction(() -> {
-			if (cell == null) {
+			if (cell == null || !(cell instanceof PieceCell)) {
 				return;
 			}
 
@@ -36,9 +36,10 @@ public class GameGUIController {
 				gameGUIModel.performGameAction(() -> {
 					Direction clickedEdge = e.getClickedEdge();
 					if (clickedEdge == null) {
-						return;
+						gameGUIModel.enterRotationMode();
+					} else  {
+						gameGUIModel.move(clickedEdge);
 					}
-					gameGUIModel.move(clickedEdge);
 				});
 				return;
 			}
@@ -46,15 +47,13 @@ public class GameGUIController {
 			if (gameGUIModel.getGuiState() != GUIState.MOVING_OR_ROTATING_PIECE_SELECTION) {
 				return;
 			}
+
 			Player currentPlayer = gameGUIModel.getCurrentPlayer();
 			if (!currentPlayer.ownsPiece(cell)) {
 				return;
 			}
-			if (!(cell instanceof PieceCell)) {
-				return;
-			}
 
-			gameGUIModel.setMovementSelectedCell((PieceCell) cell);
+			gameGUIModel.setMovementOrRotationSelectedCell((PieceCell) cell);
 		});
 	}
 
