@@ -182,10 +182,17 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 			throw new IllegalArgumentException("Somehow wrong cell was selected");
 		}
 
+		int numDirs = Direction.values().length;
 		int clockwiseRotations = rotatedCellCopy.getDirection().ordinal()
 				- baseCell.getDirection().ordinal();
-		int numDirs = Direction.values().length;
-		clockwiseRotations = (clockwiseRotations + numDirs) % numDirs;
+		clockwiseRotations += numDirs; // Ensure positive
+		clockwiseRotations %= numDirs;
+
+		if (clockwiseRotations == 0) {
+			// Doesn't count as a move
+			cancelRotation();
+			return;
+		}
 
 		getGameModel().rotate(baseCell.getId(), clockwiseRotations);
 	}

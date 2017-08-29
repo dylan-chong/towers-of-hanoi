@@ -56,7 +56,6 @@ public class Main {
 			GameGUIController gameGUIController = new GameGUIController(gameGUIModel);
 			CellDrawer cellDrawer = new CellDrawer(gameGUIModel);
 			GameGUIView gameGUIView = new GameGUIView(
-					guiCardView,
 					gameGUIModel,
 					gameGUIController,
 					cellDrawer,

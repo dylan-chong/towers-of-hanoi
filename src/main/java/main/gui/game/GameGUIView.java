@@ -5,7 +5,6 @@ import main.gamemodel.IllegalGameStateException;
 import main.gamemodel.Player;
 import main.gui.cardview.GUICard;
 import main.gui.cardview.GUICardName;
-import main.gui.cardview.GUICardView;
 import main.gui.game.celldrawers.CellDrawer;
 import main.gui.game.celldrawers.cellcanvas.BoardCanvas;
 
@@ -19,7 +18,6 @@ public class GameGUIView implements GUICard, Observer {
 	public static final int PREFERRED_BOARD_CELL_SIZE = 50;
 	public static final int TRANSITION_DURATION = 1;
 
-	private final GUICardView guiCardView;
 	private final GameGUIModel gameGUIModel;
 	private final GameGUIController gameGUIController;
 	private final CellDrawer cellDrawer;
@@ -33,13 +31,11 @@ public class GameGUIView implements GUICard, Observer {
 	private JLabel stateReporterLabel;
 
 	public GameGUIView(
-			GUICardView guiCardView,
 			GameGUIModel gameGUIModel,
 			GameGUIController gameGUIController,
 			CellDrawer cellDrawer,
 			CellRotationDialogShower cellRotationDialogShower
 	) {
-		this.guiCardView = guiCardView;
 		this.gameGUIModel = gameGUIModel;
 		this.gameGUIController = gameGUIController;
 		this.cellDrawer = cellDrawer;
@@ -210,9 +206,11 @@ public class GameGUIView implements GUICard, Observer {
 						"\t<br>\n" +
 						"\tGame State: <b>%s</b>\n" +
 						"</p></html>",
-				gameGUIModel.getCurrentPlayer()
+				gameGUIModel
+						.getCurrentPlayer()
 						.getNameWithoutNumber(),
-				gameGUIModel.getGuiState()
+				gameGUIModel
+						.getGuiState()
 						.name()
 						.replaceAll("_", " ")
 		);
@@ -226,8 +224,8 @@ public class GameGUIView implements GUICard, Observer {
 	}
 
 	private void showRotationDialogue() {
-		CellRotationDialogShower.ShowResult showResult = cellRotationDialogShower
-				.showDialog(
+		CellRotationDialogShower.ShowResult showResult =
+				cellRotationDialogShower.showDialog(
 						gameGUIModel.getCopyOfMovementOrRotationSelectedCell(),
 						gameGUIModel.getCurrentPlayer()
 				);
