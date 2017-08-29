@@ -2,7 +2,7 @@ package main.gui.menu;
 
 import main.gui.cardview.GUICard;
 import main.gui.cardview.GUICardName;
-import main.gui.cardview.GUICardView;
+import main.gui.cardview.GUICardFrame;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -18,11 +18,11 @@ public class MenuGUI implements GUICard {
 	private static final String INFO_MESSAGE = "By Dylan Chong";
 	private static final int BORDER_SIZE = 20;
 
-	private final GUICardView guiCardView;
+	private final GUICardFrame guiCardFrame;
 	private final JPanel rootJPanel;
 
-	public MenuGUI(GUICardView guiCardView) {
-		this.guiCardView = guiCardView;
+	public MenuGUI(GUICardFrame guiCardFrame) {
+		this.guiCardFrame = guiCardFrame;
 
 		rootJPanel = new JPanel();
 		rootJPanel.setLayout(new BoxLayout(rootJPanel, BoxLayout.Y_AXIS));
@@ -33,7 +33,7 @@ public class MenuGUI implements GUICard {
 				BORDER_SIZE
 		));
 
-		JLabel gameTitle = new JLabel(GUICardView.GAME_NAME);
+		JLabel gameTitle = new JLabel(GUICardFrame.GAME_NAME);
 		gameTitle.setFont(new Font(null, Font.BOLD, 30));
 		addMenuComponent(gameTitle);
 
@@ -67,7 +67,7 @@ public class MenuGUI implements GUICard {
 	}
 
 	public void beginGameButtonClicked(ActionEvent actionEvent) {
-		guiCardView.setCurrentView(GUICardName.GAME);
+		guiCardFrame.setCurrentView(GUICardName.GAME);
 	}
 
 	public void infoButtonClicked(ActionEvent actionEvent) {
@@ -80,6 +80,6 @@ public class MenuGUI implements GUICard {
 	}
 
 	public void quitButtonClicked(ActionEvent actionEvent) {
-		guiCardView.quit();
+		guiCardFrame.quit();
 	}
 }

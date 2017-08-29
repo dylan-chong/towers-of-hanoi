@@ -3,7 +3,7 @@ package main;
 import aurelienribon.slidinglayout.SLAnimator;
 import main.gamemodel.Board;
 import main.gamemodel.GameModel;
-import main.gui.cardview.GUICardView;
+import main.gui.cardview.GUICardFrame;
 import main.gui.game.CellRotationDialogShower;
 import main.gui.game.GameGUIView;
 import main.gui.game.GameGUIController;
@@ -46,10 +46,10 @@ public class Main {
 
 	private static void startApp() {
 		SwingUtilities.invokeLater(() -> {
-			GUICardView guiCardView = new GUICardView();
+			GUICardFrame guiCardFrame = new GUICardFrame();
 
-			MenuGUI menuGUI = new MenuGUI(guiCardView);
-			guiCardView.addView(menuGUI);
+			MenuGUI menuGUI = new MenuGUI(guiCardFrame);
+			guiCardFrame.addView(menuGUI);
 
 			Supplier<GameModel> gameModelFactory = () -> new GameModel(new Board());
 			GameGUIModel gameGUIModel = new GameGUIModel(gameModelFactory);
@@ -59,12 +59,12 @@ public class Main {
 					gameGUIModel,
 					gameGUIController,
 					cellDrawer,
-					new CellRotationDialogShower(cellDrawer)
+					new CellRotationDialogShower(cellDrawer, guiCardFrame)
 			);
-			guiCardView.addView(gameGUIView);
+			guiCardFrame.addView(gameGUIView);
 
-			guiCardView.setCurrentView(menuGUI);
-			guiCardView.show();
+			guiCardFrame.setCurrentView(menuGUI);
+			guiCardFrame.show();
 
 			SLAnimator.start();
 		});

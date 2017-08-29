@@ -2,6 +2,7 @@ package main.gui.game;
 
 import main.gamemodel.Player;
 import main.gamemodel.cells.PieceCell;
+import main.gui.cardview.GUICardFrame;
 import main.gui.game.celldrawers.CellDrawer;
 
 import javax.swing.*;
@@ -14,9 +15,11 @@ public class CellRotationDialogShower {
 	private static final String ROTATION_DIALOG_MESSAGE = "Click the cell to rotate it";
 
 	private final CellDrawer cellDrawer;
+	private final GUICardFrame guiCardFrame;
 
-	public CellRotationDialogShower(CellDrawer cellDrawer) {
+	public CellRotationDialogShower(CellDrawer cellDrawer, GUICardFrame guiCardFrame) {
 		this.cellDrawer = cellDrawer;
+		this.guiCardFrame = guiCardFrame;
 	}
 
 	public ShowResult showDialog(PieceCell cell, Player cellPlayer) {
@@ -52,8 +55,11 @@ public class CellRotationDialogShower {
 
 		dialog.setContentPane(dialogPanel);
 
+		guiCardFrame.setGrayGlassVisible(true);
 		dialog.pack();
 		dialog.setVisible(true);
+		guiCardFrame.setGrayGlassVisible(false);
+
 		return new ShowResult(
 				(int) optionPane.getValue(),
 				cellDrawerAndRotator.cellToRotate
