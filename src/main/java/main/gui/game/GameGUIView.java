@@ -316,7 +316,7 @@ public class GameGUIView implements GUICard, Observer {
 
 				@Override
 				public void onExit() {
-					// TODO
+					// Do nothing
 				}
 			};
 		}

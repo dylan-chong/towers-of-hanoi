@@ -11,7 +11,11 @@ import main.gui.game.celldrawers.CellDrawer;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -19,12 +23,17 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static java.awt.Color.RED;
+
 /**
- * Draws a grid of board cells
+ * Draws a grid of board cells (by delegating to {@link InnerCellCanvas}
  */
-public abstract class CellCanvas extends JPanel {
+public abstract class CellCanvas extends JLayeredPane {
 	protected final GameGUIModel gameGUIModel;
 	protected final CellDrawer cellDrawer;
+
+	protected final JPanel defaultLayerPanel;
+	protected final JPanel paletteLayerPanel;
 
 	private final Collection<CellClickListener> listeners =
 			Collections.synchronizedList(new ArrayList<>());
@@ -37,31 +46,32 @@ public abstract class CellCanvas extends JPanel {
 		this.gameGUIModel = gameGUIModel;
 		this.cellDrawer = cellDrawer;
 
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setResizeOnChange();
+
 		setBorder(new LineBorder(Color.GRAY, 1));
+
+		defaultLayerPanel = new JPanel();
+		defaultLayerPanel.setLayout(new BoxLayout(defaultLayerPanel, BoxLayout.Y_AXIS));
+		add(defaultLayerPanel, DEFAULT_LAYER);
+
+		paletteLayerPanel = new JPanel() {
+			@Override
+			public Dimension getPreferredSize() {
+				return CellCanvas.this.getPreferredSize();
+			}
+		};
+		paletteLayerPanel.setLayout(null);
+		paletteLayerPanel.setOpaque(false);
+		add(paletteLayerPanel, PALETTE_LAYER);
 
 		if (titleOrNull != null) {
 			JLabel titleLabel = new JLabel(titleOrNull, SwingConstants.CENTER);
 			titleLabel.setAlignmentX(CENTER_ALIGNMENT);
-			add(titleLabel);
+			defaultLayerPanel.add(titleLabel);
+			titleLabel.setBackground(RED);
 		}
 
-		JComponent cellCanvas = new JComponent() {
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				paintCanvasComponent(((Graphics2D) g));
-			}
-
-			@Override
-			public Dimension getPreferredSize() {
-				int[] preferredRowsCols = calculatePreferredRowsCols();
-				return new Dimension(
-						preferredRowsCols[1] * GameGUIView.PREFERRED_BOARD_CELL_SIZE,
-						preferredRowsCols[0] * GameGUIView.PREFERRED_BOARD_CELL_SIZE
-				);
-			}
-		};
+		JComponent cellCanvas = new InnerCellCanvas();
 		cellCanvas.setAlignmentX(CENTER_ALIGNMENT);
 		cellCanvas.addMouseListener(new MouseAdapter() {
 			@Override
@@ -69,7 +79,18 @@ public abstract class CellCanvas extends JPanel {
 				onClickCellCanvas(e);
 			}
 		});
-		add(cellCanvas);
+		defaultLayerPanel.add(cellCanvas);
+
+		SwingUtilities.invokeLater(this::resizeChildren);
+	}
+
+	@Override
+	public Dimension getPreferredSize() {
+		Insets insets = getInsets();
+		Dimension size = defaultLayerPanel.getPreferredSize();
+		size.width += insets.left + insets.right;
+		size.height += insets.top + insets.bottom;
+		return size;
 	}
 
 	public void addCellClickListener(CellClickListener listener) {
@@ -144,8 +165,40 @@ public abstract class CellCanvas extends JPanel {
 		return resultCell.get();
 	}
 
+	private void resizeChildren() {
+		for (Component comp : getComponents()) {
+			Dimension size = comp.getPreferredSize();
+			Insets insets = getInsets();
+			comp.setBounds(insets.left, insets.top, size.width, size.height);
+		}
+		repaint();
+	}
+
 	private int getCellSize() {
 		return GameGUIView.PREFERRED_BOARD_CELL_SIZE;
+	}
+
+	private void setResizeOnChange() {
+		addAncestorListener(new AncestorListener() {
+			@Override
+			public void ancestorAdded(AncestorEvent event) {
+				resizeChildren();
+			}
+
+			@Override
+			public void ancestorRemoved(AncestorEvent event) {
+			}
+
+			@Override
+			public void ancestorMoved(AncestorEvent event) {
+			}
+		});
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				resizeChildren();
+			}
+		});
 	}
 
 	public interface CellClickListener {
@@ -186,6 +239,26 @@ public abstract class CellCanvas extends JPanel {
 			}
 
 			return null;
+		}
+	}
+
+	/**
+	 * Actually does the drawing
+	 */
+	private class InnerCellCanvas extends JComponent {
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			paintCanvasComponent(((Graphics2D) g));
+		}
+
+		@Override
+		public Dimension getPreferredSize() {
+			int[] preferredRowsCols = calculatePreferredRowsCols();
+			return new Dimension(
+					preferredRowsCols[1] * GameGUIView.PREFERRED_BOARD_CELL_SIZE,
+					preferredRowsCols[0] * GameGUIView.PREFERRED_BOARD_CELL_SIZE
+			);
 		}
 	}
 }

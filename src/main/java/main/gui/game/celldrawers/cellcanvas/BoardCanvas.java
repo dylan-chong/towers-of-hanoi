@@ -62,7 +62,6 @@ public class BoardCanvas extends CellCanvas {
 
 		fillSquare(off, off, graphics2D, playerColours.get(0));
 		fillSquare(rows - off - 1, cols - off - 1, graphics2D, playerColours.get(1));
-
 	}
 
 	private void fillSquare(int r, int c, Graphics2D graphics2D, Color color) {
