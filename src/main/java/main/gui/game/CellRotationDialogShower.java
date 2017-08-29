@@ -57,7 +57,7 @@ public class CellRotationDialogShower {
 
 		guiCardFrame.setGrayGlassVisible(true);
 		dialog.pack();
-		dialog.setVisible(true);
+		dialog.setVisible(true); // blocks thread
 		guiCardFrame.setGrayGlassVisible(false);
 
 		return new ShowResult(

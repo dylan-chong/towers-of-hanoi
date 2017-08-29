@@ -9,25 +9,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-import java.util.function.Supplier;
 
 public class GameGUIModel extends Observable implements Observer, CellColorProcessor {
 
-	private final Supplier<GameModel> gameModelFactory;
-
-	private final Supplier<GameModel> gameModel = new Supplier<GameModel>() {
-		public GameModel model;
-
-		@Override
-		public GameModel get() {
-			if (model == null) {
-				model = gameModelFactory.get();
-				model.addObserver(GameGUIModel.this);
-				resetGuiState(false);
-			}
-			return model;
-		}
-	};
+	private final GameModel gameModel;
 
 	private GUIState guiState;
 
@@ -35,12 +20,14 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 	private List<PieceCell> creationSelectedCellRotatedCopies;
 	private PieceCell movementOrRotationSelectedCell;
 
-	public GameGUIModel(Supplier<GameModel> gameModelFactory) {
-		this.gameModelFactory = gameModelFactory;
+	public GameGUIModel(GameModel gameModel) {
+		this.gameModel = gameModel;
+		gameModel.addObserver(GameGUIModel.this);
+		resetGuiState(false);
 	}
 
 	public GameModel getGameModel() {
-		return gameModel.get();
+		return gameModel;
 	}
 
 	public PieceCell getCreationSelectedCell() {

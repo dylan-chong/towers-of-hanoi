@@ -4,6 +4,7 @@ import main.gamemodel.Board;
 import main.gamemodel.IllegalGameStateException;
 import main.gamemodel.Player;
 import main.gui.cardview.GUICard;
+import main.gui.cardview.GUICardFrame;
 import main.gui.cardview.GUICardName;
 import main.gui.game.celldrawers.CellDrawer;
 import main.gui.game.celldrawers.cellcanvas.BoardCanvas;
@@ -27,6 +28,8 @@ public class GameGUIView implements GUICard, Observer {
 	private final CellRotationDialogShower cellRotationDialogShower;
 	private final EventGameGUIViewUpdated eventGameGUIViewUpdated;
 	private final EventReactionClicked eventReactionClicked;
+	private final EventGameReset eventGameReset;
+	private final GUICardFrame guiCardFrame;
 
 	private final JPanel rootJPanel;
 	private JToolBar jToolBar;
@@ -41,7 +44,9 @@ public class GameGUIView implements GUICard, Observer {
 			CellDrawer cellDrawer,
 			CellRotationDialogShower cellRotationDialogShower,
 			EventGameGUIViewUpdated eventGameGUIViewUpdated,
-			EventReactionClicked eventReactionClicked
+			EventReactionClicked eventReactionClicked,
+			EventGameReset eventGameReset,
+			GUICardFrame guiCardFrame
 	) {
 		this.gameGUIModel = gameGUIModel;
 		this.gameGUIController = gameGUIController;
@@ -49,6 +54,8 @@ public class GameGUIView implements GUICard, Observer {
 		this.cellRotationDialogShower = cellRotationDialogShower;
 		this.eventGameGUIViewUpdated = eventGameGUIViewUpdated;
 		this.eventReactionClicked = eventReactionClicked;
+		this.eventGameReset = eventGameReset;
+		this.guiCardFrame = guiCardFrame;
 
 		gameGUIModel.addObserver(this);
 
@@ -273,17 +280,12 @@ public class GameGUIView implements GUICard, Observer {
 	private class StateHooksMapper implements GUIState.Mapper<StateHooks> {
 		@Override
 		public StateHooks getCreatePieceCreationValue() {
-			return new StateHooks() {
+			return new StateHooks.Adapter() {
 				@Override
 				public void onEnter() {
 					// This should already be showing, but code is here to
 					// ensure it is showing
 					showBothCreationCanvases();
-				}
-
-				@Override
-				public void onExit() {
-					// Do nothing
 				}
 			};
 		}
@@ -307,84 +309,48 @@ public class GameGUIView implements GUICard, Observer {
 
 		@Override
 		public StateHooks getMovingOrRotatingPieceSelectionValue() {
-			return new StateHooks() {
-				@Override
-				public void onEnter() {
-					// Do nothing
-				}
-
-				@Override
-				public void onExit() {
-					// Do nothing
-				}
-			};
+			return new StateHooks.Adapter();
 		}
 
 		@Override
 		public StateHooks getMovingOrRotatingPieceApplyingValue() {
-			return new StateHooks() {
-				@Override
-				public void onEnter() {
-					// Do nothing
-				}
-
-				@Override
-				public void onExit() {
-					// Do nothing
-				}
-			};
+			return new StateHooks.Adapter();
 		}
 
 		@Override
 		public StateHooks getMovingOrRotatingPieceRotatingValue() {
-			return new StateHooks() {
+			return new StateHooks.Adapter() {
 				@Override
 				public void onEnter() {
 					SwingUtilities.invokeLater(
 							GameGUIView.this::showRotationDialogue
 					);
 				}
-
-				@Override
-				public void onExit() {
-					// Do nothing
-				}
 			};
 		}
 
 		@Override
 		public StateHooks getResolvingReactionsValue() {
-			return new StateHooks() {
-				@Override
-				public void onEnter() {
-					// TODO
-				}
-
-				@Override
-				public void onExit() {
-					// TODO
-				}
-			};
+			return new StateHooks.Adapter();
 		}
 
 		@Override
 		public StateHooks getGameFinishedValue() {
-			return new StateHooks() {
+			return new StateHooks.Adapter() {
 				@Override
 				public void onEnter() {
 					Player winner = gameGUIModel.getGameModel().getWinner();
 					String name = winner.getNameWithoutNumber();
-					SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(
-							rootJPanel,
-							String.format("Player '%s' won!", name),
-							"Game Finished",
-							JOptionPane.PLAIN_MESSAGE
-					));
-				}
-
-				@Override
-				public void onExit() {
-					// TODO
+					SwingUtilities.invokeLater(() -> {
+						JOptionPane.showMessageDialog(
+								rootJPanel,
+								String.format("Player '%s' won!", name),
+								"Game Finished",
+								JOptionPane.PLAIN_MESSAGE
+						);
+						guiCardFrame.setCurrentView(GUICardName.MENU);
+						eventGameReset.broadcast(null);
+					});
 				}
 			};
 		}

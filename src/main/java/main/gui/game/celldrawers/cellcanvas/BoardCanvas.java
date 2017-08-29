@@ -145,7 +145,7 @@ public class BoardCanvas extends CellCanvas {
 			super.paintComponent(g);
 
 			Graphics2D graphics2D = (Graphics2D) g;
-			graphics2D.setColor(new Color(255, 0, 255, 200));
+			graphics2D.setColor(new Color(255, 0, 255, 180));
 			graphics2D.setStroke(new BasicStroke(STROKE_WIDTH));
 
 			int w = (endRC[1] - startRC[1]);

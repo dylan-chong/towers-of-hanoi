@@ -521,8 +521,9 @@ public class GameModel extends Observable implements Textable {
 					}
 
 					turnState = TurnState.MOVING_OR_ROTATING_PIECE;
-					if (piecesPlayedThisTurn == null)
+					if (piecesPlayedThisTurn == null) {
 						piecesPlayedThisTurn = new ArrayList<>();
+					}
 				}
 
 				@Override

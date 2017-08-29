@@ -29,4 +29,7 @@ public class Events {
 
 	public static class EventReactionClicked extends Event<ReactionData.Pair> {
 	}
+
+	public static class EventGameReset extends Event<Void> {
+	}
 }

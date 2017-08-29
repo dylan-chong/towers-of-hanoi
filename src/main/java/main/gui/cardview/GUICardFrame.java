@@ -3,6 +3,8 @@ package main.gui.cardview;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The main frame and layout for the gui
@@ -14,6 +16,8 @@ public class GUICardFrame {
 	private final JPanel jPanel;
 	private final JFrame jFrame;
 	private final CardLayout cardLayout;
+
+	private final Map<GUICardName, GUICard> guiCards = new HashMap<>();
 
 	public GUICardFrame() {
 		jFrame = new JFrame(WINDOW_TITLE);
@@ -29,6 +33,7 @@ public class GUICardFrame {
 
 	public void addView(GUICard guiCard) {
 		jPanel.add(guiCard.getCardName().name(), guiCard.getRootComponent());
+		guiCards.put(guiCard.getCardName(), guiCard);
 	}
 
 	public void setCurrentView(GUICardName cardName) {
@@ -37,6 +42,19 @@ public class GUICardFrame {
 
 	public void setCurrentView(GUICard guiCard) {
 		setCurrentView(guiCard.getCardName());
+	}
+
+	public void removeView(GUICardName cardName) {
+		if (!guiCards.containsKey(cardName)) {
+			return;
+		}
+
+		jPanel.remove(guiCards.get(cardName).getRootComponent());
+		guiCards.remove(cardName);
+	}
+
+	public void removeView(GUICard guiCard) {
+		removeView(guiCard.getCardName());
 	}
 
 	public void show() {
