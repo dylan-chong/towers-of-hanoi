@@ -3,7 +3,6 @@ package main.gui.game;
 import main.gamemodel.Board;
 import main.gamemodel.IllegalGameStateException;
 import main.gamemodel.Player;
-import main.gamemodel.cells.PieceCell;
 import main.gui.cardview.GUICard;
 import main.gui.cardview.GUICardName;
 import main.gui.cardview.GUICardView;
@@ -11,10 +10,7 @@ import main.gui.game.celldrawers.CellDrawer;
 import main.gui.game.celldrawers.cellcanvas.BoardCanvas;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,12 +18,12 @@ import java.util.stream.Collectors;
 public class GameGUIView implements GUICard, Observer {
 	public static final int PREFERRED_BOARD_CELL_SIZE = 50;
 	public static final int TRANSITION_DURATION = 1;
-	private static final String ROTATION_DIALOG_MESSAGE = "Click the cell to rotate it";
 
 	private final GUICardView guiCardView;
 	private final GameGUIModel gameGUIModel;
 	private final GameGUIController gameGUIController;
 	private final CellDrawer cellDrawer;
+	private final CellRotationDialogShower cellRotationDialogShower;
 
 	private final JPanel rootJPanel;
 	private JToolBar jToolBar;
@@ -40,12 +36,14 @@ public class GameGUIView implements GUICard, Observer {
 			GUICardView guiCardView,
 			GameGUIModel gameGUIModel,
 			GameGUIController gameGUIController,
-			CellDrawer cellDrawer
+			CellDrawer cellDrawer,
+			CellRotationDialogShower cellRotationDialogShower
 	) {
 		this.guiCardView = guiCardView;
 		this.gameGUIModel = gameGUIModel;
 		this.gameGUIController = gameGUIController;
 		this.cellDrawer = cellDrawer;
+		this.cellRotationDialogShower = cellRotationDialogShower;
 
 		gameGUIModel.addObserver(this);
 
@@ -57,8 +55,6 @@ public class GameGUIView implements GUICard, Observer {
 		setUpStateReporter();
 		setUpCellCanvases();
 		setUpKeyBindings();
-
-		SwingUtilities.invokeLater(this::showRotationDialogue);
 	}
 
 	private void setUpStateReporter() {
@@ -230,86 +226,19 @@ public class GameGUIView implements GUICard, Observer {
 	}
 
 	private void showRotationDialogue() {
-		JPanel dialogPanel = new JPanel();
-		dialogPanel.setLayout(new BoxLayout(dialogPanel, BoxLayout.Y_AXIS));
-		dialogPanel.setBorder(new EmptyBorder(15, 15, 0, 15));
-
-		JComponent cellComponent = new JComponent() {
-			private static final int CELL_SIZE = 100;
-
-			private final PieceCell cellToRotate =
-//					gameGUIModel.getCopyOfMovementOrRotationSelectedCell();
-					new PieceCell('a', PieceCell.SideCombination.EMPTY_SWORD_SHIELD_EMPTY);
-
-			{
-				addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						cellToRotate.rotateClockwise();
-						repaint();
-					}
-				});
-			}
-
-			@Override
-			protected void paintComponent(Graphics g) {
-				Graphics2D graphics2D = (Graphics2D) g;
-				cellDrawer.valueOf(cellToRotate).draw(
-						gameGUIModel.getCurrentPlayer(),
-						graphics2D,
-						0, 0,
-						CELL_SIZE
+		CellRotationDialogShower.ShowResult showResult = cellRotationDialogShower
+				.showDialog(
+						gameGUIModel.getCopyOfMovementOrRotationSelectedCell(),
+						gameGUIModel.getCurrentPlayer()
 				);
-			}
-
-			@Override
-			public Dimension getPreferredSize() {
-				return new Dimension(CELL_SIZE, CELL_SIZE);
-			}
-
-			@Override
-			public Dimension getMaximumSize() {
-				return getPreferredSize();
-			}
-
-			@Override
-			public Dimension getMinimumSize() {
-				return getPreferredSize();
-			}
-		};
-		cellComponent.setAlignmentX(Component.CENTER_ALIGNMENT);
-		dialogPanel.add(cellComponent);
-
-		JDialog dialog = new JDialog((Frame) null, true);
-		dialog.setTitle(ROTATION_DIALOG_MESSAGE);
-
-		JOptionPane optionPane = new JOptionPane(
-				ROTATION_DIALOG_MESSAGE,
-				JOptionPane.PLAIN_MESSAGE,
-				JOptionPane.OK_CANCEL_OPTION
-		);
-		optionPane.addPropertyChangeListener(evt -> {
-			// Copied from a shitty java example by oracle
-			String prop = evt.getPropertyName();
-			if (dialog.isVisible()
-					&& (evt.getSource() == optionPane)
-					&& (JOptionPane.VALUE_PROPERTY.equals(prop))) {
-				dialog.setVisible(false);
-			}
-		});
-		optionPane.setAlignmentX(Component.CENTER_ALIGNMENT);
-		dialogPanel.add(optionPane);
-
-		dialog.setContentPane(dialogPanel);
-
-		dialog.pack();
-		dialog.setVisible(true);
-		Integer optionPaneValue = (Integer) optionPane.getValue();
-		if (optionPaneValue == JOptionPane.OK_OPTION) {
-			System.out.println("ok");
-		} else if (optionPaneValue == JOptionPane.CANCEL_OPTION) {
-			System.out.println('c');
+		if (showResult.jOptionPaneValue == JOptionPane.CANCEL_OPTION) {
+			gameGUIModel.performGameAction(gameGUIModel::cancelRotation);
+			return;
 		}
+
+		gameGUIModel.performGameAction(() -> {
+			gameGUIModel.rotate(showResult.rotatedPieceCell);
+		});
 	}
 
 	private class StateHooksMapper implements GUIState.Mapper<StateHooks> {
@@ -382,9 +311,9 @@ public class GameGUIView implements GUICard, Observer {
 			return new StateHooks() {
 				@Override
 				public void onEnter() {
-					SwingUtilities.invokeLater(() -> {
-						showRotationDialogue();
-					});
+					SwingUtilities.invokeLater(
+							GameGUIView.this::showRotationDialogue
+					);
 				}
 
 				@Override

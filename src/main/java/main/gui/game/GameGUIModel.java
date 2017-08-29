@@ -164,6 +164,32 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 		return color;
 	}
 
+	public PieceCell getCopyOfMovementOrRotationSelectedCell() {
+		return movementOrRotationSelectedCell.createCopy();
+	}
+
+	public void cancelRotation() throws InvalidMoveException {
+		requireState(GUIState.MOVING_OR_ROTATING_PIECE_ROTATING);
+		movementOrRotationSelectedCell = null;
+		setGuiState(GUIState.MOVING_OR_ROTATING_PIECE_SELECTION);
+	}
+
+	public void rotate(PieceCell rotatedCellCopy) throws InvalidMoveException {
+		requireState(GUIState.MOVING_OR_ROTATING_PIECE_ROTATING);
+
+		PieceCell baseCell = movementOrRotationSelectedCell;
+		if (rotatedCellCopy.getSideCombination() != baseCell.getSideCombination()) {
+			throw new IllegalArgumentException("Somehow wrong cell was selected");
+		}
+
+		int clockwiseRotations = rotatedCellCopy.getDirection().ordinal()
+				- baseCell.getDirection().ordinal();
+		int numDirs = Direction.values().length;
+		clockwiseRotations = (clockwiseRotations + numDirs) % numDirs;
+
+		getGameModel().rotate(baseCell.getId(), clockwiseRotations);
+	}
+
 	private void requireState(GUIState... states) throws InvalidMoveException {
 		String msg = String.format(
 				"Not allowed to be called in state %s",
@@ -193,8 +219,8 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 		notifyObservers();
 	}
 
-	private void setGuiState(GUIState guiState) {
-		if (this.guiState == guiState) {
+	private void setGuiState(GUIState newGuiState) {
+		if (this.guiState == newGuiState) {
 			return;
 		}
 
@@ -203,19 +229,33 @@ public class GameGUIModel extends Observable implements Observer, CellColorProce
 			creationSelectedCell = null;
 			creationSelectedCellRotatedCopies = null;
 		}
-		if (this.guiState == GUIState.MOVING_OR_ROTATING_PIECE_APPLYING) {
-			// Leaving this state
+		if (isLeavingMovingOrRotatingPieceState(newGuiState)) {
 			movementOrRotationSelectedCell = null;
 		}
 
-		this.guiState = guiState;
+		this.guiState = newGuiState;
 		setChanged();
 		notifyObservers();
 	}
 
-	public PieceCell getCopyOfMovementOrRotationSelectedCell() {
-		return movementOrRotationSelectedCell.createCopy();
+	private boolean isLeavingMovingOrRotatingPieceState(GUIState newState) {
+		List<GUIState> movingOrRotatingStates = TurnState
+				.MOVING_OR_ROTATING_PIECE
+				.getFromMap(new TurnStateToGUIState());
+
+		if (!movingOrRotatingStates.contains(guiState)) {
+			// Not in a moving/rotating state
+			return false;
+		}
+
+		if (movingOrRotatingStates.contains(newState)) {
+			// Staying in selection state
+			return false;
+		}
+
+		return true;
 	}
+
 
 	/**
 	 * Finds the possible GUIStates for a given {@link GameModel}'s

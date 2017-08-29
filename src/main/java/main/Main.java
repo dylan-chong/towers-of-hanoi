@@ -4,6 +4,7 @@ import aurelienribon.slidinglayout.SLAnimator;
 import main.gamemodel.Board;
 import main.gamemodel.GameModel;
 import main.gui.cardview.GUICardView;
+import main.gui.game.CellRotationDialogShower;
 import main.gui.game.GameGUIView;
 import main.gui.game.GameGUIController;
 import main.gui.game.GameGUIModel;
@@ -53,11 +54,13 @@ public class Main {
 			Supplier<GameModel> gameModelFactory = () -> new GameModel(new Board());
 			GameGUIModel gameGUIModel = new GameGUIModel(gameModelFactory);
 			GameGUIController gameGUIController = new GameGUIController(gameGUIModel);
+			CellDrawer cellDrawer = new CellDrawer(gameGUIModel);
 			GameGUIView gameGUIView = new GameGUIView(
 					guiCardView,
 					gameGUIModel,
 					gameGUIController,
-					new CellDrawer(gameGUIModel)
+					cellDrawer,
+					new CellRotationDialogShower(cellDrawer)
 			);
 			guiCardView.addView(gameGUIView);
 
