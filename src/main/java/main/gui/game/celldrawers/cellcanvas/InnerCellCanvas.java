@@ -41,10 +41,10 @@ class InnerCellCanvas extends SLPanel {
 	}
 
 	public void queueTransition(SLKeyframe keyframe) {
-		SLTransition animation = createTransition().push(
+		SLTransition transition = createTransition().push(
 				keyframe.setCallback(this::animationFinish)
 		);
-		transitionsToDo.add(animation);
+		transitionsToDo.add(transition);
 
 		startNextAnimation();
 	}

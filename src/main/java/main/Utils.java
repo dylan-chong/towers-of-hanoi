@@ -48,9 +48,11 @@ public class Utils {
 		List<JComponent> componentsCopy = new ArrayList<>(components);
 
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-
 		splitPane.setLeftComponent(componentsCopy.remove(0));
 		splitPane.setRightComponent(componentsCopy.remove(0));
+
+		splitPane.setBorder(null);
+
 		componentsCopy.add(0, splitPane);
 
 		assert componentsCopy.size() == components.size() - 1;

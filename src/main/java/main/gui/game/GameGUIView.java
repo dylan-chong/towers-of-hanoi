@@ -11,6 +11,7 @@ import main.gui.game.celldrawers.CellDrawer;
 import main.gui.game.celldrawers.cellcanvas.BoardCanvas;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -63,6 +64,7 @@ public class GameGUIView implements GUICard, Observer {
 		rootJPanel = new JPanel();
 		rootJPanel.setLayout(new BoxLayout(rootJPanel, BoxLayout.Y_AXIS));
 		rootJPanel.setFocusable(true);
+		rootJPanel.setBorder(new EmptyBorder(30, 30, 30, 30));
 
 		setUpToolbar();
 		setUpStateReporter();

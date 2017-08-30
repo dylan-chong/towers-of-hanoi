@@ -102,8 +102,15 @@ public abstract class CellCanvas extends JLayeredPane {
 	public Dimension getPreferredSize() {
 		Insets insets = getInsets();
 		Dimension size = defaultLayerPanel.getPreferredSize();
+
 		size.width += insets.left + insets.right;
 		size.height += insets.top + insets.bottom;
+
+		if (titleLabel != null) {
+			// Hack to get height to be right
+			size.height += titleLabel.getPreferredSize().height;
+		}
+
 		return size;
 	}
 
@@ -130,15 +137,6 @@ public abstract class CellCanvas extends JLayeredPane {
 	}
 
 	protected void paintCanvasComponent(Graphics2D graphics2D) {
-		int[] rowsCols = calculatePreferredRowsCols();
-		graphics2D.setColor(Color.GRAY);
-		graphics2D.setStroke(new BasicStroke(1));
-		graphics2D.drawRect(
-				0, 0,
-				getCellSize() * rowsCols[1],
-				getCellSize() * rowsCols[0]
-		);
-
 		resetCellComponents();
 	}
 
@@ -339,7 +337,7 @@ public abstract class CellCanvas extends JLayeredPane {
 					((Graphics2D) g),
 					0, // row and col are 0 to draw at top left of component
 					0,
-					getCellSize()
+					getWidth()
 			);
 		}
 	}
