@@ -3,7 +3,7 @@ package main;
 import aurelienribon.slidinglayout.SLAnimator;
 import main.gamemodel.Board;
 import main.gamemodel.GameModel;
-import main.gui.cardview.GUICardFrame;
+import main.gui.cardframe.GUICardFrame;
 import main.gui.game.GameGUIResetter;
 import main.gui.menu.MenuGUI;
 import main.textcontroller.GameTextController;

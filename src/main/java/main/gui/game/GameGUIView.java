@@ -4,9 +4,9 @@ import main.Utils;
 import main.gamemodel.Board;
 import main.gamemodel.IllegalGameStateException;
 import main.gamemodel.Player;
-import main.gui.cardview.GUICard;
-import main.gui.cardview.GUICardFrame;
-import main.gui.cardview.GUICardName;
+import main.gui.cardframe.GUICard;
+import main.gui.cardframe.GUICardFrame;
+import main.gui.cardframe.GUICardName;
 import main.gui.game.celldrawers.CellDrawer;
 import main.gui.game.celldrawers.cellcanvas.BoardCanvas;
 

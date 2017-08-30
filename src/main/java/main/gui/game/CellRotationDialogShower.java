@@ -2,7 +2,7 @@ package main.gui.game;
 
 import main.gamemodel.Player;
 import main.gamemodel.cells.PieceCell;
-import main.gui.cardview.GUICardFrame;
+import main.gui.cardframe.GUICardFrame;
 import main.gui.game.celldrawers.CellDrawer;
 
 import javax.swing.*;

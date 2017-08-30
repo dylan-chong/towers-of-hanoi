@@ -1,8 +1,8 @@
 package main.gui.menu;
 
-import main.gui.cardview.GUICard;
-import main.gui.cardview.GUICardFrame;
-import main.gui.cardview.GUICardName;
+import main.gui.cardframe.GUICard;
+import main.gui.cardframe.GUICardFrame;
+import main.gui.cardframe.GUICardName;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

@@ -1,4 +1,4 @@
-package main.gui.cardview;
+package main.gui.cardframe;
 
 import javax.swing.*;
 import java.awt.*;
