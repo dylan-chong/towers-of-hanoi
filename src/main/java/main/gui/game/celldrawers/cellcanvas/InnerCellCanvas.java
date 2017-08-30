@@ -32,7 +32,7 @@ class InnerCellCanvas extends SLPanel {
 
 	@Override
 	public Dimension getPreferredSize() {
-		int[] preferredRowsCols = cellCanvas.calculatePreferredRowsCols();
+		int[] preferredRowsCols = cellCanvas.calculateRowsCols();
 		return new Dimension(
 				preferredRowsCols[1] * cellCanvas.getCellSize(),
 				preferredRowsCols[0] * cellCanvas.getCellSize()

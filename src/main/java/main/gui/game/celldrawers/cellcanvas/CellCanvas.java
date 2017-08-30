@@ -129,7 +129,7 @@ public abstract class CellCanvas extends JLayeredPane {
 	}
 
 	private SLConfig newSLConfig() {
-		int[] rowsCols = calculatePreferredRowsCols();
+		int[] rowsCols = calculateRowsCols();
 
 		SLConfig newConfig = new SLConfig(innerCellCanvas);
 		for (int r = 0; r < rowsCols[0]; r++) {
@@ -205,7 +205,7 @@ public abstract class CellCanvas extends JLayeredPane {
 
 	protected abstract void forEachCell(CellConsumer cellConsumer);
 
-	protected int[] calculatePreferredRowsCols() {
+	protected int[] calculateRowsCols() {
 		int[] rowsCols = {-1, -1};
 		forEachCell((cell, row, col) -> {
 			rowsCols[0] = Math.max(row, rowsCols[0]);
@@ -265,13 +265,13 @@ public abstract class CellCanvas extends JLayeredPane {
 		return resultCell.get();
 	}
 
-	private void refreshChildren() {
-		Dimension layerSize = null;
+	private Dimension getSizeToContainChildren() {
+		Dimension size = null;
 		Dimension thisSize = getSize();
 		Insets insets = getInsets();
 
 		if (thisSize.width * thisSize.height == 0) {
-			layerSize = Arrays.stream(getComponents())
+			size = Arrays.stream(getComponents())
 					.map(Component::getPreferredSize)
 					.reduce((s1, s2) -> new Dimension(
 							(int) Math.max(s1.getWidth(), s2.getWidth()),
@@ -279,28 +279,40 @@ public abstract class CellCanvas extends JLayeredPane {
 					))
 					.orElse(null);
 		}
-		if (layerSize == null) {
-			layerSize = thisSize;
-			layerSize.width -= insets.left + insets.right;
-			layerSize.height -= insets.top + insets.bottom;
+		if (size == null) {
+			size = thisSize;
+			size.width -= insets.left + insets.right;
+			size.height -= insets.top + insets.bottom;
 		}
 
-		int[] rowsCols = calculatePreferredRowsCols();
+		return size;
+	}
+
+	private Dimension getSizeForChildren() {
+		Dimension size = getSizeToContainChildren();
+		// Shrink size so that rows and cols are even size
+		int[] rowsCols = calculateRowsCols();
 		cellSize = IntStream
-				.of(layerSize.height / rowsCols[0], layerSize.width / rowsCols[1])
+				.of(size.height / rowsCols[0], size.width / rowsCols[1])
 				.filter(pxPerCell -> pxPerCell > 0)
 				.min()
 				.orElse(GameGUIView.PREFERRED_CELL_SIZE);
-		layerSize.width = rowsCols[1] * cellSize;
-		layerSize.height = rowsCols[0] * cellSize;
+		size.width = rowsCols[1] * cellSize;
+		size.height = rowsCols[0] * cellSize;
+
 		if (titleLabel != null) {
-			layerSize.height += titleLabel.getPreferredSize().height;
+			size.height += titleLabel.getPreferredSize().height;
 		}
 
-		System.out.println("cellSize = " + cellSize);
+		return size;
+	}
+
+	private void refreshChildren() {
+		Dimension size = getSizeForChildren();
+		Insets insets = getInsets();
 
 		for (Component layer : getComponents()) {
-			layer.setBounds(insets.left, insets.top, layerSize.width, layerSize.height);
+			layer.setBounds(insets.left, insets.top, size.width, size.height);
 		}
 
 		updatePalette(paletteLayerPanel);
