@@ -1,5 +1,6 @@
 package main.gui.game.celldrawers.cellcanvas;
 
+import aurelienribon.slidinglayout.*;
 import main.gamemodel.CellConsumer;
 import main.gamemodel.Direction;
 import main.gamemodel.Player;
@@ -20,10 +21,12 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 /**
  * Draws a grid of board cells (by delegating to {@link InnerCellCanvas}
@@ -38,6 +41,10 @@ public abstract class CellCanvas extends JLayeredPane {
 	private final Collection<CellClickListener> listeners =
 			Collections.synchronizedList(new ArrayList<>());
 	private final JLabel titleLabel;
+	private final InnerCellCanvas cellCanvas;
+
+	private final Map<Cell, SingleCellComponent> cellComponents = new HashMap<>();
+	private Set<ComponentPosition> showingCellComps = Collections.emptySet();
 
 	public CellCanvas(
 			GameGUIModel gameGUIModel,
@@ -67,7 +74,8 @@ public abstract class CellCanvas extends JLayeredPane {
 				titleLabel = null;
 			}
 
-			JComponent cellCanvas = new InnerCellCanvas();
+			cellCanvas = new InnerCellCanvas();
+			cellCanvas.setTweenManager(SLAnimator.createTweenManager());
 			cellCanvas.setAlignmentX(CENTER_ALIGNMENT);
 			cellCanvas.addMouseListener(new MouseAdapter() {
 				@Override
@@ -75,6 +83,8 @@ public abstract class CellCanvas extends JLayeredPane {
 					onClickCellCanvas(e);
 				}
 			});
+			SwingUtilities.invokeLater(() -> cellCanvas.initialize(newSLConfig()));
+
 			defaultLayerPanel.add(cellCanvas);
 		}
 
@@ -91,7 +101,7 @@ public abstract class CellCanvas extends JLayeredPane {
 			add(paletteLayerPanel, PALETTE_LAYER);
 		}
 
-		// TODO Remove listener on dispose?
+		// TODO Remove listener on dispose
 		eventGameGUIViewUpdated.registerListener((param) -> this.refreshChildren());
 		SwingUtilities.invokeLater(this::refreshChildren);
 	}
@@ -109,6 +119,19 @@ public abstract class CellCanvas extends JLayeredPane {
 		listeners.add(listener);
 	}
 
+	private SLConfig newSLConfig() {
+		int[] rowsCols = calculatePreferredRowsCols();
+
+		SLConfig newConfig = new SLConfig(cellCanvas);
+		for (int r = 0; r < rowsCols[0]; r++) {
+			newConfig.row(1f);
+		}
+		for (int c = 0; c < rowsCols[1]; c++) {
+			newConfig.col(1f);
+		}
+		return newConfig;
+	}
+
 	protected void paintCanvasComponent(Graphics2D graphics2D) {
 		int[] rowsCols = calculatePreferredRowsCols();
 		graphics2D.setColor(Color.GRAY);
@@ -119,20 +142,47 @@ public abstract class CellCanvas extends JLayeredPane {
 				getCellSize() * rowsCols[0]
 		);
 
+		// TODO dont animate if no change
+		SLConfig newConfig = newSLConfig();
+
+		Set<ComponentPosition> newShowingCellComps = new HashSet<>();
+		Set<ComponentPosition> oldShowingCellComps = showingCellComps;
+
 		forEachCell((cell, row, col) -> {
 			if (cell == null) {
 				return;
 			}
 
-			Player player = gameGUIModel.getPlayerOfCellOrRotatedCopy(cell);
-			cellDrawer.valueOf(cell).draw(
-					player,
-					graphics2D,
-					col,
-					row,
-					getCellSize()
+			SingleCellComponent cellComponent = cellComponents.computeIfAbsent(
+					cell,
+					SingleCellComponent::new
 			);
+
+			newShowingCellComps.add(new ComponentPosition(cellComponent, row, col));
+			newConfig.place(row, col, cellComponent);
 		});
+
+		showingCellComps = newShowingCellComps;
+
+		if (newShowingCellComps.equals(oldShowingCellComps)) {
+			// No change. No need to animate
+			return;
+		}
+
+		Set<Component> slideInCellComps = ComponentPosition.setFromSet(newShowingCellComps);
+		slideInCellComps.removeAll(ComponentPosition.setFromSet(oldShowingCellComps));
+		Set<Component> slideOutCellComps = ComponentPosition.setFromSet(oldShowingCellComps);
+		slideOutCellComps.removeAll(ComponentPosition.setFromSet(newShowingCellComps));
+
+		cellCanvas.queueTransition(
+				new SLKeyframe(newConfig, GameGUIView.TRANSITION_DURATION)
+						.setStartSide(SLSide.TOP, slideInCellComps.toArray(
+								new Component[slideInCellComps.size()]
+						))
+						.setEndSide(SLSide.BOTTOM, slideOutCellComps.toArray(
+								new Component[slideOutCellComps.size()]
+						))
+		);
 	}
 
 	protected abstract void forEachCell(CellConsumer cellConsumer);
@@ -286,11 +336,18 @@ public abstract class CellCanvas extends JLayeredPane {
 	/**
 	 * Actually does the drawing
 	 */
-	private class InnerCellCanvas extends JComponent {
+	private class InnerCellCanvas extends SLPanel {
+
+		private final Queue<SLTransition> transitionsToDo = new ConcurrentLinkedQueue<>();
+
+		private final AtomicBoolean isAnimating = new AtomicBoolean(false);
+
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			paintCanvasComponent(((Graphics2D) g));
+
+			// TODO call in revalidate
 		}
 
 		@Override
@@ -300,6 +357,96 @@ public abstract class CellCanvas extends JLayeredPane {
 					preferredRowsCols[1] * GameGUIView.PREFERRED_BOARD_CELL_SIZE,
 					preferredRowsCols[0] * GameGUIView.PREFERRED_BOARD_CELL_SIZE
 			);
+		}
+
+		public void queueTransition(SLKeyframe keyframe) {
+			SLTransition animation = cellCanvas.createTransition()
+					.push(keyframe.setCallback(this::animationFinish));
+			transitionsToDo.add(animation);
+
+			startNextAnimation();
+		}
+
+		private void animationFinish() {
+			if (transitionsToDo.peek() == null) {
+				return;
+			}
+
+			startNextAnimation();
+		}
+
+		private void startNextAnimation() {
+			if (isAnimating.get() || transitionsToDo.peek() == null) {
+				return;
+			}
+
+			SLTransition transition = transitionsToDo.poll();
+			SwingUtilities.invokeLater(transition::play);
+		}
+	}
+
+	private class SingleCellComponent extends JComponent {
+		private final Cell cell;
+		private final Player player;
+
+		public SingleCellComponent(Cell cell) {
+			this.cell = cell;
+			this.player = gameGUIModel.getPlayerOfCellOrRotatedCopy(cell);
+
+			setPreferredSize(new Dimension(
+					getCellSize(), getCellSize()
+			));
+		}
+
+		@Override
+		protected void paintComponent(Graphics g) {
+			cellDrawer.valueOf(cell).draw(
+					player,
+					((Graphics2D) g),
+					0, // row and col are 0 to draw at top left of component
+					0,
+					getCellSize()
+			);
+		}
+	}
+
+	private static class ComponentPosition {
+
+		private static Set<Component> setFromSet(
+				Set<ComponentPosition> componentPositions
+		) {
+			return componentPositions.stream()
+					.map(componentPosition -> componentPosition.component)
+					.collect(Collectors.toSet());
+		}
+
+		public final Component component;
+		public final int row, col;
+
+		private ComponentPosition(Component component, int row, int col) {
+			this.component = component;
+			this.row = row;
+			this.col = col;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+
+			ComponentPosition that = (ComponentPosition) o;
+
+			if (row != that.row) return false;
+			if (col != that.col) return false;
+			return component != null ? component.equals(that.component) : that.component == null;
+		}
+
+		@Override
+		public int hashCode() {
+			int result = component != null ? component.hashCode() : 0;
+			result = 31 * result + row;
+			result = 31 * result + col;
+			return result;
 		}
 	}
 }
