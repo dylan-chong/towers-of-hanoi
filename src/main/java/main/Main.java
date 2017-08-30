@@ -65,10 +65,9 @@ public class Main {
 			);
 			gameGUIResetter.reset();
 
+			SLAnimator.start();
 			guiCardFrame.setCurrentView(menuGUI);
 			guiCardFrame.show();
-
-			SLAnimator.start();
 		});
 	}
 

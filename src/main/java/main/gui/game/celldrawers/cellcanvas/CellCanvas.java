@@ -29,13 +29,12 @@ public abstract class CellCanvas extends JLayeredPane {
 	protected final GameGUIModel gameGUIModel;
 	protected final CellDrawer cellDrawer;
 
-	private final EventGameGUIViewUpdated eventGameGUIViewUpdated;
 	private final JPanel defaultLayerPanel;
 	private final JPanel paletteLayerPanel;
 	private final Collection<CellClickListener> listeners =
 			Collections.synchronizedList(new ArrayList<>());
 	private final JLabel titleLabel;
-	private final InnerCellCanvas cellCanvas;
+	private final InnerCellCanvas innerCellCanvas;
 
 	private final Map<Cell, SingleCellComponent> cellComponents = new HashMap<>();
 	private Set<ComponentPosition> showingCellComps = Collections.emptySet();
@@ -48,7 +47,6 @@ public abstract class CellCanvas extends JLayeredPane {
 	) {
 		this.gameGUIModel = gameGUIModel;
 		this.cellDrawer = cellDrawer;
-		this.eventGameGUIViewUpdated = eventGameGUIViewUpdated;
 
 		setResizeOnChange();
 
@@ -68,18 +66,18 @@ public abstract class CellCanvas extends JLayeredPane {
 				titleLabel = null;
 			}
 
-			cellCanvas = new InnerCellCanvas(this);
-			cellCanvas.setTweenManager(SLAnimator.createTweenManager());
-			cellCanvas.setAlignmentX(CENTER_ALIGNMENT);
-			cellCanvas.addMouseListener(new MouseAdapter() {
+			innerCellCanvas = new InnerCellCanvas(this);
+			innerCellCanvas.setTweenManager(SLAnimator.createTweenManager());
+			innerCellCanvas.setAlignmentX(CENTER_ALIGNMENT);
+			innerCellCanvas.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					onClickCellCanvas(e);
 				}
 			});
-			SwingUtilities.invokeLater(() -> cellCanvas.initialize(newSLConfig()));
+			SwingUtilities.invokeLater(() -> innerCellCanvas.initialize(newSLConfig()));
 
-			defaultLayerPanel.add(cellCanvas);
+			defaultLayerPanel.add(innerCellCanvas);
 		}
 
 		// Palette layer
@@ -121,7 +119,7 @@ public abstract class CellCanvas extends JLayeredPane {
 	private SLConfig newSLConfig() {
 		int[] rowsCols = calculatePreferredRowsCols();
 
-		SLConfig newConfig = new SLConfig(cellCanvas);
+		SLConfig newConfig = new SLConfig(innerCellCanvas);
 		for (int r = 0; r < rowsCols[0]; r++) {
 			newConfig.row(1f);
 		}
@@ -141,9 +139,13 @@ public abstract class CellCanvas extends JLayeredPane {
 				getCellSize() * rowsCols[0]
 		);
 
+		resetCellComponents();
+	}
+
+	private void resetCellComponents() {
 		SLConfig newConfig = newSLConfig();
 
-		Set<ComponentPosition> newShowingCellComps = resetCellComponents(newConfig);
+		Set<ComponentPosition> newShowingCellComps = getNewCellComponents(newConfig);
 		Set<ComponentPosition> oldShowingCellComps = showingCellComps;
 		showingCellComps = newShowingCellComps;
 
@@ -159,7 +161,7 @@ public abstract class CellCanvas extends JLayeredPane {
 	 * @return The new set of components showing
 	 * @param newConfig Config to apply cells to
 	 */
-	private Set<ComponentPosition> resetCellComponents(SLConfig newConfig) {
+	private Set<ComponentPosition> getNewCellComponents(SLConfig newConfig) {
 		Set<ComponentPosition> newShowingCellComps = new HashSet<>();
 		forEachCell((cell, row, col) -> {
 			if (cell == null) {
@@ -187,7 +189,7 @@ public abstract class CellCanvas extends JLayeredPane {
 		Set<Component> slideOutCellComps = ComponentPosition.setFromSet(oldShowingCellComps);
 		slideOutCellComps.removeAll(ComponentPosition.setFromSet(newShowingCellComps));
 
-		cellCanvas.queueTransition(
+		innerCellCanvas.queueTransition(
 				new SLKeyframe(newConfig, GameGUIView.TRANSITION_DURATION)
 						.setStartSide(SLSide.TOP, slideInCellComps.toArray(
 								new Component[slideInCellComps.size()]
@@ -208,8 +210,13 @@ public abstract class CellCanvas extends JLayeredPane {
 		});
 		rowsCols[0] += 1;
 		rowsCols[1] += 1;
+
+		rowsCols[0] = Math.max(minRowsCols()[0], rowsCols[0]);
+		rowsCols[1] = Math.max(minRowsCols()[1], rowsCols[1]);
 		return rowsCols;
 	}
+
+	protected abstract int[] minRowsCols();
 
 	/**
 	 * Override this to use your own elements
@@ -263,6 +270,9 @@ public abstract class CellCanvas extends JLayeredPane {
 		}
 
 		updatePalette(paletteLayerPanel);
+		resetCellComponents();
+		revalidate();
+		repaint();
 	}
 
 	private void setResizeOnChange() {

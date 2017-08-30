@@ -70,7 +70,7 @@ public class GameGUIView implements GUICard, Observer {
 	}
 
 	private void setUpStateReporter() {
-		stateReporterLabel = new JLabel();
+		stateReporterLabel = new JLabel("\n\n");
 		stateReporterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		stateReporterLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		rootJPanel.add(stateReporterLabel);

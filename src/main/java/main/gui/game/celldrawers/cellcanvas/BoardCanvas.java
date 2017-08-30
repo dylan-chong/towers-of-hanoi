@@ -55,6 +55,14 @@ public class BoardCanvas extends CellCanvas {
 	}
 
 	@Override
+	protected int[] minRowsCols() {
+		return new int[] {
+				board.getNumRows(),
+				board.getNumCols()
+		};
+	}
+
+	@Override
 	protected void updatePalette(JPanel paletteLayerPanel) {
 		super.updatePalette(paletteLayerPanel);
 

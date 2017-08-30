@@ -25,7 +25,12 @@ public class GridCanvas extends CellCanvas {
         this.gridSupplier = gridSupplier;
     }
 
-    @Override
+	@Override
+	protected int[] minRowsCols() {
+		return new int[]{1, DEFAULT_NUM_COLS};
+	}
+
+	@Override
     protected void forEachCell(CellConsumer cellConsumer) {
         List<? extends List<? extends Cell>> cellRows =
                 gridSupplier.apply(DEFAULT_NUM_COLS);
@@ -38,4 +43,5 @@ public class GridCanvas extends CellCanvas {
             }
         }
     }
+
 }

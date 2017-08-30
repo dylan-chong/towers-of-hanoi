@@ -64,7 +64,7 @@ public class PlayerComponents {
 				gameGUIController::onCreationRotationCellClick
         );
 		cemeteryCanvas = newGridCanvas(
-				player.getDeadPieces()::values,
+				() -> player.getDeadPieces().values(),
 				String.format("Dead (%s)", name),
 				(cell, mouseEvent) -> {}
 		);
