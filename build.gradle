@@ -62,6 +62,7 @@ task submit << {
 		}
     }
 }
+submit.dependsOn clean
 submit.dependsOn assemble
 
 // Export jar that includes the dependencies
