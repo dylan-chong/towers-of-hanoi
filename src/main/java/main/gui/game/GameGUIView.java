@@ -1,5 +1,6 @@
 package main.gui.game;
 
+import main.Utils;
 import main.gamemodel.Board;
 import main.gamemodel.IllegalGameStateException;
 import main.gamemodel.Player;
@@ -111,22 +112,27 @@ public class GameGUIView implements GUICard, Observer {
 						)
 				));
 
-		// Add player zero components, the board, then player one
+		addPlayerComponents(boardCanvas, playerComponents);
+	}
 
-		playerComponents
-				.get(players.get(0))
-				.getAllComponents()
-				.forEach(cellCanvasesJPanel::add);
+	private void addPlayerComponents(
+			JComponent boardCanvas,
+			Map<Player, PlayerComponents> playerComponents
+	) {
+		List<Player> players = gameGUIModel.getGameModel().getPlayers();
 
-		cellCanvasesJPanel.add(boardCanvas);
+		List<List<? extends JComponent>> componentGroups = players.stream()
+				.map(playerComponents::get)
+				.map(PlayerComponents::getAllComponents)
+				.collect(Collectors.toList());
+		componentGroups.add(1, Arrays.asList(boardCanvas));
+		Collections.reverse(componentGroups.get(2));
 
-		List<? extends JComponent> player1Components = new ArrayList<>(
-				playerComponents
-						.get(players.get(1))
-						.getAllComponents()
-		);
-		Collections.reverse(player1Components);
-		player1Components.forEach(cellCanvasesJPanel::add);
+		List<? extends JComponent> flatComponents = componentGroups
+				.stream()
+				.flatMap(List::stream)
+				.collect(Collectors.toList());
+		cellCanvasesJPanel.add(Utils.compositeSplit(flatComponents));
 	}
 
 	private void setUpToolbar() {

@@ -1,7 +1,7 @@
 package main.gui.game;
 
 import aurelienribon.slidinglayout.*;
-import main.GameUtils;
+import main.Utils;
 import main.gamemodel.InvalidMoveException;
 import main.gamemodel.Player;
 import main.gamemodel.cells.Cell;
@@ -148,7 +148,7 @@ public class PlayerComponents {
             CellCanvas.CellClickListener cellClickListener
     ) {
 		GridCanvas gridCanvas = new GridCanvas(
-				(columns) -> GameUtils.packCells(
+				(columns) -> Utils.packCells(
 						cellGetter.get()
 								.stream()
 								.sorted()

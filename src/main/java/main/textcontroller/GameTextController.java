@@ -1,7 +1,7 @@
 package main.textcontroller;
 
 import main.ExceptionHandler;
-import main.GameUtils;
+import main.Utils;
 import main.Main;
 import main.gamemodel.*;
 import main.gamemodel.cells.Cell;
@@ -91,7 +91,7 @@ public class GameTextController {
 		);
 
 		if (game.getTurnState() == TurnState.CREATING_PIECE) {
-			List<List<Cell>> unusedCells = GameUtils.packCells(
+			List<List<Cell>> unusedCells = Utils.packCells(
 					player.getUnusedPieceIds()
 							.stream()
 							.map(player::findUnusedPiece)
@@ -106,7 +106,7 @@ public class GameTextController {
 			}
 		}
 
-		List<List<Cell>> deadPieces = GameUtils.packCells(
+		List<List<Cell>> deadPieces = Utils.packCells(
 				game.getPlayers()
 						.stream()
 						.flatMap(playerData -> playerData.getDeadPieceIds()
