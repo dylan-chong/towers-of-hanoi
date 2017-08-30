@@ -2,11 +2,9 @@ package main.gui.game.celldrawers.cellcanvas;
 
 import aurelienribon.slidinglayout.*;
 import main.gamemodel.CellConsumer;
-import main.gamemodel.Direction;
 import main.gamemodel.Player;
 import main.gamemodel.cells.Cell;
 import main.gui.game.Events.EventGameGUIViewUpdated;
-import main.gui.game.GameGUIController;
 import main.gui.game.GameGUIModel;
 import main.gui.game.GameGUIView;
 import main.gui.game.celldrawers.CellDrawer;
@@ -22,11 +20,7 @@ import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 /**
  * Draws a grid of board cells (by delegating to {@link InnerCellCanvas}
@@ -74,7 +68,7 @@ public abstract class CellCanvas extends JLayeredPane {
 				titleLabel = null;
 			}
 
-			cellCanvas = new InnerCellCanvas();
+			cellCanvas = new InnerCellCanvas(this);
 			cellCanvas.setTweenManager(SLAnimator.createTweenManager());
 			cellCanvas.setAlignmentX(CENTER_ALIGNMENT);
 			cellCanvas.addMouseListener(new MouseAdapter() {
@@ -119,6 +113,11 @@ public abstract class CellCanvas extends JLayeredPane {
 		listeners.add(listener);
 	}
 
+	@Override
+	public String toString() {
+		return titleLabel.getText();
+	}
+
 	private SLConfig newSLConfig() {
 		int[] rowsCols = calculatePreferredRowsCols();
 
@@ -142,12 +141,26 @@ public abstract class CellCanvas extends JLayeredPane {
 				getCellSize() * rowsCols[0]
 		);
 
-		// TODO dont animate if no change
 		SLConfig newConfig = newSLConfig();
 
-		Set<ComponentPosition> newShowingCellComps = new HashSet<>();
+		Set<ComponentPosition> newShowingCellComps = resetCellComponents(newConfig);
 		Set<ComponentPosition> oldShowingCellComps = showingCellComps;
+		showingCellComps = newShowingCellComps;
 
+		if (newShowingCellComps.equals(oldShowingCellComps)) {
+			// No change. No need to animate
+			return;
+		}
+
+		queueTransition(newShowingCellComps, oldShowingCellComps, newConfig);
+	}
+
+	/**
+	 * @return The new set of components showing
+	 * @param newConfig Config to apply cells to
+	 */
+	private Set<ComponentPosition> resetCellComponents(SLConfig newConfig) {
+		Set<ComponentPosition> newShowingCellComps = new HashSet<>();
 		forEachCell((cell, row, col) -> {
 			if (cell == null) {
 				return;
@@ -161,14 +174,14 @@ public abstract class CellCanvas extends JLayeredPane {
 			newShowingCellComps.add(new ComponentPosition(cellComponent, row, col));
 			newConfig.place(row, col, cellComponent);
 		});
+		return newShowingCellComps;
+	}
 
-		showingCellComps = newShowingCellComps;
-
-		if (newShowingCellComps.equals(oldShowingCellComps)) {
-			// No change. No need to animate
-			return;
-		}
-
+	private void queueTransition(
+			Set<ComponentPosition> newShowingCellComps,
+			Set<ComponentPosition> oldShowingCellComps,
+			SLConfig newConfig
+	) {
 		Set<Component> slideInCellComps = ComponentPosition.setFromSet(newShowingCellComps);
 		slideInCellComps.removeAll(ComponentPosition.setFromSet(oldShowingCellComps));
 		Set<Component> slideOutCellComps = ComponentPosition.setFromSet(oldShowingCellComps);
@@ -296,95 +309,6 @@ public abstract class CellCanvas extends JLayeredPane {
 		void onCellClick(Cell cellOrNull, CellClickEvent e);
 	}
 
-	public static class CellClickEvent {
-		public final MouseEvent e;
-		public final int row;
-		public final int col;
-		public final float rowOffset;
-		public final float colOffset;
-
-		public CellClickEvent(
-				MouseEvent e,
-				int row,
-				int col,
-				float rowOffset,
-				float colOffset
-		) {
-			this.e = e;
-			this.row = row;
-			this.col = col;
-			this.rowOffset = rowOffset;
-			this.colOffset = colOffset;
-		}
-
-		public Direction getClickedEdge() {
-			double distance = GameGUIController.MOVE_CLICK_EDGE_DISTANCE;
-			if (rowOffset < distance) {
-				return Direction.NORTH;
-			} else if (rowOffset > 1 - distance) {
-				return Direction.SOUTH;
-			} else if (colOffset < distance) {
-				return Direction.WEST;
-			} else if (colOffset > 1 - distance) {
-				return Direction.EAST;
-			}
-
-			return null;
-		}
-	}
-
-	/**
-	 * Actually does the drawing
-	 */
-	private class InnerCellCanvas extends SLPanel {
-
-		private final Queue<SLTransition> transitionsToDo = new ConcurrentLinkedQueue<>();
-
-		private final AtomicBoolean isAnimating = new AtomicBoolean(false);
-
-		@Override
-		protected void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			paintCanvasComponent(((Graphics2D) g));
-
-			// TODO call in revalidate
-		}
-
-		@Override
-		public Dimension getPreferredSize() {
-			int[] preferredRowsCols = calculatePreferredRowsCols();
-			return new Dimension(
-					preferredRowsCols[1] * GameGUIView.PREFERRED_BOARD_CELL_SIZE,
-					preferredRowsCols[0] * GameGUIView.PREFERRED_BOARD_CELL_SIZE
-			);
-		}
-
-		public void queueTransition(SLKeyframe keyframe) {
-			SLTransition animation = cellCanvas.createTransition()
-					.push(keyframe.setCallback(this::animationFinish));
-			transitionsToDo.add(animation);
-
-			startNextAnimation();
-		}
-
-		private void animationFinish() {
-			if (transitionsToDo.peek() == null) {
-				return;
-			}
-
-			startNextAnimation();
-		}
-
-		private void startNextAnimation() {
-			if (isAnimating.get() || transitionsToDo.peek() == null) {
-				return;
-			}
-
-			SLTransition transition = transitionsToDo.poll();
-			SwingUtilities.invokeLater(transition::play);
-		}
-	}
-
 	private class SingleCellComponent extends JComponent {
 		private final Cell cell;
 		private final Player player;
@@ -410,43 +334,4 @@ public abstract class CellCanvas extends JLayeredPane {
 		}
 	}
 
-	private static class ComponentPosition {
-
-		private static Set<Component> setFromSet(
-				Set<ComponentPosition> componentPositions
-		) {
-			return componentPositions.stream()
-					.map(componentPosition -> componentPosition.component)
-					.collect(Collectors.toSet());
-		}
-
-		public final Component component;
-		public final int row, col;
-
-		private ComponentPosition(Component component, int row, int col) {
-			this.component = component;
-			this.row = row;
-			this.col = col;
-		}
-
-		@Override
-		public boolean equals(Object o) {
-			if (this == o) return true;
-			if (o == null || getClass() != o.getClass()) return false;
-
-			ComponentPosition that = (ComponentPosition) o;
-
-			if (row != that.row) return false;
-			if (col != that.col) return false;
-			return component != null ? component.equals(that.component) : that.component == null;
-		}
-
-		@Override
-		public int hashCode() {
-			int result = component != null ? component.hashCode() : 0;
-			result = 31 * result + row;
-			result = 31 * result + col;
-			return result;
-		}
-	}
 }

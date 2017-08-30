@@ -5,7 +5,7 @@ import main.gamemodel.Player;
 import main.gamemodel.ReactionData;
 import main.gamemodel.cells.Cell;
 import main.gamemodel.cells.PieceCell;
-import main.gui.game.celldrawers.cellcanvas.CellCanvas;
+import main.gui.game.celldrawers.cellcanvas.CellClickEvent;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -34,7 +34,7 @@ public class GameGUIController {
 		actionAdder.accept(KeyStroke.getKeyStroke("RIGHT"), new MoveAction(Direction.EAST));
 	}
 
-	public void onBoardCellClick(Cell cell, CellCanvas.CellClickEvent e) {
+	public void onBoardCellClick(Cell cell, CellClickEvent e) {
 		gameGUIModel.performGameAction(() -> {
 			if (cell == null || !(cell instanceof PieceCell)) {
 				return;
@@ -65,7 +65,7 @@ public class GameGUIController {
 		});
 	}
 
-	public void onCreationCellClick(Cell cell, CellCanvas.CellClickEvent e) {
+	public void onCreationCellClick(Cell cell, CellClickEvent e) {
 		gameGUIModel.performGameAction(() -> {
 			if (cell == null) {
 				return;
@@ -90,7 +90,7 @@ public class GameGUIController {
 
 	public void onCreationRotationCellClick(
 			Cell rotatedCellCopy,
-			CellCanvas.CellClickEvent mouseEvent
+			CellClickEvent mouseEvent
 	) {
 		gameGUIModel.performGameAction(() -> {
 			if (rotatedCellCopy == null) {
