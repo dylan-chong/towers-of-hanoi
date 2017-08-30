@@ -1,6 +1,9 @@
 package main.gui.game.celldrawers.cellcanvas;
 
-import aurelienribon.slidinglayout.*;
+import aurelienribon.slidinglayout.SLAnimator;
+import aurelienribon.slidinglayout.SLConfig;
+import aurelienribon.slidinglayout.SLKeyframe;
+import aurelienribon.slidinglayout.SLSide;
 import main.gamemodel.CellConsumer;
 import main.gamemodel.Player;
 import main.gamemodel.cells.Cell;
@@ -21,6 +24,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.IntStream;
 
 /**
  * Draws a grid of board cells (by delegating to {@link InnerCellCanvas}
@@ -38,6 +42,7 @@ public abstract class CellCanvas extends JLayeredPane {
 
 	private final Map<Cell, SingleCellComponent> cellComponents = new HashMap<>();
 	private Set<ComponentPosition> showingCellComps = Collections.emptySet();
+	private int cellSize = GameGUIView.PREFERRED_CELL_SIZE;
 
 	public CellCanvas(
 			GameGUIModel gameGUIModel,
@@ -228,7 +233,7 @@ public abstract class CellCanvas extends JLayeredPane {
 	}
 
 	protected int getCellSize() {
-		return GameGUIView.PREFERRED_BOARD_CELL_SIZE;
+		return cellSize;
 	}
 
 	private void onClickCellCanvas(MouseEvent e) {
@@ -261,10 +266,41 @@ public abstract class CellCanvas extends JLayeredPane {
 	}
 
 	private void refreshChildren() {
-		for (Component comp : getComponents()) {
-			Dimension size = comp.getPreferredSize();
-			Insets insets = getInsets();
-			comp.setBounds(insets.left, insets.top, size.width, size.height);
+		Dimension layerSize = null;
+		Dimension thisSize = getSize();
+		Insets insets = getInsets();
+
+		if (thisSize.width * thisSize.height == 0) {
+			layerSize = Arrays.stream(getComponents())
+					.map(Component::getPreferredSize)
+					.reduce((s1, s2) -> new Dimension(
+							(int) Math.max(s1.getWidth(), s2.getWidth()),
+							(int) Math.max(s1.getHeight(), s2.getHeight())
+					))
+					.orElse(null);
+		}
+		if (layerSize == null) {
+			layerSize = thisSize;
+			layerSize.width -= insets.left + insets.right;
+			layerSize.height -= insets.top + insets.bottom;
+		}
+
+		int[] rowsCols = calculatePreferredRowsCols();
+		cellSize = IntStream
+				.of(layerSize.height / rowsCols[0], layerSize.width / rowsCols[1])
+				.filter(pxPerCell -> pxPerCell > 0)
+				.min()
+				.orElse(GameGUIView.PREFERRED_CELL_SIZE);
+		layerSize.width = rowsCols[1] * cellSize;
+		layerSize.height = rowsCols[0] * cellSize;
+		if (titleLabel != null) {
+			layerSize.height += titleLabel.getPreferredSize().height;
+		}
+
+		System.out.println("cellSize = " + cellSize);
+
+		for (Component layer : getComponents()) {
+			layer.setBounds(insets.left, insets.top, layerSize.width, layerSize.height);
 		}
 
 		updatePalette(paletteLayerPanel);

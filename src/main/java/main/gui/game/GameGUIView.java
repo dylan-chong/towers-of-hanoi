@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 import static main.gui.game.Events.*;
 
 public class GameGUIView implements GUICard, Observer {
-	public static final int PREFERRED_BOARD_CELL_SIZE = 50;
+	public static final int PREFERRED_CELL_SIZE = 50;
 	public static final int TRANSITION_DURATION = 1;
 
 	private final GameGUIModel gameGUIModel;

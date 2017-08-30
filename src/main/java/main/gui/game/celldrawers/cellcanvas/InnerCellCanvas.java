@@ -3,7 +3,6 @@ package main.gui.game.celldrawers.cellcanvas;
 import aurelienribon.slidinglayout.SLKeyframe;
 import aurelienribon.slidinglayout.SLPanel;
 import aurelienribon.slidinglayout.SLTransition;
-import main.gui.game.GameGUIView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,8 +34,8 @@ class InnerCellCanvas extends SLPanel {
 	public Dimension getPreferredSize() {
 		int[] preferredRowsCols = cellCanvas.calculatePreferredRowsCols();
 		return new Dimension(
-				preferredRowsCols[1] * GameGUIView.PREFERRED_BOARD_CELL_SIZE,
-				preferredRowsCols[0] * GameGUIView.PREFERRED_BOARD_CELL_SIZE
+				preferredRowsCols[1] * cellCanvas.getCellSize(),
+				preferredRowsCols[0] * cellCanvas.getCellSize()
 		);
 	}
 

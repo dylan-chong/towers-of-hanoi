@@ -4,7 +4,6 @@ import main.gamemodel.*;
 import main.gui.game.Events.EventGameGUIViewUpdated;
 import main.gui.game.Events.EventReactionClicked;
 import main.gui.game.GameGUIModel;
-import main.gui.game.GameGUIView;
 import main.gui.game.celldrawers.CellDrawer;
 
 import javax.swing.*;
@@ -107,7 +106,7 @@ public class BoardCanvas extends CellCanvas {
 	}
 
 	private void fillSquare(int r, int c, Graphics2D graphics2D, Color color) {
-		int cellSize = GameGUIView.PREFERRED_BOARD_CELL_SIZE;
+		int cellSize = getCellSize();
 
 		graphics2D.setColor(color);
 		graphics2D.fillRect(
