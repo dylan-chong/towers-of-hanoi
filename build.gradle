@@ -39,7 +39,7 @@ run {
 }
 run.dependsOn assemble
 
-mainClassName = 'main.Main'
+mainClassName = 'main.MainGroovy'
 
 // Submit task
 def withDependenciesTag = '-with-dependencies'
