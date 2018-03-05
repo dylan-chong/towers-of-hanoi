@@ -14,16 +14,10 @@ repositories {
 }
 
 dependencies {
-    // Put any libraries here:
-    // for example, put this:
-    // compile group: 'com.google.code.gson', name: 'gson', version: '1.7.1'
-    // to include this library https://github.com/google/gson if you like ...
     compile "org.codehaus.groovy:groovy-all:2.4.13"
 
-    // Required dependencies for assignments:
     // Include libraries in 'lib' directory
     compile fileTree(dir: 'lib', include: ['*.jar'])
-    testCompile group: 'junit', name: 'junit', version: '4.11'
 
     testCompile "org.spockframework:spock-core:1.1-groovy-2.4"
 
@@ -39,7 +33,7 @@ run {
 }
 run.dependsOn assemble
 
-mainClassName = 'main.MainGroovy'
+mainClassName = 'main.Main'
 
 // Submit task
 def withDependenciesTag = '-with-dependencies'

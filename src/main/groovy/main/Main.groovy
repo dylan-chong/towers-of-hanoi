@@ -1,7 +1,7 @@
 package main
 
-class MainGroovy {
+class Main {
 	static void main(String[] args) {
-		throw new RuntimeException('Yay groovy runs!');
+		throw new RuntimeException('Yay groovy runs!')
 	}
 }
