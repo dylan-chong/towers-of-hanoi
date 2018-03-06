@@ -8,7 +8,7 @@ version '1.0-SNAPSHOT'
 repositories {
     mavenCentral()
     maven {
-	// Spock snapshots are available from the Sonatype OSS snapshot repository
+        // Spock snapshots are available from the Sonatype OSS snapshot repository
         url "http://oss.sonatype.org/content/repositories/snapshots/"
     }
 }
@@ -48,12 +48,12 @@ task submit << {
         from './build/libs/'
         include "$project.name$withDependenciesTag*.jar"
         into exportPath
-		rename { fileName ->
-			if (fileName.endsWith(".jar")) {
-				return exportedJarFileName
-			}
-			return fileName
-		}
+        rename { fileName ->
+            if (fileName.endsWith(".jar")) {
+                return exportedJarFileName
+            }
+            return fileName
+        }
     }
 }
 submit.dependsOn assemble
@@ -63,10 +63,10 @@ submit.dependsOn assemble
 task fatJar(type: Jar) {
     manifest {
         attributes(
-				'Implementation-Title': 'Gradle Project',
-				'Implementation-Version': version,
-				'Main-Class': mainClassName,
-		)
+                'Implementation-Title': 'Gradle Project',
+                'Implementation-Version': version,
+                'Main-Class': mainClassName,
+        )
     }
     baseName = project.name + withDependenciesTag
     from {
@@ -84,5 +84,5 @@ jar {
 }
 
 clean {
-	delete exportPath
+    delete exportPath
 }
