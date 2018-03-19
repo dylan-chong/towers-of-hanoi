@@ -1,5 +1,5 @@
 package main
 
 fun main(args: Array<String>) {
-    print("hell")
+    throw RuntimeException("Don't run main")
 }
