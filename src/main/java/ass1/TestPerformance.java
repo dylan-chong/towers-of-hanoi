@@ -1,7 +1,8 @@
 package ass1;
 
-import java.util.Arrays;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
 
 public class TestPerformance {
   long timeOf(Runnable r,int warmUp,int runs) {
