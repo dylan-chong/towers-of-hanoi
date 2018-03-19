@@ -12,15 +12,16 @@ class MSequentialSorter : Sorter {
                 val firstHalf = sort(list.subList(0, halfWay))
                 val secondHalf = sort(list.subList(halfWay, list.size))
 
-                print("")
-                merge(firstHalf, secondHalf)
+                Merger.merge(firstHalf, secondHalf)
             }
         }
     }
+}
 
-    private fun <T : Comparable<T>> merge(
-            firstHalf: List<T>,
-            secondHalf: List<T>
+object Merger {
+    fun <T : Comparable<T>> merge(
+        firstHalf: List<T>,
+        secondHalf: List<T>
     ): List<T> {
         var firstIndex = 0
         var secondIndex = 0
