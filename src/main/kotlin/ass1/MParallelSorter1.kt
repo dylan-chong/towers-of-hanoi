@@ -5,25 +5,25 @@ import java.util.concurrent.Executors
 
 class MParallelSorter1 : Sorter {
 
-    companion object {
-        const val THRESHOLD = 20
+  companion object {
+    const val THRESHOLD = 20
 
-        val pool = Executors.newCachedThreadPool()!!
+    val pool = Executors.newCachedThreadPool()!!
+  }
+
+  override fun <T : Comparable<T>> sort(list: List<T>): List<T> {
+    if (list.size < THRESHOLD) {
+      return ISequentialSorter().sort(list)
     }
 
-    override fun <T : Comparable<T>> sort(list: List<T>): List<T> {
-        if (list.size < THRESHOLD) {
-            return ISequentialSorter().sort(list)
-        }
+    val halfWay = list.size / 2
+    val firstHalf = list.subList(0, halfWay)
+    val secondHalf = list.subList(halfWay, list.size)
 
-        val halfWay = list.size / 2
-        val firstHalf = list.subList(0, halfWay)
-        val secondHalf = list.subList(halfWay, list.size)
+    val firstFuture = pool.submit(Callable { sort(firstHalf) })
+    val secondSorted = sort(secondHalf)
 
-        val firstFuture = pool.submit(Callable { sort(firstHalf) })
-        val secondSorted = sort(secondHalf)
-
-        return Merger.merge(firstFuture.get(), secondSorted)
-    }
+    return Merger.merge(firstFuture.get(), secondSorted)
+  }
 
 }
