@@ -3,16 +3,27 @@ package ass1
 import java.util.concurrent.ForkJoinPool
 import java.util.concurrent.RecursiveTask
 
+/**
+ * To fork join pool uses a work stealing algorithm so there will be less
+ * overhead creating lots of new threads if threads get blocked. This algorithm
+ * is almost identical to the first parallel sort algorithm, except for the
+ * work stealing that is used by the fork join pool. I learned that i probably
+ * should not have used the common pool for the first merge sort algorithm, in
+ * case one part of the program submits a lot of work to be done and another
+ * part of the program submits a tiny bit of work - the tiny bit of work may
+ * not be done for a long time (i believe this is called starvation).
+ */
 class MParallelSorter2 : Sorter {
 
   companion object {
     const val THRESHOLD = 20
-
-    val pool = ForkJoinPool()
   }
 
   override fun <T : Comparable<T>> sort(list: List<T>): List<T> {
-    return pool.submit(SortTask(list)).invoke()
+    return ForkJoinPool
+      .commonPool()
+      .submit(SortTask(list))
+      .invoke()
   }
 
   class SortTask<T : Comparable<T>>(private val list: List<T>)
