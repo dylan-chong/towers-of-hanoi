@@ -11,7 +11,7 @@ class TestTask2 : Spek({
    * Copied from: http://rosettacode.org/wiki/Permutations#Kotlin
    * and modified slightly
    */
-  fun <T> permute(input: List<T>, max: Int = 400): List<List<T>> {
+  fun <T> permute(input: List<T>, max: Int = 500): List<List<T>> {
     if (input.size <= 1) return listOf(input)
     val perms = mutableListOf<List<T>>()
     val toInsert = input[0]
@@ -28,7 +28,6 @@ class TestTask2 : Spek({
     return perms
   }
 
-
   listOf(
     ISequentialSorter(),
     MSequentialSorter(),
@@ -41,41 +40,28 @@ class TestTask2 : Spek({
         assert(sorter.sort(listOf<Int>()) == listOf<Int>())
       }
 
-      listOf(
-        listOf(1.5),
-        listOf(1.5, 0.9),
-        listOf(1.5, 0.999, 0.9999),
-        listOf(1.5, -234.0, 0.999, 0.9999),
-        listOf(123123123123.0, 1.5, -234.0, 0.999, 0.9999),
-        listOf(123123123123.0, 1.5, 234.0, -234.0, 0.999, 0.9999),
-        listOf(
-          123123123123.0, 1.5, 234.0, -234.0, 0.999, 0.9999, 1.0, 1.0, 1.0,
-          -3.0, 1.0, 1.0
-        ),
-        listOf(
-          123123123123.0, 8.0, 8.9999999, 3.23e45, 1.5, 234.0, -234.0, 0.999,
-          0.9999, 1.0, 1.0, 1.0, -3.0, 1.0, 1.0, 234.134, 98.2378, 8923823.238
-        ),
-        listOf(
-          123123123123.0, 8.0, 8.9999999, 3.23e45, 1.5, 234.0, -234.0, 0.999,
-          0.9999, 1.0, 1.0, 1.0, -3.0, 1.0, 1.0, 234.134, 98.2378, 8923823.238,
-          123123123123.0, 8.0, 8.9999999, 3.23e45, 1.5, 234.0, -234.0, 0.999,
-          0.9999, 1.0, 1.0, 1.0, -3.0, 1.0, 1.0, 234.134, 98.2378, 8923823.238
-        ),
-        listOf(
-          123123123123.0, 8.0, 8.9999999, 3.23e45, 1.5, 234.0, -234.0, 0.999,
-          0.9999, 1.0, 1.0, 1.0, -3.0, 1.0, 1.0, 234.134, 98.2378, 8923823.238,
-          123123123123.0, 8.0, 8.9999999, 3.23e45, 1.5, 234.0, -234.0, 0.999,
-          0.9999, 1.0, 1.0, 1.0, -3.0, 1.0, 1.0, 234.134, 98.2378, 8923823.238,
-          123123123123.0, 8.0, 8.9999999, 3.23e45, 1.5, 234.0, -234.0, 0.999,
-          0.9999, 1.0, 1.0, 1.0, -3.0, 1.0, 1.0, 234.134, 98.2378, 8923823.238,
-          123123123123.0, 8.0, 8.9999999, 3.23e45, 1.5, 234.0, -234.0, 0.999,
-          0.9999, 1.0, 1.0, 1.0, -3.0, 1.0, 1.0, 234.134, 98.2378, 8923823.238
-        )
-      ).forEach { inputList ->
-        context("given a list of ${inputList.size} items") {
+      val baseList = listOf(
+        Person( 1, 0.0),
+        Person( 2, 2.01),
+        Person( 3, -3.0),
+        Person( 4, -1.0),
+        Person( 5, -1.0),
+        Person( 6, 0.0),
+        Person( 7, -5.0),
+        Person( 8, -1.0),
+        Person( 9, 77e-45),
+        Person(10, 78e-45),
+        Person(11, 78e-45),
+        Person(12, 23e98),
+        Person(13, 23.0001e98)
+      )
 
-          permute(inputList).forEachIndexed { i, permutedList ->
+      for (i in 1 until baseList.size) {
+        val subList = baseList.subList(0, i)
+
+        context("given a list of ${subList.size} items") {
+
+          permute(subList).forEachIndexed { i, permutedList ->
             context("when given permutation $i") {
 
               it("should sort correctly") {
@@ -85,9 +71,22 @@ class TestTask2 : Spek({
               }
             }
           }
-
         }
       }
     }
   }
 })
+
+data class Person(val id: Int, val age: Double) : Comparable<Person> {
+
+  override fun compareTo(other: Person): Int {
+    return when {
+      age < other.age -> -1
+      age > other.age -> -1
+      id < other.id -> -1
+      id > other.id -> -1
+      else -> 0
+    }
+  }
+
+}
