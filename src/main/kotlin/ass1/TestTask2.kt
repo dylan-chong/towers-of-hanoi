@@ -1,5 +1,6 @@
 package ass1
 
+import ass1.PersonDataset.baseList
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.context
 import org.jetbrains.spek.api.dsl.describe
@@ -42,22 +43,6 @@ class TestTask2 : Spek({
         assert(sorter.sort(listOf<Int>()) == listOf<Int>())
       }
 
-      val baseList = listOf(
-        Person( 1, 0.0),
-        Person( 2, 2.01),
-        Person( 3, -3.0),
-        Person( 4, -1.0),
-        Person( 5, -1.0),
-        Person( 6, 0.0),
-        Person( 7, -5.0),
-        Person( 8, -1.0),
-        Person( 9, 77e-45),
-        Person(10, 78e-45),
-        Person(11, 78e-45),
-        Person(12, 23e98),
-        Person(13, 23.0001e98)
-      )
-
       for (i in 1..baseList.size) {
         val subList = baseList.subList(0, i)
 
@@ -78,18 +63,23 @@ class TestTask2 : Spek({
   }
 })
 
-data class Person(val id: Int, val age: Double) : Comparable<Person> {
+object PersonDataset {
 
-  override fun compareTo(other: Person): Int {
-    return when {
-      age < other.age -> -1
-      age > other.age -> 1
-      id < other.id -> -1
-      id > other.id -> 1
-      else -> 0
-    }
-  }
-
+  val baseList = listOf(
+    Person( 1, 0.0),
+    Person( 2, 2.01),
+    Person( 3, -3.0),
+    Person( 4, -1.0),
+    Person( 5, -1.0),
+    Person( 6, 0.0),
+    Person( 7, -5.0),
+    Person( 8, -1.0),
+    Person( 9, 77e-45),
+    Person(10, 78e-45),
+    Person(11, 78e-45),
+    Person(12, 23e98),
+    Person(13, 23.0001e98)
+  )
 }
 
 class TestTask2Extras {
