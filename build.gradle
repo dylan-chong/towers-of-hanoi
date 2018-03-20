@@ -40,6 +40,7 @@ dependencies {
     compile fileTree(dir: 'lib', include: ['*.jar'])
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '1.2.30'
     compile group: 'org.junit.jupiter',
             name: 'junit-jupiter-engine',
             version: '5.1.0'
