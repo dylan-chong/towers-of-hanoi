@@ -41,26 +41,29 @@ object Merger {
     var secondIndex = 0
     val result: MutableList<T> = mutableListOf()
 
-    while (true) {
+    fun useFirst() {
+      result.add(firstHalf[firstIndex])
+      firstIndex++
+    }
+    fun useSecond() {
+      result.add(secondHalf[secondIndex])
+      secondIndex++
+    }
+
+    loop@ while (true) {
       val canUseFirst = firstIndex < firstHalf.size
       val canUseSecond = secondIndex < secondHalf.size
 
-      if (canUseFirst && canUseSecond) {
-        if (firstHalf[firstIndex] < secondHalf[secondIndex]) {
-          result.add(firstHalf[firstIndex])
-          firstIndex++
-        } else {
-          result.add(secondHalf[secondIndex])
-          secondIndex++
-        }
-      } else if (canUseFirst && !canUseSecond) {
-        result.add(firstHalf[firstIndex])
-        firstIndex++
-      } else if (!canUseFirst && canUseSecond) {
-        result.add(secondHalf[secondIndex])
-        secondIndex++
-      } else {
-        break
+      when {
+        canUseFirst && canUseSecond ->
+          if (firstHalf[firstIndex] < secondHalf[secondIndex]) {
+            useFirst()
+          } else {
+            useSecond()
+          }
+        canUseFirst && !canUseSecond -> useFirst()
+        !canUseFirst && canUseSecond -> useSecond()
+        else -> break@loop
       }
     }
 

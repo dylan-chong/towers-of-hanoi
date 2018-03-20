@@ -25,7 +25,6 @@ public class TestPerformance {
    * given sorter 200 times.
    */
   <T extends Comparable<? super T>>void msg(Sorter s,String name,T[][] dataset) {
-    if (1>0)return; // todo dont commit
     long time=timeOf(()->{
       for(T[]l:dataset){s.sort(Arrays.asList(l));}
     },20000,200);//realistically 20.000 to make the JIT do his job..
@@ -76,7 +75,7 @@ public class TestPerformance {
   @Test
   public void testPerson() {
     System.out.println("On the data type Person");
-    List<Person> baseList = PersonDataset.baseList;
+    List<Person> baseList = PersonDataset.INSTANCE.getBaseList();
     msgAll(new Person[][]{
       baseList.toArray(new Person[baseList.size()])
     });
