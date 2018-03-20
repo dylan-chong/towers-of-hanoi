@@ -11,7 +11,7 @@ class TestTask2 : Spek({
    * Copied from: http://rosettacode.org/wiki/Permutations#Kotlin
    * and modified slightly
    */
-  fun <T> permute(input: List<T>, max: Int = 500): List<List<T>> {
+  fun <T> permute(input: List<T>, max: Int = 200): List<List<T>> {
     if (input.size <= 1) return listOf(input)
     val perms = mutableListOf<List<T>>()
     val toInsert = input[0]
@@ -56,14 +56,13 @@ class TestTask2 : Spek({
         Person(13, 23.0001e98)
       )
 
-      for (i in 1 until baseList.size) {
+      for (i in 1..baseList.size) {
         val subList = baseList.subList(0, i)
 
         context("given a list of ${subList.size} items") {
 
           permute(subList).forEachIndexed { i, permutedList ->
             context("when given permutation $i") {
-
               it("should sort correctly") {
                 val expected = permutedList.sorted()
                 val result = sorter.sort(permutedList)
@@ -82,9 +81,9 @@ data class Person(val id: Int, val age: Double) : Comparable<Person> {
   override fun compareTo(other: Person): Int {
     return when {
       age < other.age -> -1
-      age > other.age -> -1
+      age > other.age -> 1
       id < other.id -> -1
-      id > other.id -> -1
+      id > other.id -> 1
       else -> 0
     }
   }
