@@ -2,9 +2,45 @@ package ass1;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Test results:
+ *
+ * On the data type Float
+ * Sequential merge sort sort takes 4.71 seconds
+ * Parallel merge sort (futures) sort takes 6.626 seconds
+ * Parallel merge sort (forkJoin) sort takes 2.321 seconds
+ *
+ * On the data type Point
+ * Sequential merge sort sort takes 5.148 seconds
+ * Parallel merge sort (futures) sort takes 7.002 seconds
+ * Parallel merge sort (forkJoin) sort takes 2.83 seconds
+ *
+ * On the data type BigInteger
+ * Sequential merge sort sort takes 4.937 seconds
+ * Parallel merge sort (futures) sort takes 6.876 seconds
+ * Parallel merge sort (forkJoin) sort takes 2.691 seconds
+ *
+ * On the data type Person
+ * Sequential merge sort sort takes 2.09 seconds
+ * Parallel merge sort (futures) sort takes 3.584 seconds
+ * Parallel merge sort (forkJoin) sort takes 1.122 seconds
+ *
+ * ---
+ *
+ * As expected, the fork join beats the futures, probably due to the efficient
+ * work stealing versus creating more threads.
+ *
+ * Surprisingly the parallel merge sort using futures, using a cached thread
+ * pool is slower than sequential. The cached thread pool, when all threads
+ * are waiting, creates another thread (very expensive). Using a forkjoin
+ * thread pool for parallel merge sort 1 (which is dynamically sized) reaches
+ * the thread limit and throws execution exception. Forkjoin pool with forkjoin
+ * tasks uses 'helping' (a blocked worker can work on a task that it requires).
+ */
 public class TestPerformance {
 
   /**
@@ -75,7 +111,12 @@ public class TestPerformance {
   @Test
   public void testPerson() {
     System.out.println("On the data type Person");
-    List<Person> baseList = PersonDataset.INSTANCE.getBaseList();
+    List<Person> baseList = new ArrayList<>();
+
+    for (int i = 0; i < 1000; i++) {
+      baseList.addAll(PersonDataset.INSTANCE.getBaseList());
+    }
+
     msgAll(new Person[][]{
       baseList.toArray(new Person[baseList.size()])
     });
