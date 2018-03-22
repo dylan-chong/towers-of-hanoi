@@ -1,8 +1,8 @@
 package ass1;
 
-import java.util.Random;
-
 import org.junit.jupiter.api.Test;
+
+import java.util.Random;
 
 
 class Point implements Comparable<Point>{

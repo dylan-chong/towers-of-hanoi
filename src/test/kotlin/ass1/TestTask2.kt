@@ -5,8 +5,6 @@ import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.context
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
 
 class TestTask2 : Spek({
 
@@ -66,15 +64,15 @@ class TestTask2 : Spek({
 object PersonDataset {
 
   val baseList = listOf(
-    Person( 1, 0.0),
-    Person( 2, 2.01),
-    Person( 3, -3.0),
-    Person( 4, -1.0),
-    Person( 5, -1.0),
-    Person( 6, 0.0),
-    Person( 7, -5.0),
-    Person( 8, -1.0),
-    Person( 9, 77e-45),
+    Person(1, 0.0),
+    Person(2, 2.01),
+    Person(3, -3.0),
+    Person(4, -1.0),
+    Person(5, -1.0),
+    Person(6, 0.0),
+    Person(7, -5.0),
+    Person(8, -1.0),
+    Person(9, 77e-45),
     Person(10, 78e-45),
     Person(11, 78e-45),
     Person(12, 23e98),
@@ -82,30 +80,3 @@ object PersonDataset {
   )
 }
 
-class TestTask2Extras {
-
-  @Test
-  fun mSequentialSorter_sortsFor_emptyList() {
-    assertEquals(listOf<Int>(), MSequentialSorter().sort(listOf<Int>()))
-  }
-
-  @Test
-  fun mSequentialSorter_sortsFor_oneItem() {
-    assertEquals(listOf(5), MSequentialSorter().sort(listOf(5)))
-  }
-
-  @Test
-  fun mSequentialSorter_sortsFor_twoItems() {
-    assertEquals(listOf(5, 7), MSequentialSorter().sort(listOf(7, 5)))
-  }
-
-  @Test
-  fun mSequentialSorter_sortsFor_3Items() {
-    assertEquals(listOf(1, 5, 7), MSequentialSorter().sort(listOf(7, 1, 5)))
-  }
-
-  @Test
-  fun mParallelSorter_doesnt_deadlock() {
-    MParallelSorter1().sort((1..100000).toList())
-  }
-}
