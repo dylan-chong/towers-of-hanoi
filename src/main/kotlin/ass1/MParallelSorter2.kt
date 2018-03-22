@@ -13,11 +13,7 @@ import java.util.concurrent.RecursiveTask
  * part of the program submits a tiny bit of work - the tiny bit of work may
  * not be done for a long time (i believe this is called starvation).
  */
-class MParallelSorter2 : Sorter {
-
-  companion object {
-    const val THRESHOLD = 20
-  }
+class MParallelSorter2(val threshold: Int = 20) : Sorter {
 
   override fun <T : Comparable<T>> sort(list: List<T>): List<T> {
     return ForkJoinPool
@@ -26,11 +22,11 @@ class MParallelSorter2 : Sorter {
       .invoke()
   }
 
-  class SortTask<T : Comparable<T>>(private val list: List<T>)
+  inner class SortTask<T : Comparable<T>>(private val list: List<T>)
     : RecursiveTask<List<T>>() {
 
     override fun compute(): List<T> {
-      if (list.size < THRESHOLD) {
+      if (list.size < threshold) {
         return ISequentialSorter().sort(list)
       }
 

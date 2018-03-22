@@ -34,8 +34,8 @@ class TestTask2 : Spek({
   listOf(
     ISequentialSorter(),
     MSequentialSorter(),
-    MParallelSorter1(),
-    MParallelSorter2()
+    MParallelSorter1(5),
+    MParallelSorter2(5)
   ).forEach { sorter ->
     describe("sorter ${sorter.javaClass.simpleName}") {
 

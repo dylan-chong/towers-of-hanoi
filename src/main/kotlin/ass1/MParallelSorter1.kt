@@ -14,15 +14,14 @@ import java.util.concurrent.Executors
  * have been used yet. I learned that you can avoid creating your own thread
  * pool by using the common fork join pool (by accidentally discovering it).
  */
-class MParallelSorter1 : Sorter {
+class MParallelSorter1(val threshold: Int = 20) : Sorter {
 
   companion object {
-    const val THRESHOLD = 20
     val pool = Executors.newCachedThreadPool()!!
   }
 
   override fun <T : Comparable<T>> sort(list: List<T>): List<T> {
-    if (list.size < THRESHOLD) {
+    if (list.size < threshold) {
       return ISequentialSorter().sort(list)
     }
 
