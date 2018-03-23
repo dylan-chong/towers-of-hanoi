@@ -14,11 +14,12 @@ class IrisSet(val instances: List<IrisInstance>, val features: List<Feature>) {
         .filter { it.isNotEmpty() }
         .map { IrisInstance.fromLine(it) }
         .collect(Collectors.toList())
+        .toList()
 
       return fromInstances(instances)
     }
 
-    fun fromInstances(instances: MutableList<IrisInstance>): IrisSet {
+    fun fromInstances(instances: List<IrisInstance>): IrisSet {
       val features = listOf(
         Feature({ it.sepalLength }, instances),
         Feature({ it.sepalWidth }, instances),
