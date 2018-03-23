@@ -24,8 +24,9 @@ class KNearestNeighbourClassifier {
     val results = getResults(testSetCalculatedAnswers, testSetTrueAnswers)
     val correct = results.filter { it.isCorrect() }.count()
     val incorrect = results.size - correct
+    val percentCorrect = 100 * correct / results.size
 
-    println("Results: correct: $correct, incorrect: $incorrect")
+    println("Results: $percentCorrect% correct ($correct:$incorrect)")
     results.forEachIndexed { index, result ->
       println(
         "$index. " +
@@ -122,7 +123,7 @@ class IrisSet(val instances: List<IrisInstance>, val features: List<Feature>) {
       .stream()
       .map { it.classKind!! }
       .collect(Collectors.groupingBy { it: ClassKind -> it })
-    val sortedGroups = groups
+    val sortedGroups: List<Pair<ClassKind, MutableList<ClassKind>>> = groups
       .map { Pair(it.key, it.value) }
       .sortedBy { it.second.size }
 
