@@ -11,10 +11,15 @@ class KNearestNeighbourClassifier {
 
   fun run(trainingFile: String, testFile: String, k: Int) {
     val trainingSet = IrisSet.loadFile(File(trainingFile).toPath())
-
     val testSetTrueAnswers = IrisSet.loadFile(File(testFile).toPath())
-    val testSetCalculatedAnswers =
-      trainingSet.calculateClasses(testSetTrueAnswers.withoutClasses(), k)
+    run(trainingSet, testSetTrueAnswers, k)
+  }
+
+  fun run(trainingSet: IrisSet, testSetTrueAnswers: IrisSet, k: Int) {
+    val testSetCalculatedAnswers = trainingSet.calculateClasses(
+      testSetTrueAnswers.withoutClasses(),
+      k
+    )
 
     val results = getResults(testSetCalculatedAnswers, testSetTrueAnswers)
     val correct = results.filter { it.isCorrect() }.count()
@@ -22,7 +27,12 @@ class KNearestNeighbourClassifier {
 
     println("Results: correct: $correct, incorrect: $incorrect")
     results.forEachIndexed { index, result ->
-      println("$index. result: ${result.resultInstance}, ")
+      println(
+        "$index. " +
+          "isCorrect: ${result.isCorrect()} " +
+          "result: ${result.resultInstance} " +
+          "actualClassKind: ${result.resultInstance.classKind} "
+      )
     }
   }
 
@@ -63,6 +73,10 @@ class IrisSet(val instances: List<IrisInstance>, val features: List<Feature>) {
         .map { IrisInstance.fromLine(it) }
         .collect(Collectors.toList())
 
+      return fromInstances(instances)
+    }
+
+    fun fromInstances(instances: MutableList<IrisInstance>): IrisSet {
       val features = listOf(
         Feature({ it.sepalLength }, instances),
         Feature({ it.sepalWidth }, instances),
@@ -92,13 +106,30 @@ class IrisSet(val instances: List<IrisInstance>, val features: List<Feature>) {
   }
 
   fun calculateClass(instance: IrisInstance, k: Int): ClassKind {
-    if (k < 0) {
+    if (k <= 0) {
       throw IllegalArgumentException(k.toString())
     }
 
-    val sortedInstances = instances.sortedBy { it.distanceTo(instance, this) }
+    val sortedInstances = instances
+      .stream()
+      .sorted(Comparator.comparing {
+        it: IrisInstance -> it.distanceTo(instance, this)
+      })
+      .limit(k.toLong())
+      .collect(Collectors.toList())
 
-    return ClassKind.SETOSA
+    val groups: MutableMap<ClassKind, MutableList<ClassKind>> = sortedInstances
+      .stream()
+      .map { it.classKind!! }
+      .collect(Collectors.groupingBy { it: ClassKind -> it })
+    val sortedGroups = groups
+      .map { Pair(it.key, it.value) }
+      .sortedBy { it.second.size }
+
+    return sortedGroups
+      .last()
+      .second
+      .first()
   }
 }
 

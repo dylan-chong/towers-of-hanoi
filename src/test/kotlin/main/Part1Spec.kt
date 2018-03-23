@@ -8,7 +8,7 @@ import java.util.stream.IntStream
 class Part1Spec : Spek({
 
   IntStream
-    .range(0, 70)
+    .range(1, 70)
     .forEach { k ->
       it("runs with k: $k") {
         val classifier = KNearestNeighbourClassifier()
