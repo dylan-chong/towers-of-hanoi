@@ -10,7 +10,7 @@ fun main(args: Array<String>) {
 
         Some error occurred. Maybe you passed incorrect parameters?
         Try something like:
-        java -jar app.jar part1 trainingFile testFile
+        java -jar submit/app.jar part1 trainingFile testFile
 
     """.trimIndent(), e)
   }
