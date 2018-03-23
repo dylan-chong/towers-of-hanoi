@@ -9,8 +9,10 @@ fun main(args: Array<String>) {
     throw Error("""
 
         Some error occurred. Maybe you passed incorrect parameters?
+
         Try something like:
-        java -jar submit/app.jar part1 trainingFile testFile
+        java -jar submit/app.jar part1 <trainingFile> <testFile> <kValue>
+        java -jar submit/app.jar part1 src/main/resources/ass1-data/part1/iris-training.txt src/main/resources/ass1-data/part1/iris-test.txt 3
 
     """.trimIndent(), e)
   }
@@ -19,7 +21,7 @@ fun main(args: Array<String>) {
 fun acceptInputs(args: Array<String>) {
   when (args[0]) {
     "part1" -> {
-      KNearestNeighbourClassifier().run(args[1], args[2])
+      KNearestNeighbourClassifier().run(args[1], args[2], args[3].toInt())
     }
 
     else -> {

@@ -9,18 +9,21 @@ import java.util.stream.Collectors
 
 class KNearestNeighbourClassifier {
 
-  fun run(trainingFile: String, testFile: String) {
+  fun run(trainingFile: String, testFile: String, k: Int) {
     val trainingSet = IrisSet.loadFile(File(trainingFile).toPath())
 
     val testSetTrueAnswers = IrisSet.loadFile(File(testFile).toPath())
     val testSetCalculatedAnswers =
-      trainingSet.calculateClasses(testSetTrueAnswers.withoutClasses())
+      trainingSet.calculateClasses(testSetTrueAnswers.withoutClasses(), k)
 
     val results = getResults(testSetCalculatedAnswers, testSetTrueAnswers)
     val correct = results.filter { it.isCorrect() }.count()
     val incorrect = results.size - correct
 
-    print("Results: correct: $correct, incorrect: $incorrect")
+    println("Results: correct: $correct, incorrect: $incorrect")
+    results.forEachIndexed { index, result ->
+      println("$index. result: ${result.resultInstance}, ")
+    }
   }
 
   private fun getResults(
@@ -81,19 +84,25 @@ class IrisSet(val instances: List<IrisInstance>, val features: List<Feature>) {
   /**
    * Call this if this is the training set
    */
-  fun calculateClasses(testSetUnclassed: IrisSet): IrisSet {
+  fun calculateClasses(testSetUnclassed: IrisSet, k: Int): IrisSet {
     return IrisSet(
-      testSetUnclassed.instances.map { it.withClass(calculateClass(it)) },
+      testSetUnclassed.instances.map { it.withClass(calculateClass(it, k)) },
       features
     )
   }
 
-  fun calculateClass(instance: IrisInstance): ClassKind {
-    return ClassKind.SETOSA//todo
+  fun calculateClass(instance: IrisInstance, k: Int): ClassKind {
+    if (k < 0) {
+      throw IllegalArgumentException(k.toString())
+    }
+
+    val sortedInstances = instances.sortedBy { it.distanceTo(instance, this) }
+
+    return ClassKind.SETOSA
   }
 }
 
-class IrisInstance(
+data class IrisInstance(
   val sepalLength: Double,
   val sepalWidth: Double,
   val petalLength: Double,
