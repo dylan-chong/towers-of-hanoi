@@ -26,8 +26,8 @@ class KNearestNeighbourClassifier {
     results.forEachIndexed { index, result ->
       println(
         "$index. " +
-          "isCorrect: ${result.isCorrect()} " +
-          "result: ${result.resultInstance} " +
+          "isCorrect: ${result.isCorrect()}, " +
+          "result: ${result.resultInstance}, " +
           "actualClassKind: ${result.resultInstance.classKind} "
       )
     }
