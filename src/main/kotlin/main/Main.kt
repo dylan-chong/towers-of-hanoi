@@ -3,15 +3,17 @@ package main
 import main.part1.KNearestNeighbourRunner
 import main.part2.DecisionTreeRunner
 
+const val run = "java -jar submit/app.jar"
+const val data = "src/main/resources/ass1-data/"
 val instructions = """
 
     Examples of running this program:
 
-    java -jar submit/app.jar part1 <trainingFile> <testFile> <kValue>
-    java -jar submit/app.jar part1 src/main/resources/ass1-data/part1/iris-training.txt src/main/resources/ass1-data/part1/iris-test.txt 3
+    $run part1 <trainingFile> <testFile> <kValue>
+    $run part1 ${data}part1/iris-training.txt ${data}part1/iris-test.txt 3
 
-    java -jar submit/app.jar part2 <trainingFile> <testFile>
-    java -jar submit/app.jar part2 src/main/resources/ass1-data/part2/hepatitis-training.dat src/main/resources/ass1-data/part2/hepatitis-test.dat
+    $run part2 <trainingFile> <testFile>
+    $run part2 ${data}part2/hepatitis-training.dat ${data}part2/hepatitis-test.dat
 
 """.trimIndent()
 
