@@ -1,7 +1,7 @@
 package main
 
 import main.part1.IrisSet
-import main.part1.KNearestNeighbourClassifier
+import main.part1.KNearestNeighbourRunner
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.context
 import org.jetbrains.spek.api.dsl.it
@@ -22,7 +22,7 @@ class Part1Spec : Spek({
       .range(1, 70)
       .forEach { k ->
         it("runs with k: $k") {
-          val classifier = KNearestNeighbourClassifier()
+          val classifier = KNearestNeighbourRunner()
           classifier.run(trainingSet, testSetTrueAnswers, k)
         }
       }

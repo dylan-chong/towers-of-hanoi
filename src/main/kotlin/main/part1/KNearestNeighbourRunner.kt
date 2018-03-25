@@ -3,7 +3,7 @@ package main.part1
 import java.io.File
 import java.lang.IllegalArgumentException
 
-class KNearestNeighbourClassifier {
+class KNearestNeighbourRunner {
 
   fun run(trainingFile: String, testFile: String, k: Int) {
     val trainingSet = IrisSet.loadFile(File(trainingFile).toPath())
@@ -58,4 +58,3 @@ class KNearestNeighbourClassifier {
     }
   }
 }
-
