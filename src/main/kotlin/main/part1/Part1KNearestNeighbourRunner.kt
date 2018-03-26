@@ -3,7 +3,7 @@ package main.part1
 import java.io.File
 import java.lang.IllegalArgumentException
 
-class KNearestNeighbourRunner {
+class Part1KNearestNeighbourRunner {
 
   fun run(trainingFile: String, testFile: String, k: Int) {
     val trainingSet = IrisSet.loadFile(File(trainingFile).toPath())

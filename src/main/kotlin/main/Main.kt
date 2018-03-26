@@ -1,7 +1,7 @@
 package main
 
-import main.part1.KNearestNeighbourRunner
-import main.part2.DecisionTreeRunner
+import main.part1.Part1KNearestNeighbourRunner
+import main.part2.Part2DecisionTreeRunner
 
 const val run = "java -jar submit/app.jar"
 const val data = "src/main/resources/ass1-data/"
@@ -35,11 +35,11 @@ fun main(args: Array<String>) {
 fun acceptInputs(args: Array<String>) {
   when (args[0]) {
     "part1" -> {
-      KNearestNeighbourRunner().run(args[1], args[2], args[3].toInt())
+      Part1KNearestNeighbourRunner().run(args[1], args[2], args[3].toInt())
     }
 
     "part2" -> {
-      DecisionTreeRunner().run(args[1], args[2])
+      Part2DecisionTreeRunner().run(args[1], args[2])
     }
 
     else -> {

@@ -2,7 +2,7 @@ package main.part2
 
 import java.io.File
 
-class DecisionTreeRunner {
+class Part2DecisionTreeRunner {
 
   fun run(trainingFile: String, testFile: String) {
     val trainingData = DecisionTreeData.fromFile(File(trainingFile).toPath())
@@ -12,6 +12,7 @@ class DecisionTreeRunner {
 
   fun run(trainingData: DecisionTreeData, testData: DecisionTreeData) {
     val decisionTree = DecisionTree.newRoot(trainingData)
+    println()
   }
 }
 
