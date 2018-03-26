@@ -10,6 +10,22 @@ class DecisionTree private constructor(
   val parent: DecisionTree?
 ) {
 
+  val children: Set<DecisionTree>
+
+  val isRoot: Boolean
+    get() = parent == null
+
+  init {
+    if (instances.isEmpty()) {
+       throw IllegalArgumentException()
+    }
+    if (isRoot != (featureValue == null && parent == null)) {
+      throw IllegalArgumentException()
+    }
+
+    children = createChildren()
+  }
+
   companion object {
 
     fun newRoot(data: DecisionTreeData): DecisionTree {
@@ -21,16 +37,7 @@ class DecisionTree private constructor(
       )
     }
   }
-
-  val children: Set<DecisionTree>
-
-  init {
-    if (instances.isEmpty()) {
-       throw IllegalArgumentException()
-    }
-    children = createChildren()
-  }
-
+  
   private fun createChildren(): Set<DecisionTree> {
     val possibleFeatures = possibleFeatures()
     if (possibleFeatures.isEmpty()) {
@@ -70,15 +77,15 @@ class DecisionTree private constructor(
   }
 
   private fun usedFeatures(): Stream<Feature> {
-    return if (parent == null) {
-      Stream.empty()
-    } else {
-      Stream
-        .of(
-          parent.usedFeatures(),
-          Stream.of(featureValue!!.feature)
-        )
-        .flatMap { it }
+    if (isRoot) {
+      return Stream.empty()
     }
+
+    return Stream
+      .of(
+        parent!!.usedFeatures(),
+        Stream.of(featureValue!!.feature)
+      )
+      .flatMap { it }
   }
 }
