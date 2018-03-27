@@ -21,10 +21,20 @@ class Part2DecisionTreeRunner {
       )
     }
 
-    val results: List<Pair<Instance, ClassKind>> = testData
+    println(
+      decisionTree
+        .representation()
+        .joinToString(separator = "\n")
+    )
+
+    val results = testData
       .instances
       .map { it to decisionTree.calculateClass(it) }
 
+    printResults(results)
+  }
+
+  private fun printResults(results: List<Pair<Instance, ClassKind>>) {
     val correct = results.count(::isCorrect)
     val incorrect = results.size - correct
     val percentCorrect = 100 * correct / results.size
