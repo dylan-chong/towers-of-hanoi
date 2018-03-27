@@ -11,7 +11,7 @@ data class IrisInstance(
   companion object {
 
     fun fromLine(line: String): IrisInstance {
-      var params = line.split(Regex("\\s+"))
+      val params = line.split(Regex("\\s+"))
       return IrisInstance(
         params[0].toDouble(),
         params[1].toDouble(),

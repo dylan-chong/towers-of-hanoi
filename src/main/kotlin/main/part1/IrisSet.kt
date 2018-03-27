@@ -1,5 +1,6 @@
 package main.part1
 
+import main.part1.IrisInstance.ClassKind
 import java.lang.IllegalArgumentException
 import java.nio.file.Files
 import java.nio.file.Path
@@ -48,7 +49,7 @@ class IrisSet(val instances: List<IrisInstance>, val features: List<Feature>) {
     )
   }
 
-  fun calculateClass(instance: IrisInstance, k: Int): IrisInstance.ClassKind {
+  fun calculateClass(instance: IrisInstance, k: Int): ClassKind {
     if (k <= 0) {
       throw IllegalArgumentException(k.toString())
     }
@@ -61,11 +62,11 @@ class IrisSet(val instances: List<IrisInstance>, val features: List<Feature>) {
       .limit(k.toLong())
       .collect(Collectors.toList())
 
-    val groups: MutableMap<IrisInstance.ClassKind, MutableList<IrisInstance.ClassKind>> = sortedInstances
+    val groups: MutableMap<ClassKind, List<ClassKind>> = sortedInstances
       .stream()
       .map { it.classKind!! }
-      .collect(Collectors.groupingBy { it: IrisInstance.ClassKind -> it })
-    val sortedGroups: List<Pair<IrisInstance.ClassKind, MutableList<IrisInstance.ClassKind>>> = groups
+      .collect(Collectors.groupingBy { it: ClassKind -> it })
+    val sortedGroups: List<Pair<ClassKind, List<ClassKind>>> = groups
       .map { Pair(it.key, it.value) }
       .sortedBy { it.second.size }
 

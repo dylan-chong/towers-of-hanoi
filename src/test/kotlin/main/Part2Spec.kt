@@ -27,6 +27,6 @@ class Part2Spec : Spek({
     val representation = decisionTree
       .representation()
       .joinToString(separator = "\n")
-    println()
+    println(representation)
   }
 })

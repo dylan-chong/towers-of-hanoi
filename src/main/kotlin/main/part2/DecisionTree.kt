@@ -13,6 +13,8 @@ data class DecisionTree private constructor(
   val children: Set<DecisionTree>
   val isRoot: Boolean
     get() = parent == null
+  val isLeaf: Boolean
+    get() = children.isEmpty()
   val depth: Int = if (parent == null) 0 else parent.depth + 1
 
   init {
@@ -39,7 +41,7 @@ data class DecisionTree private constructor(
   }
 
   fun calculateClass(instance: DecisionTreeData.Instance): ClassKind {
-    if (children.isEmpty()) {
+    if (isLeaf) {
       return mostCommonClassKind
     }
 
@@ -49,22 +51,40 @@ data class DecisionTree private constructor(
   }
 
   fun representation(): List<String> {
-    val localRepresentation = if (isRoot) {
-      emptyList()
-    } else {
-      listOf(
-        "${featureValue!!.feature} = ${featureValue.value}:"
-      )
-    }.map { " ".repeat((depth - 1) * 4) + it }
-
     return listOf(
-      localRepresentation,
+      localRepresentation().map { indent(it) },
       children.flatMap { it.representation() }
     ).flatMap { it }
   }
 
+  fun localRepresentation(): List<String> {
+    if (isRoot) {
+      return emptyList()
+    }
+
+    val featureLine = "${featureValue!!.feature} = ${featureValue.value}:"
+    val leafLine by lazy {
+      val probability = instances.count { it.classKind == mostCommonClassKind }
+      val items = instances.count()
+      indent(
+        "Category $mostCommonClassKind, prob = $probability% : /$items",
+        1
+      )
+    }
+
+    return if (isLeaf) {
+      listOf(featureLine, leafLine)
+    } else {
+      listOf(featureLine)
+    }
+  }
+
+  private fun indent(line: String, levels: Int = this.depth - 1): String {
+    return " ".repeat(levels * 4) + line
+  }
+
   private val mostCommonClassKind by lazy {
-    if (children.isNotEmpty()) {
+    if (!isLeaf) {
       throw IllegalStateException()
     }
 
