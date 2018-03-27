@@ -1,5 +1,6 @@
 package main.part2
 
+import main.part2.DecisionTreeData.Instance
 import java.io.File
 
 class Part2DecisionTreeRunner {
@@ -12,7 +13,35 @@ class Part2DecisionTreeRunner {
 
   fun run(trainingData: DecisionTreeData, testData: DecisionTreeData) {
     val decisionTree = DecisionTree.newRoot(trainingData)
-    println()
+
+    if (trainingData.classNames != testData.classNames
+      || trainingData.featureNames != testData.featureNames) {
+      throw IllegalArgumentException(
+        "Training and test datasets are too different"
+      )
+    }
+
+    val results: List<Pair<Instance, ClassKind>> = testData
+      .instances
+      .map { it to decisionTree.calculateClass(it) }
+
+    val correct = results.count(::isCorrect)
+    val incorrect = results.size - correct
+    val percentCorrect = 100 * correct / results.size
+
+    println("Results: $percentCorrect% correct ($correct:$incorrect)")
+    results.forEachIndexed { index, result ->
+      println(
+        "$index. " +
+          "isCorrect: ${isCorrect(result)}, " +
+          "result: ${result.first}, " +
+          "actualClassKind: ${result.second} "
+      )
+    }
+  }
+
+  private fun isCorrect(pair: Pair<Instance, ClassKind>): Boolean {
+    return pair.first.classKind == pair.second
   }
 }
 

@@ -3,7 +3,7 @@ package main.part2
 import java.util.stream.Collectors
 import java.util.stream.Stream
 
-class DecisionTree private constructor(
+data class DecisionTree private constructor(
   val instances: Set<DecisionTreeData.Instance>,
   val allData: DecisionTreeData,
   val featureValue: FeatureValue?,
@@ -38,6 +38,16 @@ class DecisionTree private constructor(
     }
   }
 
+  fun calculateClass(instance: DecisionTreeData.Instance): ClassKind {
+    if (children.isEmpty()) {
+      return mostCommonClassKind
+    }
+
+    return children
+      .find { it.featureValue!! == it.featureValue }!!
+      .calculateClass(instance)
+  }
+
   fun representation(): List<String> {
     val localRepresentation = if (isRoot) {
       emptyList()
@@ -53,6 +63,25 @@ class DecisionTree private constructor(
     ).flatMap { it }
   }
 
+  private val mostCommonClassKind by lazy {
+    if (children.isNotEmpty()) {
+      throw IllegalStateException()
+    }
+
+    val classGroupings = instances
+      .groupBy { it.classKind }
+      .toList()
+
+    if (classGroupings.size != 1) {
+      println("WARNING: Leaf does not have pure instance class kinds: $this")
+    }
+
+    classGroupings
+      .sortedBy { it.second.size }
+      .last()
+      .first
+  }
+
   private fun createChildren(): Set<DecisionTree> {
     val possibleFeatures = possibleFeatures()
     if (possibleFeatures.isEmpty()) {
@@ -62,9 +91,7 @@ class DecisionTree private constructor(
 
     return allData
       .valuesPerFeature[childFeature]!!
-      .map { createChild(childFeature, it) }
-      .filter { it != null }
-      .map { it!! } // Hack to get compilation to work
+      .mapNotNull { createChild(childFeature, it) }
       .toSet()
   }
 
@@ -103,4 +130,5 @@ class DecisionTree private constructor(
       )
       .flatMap { it }
   }
+
 }
