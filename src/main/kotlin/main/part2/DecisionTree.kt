@@ -11,9 +11,9 @@ class DecisionTree private constructor(
 ) {
 
   val children: Set<DecisionTree>
-
   val isRoot: Boolean
     get() = parent == null
+  val depth: Int = if (parent == null) 0 else parent.depth + 1
 
   init {
     if (instances.isEmpty()) {
@@ -37,7 +37,22 @@ class DecisionTree private constructor(
       )
     }
   }
-  
+
+  fun representation(): List<String> {
+    val localRepresentation = if (isRoot) {
+      emptyList()
+    } else {
+      listOf(
+        "${featureValue!!.feature} = ${featureValue.value}:"
+      )
+    }.map { " ".repeat((depth - 1) * 4) + it }
+
+    return listOf(
+      localRepresentation,
+      children.flatMap { it.representation() }
+    ).flatMap { it }
+  }
+
   private fun createChildren(): Set<DecisionTree> {
     val possibleFeatures = possibleFeatures()
     if (possibleFeatures.isEmpty()) {
