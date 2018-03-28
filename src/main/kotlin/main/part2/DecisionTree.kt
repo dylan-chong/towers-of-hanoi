@@ -1,10 +1,11 @@
 package main.part2
 
+import main.part2.DecisionTreeData.Instance
 import java.util.stream.Collectors
 import java.util.stream.Stream
 
 data class DecisionTree private constructor(
-  val instances: Set<DecisionTreeData.Instance>,
+  val instances: Set<Instance>,
   val allData: DecisionTreeData,
   val featureValue: FeatureValue?,
   val parent: DecisionTree?
@@ -40,14 +41,26 @@ data class DecisionTree private constructor(
     }
   }
 
-  fun calculateClass(instance: DecisionTreeData.Instance): ClassKind {
+  fun calculateClass(instance: Instance): ClassKind {
     if (isLeaf) {
       return mostCommonClassKind
     }
 
-    return children
-      .find { it.featureValue!! == it.featureValue }!!
-      .calculateClass(instance)
+    val child = children.find {
+      val (feature, value) = it.featureValue!!
+      instance.featureNameToValue[feature] == value
+    }
+
+    !isLeaf || throw AssertionError()
+    return if (child == null) {
+      println(
+        "WARNING: No matching leaf for instance $instance. " +
+          "There must not be enough data from training set."
+      )
+      mostCommonClassKind
+    } else {
+      child.calculateClass(instance)
+    }
   }
 
   fun representation(): List<String> {
@@ -90,10 +103,6 @@ data class DecisionTree private constructor(
   }
 
   private val mostCommonClassKind by lazy {
-    if (!isLeaf) {
-      throw IllegalStateException()
-    }
-
     val classGroupings = instances
       .groupBy { it.classKind }
       .toList()
