@@ -57,26 +57,32 @@ data class DecisionTree private constructor(
     ).flatMap { it }
   }
 
-  fun localRepresentation(): List<String> {
+  private fun localRepresentation(): List<String> {
     if (isRoot) {
       return emptyList()
     }
 
     val featureLine = "${featureValue!!.feature} = ${featureValue.value}:"
-    val leafLine by lazy {
-      val probability = instances.count { it.classKind == mostCommonClassKind }
-      val items = instances.count()
-      indent(
-        "Category $mostCommonClassKind, prob = $probability% : /$items",
-        1
-      )
-    }
+    val leafLine by lazy { leafRepresentation() }
 
     return if (isLeaf) {
       listOf(featureLine, leafLine)
     } else {
       listOf(featureLine)
     }
+  }
+
+  private fun leafRepresentation(): String {
+    if (!isLeaf) {
+      throw IllegalStateException()
+    }
+
+    val probability = instances.count { it.classKind == mostCommonClassKind }
+    val items = instances.count()
+    return indent(
+      "Category $mostCommonClassKind, prob = $probability% : /$items",
+      1
+    )
   }
 
   private fun indent(line: String, levels: Int = this.depth - 1): String {

@@ -21,13 +21,6 @@ data class DecisionTreeData(
       }
       .toMap()
   }
-  val possibleFeatureValues: Set<FeatureValue> by lazy {
-    valuesPerFeature
-      .flatMap { entry ->
-        entry.value.map { value -> FeatureValue(entry.key, value) }
-      }
-      .toSet()
-  }
 
   init {
     (classNames.isNotEmpty() && instances.isNotEmpty()) || throwInvalid()
