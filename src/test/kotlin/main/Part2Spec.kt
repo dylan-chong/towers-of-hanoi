@@ -3,6 +3,7 @@ package main
 import main.part2.DecisionTree
 import main.part2.DecisionTreeData
 import main.part2.Part2DecisionTreeRunner
+import main.part2.SimpleChildFactory
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.it
 import java.io.File
@@ -21,7 +22,8 @@ class Part2Spec : Spek({
       DecisionTreeData.fromFile(
         File("src/main/resources/ass1-data/part2/hepatitis-training.dat")
           .toPath()
-      )
+      ),
+      SimpleChildFactory()
     )
 
     val representation = decisionTree
