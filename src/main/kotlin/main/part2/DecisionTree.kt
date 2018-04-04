@@ -72,6 +72,25 @@ data class DecisionTree(
     ).flatMap { it }
   }
 
+  fun possibleFeatures(): Set<Feature> {
+    val used = usedFeatures().collect(Collectors.toSet())
+    val all = allData.featureNames
+    return all - used
+  }
+
+  fun usedFeatures(): Stream<Feature> {
+    if (isRoot) {
+      return Stream.empty()
+    }
+
+    return Stream
+      .of(
+        parent!!.usedFeatures(),
+        Stream.of(featureValue!!.feature)
+      )
+      .flatMap { it }
+  }
+
   private fun localRepresentation(): List<String> {
     if (isRoot) {
       return emptyList()
@@ -122,24 +141,4 @@ data class DecisionTree(
   private fun createChildren(): Set<DecisionTree> {
     return childFactory.createFor(this)
   }
-
-  fun possibleFeatures(): Set<Feature> {
-    val used = usedFeatures().collect(Collectors.toSet())
-    val all = allData.featureNames
-    return all - used
-  }
-
-  fun usedFeatures(): Stream<Feature> {
-    if (isRoot) {
-      return Stream.empty()
-    }
-
-    return Stream
-      .of(
-        parent!!.usedFeatures(),
-        Stream.of(featureValue!!.feature)
-      )
-      .flatMap { it }
-  }
-
 }
