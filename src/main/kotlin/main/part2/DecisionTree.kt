@@ -4,11 +4,12 @@ import main.part2.DecisionTreeData.Instance
 import java.util.stream.Collectors
 import java.util.stream.Stream
 
-data class DecisionTree private constructor(
+data class DecisionTree(
   val instances: Set<Instance>,
   val allData: DecisionTreeData,
   val featureValue: FeatureValue?,
-  val parent: DecisionTree?
+  val parent: DecisionTree?,
+  val childFactory: ChildFactory
 ) {
 
   val children: Set<DecisionTree>
@@ -31,12 +32,13 @@ data class DecisionTree private constructor(
 
   companion object {
 
-    fun newRoot(data: DecisionTreeData): DecisionTree {
+    fun newRoot(data: DecisionTreeData, childFactory: ChildFactory): DecisionTree {
       return DecisionTree(
         data.instances.toSet(),
         data,
         null,
-        null
+        null,
+        childFactory
       )
     }
   }
@@ -118,42 +120,16 @@ data class DecisionTree private constructor(
   }
 
   private fun createChildren(): Set<DecisionTree> {
-    val possibleFeatures = possibleFeatures()
-    if (possibleFeatures.isEmpty()) {
-      return emptySet()
-    }
-    val childFeature = possibleFeatures.first()
-
-    return allData
-      .valuesPerFeature[childFeature]!!
-      .mapNotNull { createChild(childFeature, it) }
-      .toSet()
+    return childFactory.createFor(this)
   }
 
-  private fun createChild(feature: Feature, value: Value): DecisionTree? {
-    val filteredInstances = instances.filter {
-      it.featureNameToValue[feature] == value
-    }
-
-    if (filteredInstances.isEmpty()) {
-      return null
-    }
-
-    return DecisionTree(
-      filteredInstances.toSet(),
-      allData,
-      FeatureValue(feature, value),
-      this
-    )
-  }
-
-  private fun possibleFeatures(): Set<Feature> {
+  fun possibleFeatures(): Set<Feature> {
     val used = usedFeatures().collect(Collectors.toSet())
     val all = allData.featureNames
     return all - used
   }
 
-  private fun usedFeatures(): Stream<Feature> {
+  fun usedFeatures(): Stream<Feature> {
     if (isRoot) {
       return Stream.empty()
     }

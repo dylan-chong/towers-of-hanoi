@@ -11,6 +11,7 @@ import java.util.stream.IntStream
 class Part1Spec : Spek({
 
   context("given the training and test sets") {
+
     val trainingSet = IrisSet.loadFile(
       File("src/main/resources/ass1-data/part1/iris-training.txt").toPath()
     )

@@ -12,7 +12,10 @@ class Part2DecisionTreeRunner {
   }
 
   fun run(trainingData: DecisionTreeData, testData: DecisionTreeData) {
-    val decisionTree = DecisionTree.newRoot(trainingData)
+    val simpleDecisionTree = DecisionTree.newRoot(
+      trainingData,
+      SimpleChildFactory()
+    )
 
     if (trainingData.classNames != testData.classNames
       || trainingData.featureNames != testData.featureNames) {
@@ -22,14 +25,14 @@ class Part2DecisionTreeRunner {
     }
 
     println(
-      decisionTree
+      simpleDecisionTree
         .representation()
         .joinToString(separator = "\n")
     )
 
     val results = testData
       .instances
-      .map { it to decisionTree.calculateClass(it) }
+      .map { it to simpleDecisionTree.calculateClass(it) }
 
     printResults(results)
   }
