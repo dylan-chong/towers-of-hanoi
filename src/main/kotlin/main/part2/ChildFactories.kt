@@ -89,7 +89,7 @@ class ProperChildFactory: ChildFactory {
       .count()
 
     return trees
-      .map { (it.instances.size / totalInstances) * purityOf(it) }
+      .map { (it.instances.size.toDouble() / totalInstances) * purityOf(it) }
       .sum()
   }
 
