@@ -2,6 +2,7 @@ package main
 
 import main.part1.Part1KNearestNeighbourRunner
 import main.part2.Part2DecisionTreeRunner
+import main.part2.ProperChildFactory
 
 const val run = "java -jar submit/app.jar"
 const val data = "src/main/resources/ass1-data/"
@@ -39,7 +40,9 @@ fun acceptInputs(args: Array<String>) {
     }
 
     "part2" -> {
-      Part2DecisionTreeRunner().run(args[1], args[2])
+      Part2DecisionTreeRunner().run(args[1], args[2]) {
+        listOf(ProperChildFactory())
+      }
     }
 
     else -> {

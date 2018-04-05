@@ -5,13 +5,21 @@ import java.io.File
 
 class Part2DecisionTreeRunner {
 
-  fun run(trainingFile: String, testFile: String) {
+  fun run(
+    trainingFile: String,
+    testFile: String,
+    childFactoryFactories: () -> Collection<ChildFactory>
+  ) {
     val trainingData = DecisionTreeData.fromFile(File(trainingFile).toPath())
     val testData = DecisionTreeData.fromFile(File(testFile).toPath())
-    run(trainingData, testData)
+    run(trainingData, testData, childFactoryFactories)
   }
 
-  fun run(trainingData: DecisionTreeData, testData: DecisionTreeData) {
+  fun run(
+    trainingData: DecisionTreeData,
+    testData: DecisionTreeData,
+    childFactoryFactories: () -> Collection<ChildFactory>
+  ) {
     if (trainingData.classNames != testData.classNames
       || trainingData.featureNames != testData.featureNames) {
       throw IllegalArgumentException(
@@ -19,28 +27,23 @@ class Part2DecisionTreeRunner {
       )
     }
 
-    val simpleDecisionTree = DecisionTree.newRoot(
-      trainingData,
-      SimpleChildFactory()
-    )
-    val properTree = DecisionTree.newRoot(
-      trainingData,
-      ProperChildFactory()
-    )
+    childFactoryFactories()
+      .map { DecisionTree.newRoot(trainingData, it) }
+      .forEach { tree ->
+        println("Results for ${tree.childFactory.javaClass.simpleName}")
 
-    listOf(simpleDecisionTree, properTree).forEach { tree ->
-      println(
-        tree
-          .representation()
-          .joinToString(separator = "\n")
-      )
+        println(
+          tree
+            .representation()
+            .joinToString(separator = "\n")
+        )
 
-      val results = testData
-        .instances
-        .map { it to tree.calculateClass(it) }
+        val results = testData
+          .instances
+          .map { it to tree.calculateClass(it) }
 
-      printResults(results)
-    }
+        printResults(results)
+      }
   }
 
   private fun printResults(results: List<Pair<Instance, ClassKind>>) {
