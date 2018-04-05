@@ -112,7 +112,9 @@ data class DecisionTree(
       return emptyList()
     }
 
-    val featureLine = "${featureValue!!.feature} = ${featureValue.value}:"
+    val (feature, value) = featureValue!!
+
+    val featureLine = "$feature = $value: /${instances.size}"
     val leafLine by lazy { leafRepresentation() }
 
     return if (isLeaf) {
@@ -127,8 +129,12 @@ data class DecisionTree(
       throw IllegalStateException()
     }
 
-    val probability = instances.count { it.classKind == mostCommonClassKind }
     val items = instances.count()
+    val probability = instances
+      .count { it.classKind == mostCommonClassKind }
+      .div(items)
+      .times(100)
+
     return indent(
       "Category $mostCommonClassKind, prob = $probability% : /$items",
       1
