@@ -59,10 +59,12 @@ class SimpleChildFactory: ChildFactory {
 class ProperChildFactory: ChildFactory {
 
   override fun createFor(tree: DecisionTree): Set<DecisionTree> {
-    return if (tree.instances.isEmpty()) emptySet()
-    else if (tree.instancesArePure()) emptySet()
-    else if (tree.possibleFeatures().isEmpty()) emptySet()
-    else bestChildrenByPurity(tree)
+    return when {
+      tree.instances.isEmpty() -> emptySet()
+      tree.instancesArePure -> emptySet()
+      tree.possibleFeatures().isEmpty() -> emptySet()
+      else -> bestChildrenByPurity(tree)
+    }
   }
 
   private fun bestChildrenByPurity(tree: DecisionTree): Set<DecisionTree> {

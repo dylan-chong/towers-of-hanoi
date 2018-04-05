@@ -55,6 +55,10 @@ data class DecisionTree(
       .first
   }
 
+  val instancesArePure by lazy {
+    classGroupings.size == 1
+  }
+
   fun calculateClass(instance: Instance): ClassKind {
     if (isLeaf) {
       return mostCommonClassKind
@@ -101,12 +105,6 @@ data class DecisionTree(
         Stream.of(featureValue!!.feature)
       )
       .flatMap { it }
-  }
-
-  fun instancesArePure(): Boolean {
-    return instances
-      .groupBy { it.classKind }
-      .size == 1
   }
 
   private fun localRepresentation(): List<String> {
