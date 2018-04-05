@@ -30,23 +30,26 @@ class Part2DecisionTreeRunner {
     childFactoryFactories()
       .map { DecisionTree.newRoot(trainingData, it) }
       .forEach { tree ->
-        println("Results for ${tree.childFactory.javaClass.simpleName}")
-
-        println(
-          tree
-            .representation()
-            .joinToString(separator = "\n")
-        )
-
         val results = testData
           .instances
           .map { it to tree.calculateClass(it) }
 
-        printResults(results)
+        printResults(tree, results)
       }
   }
 
-  private fun printResults(results: List<Pair<Instance, ClassKind>>) {
+  private fun printResults(
+    tree: DecisionTree,
+    results: List<Pair<Instance, ClassKind>>
+  ) {
+    println("Results for ${tree.childFactory.javaClass.simpleName}")
+
+    println(
+      tree
+        .representation()
+        .joinToString(separator = "\n")
+    )
+
     val correct = results.count(::isCorrect)
     val incorrect = results.size - correct
     val percentCorrect = 100 * correct / results.size
