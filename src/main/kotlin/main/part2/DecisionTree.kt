@@ -3,6 +3,7 @@ package main.part2
 import main.part2.DecisionTreeData.Instance
 import java.util.stream.Collectors
 import java.util.stream.Stream
+import kotlin.math.roundToInt
 
 data class DecisionTree(
   val instances: Set<Instance>,
@@ -132,8 +133,10 @@ data class DecisionTree(
     val items = instances.count()
     val probability = instances
       .count { it.classKind == mostCommonClassKind }
+      .toDouble()
       .div(items)
       .times(100)
+      .roundToInt()
 
     return indent(
       "Category $mostCommonClassKind, prob = $probability% : /$items",

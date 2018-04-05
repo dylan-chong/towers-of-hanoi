@@ -73,7 +73,7 @@ class Part2DecisionTreeRunner {
       .map { it.second }
       .toSet()
       .forEach { classKind: ClassKind ->
-        val matchingResults = results.filter { it.second == classKind }
+        val matchingResults = results.filter { it.first.classKind == classKind }
         val correct = matchingResults.count { isCorrect(it) }
         val total = matchingResults.count()
         println("$classKind: $correct correct out of $total")
