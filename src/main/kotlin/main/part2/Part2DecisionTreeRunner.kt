@@ -29,12 +29,11 @@ class Part2DecisionTreeRunner {
     )
 
     listOf(simpleDecisionTree, properTree).forEach { tree ->
-
-    println(
-      tree
-        .representation()
-        .joinToString(separator = "\n")
-    )
+      println(
+        tree
+          .representation()
+          .joinToString(separator = "\n")
+      )
 
       val results = testData
         .instances
@@ -50,6 +49,9 @@ class Part2DecisionTreeRunner {
     val percentCorrect = 100 * correct / results.size
 
     println("Results: $percentCorrect% correct ($correct:$incorrect)")
+    printLiveDieTotals(results)
+    println()
+
     results.forEachIndexed { index, result ->
       println(
         "$index. " +
@@ -58,6 +60,18 @@ class Part2DecisionTreeRunner {
           "actualClassKind: ${result.second} "
       )
     }
+  }
+
+  private fun printLiveDieTotals(results: List<Pair<Instance, ClassKind>>) {
+    results
+      .map { it.second }
+      .toSet()
+      .forEach { classKind: ClassKind ->
+        val matchingResults = results.filter { it.second == classKind }
+        val correct = matchingResults.count { isCorrect(it) }
+        val total = matchingResults.count()
+        println("$classKind: $correct correct out of $total")
+      }
   }
 
   private fun isCorrect(pair: Pair<Instance, ClassKind>): Boolean {
