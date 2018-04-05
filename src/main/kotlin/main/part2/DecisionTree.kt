@@ -12,7 +12,6 @@ data class DecisionTree(
   val childFactory: ChildFactory
 ) {
 
-  val children: Set<DecisionTree>
   val isRoot: Boolean
     get() = parent == null
   val isLeaf: Boolean
@@ -20,14 +19,9 @@ data class DecisionTree(
   val depth: Int = if (parent == null) 0 else parent.depth + 1
 
   init {
-    if (instances.isEmpty()) {
-       throw IllegalArgumentException()
-    }
     if (isRoot != (featureValue == null && parent == null)) {
       throw IllegalArgumentException()
     }
-
-    children = createChildren()
   }
 
   companion object {
@@ -41,6 +35,24 @@ data class DecisionTree(
         childFactory
       )
     }
+  }
+
+  val children by lazy { childFactory.createFor(this) }
+
+  val classGroupings by lazy {
+    instances.groupBy { it.classKind }
+  }
+
+  val mostCommonClassKind by lazy {
+    if (classGroupings.size != 1) {
+      println("WARNING: Leaf does not have pure instance class kinds: $this")
+    }
+
+    classGroupings
+      .toList()
+      .sortedBy { it.second.size }
+      .last()
+      .first
   }
 
   fun calculateClass(instance: Instance): ClassKind {
@@ -91,6 +103,12 @@ data class DecisionTree(
       .flatMap { it }
   }
 
+  fun instancesArePure(): Boolean {
+    return instances
+      .groupBy { it.classKind }
+      .size == 1
+  }
+
   private fun localRepresentation(): List<String> {
     if (isRoot) {
       return emptyList()
@@ -121,24 +139,5 @@ data class DecisionTree(
 
   private fun indent(line: String, levels: Int = this.depth - 1): String {
     return " ".repeat(levels * 4) + line
-  }
-
-  private val mostCommonClassKind by lazy {
-    val classGroupings = instances
-      .groupBy { it.classKind }
-      .toList()
-
-    if (classGroupings.size != 1) {
-      println("WARNING: Leaf does not have pure instance class kinds: $this")
-    }
-
-    classGroupings
-      .sortedBy { it.second.size }
-      .last()
-      .first
-  }
-
-  private fun createChildren(): Set<DecisionTree> {
-    return childFactory.createFor(this)
   }
 }

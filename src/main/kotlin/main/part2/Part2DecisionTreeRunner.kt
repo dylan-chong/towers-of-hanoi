@@ -12,11 +12,6 @@ class Part2DecisionTreeRunner {
   }
 
   fun run(trainingData: DecisionTreeData, testData: DecisionTreeData) {
-    val simpleDecisionTree = DecisionTree.newRoot(
-      trainingData,
-      SimpleChildFactory()
-    )
-
     if (trainingData.classNames != testData.classNames
       || trainingData.featureNames != testData.featureNames) {
       throw IllegalArgumentException(
@@ -24,17 +19,29 @@ class Part2DecisionTreeRunner {
       )
     }
 
+    val simpleDecisionTree = DecisionTree.newRoot(
+      trainingData,
+      SimpleChildFactory()
+    )
+    val properTree = DecisionTree.newRoot(
+      trainingData,
+      ProperChildFactory()
+    )
+
+    listOf(simpleDecisionTree, properTree).forEach { tree ->
+
     println(
-      simpleDecisionTree
+      tree
         .representation()
         .joinToString(separator = "\n")
     )
 
-    val results = testData
-      .instances
-      .map { it to simpleDecisionTree.calculateClass(it) }
+      val results = testData
+        .instances
+        .map { it to tree.calculateClass(it) }
 
-    printResults(results)
+      printResults(results)
+    }
   }
 
   private fun printResults(results: List<Pair<Instance, ClassKind>>) {
