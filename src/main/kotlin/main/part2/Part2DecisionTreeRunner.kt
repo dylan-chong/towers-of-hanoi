@@ -3,22 +3,35 @@ package main.part2
 import main.part2.DecisionTreeData.Instance
 import java.io.File
 
+typealias ClassifierFactory = (DecisionTreeData) -> Classifier
+
 class Part2DecisionTreeRunner {
+
+  val defaultFactories: Collection<ClassifierFactory> by lazy {
+    listOf(
+      { it: DecisionTreeData ->
+        BaselineClassifier(it)
+      },
+      { it: DecisionTreeData ->
+        DecisionTree.newRoot(it, ProperChildFactory())
+      }
+    )
+  }
 
   fun run(
     trainingFile: String,
     testFile: String,
-    childFactoryFactories: () -> Collection<ChildFactory>
+    treeFactories: Collection<ClassifierFactory> = defaultFactories
   ) {
     val trainingData = DecisionTreeData.fromFile(File(trainingFile).toPath())
     val testData = DecisionTreeData.fromFile(File(testFile).toPath())
-    run(trainingData, testData, childFactoryFactories)
+    run(trainingData, testData, treeFactories)
   }
 
   fun run(
     trainingData: DecisionTreeData,
     testData: DecisionTreeData,
-    childFactoryFactories: () -> Collection<ChildFactory>
+    treeFactories: Collection<ClassifierFactory> = defaultFactories
   ) {
     if (trainingData.classNames != testData.classNames
       || trainingData.featureNames != testData.featureNames) {
@@ -27,28 +40,31 @@ class Part2DecisionTreeRunner {
       )
     }
 
-    childFactoryFactories()
-      .map { DecisionTree.newRoot(trainingData, it) }
-      .forEach { tree ->
+    treeFactories
+      .map { it(trainingData) }
+      .forEach { classifier ->
         val results = testData
           .instances
-          .map { it to tree.calculateClass(it) }
+          .map { it to classifier.calculateClass(it) }
 
-        printResults(tree, results)
+        printResults(
+          classifier.name(),
+          classifier
+            .representation()
+            .joinToString(separator = "\n"),
+          results
+        )
       }
   }
 
   private fun printResults(
-    tree: DecisionTree,
+    title: String,
+    description: String,
     results: List<Pair<Instance, ClassKind>>
   ) {
-    println("Results for ${tree.childFactory.javaClass.simpleName}")
+    println("Results for $title")
 
-    println(
-      tree
-        .representation()
-        .joinToString(separator = "\n")
-    )
+    println(description)
 
     val correct = results.count(::isCorrect)
     val incorrect = results.size - correct

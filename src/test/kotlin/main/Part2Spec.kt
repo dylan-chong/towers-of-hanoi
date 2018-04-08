@@ -7,26 +7,36 @@ import java.io.File
 
 class Part2Spec : Spek({
 
-  listOf(SimpleChildFactory(), ProperChildFactory())
-    .forEach { factory ->
-      val suffix = "for factory ${factory.javaClass.simpleName}"
+  listOf(
+    "DecisionTree with SimpleChildFactory" to { it: DecisionTreeData ->
+      DecisionTree.newRoot(it, SimpleChildFactory())
+    },
+    "DecisionTree with ProperChildFactory" to { it: DecisionTreeData ->
+      DecisionTree.newRoot(it, ProperChildFactory())
+    },
+    "BaselineClassifier" to { it: DecisionTreeData ->
+      BaselineClassifier(it)
+    }
+  )
+    .forEach { pair ->
+      val (name, factory) = pair
+      val suffix = "using $name"
 
       it("does not crash $suffix") {
         Part2DecisionTreeRunner().run(
           "src/main/resources/ass1-data/part2/hepatitis-training.dat",
           "src/main/resources/ass1-data/part2/hepatitis-test.dat",
-          { listOf(factory) }
+          listOf(factory)
         )
       }
 
       it("does not crash when creating the representation $suffix") {
-        val decisionTree = DecisionTree.newRoot(
-          DecisionTreeData.fromFile(
-            File("src/main/resources/ass1-data/part2/hepatitis-training.dat")
-              .toPath()
-          ),
-          factory
+        val data = DecisionTreeData.fromFile(
+          File("src/main/resources/ass1-data/part2/hepatitis-training.dat")
+            .toPath()
         )
+
+        val decisionTree = factory(data)
 
         val representation = decisionTree
           .representation()

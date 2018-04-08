@@ -11,10 +11,9 @@ data class DecisionTree(
   val featureValue: FeatureValue?,
   val parent: DecisionTree?,
   val childFactory: ChildFactory
-) {
+) : Classifier {
 
-  val isRoot: Boolean
-    get() = parent == null
+  val isRoot = parent == null
   val isLeaf: Boolean
     get() = children.isEmpty()
   val depth: Int = if (parent == null) 0 else parent.depth + 1
@@ -60,7 +59,7 @@ data class DecisionTree(
     classGroupings.size == 1
   }
 
-  fun calculateClass(instance: Instance): ClassKind {
+  override fun calculateClass(instance: Instance): ClassKind {
     if (isLeaf) {
       return mostCommonClassKind
     }
@@ -82,7 +81,11 @@ data class DecisionTree(
     }
   }
 
-  fun representation(): List<String> {
+  override fun name(): String {
+    return "${javaClass.simpleName} with ${childFactory.javaClass.simpleName}"
+  }
+
+  override fun representation(): List<String> {
     return listOf(
       localRepresentation().map { indent(it) },
       children.flatMap { it.representation() }
