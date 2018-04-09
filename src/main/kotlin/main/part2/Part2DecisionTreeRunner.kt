@@ -59,12 +59,11 @@ class Part2DecisionTreeRunner {
 
   private fun printResults(
     title: String,
-    description: String,
+    representation: String,
     results: List<Pair<Instance, ClassKind>>
   ) {
-    println("Results for $title")
-
-    println(description)
+    println("# Results for $title")
+    println("Classifier representation: $representation")
 
     val correct = results.count(::isCorrect)
     val incorrect = results.size - correct
@@ -74,6 +73,7 @@ class Part2DecisionTreeRunner {
     printLiveDieTotals(results)
     println()
 
+    println("## Results per instance:")
     results.forEachIndexed { index, result ->
       println(
         "$index. " +
@@ -82,6 +82,8 @@ class Part2DecisionTreeRunner {
           "actualClassKind: ${result.second} "
       )
     }
+
+    println()
   }
 
   private fun printLiveDieTotals(results: List<Pair<Instance, ClassKind>>) {

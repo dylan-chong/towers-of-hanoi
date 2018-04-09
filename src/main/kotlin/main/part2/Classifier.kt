@@ -16,7 +16,6 @@ class BaselineClassifier(val data: DecisionTreeData) : Classifier {
       .instances
       .groupBy { it.classKind }
       .toList()
-      .asSequence()
       .sortedBy { it.second.size }
       .last()
       .first
@@ -33,5 +32,4 @@ class BaselineClassifier(val data: DecisionTreeData) : Classifier {
   override fun representation(): List<String> {
     return listOf("mostCommonClassKind: $mostCommonClassKind")
   }
-
 }
