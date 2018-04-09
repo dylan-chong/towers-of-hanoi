@@ -147,3 +147,161 @@ Use the K-Means-Clustering method:
 
 # Part 2
 
+These are the results for running part two:
+
+    # Results for BaselineClassifier
+    Classifier representation: mostCommonClassKind: live
+    Results: 85% correct (23:4)
+    live: 23 correct out of 23
+
+    ## Results per instance:
+    0. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=true, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=false, SPLEENPALPABLE=false, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=false, HISTOLOGY=true}), actualClassKind: live 
+    1. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=false, BIGLIVER=false, FIRMLIVER=false, SPLEENPALPABLE=false, SPIDERS=false, ASCITES=true, VARICES=true, BILIRUBIN=true, SGOT=false, HISTOLOGY=false}), actualClassKind: live 
+    2. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=true, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=false, HISTOLOGY=true}), actualClassKind: live 
+    3. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=true, FEMALE=false, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=true, ANOREXIA=true, BIGLIVER=false, FIRMLIVER=false, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=true, SGOT=false, HISTOLOGY=false}), actualClassKind: live 
+    4. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=true, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=false, HISTOLOGY=false}), actualClassKind: live 
+    5. isCorrect: false, result: Instance(classKind=die, featureNameToValue={AGE=false, FEMALE=false, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=false, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=false, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=true, SGOT=true, HISTOLOGY=true}), actualClassKind: live 
+    6. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=true, FEMALE=false, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=false, HISTOLOGY=false}), actualClassKind: live 
+    7. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=true, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=false, MALAISE=true, ANOREXIA=true, BIGLIVER=false, FIRMLIVER=false, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=true, SGOT=false, HISTOLOGY=true}), actualClassKind: live 
+    8. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=false, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=true, HISTOLOGY=false}), actualClassKind: live 
+    9. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=false, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=false, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=true, SGOT=true, HISTOLOGY=false}), actualClassKind: live 
+    10. isCorrect: false, result: Instance(classKind=die, featureNameToValue={AGE=false, FEMALE=false, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=false, BIGLIVER=true, FIRMLIVER=false, SPLEENPALPABLE=true, SPIDERS=false, ASCITES=false, VARICES=false, BILIRUBIN=true, SGOT=false, HISTOLOGY=true}), actualClassKind: live 
+    11. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=true, SGOT=true, HISTOLOGY=true}), actualClassKind: live 
+    12. isCorrect: false, result: Instance(classKind=die, featureNameToValue={AGE=true, FEMALE=false, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=false, ASCITES=false, VARICES=true, BILIRUBIN=true, SGOT=false, HISTOLOGY=true}), actualClassKind: live 
+    13. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=true, FEMALE=false, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=true, BIGLIVER=false, FIRMLIVER=false, SPLEENPALPABLE=true, SPIDERS=false, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=false, HISTOLOGY=true}), actualClassKind: live 
+    14. isCorrect: false, result: Instance(classKind=die, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=false, BIGLIVER=true, FIRMLIVER=false, SPLEENPALPABLE=true, SPIDERS=false, ASCITES=false, VARICES=false, BILIRUBIN=true, SGOT=false, HISTOLOGY=true}), actualClassKind: live 
+    15. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=true, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=true, SGOT=true, HISTOLOGY=false}), actualClassKind: live 
+    16. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=true, FEMALE=true, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=true, ANOREXIA=true, BIGLIVER=false, FIRMLIVER=false, SPLEENPALPABLE=false, SPIDERS=false, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=true, HISTOLOGY=true}), actualClassKind: live 
+    17. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=true, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=false, BIGLIVER=false, FIRMLIVER=false, SPLEENPALPABLE=false, SPIDERS=false, ASCITES=true, VARICES=true, BILIRUBIN=true, SGOT=false, HISTOLOGY=false}), actualClassKind: live 
+    18. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=false, SPLEENPALPABLE=true, SPIDERS=false, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=true, HISTOLOGY=true}), actualClassKind: live 
+    19. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=false, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=false, HISTOLOGY=false}), actualClassKind: live 
+    20. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=true, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=false, HISTOLOGY=true}), actualClassKind: live 
+    21. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=false, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=false, ASCITES=true, VARICES=false, BILIRUBIN=true, SGOT=false, HISTOLOGY=false}), actualClassKind: live 
+    22. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=true, FEMALE=false, STEROID=false, ANTIVIRALS=false, FATIGUE=true, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=false, HISTOLOGY=false}), actualClassKind: live 
+    23. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=true, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=false, SPLEENPALPABLE=false, SPIDERS=false, ASCITES=false, VARICES=true, BILIRUBIN=false, SGOT=false, HISTOLOGY=true}), actualClassKind: live 
+    24. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=false, FATIGUE=false, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=false, SPLEENPALPABLE=false, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=true, SGOT=false, HISTOLOGY=false}), actualClassKind: live 
+    25. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=true, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=false, HISTOLOGY=false}), actualClassKind: live 
+    26. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=true, FEMALE=false, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=false, VARICES=true, BILIRUBIN=true, SGOT=false, HISTOLOGY=true}), actualClassKind: live 
+
+    # Results for DecisionTree with ProperChildFactory
+    Classifier representation: FATIGUE = false: /69
+        BIGLIVER = false: /12
+            SGOT = false: /8
+                Category live, prob = 100% : /8
+            SGOT = true: /4
+                ASCITES = true: /3
+                    Category die, prob = 100% : /3
+                ASCITES = false: /1
+                    Category live, prob = 100% : /1
+        BIGLIVER = true: /57
+            VARICES = true: /46
+                AGE = false: /36
+                    ASCITES = true: /31
+                        BILIRUBIN = false: /15
+                            MALAISE = false: /8
+                                HISTOLOGY = true: /1
+                                    Category die, prob = 100% : /1
+                                HISTOLOGY = false: /7
+                                    Category live, prob = 100% : /7
+                            MALAISE = true: /7
+                                SPIDERS = true: /5
+                                    Category live, prob = 100% : /5
+                                SPIDERS = false: /2
+                                    STEROID = false: /1
+                                        Category live, prob = 100% : /1
+                                    STEROID = true: /1
+                                        Category die, prob = 100% : /1
+                        BILIRUBIN = true: /16
+                            SPIDERS = true: /13
+                                ANTIVIRALS = true: /11
+                                    Category live, prob = 100% : /11
+                                ANTIVIRALS = false: /2
+                                    FIRMLIVER = false: /1
+                                        Category die, prob = 100% : /1
+                                    FIRMLIVER = true: /1
+                                        Category live, prob = 100% : /1
+                            SPIDERS = false: /3
+                                STEROID = false: /1
+                                    Category die, prob = 100% : /1
+                                STEROID = true: /2
+                                    Category live, prob = 100% : /2
+                    ASCITES = false: /5
+                        STEROID = false: /3
+                            ANOREXIA = false: /2
+                                Category live, prob = 100% : /2
+                            ANOREXIA = true: /1
+                                Category die, prob = 100% : /1
+                        STEROID = true: /2
+                            Category die, prob = 100% : /2
+                AGE = true: /10
+                    ANOREXIA = false: /1
+                        Category die, prob = 100% : /1
+                    ANOREXIA = true: /9
+                        SPLEENPALPABLE = true: /8
+                            Category live, prob = 100% : /8
+                        SPLEENPALPABLE = false: /1
+                            Category die, prob = 100% : /1
+            VARICES = false: /11
+                FEMALE = false: /10
+                    AGE = false: /7
+                        Category die, prob = 100% : /7
+                    AGE = true: /3
+                        SPIDERS = true: /1
+                            Category die, prob = 100% : /1
+                        SPIDERS = false: /2
+                            Category live, prob = 100% : /2
+                FEMALE = true: /1
+                    Category live, prob = 100% : /1
+    FATIGUE = true: /30
+        HISTOLOGY = true: /12
+            AGE = false: /7
+                STEROID = false: /2
+                    FIRMLIVER = false: /1
+                        Category die, prob = 100% : /1
+                    FIRMLIVER = true: /1
+                        Category live, prob = 100% : /1
+                STEROID = true: /5
+                    SPIDERS = true: /3
+                        Category live, prob = 100% : /3
+                    SPIDERS = false: /2
+                        FIRMLIVER = false: /1
+                            Category live, prob = 100% : /1
+                        FIRMLIVER = true: /1
+                            Category die, prob = 100% : /1
+            AGE = true: /5
+                Category live, prob = 100% : /5
+        HISTOLOGY = false: /18
+            Category live, prob = 100% : /18
+    Results: 74% correct (20:7)
+    live: 18 correct out of 23
+    die: 2 correct out of 4
+
+    ## Results per instance:
+    0. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=true, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=false, SPLEENPALPABLE=false, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=false, HISTOLOGY=true}), actualClassKind: live 
+    1. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=false, BIGLIVER=false, FIRMLIVER=false, SPLEENPALPABLE=false, SPIDERS=false, ASCITES=true, VARICES=true, BILIRUBIN=true, SGOT=false, HISTOLOGY=false}), actualClassKind: live 
+    2. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=true, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=false, HISTOLOGY=true}), actualClassKind: live 
+    3. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=true, FEMALE=false, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=true, ANOREXIA=true, BIGLIVER=false, FIRMLIVER=false, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=true, SGOT=false, HISTOLOGY=false}), actualClassKind: live 
+    4. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=true, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=false, HISTOLOGY=false}), actualClassKind: live 
+    5. isCorrect: false, result: Instance(classKind=die, featureNameToValue={AGE=false, FEMALE=false, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=false, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=false, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=true, SGOT=true, HISTOLOGY=true}), actualClassKind: live 
+    6. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=true, FEMALE=false, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=false, HISTOLOGY=false}), actualClassKind: live 
+    7. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=true, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=false, MALAISE=true, ANOREXIA=true, BIGLIVER=false, FIRMLIVER=false, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=true, SGOT=false, HISTOLOGY=true}), actualClassKind: live 
+    8. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=false, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=true, HISTOLOGY=false}), actualClassKind: live 
+    9. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=false, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=false, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=true, SGOT=true, HISTOLOGY=false}), actualClassKind: live 
+    10. isCorrect: true, result: Instance(classKind=die, featureNameToValue={AGE=false, FEMALE=false, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=false, BIGLIVER=true, FIRMLIVER=false, SPLEENPALPABLE=true, SPIDERS=false, ASCITES=false, VARICES=false, BILIRUBIN=true, SGOT=false, HISTOLOGY=true}), actualClassKind: die 
+    11. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=true, SGOT=true, HISTOLOGY=true}), actualClassKind: live 
+    12. isCorrect: false, result: Instance(classKind=die, featureNameToValue={AGE=true, FEMALE=false, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=false, ASCITES=false, VARICES=true, BILIRUBIN=true, SGOT=false, HISTOLOGY=true}), actualClassKind: live 
+    13. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=true, FEMALE=false, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=true, BIGLIVER=false, FIRMLIVER=false, SPLEENPALPABLE=true, SPIDERS=false, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=false, HISTOLOGY=true}), actualClassKind: live 
+    14. isCorrect: true, result: Instance(classKind=die, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=false, BIGLIVER=true, FIRMLIVER=false, SPLEENPALPABLE=true, SPIDERS=false, ASCITES=false, VARICES=false, BILIRUBIN=true, SGOT=false, HISTOLOGY=true}), actualClassKind: die 
+    15. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=true, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=true, SGOT=true, HISTOLOGY=false}), actualClassKind: live 
+    16. isCorrect: false, result: Instance(classKind=live, featureNameToValue={AGE=true, FEMALE=true, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=true, ANOREXIA=true, BIGLIVER=false, FIRMLIVER=false, SPLEENPALPABLE=false, SPIDERS=false, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=true, HISTOLOGY=true}), actualClassKind: die 
+    17. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=true, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=false, BIGLIVER=false, FIRMLIVER=false, SPLEENPALPABLE=false, SPIDERS=false, ASCITES=true, VARICES=true, BILIRUBIN=true, SGOT=false, HISTOLOGY=false}), actualClassKind: live 
+    18. isCorrect: false, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=false, SPLEENPALPABLE=true, SPIDERS=false, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=true, HISTOLOGY=true}), actualClassKind: die 
+    19. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=false, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=false, HISTOLOGY=false}), actualClassKind: live 
+    20. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=true, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=false, HISTOLOGY=true}), actualClassKind: live 
+    21. isCorrect: false, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=false, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=false, ASCITES=true, VARICES=false, BILIRUBIN=true, SGOT=false, HISTOLOGY=false}), actualClassKind: die 
+    22. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=true, FEMALE=false, STEROID=false, ANTIVIRALS=false, FATIGUE=true, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=false, HISTOLOGY=false}), actualClassKind: live 
+    23. isCorrect: false, result: Instance(classKind=live, featureNameToValue={AGE=true, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=false, SPLEENPALPABLE=false, SPIDERS=false, ASCITES=false, VARICES=true, BILIRUBIN=false, SGOT=false, HISTOLOGY=true}), actualClassKind: die 
+    24. isCorrect: false, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=false, FATIGUE=false, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=false, SPLEENPALPABLE=false, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=true, SGOT=false, HISTOLOGY=false}), actualClassKind: die 
+    25. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=true, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=false, HISTOLOGY=false}), actualClassKind: live 
+    26. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=true, FEMALE=false, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=false, VARICES=true, BILIRUBIN=true, SGOT=false, HISTOLOGY=true}), actualClassKind: live 
+

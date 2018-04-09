@@ -20,7 +20,9 @@ val instructions = """
 fun main(args: Array<String>) {
   if (args.isEmpty()) {
     println(instructions)
-    return
+    throw IllegalArgumentException(
+      "No arguments given: see the instructions above"
+    )
   }
 
   try {
@@ -28,7 +30,7 @@ fun main(args: Array<String>) {
   } catch (e: Exception) {
     println("Some error occurred. Maybe you passed incorrect parameters?")
     println(instructions)
-    throw Error(e)
+    throw IllegalArgumentException(e)
   }
 }
 
