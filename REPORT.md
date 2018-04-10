@@ -329,4 +329,80 @@ numberOfDifferentClassKinds`) so training and testing can be more reliable.
 
 ## Q2
 
+    # Summary results:
+    Accuracies of individual training/test set pairs: [91, 85, 85, 80, 84, 78, 86, 81, 81, 81]
+    Average accuracy: 83%
 
+The accuracies above are calculated by using the decision tree method on the 10
+provided `hepatitis` training/test pairs. It appears that the accuracy
+fluctuates a bit (between `78%` and `91%`). All of these accuracies, and the
+average, are better than the accuracy given for the original
+`hepatitis-training` and `hepatitis-test` datasets (`74%`). The average accuracy
+is much better --- `83%` vs `74%`. I would assume that this inconsistency is due
+to the disproportionately small amount of `die` instances in the entire dataset.
+The 10 provided training/test pairs had a high probability of having very few
+`die` instances, which the decision tree would have been incorrect for. This
+would have increased the overall accuracy for the 10 pairs.
+
+## Q3
+
+### a. How could one prune leaves from the decision tree?
+
+Find nodes in the tree such that it (node `N`) has two children and has an
+average weighted impurity lower than the threshold `T`.
+
+For each node `N` that was found above, remove its children, and pretend like
+the children were never created. That is, when node `N` is reached while
+calculating the class of some instance, return the most common class in node
+`N`'s instance set.
+
+The alternative to the above is to avoid creating the children if the impurity
+is below the threshold `T`.
+
+### b. Why would it reduce accuracy on the training set?
+
+The purpose of pruning is to reduce over fitting to the training set, so that
+the decision tree will have a more consistent accuracy between the training and
+test sets. Over fitting means that the decision tree will have high accuracy for
+the training set but low accuracy for the tests set. 
+
+The decision tree is probably over fit directly after training, and therefore
+has a very high accuracy for the training set. Pruning will reduce the over
+fitting, reducing the accuracy for the training set.
+
+### c. Why might it improve accuracy on the test set?
+
+The decision tree is probably over fit directly after training, and therefore
+has a low accuracy for the test set. Pruning will reduce over fitting, and
+therefore increase accuracy for the test set. See the answer to question `b.`
+for more information about over fitting.
+
+## Q4
+
+The following is a proof by contradiction that the Gini impurity measure, given
+on the lecture slides, is not correct for three or more classes.
+
+Suppose that there are three different classes `A`, `B`, and `C`, that the
+decision tree must extinguish between. 
+
+We will use the following formula to calculate the Gini impurity for three
+classes. `I = P(A) * P(B) * P(C)`. This is based on the formula from the lecture
+slides about calculating the impurity for a node with two classes: `I = P(A) *
+P(B)`.
+
+<!--We will use the following formula to calculate weighted average impurity for
+`N` classes: `W = sum(from i in 0 to N, P(node[i] * impurity(node[i]))`.-->
+
+The impurity measure `I` will equal `0` only if the node is pure, that is, when
+the node cannot be any more pure. This statement must hold because the impurity
+measure `I` cannot go below `0`. The above holds when a node is pure, for
+example when the node only contains instances of class `A`. This is because `I =
+P(A) * P(B) * P(C) = 1 * 0 * 0 = 0`.
+
+Now suppose that there is a node with equal number of instances with class `A`
+and `B`, and zero instances of class `C`. This means that `I = P(A) * P(B) *
+P(C) = 0.5 * 0.5 * 0 = 0`. It is clear that this node is not pure as there are
+instances from of different classes. We stated above that `I = 0` must only be
+true when the node is pure. QED.
+
+# Part 3

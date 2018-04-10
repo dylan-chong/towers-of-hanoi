@@ -64,7 +64,7 @@ class Part2DecisionTreeRunner {
 
     println("# Summary results:")
     println("Accuracies of individual training/test set pairs: $percentages")
-    println("Average accuracy: ${averageAccuracy.times(100).roundToInt()}")
+    println("Average accuracy: ${averageAccuracy.times(100).roundToInt()}%")
 
     return averageAccuracy
   }
