@@ -12,7 +12,7 @@ class IntegrationTests : Spek({
     .filter {
       it.isNotEmpty()
         && it.startsWith("java -jar")
-        && !it.contains("<trainingFile>")
+        && !it.contains("<\\w+>".toRegex())
     }
     .map {
       it.split(" ")

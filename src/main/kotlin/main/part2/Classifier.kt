@@ -11,15 +11,8 @@ interface Classifier {
 
 class BaselineClassifier(val data: DecisionTreeData) : Classifier {
 
-  val mostCommonClassKind by lazy {
-    data
-      .instances
-      .groupBy { it.classKind }
-      .toList()
-      .sortedBy { it.second.size }
-      .last()
-      .first
-  }
+  val mostCommonClassKind
+    get() = data.mostCommonClassKind
 
   override fun calculateClass(instance: DecisionTreeData.Instance): ClassKind {
     return mostCommonClassKind

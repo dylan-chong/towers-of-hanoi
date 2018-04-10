@@ -15,6 +15,9 @@ val instructions = """
     $run part2 <trainingFile> <testFile>
     $run part2 ${data}part2/hepatitis-training.dat ${data}part2/hepatitis-test.dat
 
+    $run part2-q2 <dataFile>
+    $run part2-q2 ${data}part2/hepatitis.dat
+
 """.trimIndent()
 
 fun main(args: Array<String>) {
@@ -34,15 +37,35 @@ fun main(args: Array<String>) {
   }
 }
 
-fun acceptInputs(args: Array<String>) {
+private fun acceptInputs(args: Array<String>) {
+  fun requireArgsSize(size: Int) {
+    val actual = args.size
+
+    if (actual == size) {
+      return
+    }
+
+    val message = "Invalid number of arguments (expected $size, but got $actual)"
+    println(message)
+    println(instructions)
+
+    throw IllegalArgumentException(message)
+  }
+
   when (args[0]) {
     "part1" -> {
+      requireArgsSize(4)
       Part1KNearestNeighbourRunner().run(args[1], args[2], args[3].toInt())
     }
 
     "part2" -> {
-      val part2DecisionTreeRunner = Part2DecisionTreeRunner()
-      part2DecisionTreeRunner.run(args[1], args[2])
+      requireArgsSize(3)
+      Part2DecisionTreeRunner().run(args[1], args[2])
+    }
+
+    "part2-q2" -> {
+      requireArgsSize(2)
+      Part2DecisionTreeRunner().runWithSplittable(args[1])
     }
 
     else -> {
@@ -50,3 +73,4 @@ fun acceptInputs(args: Array<String>) {
     }
   }
 }
+

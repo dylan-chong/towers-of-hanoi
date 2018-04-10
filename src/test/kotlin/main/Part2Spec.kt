@@ -3,7 +3,6 @@ package main
 import main.part2.*
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.it
-import java.io.File
 
 class Part2Spec : Spek({
 
@@ -32,8 +31,7 @@ class Part2Spec : Spek({
 
       it("does not crash when creating the representation $suffix") {
         val data = DecisionTreeData.fromFile(
-          File("src/main/resources/ass1-data/part2/hepatitis-training.dat")
-            .toPath()
+          "src/main/resources/ass1-data/part2/hepatitis-training.dat"
         )
 
         val decisionTree = factory(data)

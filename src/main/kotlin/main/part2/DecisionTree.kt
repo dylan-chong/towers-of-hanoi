@@ -44,15 +44,19 @@ data class DecisionTree(
   }
 
   val mostCommonClassKind by lazy {
-    if (classGroupings.size != 1) {
+    if (classGroupings.size > 1) {
       println("WARNING: Leaf does not have pure instance class kinds: $this")
     }
 
-    classGroupings
-      .toList()
-      .sortedBy { it.second.size }
-      .last()
-      .first
+    if (classGroupings.isEmpty()) {
+      allData.mostCommonClassKind
+    } else {
+      classGroupings
+        .toList()
+        .sortedBy { it.second.size }
+        .last()
+        .first
+    }
   }
 
   val instancesArePure by lazy {
@@ -134,12 +138,17 @@ data class DecisionTree(
     }
 
     val items = instances.count()
-    val probability = instances
-      .count { it.classKind == mostCommonClassKind }
-      .toDouble()
-      .div(items)
-      .times(100)
-      .roundToInt()
+    val probability = if (items == 0) {
+      "NaN"
+    } else {
+      instances
+        .count { it.classKind == mostCommonClassKind }
+        .toDouble()
+        .div(items)
+        .times(100)
+        .roundToInt()
+        .toString()
+    }
 
     return indent(
       "Category $mostCommonClassKind, prob = $probability% : /$items",

@@ -1,5 +1,6 @@
 package main.part2
 
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -22,6 +23,15 @@ data class DecisionTreeData(
       .toMap()
   }
 
+  val mostCommonClassKind by lazy {
+    instances
+      .groupBy { it.classKind }
+      .toList()
+      .sortedBy { it.second.size }
+      .last()
+      .first
+  }
+
   init {
     (classNames.isNotEmpty() && instances.isNotEmpty()) || throwInvalid()
 
@@ -32,11 +42,20 @@ data class DecisionTreeData(
     }
   }
 
+  fun isCompatibleWith(other: DecisionTreeData): Boolean {
+    return classNames == other.classNames
+      && featureNames == other.featureNames
+  }
+
   private fun throwInvalid(): Nothing {
     throw IllegalArgumentException(toString())
   }
 
   companion object {
+
+    fun fromFile(path: String): DecisionTreeData {
+      return fromFile(File(path).toPath())
+    }
 
     fun fromFile(path: Path): DecisionTreeData {
       val lines = Files.readAllLines(path)

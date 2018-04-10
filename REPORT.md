@@ -147,6 +147,8 @@ Use the K-Means-Clustering method:
 
 # Part 2
 
+## Q1
+
 These are the results for running part two:
 
     # Results for BaselineClassifier
@@ -183,8 +185,9 @@ These are the results for running part two:
     25. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=true, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=false, HISTOLOGY=false}), actualClassKind: live 
     26. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=true, FEMALE=false, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=false, VARICES=true, BILIRUBIN=true, SGOT=false, HISTOLOGY=true}), actualClassKind: live 
 
-    # Results for DecisionTree with ProperChildFactory
-    Classifier representation: FATIGUE = false: /69
+    # Results for DecisionTree with ProperChildFactory (ProperChildFactory uses Gini Purity)
+    Classifier representation: 
+    FATIGUE = false: /69
         BIGLIVER = false: /12
             SGOT = false: /8
                 Category live, prob = 100% : /8
@@ -304,4 +307,26 @@ These are the results for running part two:
     24. isCorrect: false, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=false, FATIGUE=false, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=false, SPLEENPALPABLE=false, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=true, SGOT=false, HISTOLOGY=false}), actualClassKind: die 
     25. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=false, FEMALE=false, STEROID=true, ANTIVIRALS=true, FATIGUE=true, MALAISE=true, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=true, VARICES=true, BILIRUBIN=false, SGOT=false, HISTOLOGY=false}), actualClassKind: live 
     26. isCorrect: true, result: Instance(classKind=live, featureNameToValue={AGE=true, FEMALE=false, STEROID=false, ANTIVIRALS=true, FATIGUE=false, MALAISE=false, ANOREXIA=true, BIGLIVER=true, FIRMLIVER=true, SPLEENPALPABLE=true, SPIDERS=true, ASCITES=false, VARICES=true, BILIRUBIN=true, SGOT=false, HISTOLOGY=true}), actualClassKind: live 
+
+
+<!-- TODO  NEXT Compare the results of the baseline pacifier and the genie impurity one -->
+
+The BaselineClassifier (always returns "live") had accuracy of 85%, while the
+DecisionTree had an accuracy of 74%.
+
+It is surprising to see that the accuracy is lower for the DecisionTree.
+However, the BaselineClassifier's accuracy hints that the `hepatitis-test`
+dataset has 85% `live` instances. There is not enough `die` instances (15%) to
+properly test that the DecisionTree method works. 
+
+The `hepatitis-training` dataset has 80% `live` instances and 20% `die` - only
+22 `die` instances. Given that there are 16 features, and only 22 `die` training
+instances, the DecisionTree cannot be trained properly. There is not enough
+`die` data for the DecisionTree to be trained effectively.
+
+The accuracy of the BaselineClassifier ideally should be closer to 50% (`1 /
+numberOfDifferentClassKinds`) so training and testing can be more reliable.
+
+## Q2
+
 
