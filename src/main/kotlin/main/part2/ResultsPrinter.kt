@@ -1,18 +1,21 @@
 package main.part2
 
+import kotlin.math.roundToInt
+
 class ResultsPrinter {
 
   fun printResults(
     title: String,
     representation: String,
     results: List<Pair<DecisionTreeData.Instance, ClassKind>>
-  ) {
+  ): Double {
     println("# Results for $title")
     println("Classifier representation:\n$representation")
 
     val correct = results.count(::isCorrect)
     val incorrect = results.size - correct
-    val percentCorrect = 100 * correct / results.size
+    val decimalCorrect = correct.toDouble() / results.size
+    val percentCorrect = (100 * decimalCorrect).roundToInt()
 
     println("Results: $percentCorrect% correct ($correct:$incorrect)")
     printLiveDieTotals(results)
@@ -29,6 +32,8 @@ class ResultsPrinter {
     }
 
     println()
+
+    return decimalCorrect
   }
 
   private fun printLiveDieTotals(results: List<Pair<DecisionTreeData.Instance, ClassKind>>) {
