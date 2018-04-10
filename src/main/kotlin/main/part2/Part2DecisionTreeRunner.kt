@@ -41,25 +41,22 @@ class Part2DecisionTreeRunner {
   }
 
   fun runWithSplittable(
-    dataFile: String,
+    dataDirectory: String,
     numberOfDataSets: Int = 10,
     treeFactories: Collection<ClassifierFactory> = defaultFactories
   ): Double {
-    val allData = DecisionTreeData.fromFile(dataFile)
-    val allInstances = allData.instances
+    val trainingToTestDatas = (1..numberOfDataSets).map { i ->
+      val trainingFile = "$dataDirectory/hepatitis-training-run%02d.dat".format(i)
+      val testFile = "$dataDirectory/hepatitis-test-run%02d.dat".format(i)
 
-    val instanceSets = allInstances.chunked(allInstances.size / numberOfDataSets)
-    val trainingToTestSets = splitIntoTrainingToTestSets(
-      instanceSets,
-      allData.classNames,
-      allData.featureNames
-    )
+      with (DecisionTreeData) {
+        fromFile(trainingFile) to fromFile(testFile)
+      }
+    }
 
-    val accuracies = trainingToTestSets.map {
-      val (trainingSet, testSet) = it
-      requireCompatibility(trainingSet, testSet)
-
-      run(trainingSet, testSet, treeFactories)
+    val accuracies = trainingToTestDatas.map { (trainingData, testData) ->
+      requireCompatibility(trainingData, testData)
+      run(trainingData, testData, treeFactories)
     }
 
     val percentages = accuracies.map { it.times(100).roundToInt() }
@@ -70,29 +67,6 @@ class Part2DecisionTreeRunner {
     println("Average accuracy: ${averageAccuracy.times(100).roundToInt()}")
 
     return averageAccuracy
-  }
-
-  private fun splitIntoTrainingToTestSets(
-    instanceSets: List<List<DecisionTreeData.Instance>>,
-    classNames: Set<ClassKind>,
-    featureNames: Set<Feature>
-  ): List<Pair<DecisionTreeData, DecisionTreeData>> {
-    return instanceSets
-      .mapIndexed { testSetIndex, testSet ->
-        val trainingSet = instanceSets
-          .filterIndexed { index, _ ->
-            index != testSetIndex
-          }
-          .flatMap { it }
-        trainingSet to testSet
-      }
-      .map {
-        DecisionTreeData(
-          classNames, featureNames, it.first
-        ) to DecisionTreeData(
-          classNames, featureNames, it.second
-        )
-      }
   }
 
   private fun requireCompatibility(

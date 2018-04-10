@@ -15,8 +15,8 @@ val instructions = """
     $run part2 <trainingFile> <testFile>
     $run part2 ${data}part2/hepatitis-training.dat ${data}part2/hepatitis-test.dat
 
-    $run part2-q2 <dataFile>
-    $run part2-q2 ${data}part2/hepatitis.dat
+    $run part2-q2 <directoryContainingSplitFiles>
+    $run part2-q2 ${data}part2/
 
 """.trimIndent()
 
