@@ -12,6 +12,9 @@ data class Image(
   val category: Char
 ) {
 
+  val size
+    get() = rows * cols
+
   fun get(pixel: Int): Pixel {
     return imageBits[pixel]
   }
