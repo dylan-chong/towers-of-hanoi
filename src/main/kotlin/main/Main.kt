@@ -2,6 +2,7 @@ package main
 
 import main.part1.Part1KNearestNeighbourRunner
 import main.part2.Part2DecisionTreeRunner
+import main.part3.Part3PerceptronRunner
 
 const val run = "java -jar submit/app.jar"
 const val data = "src/main/resources/ass1-data/"
@@ -70,6 +71,11 @@ private fun acceptInputs(args: Array<String>) {
     "part2-q2" -> {
       requireArgsSize(2)
       Part2DecisionTreeRunner().runWithSplittable(args[1])
+    }
+
+    "part3" -> {
+      requireArgsSize(2)
+      Part3PerceptronRunner().run(args[1])
     }
 
     else -> {
