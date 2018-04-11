@@ -25,7 +25,7 @@ data class Image(
 
   companion object {
 
-    fun load(filename: String): List<Image> {
+    fun loadAll(filename: String): List<Image> {
       val scanner = Scanner(File(filename))
       val images = mutableListOf<Image>()
 
