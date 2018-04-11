@@ -18,7 +18,8 @@ data class Image(
   fun get(pixel: Int): Pixel {
     return imageBits[pixel]
   }
-//
+
+// TODO Implement this when needed
 //  fun get(row: Int, col: Int) {
 //
 //  }

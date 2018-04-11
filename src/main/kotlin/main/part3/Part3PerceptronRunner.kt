@@ -11,7 +11,42 @@ class Part3PerceptronRunner {
     val features = (0..50).map { Feature.newRandom(images[0], 4, it == 0) }
     println()
   }
+}
 
+class Perceptron(
+  val size: Int,
+  val features: List<Feature>,
+  val weights: List<Double> = (0 until size).map { 0.toDouble() }
+) {
+
+  init {
+    if (!listOf(size, features.size, weights.size).all { it == size }) {
+      throw IllegalArgumentException(toString())
+    }
+  }
+
+  fun valueFor(image: Image): ValueResult {
+    if (image.size != size) {
+      throw IllegalArgumentException(image.toString())
+    }
+
+    val featureValues = (0 until size).map {
+      // The value for method could be optimised
+      weights[it] * features[it].valueFor(image)
+    }
+
+    return ValueResult(featureValues.sum() > 0, featureValues)
+  }
+
+  fun train(): Perceptron {
+    return Perceptron(
+      size,
+      features,
+      weights // TODO NEXT
+    )
+  }
+
+  data class ValueResult(val value: Boolean, val featureValues: List<Double>)
 }
 
 data class Feature(
