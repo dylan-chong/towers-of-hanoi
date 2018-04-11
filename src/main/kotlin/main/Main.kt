@@ -19,6 +19,9 @@ val instructions = """
     $run part2-q2 <directoryContainingSplitFiles>
     $run part2-q2 ${data}part2/
 
+    $run part3 <imageDatafile>
+    $run part3 ${data}part3/image.data
+
 """.trimIndent()
 
 fun main(args: Array<String>) {

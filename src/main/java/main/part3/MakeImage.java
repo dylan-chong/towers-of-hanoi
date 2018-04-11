@@ -1,4 +1,4 @@
-/* Code for COMP 307 Assignment
+package main.part3;/* Code for COMP 307 Assignment
  * Name:
  * Usercode:
  * ID:
@@ -8,7 +8,6 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.FileDialog;
 import java.awt.event.*;
 import java.io.File;
 import java.io.FileWriter;

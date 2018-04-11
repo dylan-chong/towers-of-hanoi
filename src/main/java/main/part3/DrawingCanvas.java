@@ -1,3 +1,5 @@
+package main.part3;
+
 import java.awt.*;
 import java.io.File;
 
@@ -7,7 +9,7 @@ import java.io.File;
 //  the canvas will end up scrolling over the top of other components.
 //  ==> If you use a Canvas, you must not allow scrolling.
 
-class DrawingCanvas extends Canvas {
+public class DrawingCanvas extends Canvas {
   /**
    * Maximum width of the canvas
    */
