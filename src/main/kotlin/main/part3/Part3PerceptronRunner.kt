@@ -2,11 +2,16 @@ package main.part3
 
 import java.util.*
 
-val sharedRandom = Random(1L)
+//val sharedRandom = Random(1L)
+val sharedRandom = Random()
 
 class Part3PerceptronRunner {
 
   fun run(imageDataFileName: String) {
+    println((0..0).map { doRun(imageDataFileName) })
+  }
+
+  private fun doRun(imageDataFileName: String): Int {
     val images = Image.loadAll(imageDataFileName)
     val features = (0..50).map { Feature.newRandom(images[0], 4, it == 0) }
 
@@ -20,10 +25,12 @@ class Part3PerceptronRunner {
 //    var iterations = { (repeat * images.size) + index }
 
     while (true) {
+      val iterations = repeat * images.size + index
+
       if (index == images.size) {
-        if (repeat == 99) {
+        if (repeat == 1000000) {
           println("Done")
-          return
+          return iterations
         } else {
           index = 0
           repeat++
@@ -41,12 +48,17 @@ class Part3PerceptronRunner {
       }
 
       val (accuracy, valueResultPairs) = testAccuracy(p, cache)
+      val accuracyPercent = accuracy * 100
       if (!isSkip) {
-        println("- Percent Correct: ${accuracy * 100}")
+//        println(accuracyPercent)
       }
-      if (!isSkip && accuracy > 0.999 && repeat >= 1) {
-        println("Done (accuracy is very high)")
-        return
+      if (!isSkip && accuracy >= 1 && repeat >= 1) {
+        println(
+          "Done (accuracy: $accuracyPercent is very high) on " +
+            "iterations: $iterations, " +
+            "repeat (epoch): $repeat"
+        )
+        return iterations
       }
 
       val valueResult = valueResultPairs[if (isSkip) 0 else index].second
@@ -71,12 +83,9 @@ class Part3PerceptronRunner {
       image to p.categoryFor(image, featureValues)
     }
 
-    val correct = valueResults
-      .parallelStream()
-      .filter { pair ->
-        pair.first.category == pair.second.value.toCategory()
-      }
-      .count()
+    val correct = valueResults.count { pair ->
+      pair.first.category == pair.second.value.toCategory()
+    }
 
     val decimalCorrect = correct.toDouble() / valueResults.size
 
