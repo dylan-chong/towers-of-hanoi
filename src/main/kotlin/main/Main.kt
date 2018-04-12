@@ -1,5 +1,7 @@
 package main
 
+import gui.Gui
+
 fun main(args: Array<String>) {
-    throw RuntimeException("Don't run main")
+  Gui.main(args)
 }
