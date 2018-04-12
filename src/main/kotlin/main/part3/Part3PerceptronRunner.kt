@@ -33,15 +33,26 @@ class Part3PerceptronRunner {
 
 //      println("Starting iteration for index: $index and repeat: $repeat")
 
-      // TODO  only one accuracy sometimes
-      val (accuracy, valueResultPairs) = testAccuracy(p, imagesToFeatureValues)
-      if (accuracy > 0.999 && repeat >= 1) {
+      val isSkip = index % 10 != 0
+      val cache = if (isSkip) {
+        imagesToFeatureValues.subList(index, index + 1)
+      } else {
+        imagesToFeatureValues
+      }
+
+      val (accuracy, valueResultPairs) = testAccuracy(p, cache)
+      if (!isSkip) {
+        println("- Percent Correct: ${accuracy * 100}")
+      }
+      if (!isSkip && accuracy > 0.999 && repeat >= 1) {
         println("Done (accuracy is very high)")
         return
       }
 
+      val valueResult = valueResultPairs[if (isSkip) 0 else index].second
+
       val newP = p.train(
-        valueResultPairs[index].second,
+        valueResult,
         images[index]
           .category
           .toValue()
@@ -68,7 +79,6 @@ class Part3PerceptronRunner {
       .count()
 
     val decimalCorrect = correct.toDouble() / valueResults.size
-    println("- percentCorrect: ${decimalCorrect * 100}")
 
     return decimalCorrect to valueResults
   }
