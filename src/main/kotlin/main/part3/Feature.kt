@@ -5,16 +5,16 @@ data class Feature(
   val isDummy: Boolean = false
 ) {
 
-  fun valueFor(image: Image): Int {
+  fun valueFor(image: Image): Value {
     if (isDummy) {
-      return 1
+      return true
     }
 
     val matches = pixelIndexToSigns.count { (pixelIndex, pixelValue) ->
       image.get(pixelIndex) == pixelValue
     }
 
-    return if (matches >= 3) 1 else 0
+    return matches >= 3
   }
 
   companion object {

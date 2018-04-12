@@ -14,6 +14,7 @@ class Part3PerceptronRunner {
     var index = 0
     var repeat = 0
     var p = Perceptron(size, features)
+//    var iterations = { (repeat * images.size) + index }
 
     while (true) {
       if (index == images.size) {
@@ -27,8 +28,10 @@ class Part3PerceptronRunner {
         }
       }
 
+//      println("Starting iteration for index: $index and repeat: $repeat")
+
       val (accuracy, valueResultPairs) = testAccuracy(p, images)
-      if (accuracy > 0.999) {
+      if (accuracy > 0.999 && repeat >= 1) {
         println("Done (accuracy is very high)")
         return
       }

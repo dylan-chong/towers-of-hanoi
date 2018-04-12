@@ -32,8 +32,8 @@ class Perceptron(
     if (features.size != weights.size) {
       throw IllegalArgumentException(toString())
     }
-//
-//    println("Weights: " + weights.toString())
+
+//    println("- Weights: " + weights.toString())
   }
 
   fun categoryFor(image: Image): ValueResult {
@@ -41,28 +41,28 @@ class Perceptron(
       throw IllegalArgumentException(image.toString())
     }
 
-    val featureValues = (weights zip features).map { (weight, feature) ->
-      // The value for method could be optimised
-      weight * feature.valueFor(image)
+    // TODO cache
+    val featureValues = features.map { it.valueFor(image).toDouble() }
+    // TODO dup
+    val featureValuesWithWeights = weights.mapIndexed { index, weight ->
+      weight * featureValues[index]
     }
 
-    return ValueResult(featureValues.sum() > 0, featureValues)
+    return ValueResult(featureValuesWithWeights.sum() > 0, featureValues)
   }
 
-  fun train(valueResult: ValueResult, predictedValue: Value): Perceptron {
-    if (valueResult.value == predictedValue) {
+  fun train(valueResult: ValueResult, expectedValue: Value): Perceptron {
+    if (valueResult.value == expectedValue) {
       return this
     }
-
-    val shouldAdd = predictedValue
 
     return Perceptron(
       imageSize,
       features,
       weights.mapIndexed { index, weight ->
-        val diff = valueResult.value.toDouble() - predictedValue.toDouble()
-        val change = (learningRate * diff * valueResult.featureValues[index]) *
-          if (shouldAdd) 1 else -1
+        val actualValue = valueResult.featureValues[index]
+        val diff = expectedValue.toDouble() - valueResult.value.toDouble()
+        val change = learningRate * diff * actualValue
         weight + change
       }
     )
