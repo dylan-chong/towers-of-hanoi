@@ -1,6 +1,7 @@
 package main.part3
 
 import java.util.*
+import java.util.stream.Collectors
 
 //val sharedRandom = Random(1L)
 val sharedRandom = Random()
@@ -8,7 +9,18 @@ val sharedRandom = Random()
 class Part3PerceptronRunner {
 
   fun run(imageDataFileName: String) {
-    println((0..0).map { doRun(imageDataFileName) })
+    doRun(imageDataFileName)
+  }
+
+  private fun doRepeatRun(imageDataFileName: String) {
+    println(
+      "Number of epochs to get 100%: "
+        + (0..10000)
+        .toList()
+        .parallelStream()
+        .map { doRun(imageDataFileName) }
+        .collect(Collectors.toList())
+    )
   }
 
   private fun doRun(imageDataFileName: String): Int {
@@ -28,9 +40,9 @@ class Part3PerceptronRunner {
       val iterations = repeat * images.size + index
 
       if (index == images.size) {
-        if (repeat == 1000000) {
+        if (repeat == 100000) {
           println("Done")
-          return iterations
+          return repeat
         } else {
           index = 0
           repeat++
@@ -54,11 +66,11 @@ class Part3PerceptronRunner {
       }
       if (!isSkip && accuracy >= 1 && repeat >= 1) {
         println(
-          "Done (accuracy: $accuracyPercent is very high) on " +
-            "iterations: $iterations, " +
+          "Done (accuracy: $accuracyPercent is very high) on\t" +
+            "iterations: $iterations,\t" +
             "repeat (epoch): $repeat"
         )
-        return iterations
+        return repeat
       }
 
       val valueResult = valueResultPairs[if (isSkip) 0 else index].second
