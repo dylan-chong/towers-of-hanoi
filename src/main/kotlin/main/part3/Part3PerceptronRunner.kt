@@ -65,7 +65,7 @@ class Part3PerceptronRunner {
       p = newP
     }
 
-    println("- accuracy: ${lastAccuracy * 100}")
+    println("- accuracy: ${lastAccuracy * 100}%")
     println("- repeats (epoch): $epoch")
     println("- iterations: ${iterations()} (number of times trained on a single instance)")
 
@@ -74,7 +74,7 @@ class Part3PerceptronRunner {
     features.forEachIndexed { i, it -> println("  - $i. $it") }
 
     println("- Weights:")
-    p.weights.forEachIndexed { i, it -> println("  - $i. ${"% 4.2f".format(it)}") }
+    p.weights.forEachIndexed { i, it -> println("  - $i. ${"% 5.2f".format(it)}") }
   }
 
   private fun testAccuracy(
