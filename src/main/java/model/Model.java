@@ -1,12 +1,9 @@
 package model;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.Stack;
+import java.util.stream.Collectors;
 
 public class Model {
   public static final double size=900;
@@ -16,18 +13,25 @@ public class Model {
   public List<Particle> p=new ArrayList<Particle>();
   public volatile List<DrawableParticle> pDraw=new ArrayList<DrawableParticle>();
   public void step() {
-    for(Particle p:this.p){p.interact(this);}
+    p.forEach((part) -> part.interact(this));
     mergeParticles();
-    for(Particle p:this.p){p.move(this);}
+    p.forEach((part) -> part.move(this));
     updateGraphicalRepresentation();
   }
   private void updateGraphicalRepresentation() {
-    ArrayList<DrawableParticle> d=new ArrayList<DrawableParticle>();
+//    ArrayList<DrawableParticle> d=new ArrayList<DrawableParticle>();
     Color c=Color.ORANGE;
-    for(Particle p:this.p){
-      d.add(new DrawableParticle((int)p.x, (int)p.y, (int)Math.sqrt(p.mass),c ));
-    }
-    this.pDraw=d;//atomic update
+//    for(Particle p:this.p){
+//      d.add(new DrawableParticle((int)p.x, (int)p.y, (int)Math.sqrt(p.mass),c ));
+//    }
+//    this.pDraw=d;//atomic update
+    this.pDraw = p
+//      .parallelStream()
+      .stream()
+      .map(particle -> new DrawableParticle(
+        (int)particle.x, (int)particle.y, (int)Math.sqrt(particle.mass),c )
+      )
+      .collect(Collectors.toList());
   }
   public void mergeParticles(){
     Stack<Particle> deadPs=new Stack<Particle>();
