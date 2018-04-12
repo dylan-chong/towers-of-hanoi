@@ -15,9 +15,26 @@ class Part3PerceptronRunner {
   }
 
   tailrec fun run(p: Perceptron, images: List<Image>) {
-    var (accuracy, valueResults) = testAccuracy(p, images)
+    if (images.isEmpty()) {
+      println("Done")
+      return
+    }
 
-    run(p, images)
+    val (accuracy, valueResults) = testAccuracy(p, images)
+    if (accuracy > 0.95) {
+      println("Done")
+      return
+    }
+    run(
+      p.train(
+        valueResults[0].second,
+        images
+          .first()
+          .category
+          .toValue()
+      ),
+      images.drop(1)
+    )
   }
 
   private fun testAccuracy(

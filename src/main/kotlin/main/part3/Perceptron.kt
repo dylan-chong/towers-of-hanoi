@@ -10,6 +10,14 @@ fun Value.toCategory(): Char {
   return if (this) 'X' else 'O'
 }
 
+fun Char.toValue(): Value {
+  return when (this) {
+    'X' -> true
+    'O' -> false
+    else -> throw IllegalArgumentException(this.toString())
+  }
+}
+
 data class ValueResult(val value: Value, val featureValues: List<Double>)
 
 class Perceptron(
