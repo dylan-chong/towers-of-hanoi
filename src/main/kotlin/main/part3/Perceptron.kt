@@ -25,13 +25,15 @@ class Perceptron(
   val features: List<Feature>,
   val weights: List<Double> = (0 until features.size)
     .map { 0.01 * (sharedRandom.nextDouble() - 0.5) },
-  val learningRate: Double = 0.2
+  val learningRate: Double = 0.1
 ) {
 
   init {
     if (features.size != weights.size) {
       throw IllegalArgumentException(toString())
     }
+//
+//    println("Weights: " + weights.toString())
   }
 
   fun categoryFor(image: Image): ValueResult {

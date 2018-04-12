@@ -11,30 +11,38 @@ class Part3PerceptronRunner {
     val features = (0..50).map { Feature.newRandom(images[0], 4, it == 0) }
     val size = images[0].size
 
-    run(Perceptron(size, features), images)
-  }
+    var index = 0
+    var repeat = 0
+    var p = Perceptron(size, features)
 
-  tailrec fun run(p: Perceptron, images: List<Image>) {
-    if (images.isEmpty()) {
-      println("Done")
-      return
-    }
+    while (true) {
+      if (index == images.size) {
+        if (repeat == 99) {
+          println("Done")
+          return
+        } else {
+          index = 0
+          repeat++
+          continue
+        }
+      }
 
-    val (accuracy, valueResults) = testAccuracy(p, images)
-    if (accuracy > 0.95) {
-      println("Done")
-      return
-    }
-    run(
-      p.train(
-        valueResults[0].second,
-        images
-          .first()
+      val (accuracy, valueResultPairs) = testAccuracy(p, images)
+      if (accuracy > 0.999) {
+        println("Done (accuracy is very high)")
+        return
+      }
+
+      val newP = p.train(
+        valueResultPairs[index].second,
+        images[index]
           .category
           .toValue()
-      ),
-      images.drop(1)
-    )
+      )
+
+      index++
+      p = newP
+    }
   }
 
   private fun testAccuracy(
@@ -43,12 +51,15 @@ class Part3PerceptronRunner {
   ): Pair<Double, List<Pair<Image, ValueResult>>> {
     val valueResults = images.map { it to p.categoryFor(it) }
 
-    val correct = valueResults.count { pair ->
-      pair.first.category == pair.second.value.toCategory()
-    }
+    val correct = valueResults
+      .parallelStream()
+      .filter { pair ->
+        pair.first.category == pair.second.value.toCategory()
+      }
+      .count()
 
     val percentCorrect = correct.toDouble() / valueResults.size
-    println("Correct: $percentCorrect")
+    println("- percentCorrect: $percentCorrect")
 
     return percentCorrect to valueResults
   }
