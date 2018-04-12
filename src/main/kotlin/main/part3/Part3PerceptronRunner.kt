@@ -9,11 +9,14 @@ class Part3PerceptronRunner {
   fun run(imageDataFileName: String) {
     val images = Image.loadAll(imageDataFileName)
     val features = (0..50).map { Feature.newRandom(images[0], 4, it == 0) }
-    val size = images[0].size
+
+    val imagesToFeatureValues = images.map { image ->
+      image to features.map { it.valueFor(image).toDouble() }
+    }
 
     var index = 0
     var repeat = 0
-    var p = Perceptron(size, features)
+    var p = Perceptron(images[0].size, features)
 //    var iterations = { (repeat * images.size) + index }
 
     while (true) {
@@ -30,7 +33,8 @@ class Part3PerceptronRunner {
 
 //      println("Starting iteration for index: $index and repeat: $repeat")
 
-      val (accuracy, valueResultPairs) = testAccuracy(p, images)
+      // TODO  only one accuracy sometimes
+      val (accuracy, valueResultPairs) = testAccuracy(p, imagesToFeatureValues)
       if (accuracy > 0.999 && repeat >= 1) {
         println("Done (accuracy is very high)")
         return
@@ -50,9 +54,11 @@ class Part3PerceptronRunner {
 
   private fun testAccuracy(
     p: Perceptron,
-    images: List<Image>
+    imagesToFeatureValues: List<Pair<Image, List<Double>>>
   ): Pair<Double, List<Pair<Image, ValueResult>>> {
-    val valueResults = images.map { it to p.categoryFor(it) }
+    val valueResults = imagesToFeatureValues.map { (image, featureValues) ->
+      image to p.categoryFor(image, featureValues)
+    }
 
     val correct = valueResults
       .parallelStream()

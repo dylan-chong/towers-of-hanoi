@@ -36,14 +36,11 @@ class Perceptron(
 //    println("- Weights: " + weights.toString())
   }
 
-  fun categoryFor(image: Image): ValueResult {
+  fun categoryFor(image: Image, featureValues: List<Double>): ValueResult {
     if (image.size != imageSize) {
       throw IllegalArgumentException(image.toString())
     }
 
-    // TODO cache
-    val featureValues = features.map { it.valueFor(image).toDouble() }
-    // TODO dup
     val featureValuesWithWeights = weights.mapIndexed { index, weight ->
       weight * featureValues[index]
     }
