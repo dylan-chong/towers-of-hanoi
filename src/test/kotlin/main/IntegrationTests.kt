@@ -19,7 +19,6 @@ class IntegrationTests : Spek({
         .drop(3)
         .toTypedArray()
     }
-    .takeLast(1)// todo
     .forEach { arguments ->
 
       it("does not crash with arguments: ${Arrays.toString(arguments)}") {
