@@ -6,30 +6,34 @@ fun Value.toDouble(): Double {
   return if (this) 1.0 else 0.0
 }
 
+fun Value.toCategory(): Char {
+  return if (this) 'X' else 'O'
+}
+
 data class ValueResult(val value: Value, val featureValues: List<Double>)
 
 class Perceptron(
-  val size: Int,
+  val imageSize: Int,
   val features: List<Feature>,
-  val weights: List<Double> = (0 until size)
+  val weights: List<Double> = (0 until features.size)
     .map { 0.01 * (sharedRandom.nextDouble() - 0.5) },
   val learningRate: Double = 0.2
 ) {
 
   init {
-    if (!listOf(4, size, features.size, weights.size).all { it == size }) {
+    if (features.size != weights.size) {
       throw IllegalArgumentException(toString())
     }
   }
 
-  fun valueFor(image: Image): ValueResult {
-    if (image.size != size) {
+  fun categoryFor(image: Image): ValueResult {
+    if (image.size != imageSize) {
       throw IllegalArgumentException(image.toString())
     }
 
-    val featureValues = (0 until size).map {
+    val featureValues = (weights zip features).map { (weight, feature) ->
       // The value for method could be optimised
-      weights[it] * features[it].valueFor(image)
+      weight * feature.valueFor(image)
     }
 
     return ValueResult(featureValues.sum() > 0, featureValues)
@@ -37,7 +41,7 @@ class Perceptron(
 
   fun train(valueResult: ValueResult, predictedValue: Value): Perceptron {
     return Perceptron(
-      size,
+      imageSize,
       features,
       weights.mapIndexed { index, weight ->
         val diff = valueResult.value.toDouble() - predictedValue.toDouble()

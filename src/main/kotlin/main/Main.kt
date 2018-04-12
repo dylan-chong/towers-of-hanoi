@@ -38,7 +38,10 @@ fun main(args: Array<String>) {
   } catch (e: Exception) {
     println("Some error occurred. Maybe you passed incorrect parameters?")
     println(instructions)
-    throw IllegalArgumentException(e)
+    throw IllegalArgumentException(
+      "An error occurred while running the program",
+      e
+    )
   }
 }
 
