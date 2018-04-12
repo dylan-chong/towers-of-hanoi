@@ -58,10 +58,10 @@ class Part3PerceptronRunner {
       }
       .count()
 
-    val percentCorrect = correct.toDouble() / valueResults.size
-    println("- percentCorrect: $percentCorrect")
+    val decimalCorrect = correct.toDouble() / valueResults.size
+    println("- percentCorrect: ${decimalCorrect * 100}")
 
-    return percentCorrect to valueResults
+    return decimalCorrect to valueResults
   }
 }
 

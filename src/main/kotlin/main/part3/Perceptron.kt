@@ -25,7 +25,7 @@ class Perceptron(
   val features: List<Feature>,
   val weights: List<Double> = (0 until features.size)
     .map { 0.01 * (sharedRandom.nextDouble() - 0.5) },
-  val learningRate: Double = 0.1
+  val learningRate: Double = 0.2
 ) {
 
   init {
@@ -50,12 +50,20 @@ class Perceptron(
   }
 
   fun train(valueResult: ValueResult, predictedValue: Value): Perceptron {
+    if (valueResult.value == predictedValue) {
+      return this
+    }
+
+    val shouldAdd = predictedValue
+
     return Perceptron(
       imageSize,
       features,
       weights.mapIndexed { index, weight ->
         val diff = valueResult.value.toDouble() - predictedValue.toDouble()
-        weight + (learningRate * diff * valueResult.featureValues[index])
+        val change = (learningRate * diff * valueResult.featureValues[index]) *
+          if (shouldAdd) 1 else -1
+        weight + change
       }
     )
   }
