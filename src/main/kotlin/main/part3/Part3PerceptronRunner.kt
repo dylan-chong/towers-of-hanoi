@@ -32,25 +32,25 @@ class Part3PerceptronRunner {
     }
 
     var index = 0
-    var repeat = 0
+    var epoch = 0
     var p = Perceptron(images[0].size, features)
-//    var iterations = { (repeat * images.size) + index }
+//    var iterations = { (epoch * images.size) + index }
 
     while (true) {
-      val iterations = repeat * images.size + index
+      val iterations = epoch * images.size + index
 
       if (index == images.size) {
-        if (repeat == 100000) {
+        if (epoch == 100000) {
           println("Done")
-          return repeat
+          return epoch
         } else {
           index = 0
-          repeat++
+          epoch++
           continue
         }
       }
 
-//      println("Starting iteration for index: $index and repeat: $repeat")
+//      println("Starting iteration for index: $index and epoch: $epoch")
 
       val isSkip = index % 10 != 0
       val cache = if (isSkip) {
@@ -64,13 +64,13 @@ class Part3PerceptronRunner {
       if (!isSkip) {
 //        println(accuracyPercent)
       }
-      if (!isSkip && accuracy >= 1 && repeat >= 1) {
+      if (!isSkip && accuracy >= 1 && epoch >= 1) {
         println(
           "Done (accuracy: $accuracyPercent is very high) on\t" +
             "iterations: $iterations,\t" +
-            "repeat (epoch): $repeat"
+            "epoch (epoch): $epoch"
         )
-        return repeat
+        return epoch
       }
 
       val valueResult = valueResultPairs[if (isSkip) 0 else index].second
