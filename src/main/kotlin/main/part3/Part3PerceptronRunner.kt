@@ -1,7 +1,6 @@
 package main.part3
 
 import java.util.*
-import java.util.stream.Collectors
 
 //val sharedRandom = Random(1L)
 val sharedRandom = Random()
@@ -9,21 +8,6 @@ val sharedRandom = Random()
 class Part3PerceptronRunner {
 
   fun run(imageDataFileName: String) {
-    doRun(imageDataFileName)
-  }
-
-  private fun doRepeatRun(imageDataFileName: String) {
-    println(
-      "Number of epochs to get 100%: "
-        + (0..10000)
-        .toList()
-        .parallelStream()
-        .map { doRun(imageDataFileName) }
-        .collect(Collectors.toList())
-    )
-  }
-
-  private fun doRun(imageDataFileName: String): Int {
     val images = Image.loadAll(imageDataFileName)
     val features = (0..50).map { Feature.newRandom(images[0], 4, it == 0) }
 
@@ -33,16 +17,15 @@ class Part3PerceptronRunner {
 
     var index = 0
     var epoch = 0
+    val iterations = { epoch * images.size + index }
     var p = Perceptron(images[0].size, features)
-//    var iterations = { (epoch * images.size) + index }
+    var lastAccuracy = -1.0
 
     while (true) {
-      val iterations = epoch * images.size + index
-
       if (index == images.size) {
         if (epoch == 100000) {
-          println("Done")
-          return epoch
+          println("Done (reached maximum epochs $epoch)")
+          break
         } else {
           index = 0
           epoch++
@@ -50,30 +33,26 @@ class Part3PerceptronRunner {
         }
       }
 
-//      println("Starting iteration for index: $index and epoch: $epoch")
+//      println("Starting iteration $iterations for index: $index and epoch: $epoch")
 
-      val isSkip = index % 10 != 0
-      val cache = if (isSkip) {
+      val skipAccuracy = index % 10 != 0
+      val cache = if (skipAccuracy) {
         imagesToFeatureValues.subList(index, index + 1)
       } else {
         imagesToFeatureValues
       }
 
       val (accuracy, valueResultPairs) = testAccuracy(p, cache)
-      val accuracyPercent = accuracy * 100
-      if (!isSkip) {
-//        println(accuracyPercent)
+      lastAccuracy = accuracy
+      if (!skipAccuracy) {
+//        println(accuracyPercent * 100)
       }
-      if (!isSkip && accuracy >= 1 && epoch >= 1) {
-        println(
-          "Done (accuracy: $accuracyPercent is very high) on\t" +
-            "iterations: $iterations,\t" +
-            "epoch (epoch): $epoch"
-        )
-        return epoch
+      if (!skipAccuracy && accuracy >= 1 && epoch >= 1) {
+        println("Done (accuracy: is very high)")
+        break
       }
 
-      val valueResult = valueResultPairs[if (isSkip) 0 else index].second
+      val valueResult = valueResultPairs[if (skipAccuracy) 0 else index].second
 
       val newP = p.train(
         valueResult,
@@ -85,6 +64,17 @@ class Part3PerceptronRunner {
       index++
       p = newP
     }
+
+    println("- accuracy: ${lastAccuracy * 100}")
+    println("- repeats (epoch): $epoch")
+    println("- iterations: ${iterations()} (number of times trained on a single instance)")
+
+    println("- Features (pixelIndexToSigns is a map from 1d position to ideal")
+    println("  pixel value. Position is 1d rather than 2d for simplicity)")
+    features.forEachIndexed { i, it -> println("  - $i. $it") }
+
+    println("- Weights:")
+    p.weights.forEachIndexed { i, it -> println("  - $i. ${"% 4.2f".format(it)}") }
   }
 
   private fun testAccuracy(
