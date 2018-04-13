@@ -26,7 +26,7 @@ public class Model {
 //    }
 //    this.pDraw=d;//atomic update
     this.pDraw = p
-//      .parallelStream()
+//      .parallelStream() // not any faster, not enough particles to be faster parallel
       .stream()
       .map(particle -> new DrawableParticle(
         (int)particle.x, (int)particle.y, (int)Math.sqrt(particle.mass),c )
