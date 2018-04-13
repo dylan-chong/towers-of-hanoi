@@ -14,10 +14,6 @@ public class Model {
   public static volatile boolean isParallel = false;
 
   public void step() {
-//    p = p.stream()
-//      .map((part) -> part.interact(this))
-//      .collect(Collectors.toList());
-
     // Timing these show that the interact() is the most expensive step by
     // two orders of magnitude
     //
@@ -33,7 +29,7 @@ public class Model {
     }, "step 1");
     Timer.INSTANCE.time(() -> {    p.forEach((part) -> part.updateSpeed());}, "step 1.1");
     Timer.INSTANCE.time(() -> {    mergeParticles();}, "step 2");
-    Timer.INSTANCE.time(() -> {    p.forEach((part) -> part.move(this));}, "step 3");
+    Timer.INSTANCE.time(() -> {    for(Particle p:this.p){p.move(this);}}, "step 3");
     Timer.INSTANCE.time(() -> {    updateGraphicalRepresentation();}, "step 4");
   }
   private void updateGraphicalRepresentation() {

@@ -21,3 +21,5 @@
 {currentTime: 1523654571725, average: 46.625, times: [46, 45, 45, 42, 42, 50, 52, 45, 47, 50]}              # [EXTRA TEST] volatile tempSpeedX, parallelStream for interact
 {currentTime: 1523656725033, average: 79.375, times: [74, 73, 74, 79, 77, 76, 83, 83, 89, 74]               # [EXTRA TEST] volatile tempSpeedX
 {currentTime: 1523656613164, average: 48.375, times: [84, 52, 45, 52, 55, 46, 48, 54, 43, 44]               # [EXTRA TEST] volatile tempSpeedX, parallelStream for interact
+{currentTime: 1523657746791, average: 86.625, times: [77, 76, 78, 74, 121, 120, 77, 72, 73, 78]}            # [EXTRA TEST] volatile tempSpeedX
+{currentTime: 1523657858531, average: 49.5, times: [47, 55, 44, 49, 67, 43, 46, 45, 46, 56]}                # [EXTRA TEST] volatile tempSpeedX, parallelStream for interact
