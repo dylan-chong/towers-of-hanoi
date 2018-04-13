@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 public class Gui extends JFrame implements Runnable{
-  public static volatile int staticAvgTime = -1;
+  public static volatile int staticAvgTime;
   public static volatile Gui instance;
 
   private static int frameTime=10;//use a bigger or smaller number for faster/slower simulation
@@ -95,8 +95,10 @@ public class Gui extends JFrame implements Runnable{
     }
   }
   public static void main(String[] args) {
-    //Model m=DataSetLoader.getRegularGrid(100, 800, 40);//Try those configurations
     Timer.INSTANCE.reset();
+    Gui.staticAvgTime = -1;
+
+    //Model m=DataSetLoader.getRegularGrid(100, 800, 40);//Try those configurations
     Model m=DataSetLoader.getRandomRotatingGrid(100, 800, 32);
 //    Model m=DataSetLoader.getRandomRotatingGrid(100, 800, 40);
     //Model m=DataSetLoader.getRandomSet(100, 800, 1//000);

@@ -20,7 +20,6 @@ class Benchmarks : Spek({
         Thread.sleep(200)
         millisecondsPerFrame = Gui.staticAvgTime
       }
-      Gui.staticAvgTime = -1
 
       // Kill the simulation
       Gui.instance.forceClose()
