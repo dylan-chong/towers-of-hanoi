@@ -407,6 +407,118 @@ true when the node is pure. QED.
 
 # Part 3
 
+## Output
+
+    Done (accuracy: is very high)
+    - accuracy: 100.0%
+    - repeats (epoch): 154
+    - iterations: 15410 (number of times trained on a single instance)
+    - Features (pixelIndexToSigns is a map from 1d position to ideal
+      pixel value. Position is 1d rather than 2d for simplicity)
+      - 0. Feature(pixelIndexToSigns={36=0, 24=1, 13=1, 19=0}, isDummy=true)
+      - 1. Feature(pixelIndexToSigns={62=1, 33=0, 89=1, 17=1}, isDummy=false)
+      - 2. Feature(pixelIndexToSigns={88=0, 13=0, 81=0, 27=0}, isDummy=false)
+      - 3. Feature(pixelIndexToSigns={80=1, 43=0, 38=0, 22=0}, isDummy=false)
+      - 4. Feature(pixelIndexToSigns={87=1, 4=1, 10=0, 9=1}, isDummy=false)
+      - 5. Feature(pixelIndexToSigns={14=0, 93=0, 48=0, 10=1}, isDummy=false)
+      - 6. Feature(pixelIndexToSigns={71=1, 92=1, 62=1, 85=0}, isDummy=false)
+      - 7. Feature(pixelIndexToSigns={22=1, 8=0, 97=1, 95=0}, isDummy=false)
+      - 8. Feature(pixelIndexToSigns={67=1, 61=0, 69=1, 14=1}, isDummy=false)
+      - 9. Feature(pixelIndexToSigns={3=1, 37=1, 77=0, 11=0}, isDummy=false)
+      - 10. Feature(pixelIndexToSigns={29=1, 79=1, 25=1, 85=0}, isDummy=false)
+      - 11. Feature(pixelIndexToSigns={12=0, 29=0, 40=1, 67=1}, isDummy=false)
+      - 12. Feature(pixelIndexToSigns={98=1, 41=1, 0=1, 84=1}, isDummy=false)
+      - 13. Feature(pixelIndexToSigns={70=0, 7=0, 3=0, 65=0}, isDummy=false)
+      - 14. Feature(pixelIndexToSigns={43=1, 61=1, 54=0, 30=1}, isDummy=false)
+      - 15. Feature(pixelIndexToSigns={79=0, 73=1, 44=0, 20=1}, isDummy=false)
+      - 16. Feature(pixelIndexToSigns={35=0, 61=1, 8=1, 7=0}, isDummy=false)
+      - 17. Feature(pixelIndexToSigns={48=1, 70=0, 81=0, 98=1}, isDummy=false)
+      - 18. Feature(pixelIndexToSigns={22=1, 59=0, 31=0, 89=1}, isDummy=false)
+      - 19. Feature(pixelIndexToSigns={49=1, 65=0, 70=0, 79=0}, isDummy=false)
+      - 20. Feature(pixelIndexToSigns={95=1, 12=0, 16=1, 44=1}, isDummy=false)
+      - 21. Feature(pixelIndexToSigns={94=1, 28=1, 87=1, 4=1}, isDummy=false)
+      - 22. Feature(pixelIndexToSigns={46=1, 34=0, 62=1, 77=1}, isDummy=false)
+      - 23. Feature(pixelIndexToSigns={14=1, 73=0, 78=1, 74=0}, isDummy=false)
+      - 24. Feature(pixelIndexToSigns={58=0, 42=0, 24=0, 91=1}, isDummy=false)
+      - 25. Feature(pixelIndexToSigns={80=0, 20=1, 27=0, 18=0}, isDummy=false)
+      - 26. Feature(pixelIndexToSigns={60=1, 31=1, 90=0, 66=0}, isDummy=false)
+      - 27. Feature(pixelIndexToSigns={35=0, 91=0, 24=1, 87=0}, isDummy=false)
+      - 28. Feature(pixelIndexToSigns={98=0, 36=1, 58=0, 64=1}, isDummy=false)
+      - 29. Feature(pixelIndexToSigns={61=1, 81=0, 70=1, 24=1}, isDummy=false)
+      - 30. Feature(pixelIndexToSigns={51=0, 69=0, 82=0, 78=1}, isDummy=false)
+      - 31. Feature(pixelIndexToSigns={66=0, 53=0, 99=0, 17=0}, isDummy=false)
+      - 32. Feature(pixelIndexToSigns={11=1, 29=1, 79=0, 30=0}, isDummy=false)
+      - 33. Feature(pixelIndexToSigns={37=1, 83=0, 28=0, 92=0}, isDummy=false)
+      - 34. Feature(pixelIndexToSigns={30=0, 3=0, 92=0, 84=1}, isDummy=false)
+      - 35. Feature(pixelIndexToSigns={41=1, 62=0, 66=1, 1=1}, isDummy=false)
+      - 36. Feature(pixelIndexToSigns={10=1, 7=0, 54=1, 49=0}, isDummy=false)
+      - 37. Feature(pixelIndexToSigns={20=0, 87=1, 72=1, 94=1}, isDummy=false)
+      - 38. Feature(pixelIndexToSigns={85=0, 44=0, 24=0, 74=1}, isDummy=false)
+      - 39. Feature(pixelIndexToSigns={99=1, 83=0, 90=0, 89=0}, isDummy=false)
+      - 40. Feature(pixelIndexToSigns={75=1, 86=1, 93=0, 55=1}, isDummy=false)
+      - 41. Feature(pixelIndexToSigns={46=0, 38=1, 97=1, 98=0}, isDummy=false)
+      - 42. Feature(pixelIndexToSigns={21=0, 47=0, 81=0, 19=1}, isDummy=false)
+      - 43. Feature(pixelIndexToSigns={20=1, 17=1, 90=1, 92=0}, isDummy=false)
+      - 44. Feature(pixelIndexToSigns={11=1, 77=1, 97=0, 18=1}, isDummy=false)
+      - 45. Feature(pixelIndexToSigns={94=1, 22=0, 88=1, 70=0}, isDummy=false)
+      - 46. Feature(pixelIndexToSigns={14=0, 9=0, 12=1, 55=0}, isDummy=false)
+      - 47. Feature(pixelIndexToSigns={31=1, 73=0, 8=1, 11=0}, isDummy=false)
+      - 48. Feature(pixelIndexToSigns={34=0, 48=0, 32=1, 22=0}, isDummy=false)
+      - 49. Feature(pixelIndexToSigns={74=0, 26=0, 6=1, 93=1}, isDummy=false)
+      - 50. Feature(pixelIndexToSigns={74=1, 23=0, 87=1, 98=1}, isDummy=false)
+    - Weights:
+      - 0.  0.20
+      - 1. -0.20
+      - 2. -3.20
+      - 3.  3.00
+      - 4.  0.00
+      - 5.  2.00
+      - 6.  3.60
+      - 7. -1.00
+      - 8.  3.20
+      - 9.  0.80
+      - 10. -0.40
+      - 11.  0.20
+      - 12. -0.00
+      - 13.  2.60
+      - 14.  1.80
+      - 15. -2.20
+      - 16.  0.20
+      - 17. -1.00
+      - 18.  5.00
+      - 19. -3.60
+      - 20. -3.20
+      - 21. -0.40
+      - 22. -6.00
+      - 23. -1.60
+      - 24.  2.40
+      - 25.  0.40
+      - 26. -3.00
+      - 27.  1.00
+      - 28. -1.80
+      - 29.  0.80
+      - 30. -2.00
+      - 31. -3.80
+      - 32.  0.20
+      - 33.  3.60
+      - 34.  1.20
+      - 35. -4.20
+      - 36.  0.20
+      - 37. -0.40
+      - 38.  0.00
+      - 39. -1.80
+      - 40.  6.60
+      - 41. -2.60
+      - 42.  1.80
+      - 43. -0.60
+      - 44.  2.00
+      - 45.  0.20
+      - 46. -1.20
+      - 47.  4.60
+      - 48.  1.20
+      - 49. -0.20
+      - 50.  3.80
+
 ## Q1
 
 My perceptron was able to achieve 100% accuracy, although it may take several
