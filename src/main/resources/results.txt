@@ -1,9 +1,17 @@
-{currentTime: 1523605935708, average: 73.125, times: [70, 72, 67, 68, 70, 70, 76, 74, 80, 80]}              # [IMPORTANT] Original
+{currentTime: 1523605935708, average: 73.125, times: [70, 72, 67, 68, 70, 70, 76, 74, 80, 80]}              # [BASELINE] Original
 {currentTime: 1523601493831, average: 72.25, times: [94, 94, 73, 73, 70, 70, 78, 77, 69, 68]}               # Stream map in updateGraphicalRepresentation
 {currentTime: 1523605234348, average: 75.75, times: [81, 83, 77, 76, 76, 80, 74, 74, 74, 75]}               # [TEMP] Parallel stream on updateGraphicalRepresentation
-
 {currentTime: 1523606270308, average: 265.0, times: [301, 292, 265, 264, 263, 263, 264, 263, 271, 267]}     # [TEMP] add volatile to Particle
 
-{currentTime: 1523611700809, average: 74.0, times: [71, 71, 70, 70, 83, 83, 68, 68, 75, 75]}                # Add time() to step() method
+{currentTime: 1523611700809, average: 74.0, times: [71, 71, 70, 70, 83, 83, 68, 68, 75, 75]}                # [BASELINE] Add time() to step() method
 {currentTime: 1523612117064, average: 93.5, times: [123, 121, 135, 132, 94, 94, 71, 71, 75, 76]}            # Use ConcurrentHashMap for Particle
 {currentTime: 1523612283543, average: 117.0, times: [139, 143, 111, 110, 127, 129, 130, 109, 112, 108]}     # ConcurrentHashMap, parallelStream for interact, volatile fields for Particle
+{currentTime: 1523612727448, average: 61.75, times: [65, 67, 51, 52, 68, 79, 68, 67, 54, 55]}               # [INCORRECT] parallelStream for interact (not correct because of no volatile)
+{currentTime: 1523613062422, average: 54.875, times: [43, 45, 50, 53, 61, 61, 50, 50, 57, 57]}              # Ditto
+{currentTime: 1523613159034, average: 57.625, times: [45, 45, 52, 54, 65, 70, 53, 55, 55, 57]}              # Ditto
+
+{currentTime: 1523614684302, average: 78.875, times: [93, 96, 83, 83, 77, 76, 82, 82, 74, 74]}              # volatile tempSpeedX
+{currentTime: 1523614812622, average: 73.625, times: [78, 75, 75, 75, 73, 74, 70, 71, 75, 76]}              # Ditto
+{currentTime: 1523615233093, average: 57.75, times: [76, 77, 76, 75, 51, 52, 58, 59, 45, 46]}               # volatile tempSpeedX, parallelStream for interact
+{currentTime: 1523615337060, average: 49.125, times: [71, 70, 46, 49, 57, 57, 50, 47, 43, 44]}              # Ditto
+{currentTime: 1523615587163, average: 51.875, times: [53, 58, 57, 59, 53, 57, 45, 54, 45, 45]}              # Ditto

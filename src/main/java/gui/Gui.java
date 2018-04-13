@@ -74,7 +74,7 @@ public class Gui extends JFrame implements Runnable{
           if(sleepTime>1){ Thread.sleep(sleepTime);}
         }//if the step was short enough, it wait to make it at least frameTime long.
       }
-      catch(InterruptedException t){//not a perfect solution, but
+      catch(Throwable t){//not a perfect solution, but
         t.printStackTrace();//makes sure you see the error and the program dies.
 //        System.exit(0);//the "right" solution is much more involved
       }//and would require storing and passing the exception between different objects.

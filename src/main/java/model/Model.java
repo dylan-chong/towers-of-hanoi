@@ -27,6 +27,7 @@ public class Model {
     // step 3:           15.56 ms
     // step 4:           43.68 ms
     Timer.INSTANCE.time(() -> {    p.parallelStream().forEach((part) -> part.interact(this));}, "step 1");
+    Timer.INSTANCE.time(() -> {    p.forEach((part) -> part.updateSpeed());}, "step 1.1");
     Timer.INSTANCE.time(() -> {    mergeParticles();}, "step 2");
     Timer.INSTANCE.time(() -> {    p.forEach((part) -> part.move(this));}, "step 3");
     Timer.INSTANCE.time(() -> {    updateGraphicalRepresentation();}, "step 4");

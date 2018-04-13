@@ -25,7 +25,7 @@ object Timer {
 
   fun printResults() {
     times.forEach { name, time ->
-      System.out.printf("%s: % 9.2f ms\n", name, time / 1.0e6)
+      System.out.printf("%15s: % 9.2f ms\n", name, time / 1.0e6)
     }
   }
 

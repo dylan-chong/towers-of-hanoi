@@ -16,6 +16,8 @@ public class Particle {
   public double mass;
   public double speedX;
   public double speedY;
+  public volatile double tempSpeedX; // edit on another thread
+  public volatile double tempSpeedY;
   public double x;
   public double y;
 
@@ -62,6 +64,9 @@ public class Particle {
   public void interact(Model m) {
     // So the 3 chunks of code below seem to contribute roughly equal amounts of time
 //    Timer.INSTANCE.time(timerController -> {
+      double speedX = this.speedX;
+      double speedY = this.speedY;
+
       for (Particle p : m.p) {
         if (p == this) continue;
         //timerController.start("interact 1");
@@ -76,22 +81,30 @@ public class Particle {
         //timerController.start("interact 2");
         dirX = p.mass * Model.gravitationalConstant * dirX / dist;
         dirY = p.mass * Model.gravitationalConstant * dirY / dist;
-        assert this.speedX <= Model.lightSpeed : this.speedX;
-        assert this.speedY <= Model.lightSpeed : this.speedY;
+        assert speedX <= Model.lightSpeed : speedX;
+        assert speedY <= Model.lightSpeed : speedY;
         //timerController.stop();
         //timerController.start("interact 3");
-        double newSpeedX = this.speedX + dirX;
-        newSpeedX /= (1 + (this.speedX * dirX) / Model.lightSpeed);
-        double newSpeedY = this.speedY + dirY;
-        newSpeedY /= (1 + (this.speedY * dirY) / Model.lightSpeed);
+        double newSpeedX = speedX + dirX;
+        newSpeedX /= (1 + (speedX * dirX) / Model.lightSpeed);
+        double newSpeedY = speedY + dirY;
+        newSpeedY /= (1 + (speedY * dirY) / Model.lightSpeed);
         if (!Double.isNaN(dirX)) {
-          this.speedX = newSpeedX;
+          speedX = newSpeedX;
         }
         if (!Double.isNaN(dirY)) {
-          this.speedY = newSpeedY;
+          speedY = newSpeedY;
         }
         //timerController.stop();
       }
+
+      tempSpeedX = speedX;
+      tempSpeedY = speedY;
 //    });
+  }
+
+  public void updateSpeed() {
+    speedX = tempSpeedX;
+    speedY = tempSpeedY;
   }
 }
