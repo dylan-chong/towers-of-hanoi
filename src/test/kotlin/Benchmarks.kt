@@ -48,11 +48,10 @@ class Benchmarks : Spek({
     Files.write(resultsFile.toPath(), allResults)
   }
 
-  it("runs and print out the run times (without parallel)") {
-    run(false)
-  }
-
-  it("runs and print out the run times (with parallel)") {
-    run(true)
+  listOf(false, true).forEach { parallel ->
+    val type = if (parallel) "parallel" else "sequential"
+    it("runs and print out the run times ($type)") {
+      run(parallel)
+    }
   }
 })
