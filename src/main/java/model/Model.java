@@ -33,17 +33,8 @@ public class Model {
     Timer.INSTANCE.time(() -> {    updateGraphicalRepresentation();}, "step 4");
   }
   private void updateGraphicalRepresentation() {
-    Color c=Color.ORANGE;
-
-//    this.pDraw = p
-////      .parallelStream() // not any faster, not enough particles to be faster parallel
-//      .stream()
-//      .map(particle -> new DrawableParticle(
-//        (int)particle.x, (int)particle.y, (int)Math.sqrt(particle.mass),c )
-//      )
-//      .collect(Collectors.toList());
-
     ArrayList<DrawableParticle> d=new ArrayList<DrawableParticle>();
+    Color c=Color.ORANGE;
     for(Particle p:this.p){
       d.add(new DrawableParticle((int)p.x, (int)p.y, (int)Math.sqrt(p.mass),c ));
     }

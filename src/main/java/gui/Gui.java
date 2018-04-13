@@ -60,8 +60,18 @@ public class Gui extends JFrame implements Runnable{
       try{
         while(!Thread.currentThread().isInterrupted()){
           long ut=System.currentTimeMillis();
-          for(int i=0;i<stepsForFrame;i++) {m.step();}
+          try {
+            for (int i = 0; i < stepsForFrame; i++) {
+              System.out.printf("BEFORE step: %d %d%n", i, System.currentTimeMillis()); // TODO
+              m.step();
+              System.out.printf("AFTER step: %d %d%n", i, System.currentTimeMillis()); // TODO
+            }
+          } catch (Throwable t) {
+            t.printStackTrace();
+            throw new RuntimeException(t);
+          }
           ut=System.currentTimeMillis()-ut;//used time
+          System.out.println("times = " + times); // TODO
           System.out.print("Particles: "+m.p.size()+"\ttime:"+ut);//if you want to have an idea of the time consumption
           times.add(ut);
           if (times.size() > 15) times.remove();
