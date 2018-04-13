@@ -11,7 +11,7 @@ public class Model {
   public static final double timeFrame=20;//the bigger, the shorter is the time of a step
   public List<Particle> p=new ArrayList<Particle>();
   public volatile List<DrawableParticle> pDraw=new ArrayList<DrawableParticle>();
-  public static volatile boolean isParallel = false;
+  public static volatile boolean isParallel = true;
 
   public void step() {
     // Timing these show that the interact() is the most expensive step by

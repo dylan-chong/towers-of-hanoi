@@ -23,7 +23,6 @@ class Benchmarks : Spek({
 
       // Kill the simulation
       Gui.instance.forceClose()
-      Thread.sleep(1000)
 
       millisecondsPerFrame
     }
