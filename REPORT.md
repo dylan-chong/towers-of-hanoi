@@ -406,3 +406,42 @@ instances from of different classes. We stated above that `I = 0` must only be
 true when the node is pure. QED.
 
 # Part 3
+
+## Q1
+
+My perceptron was able to achieve 100% accuracy, although it may take several
+epochs. Epoch is defined as one round through all of the image data, that is the
+perceptron has been trained exactly once on each image. 
+
+The number of epochs to reach 100% accuracy is usually between `100 – 500`,
+however it can occasionally be as small as 70, and as large as 35000. This must
+be due to how well the randomly generated features are able to distinguish
+between the two kinds of output classes (`X` and `Y`).
+
+By running the program repeatedly with different random seeds, it appears that
+my perceptron is able to achieve 100% accuracy 100% of the time – it may
+occasionally just take a very long time.
+
+I was able to optimise the training performance, such that it takes less than
+two seconds to run, significantly through the following means:
+
+- caching the feature values for each image, so they are not computed repeatedly
+throughout the process
+- running the accuracy check one in every 10 iterations, rather than every
+single iteration. Checking the accuracy on all of the images is rather
+expensive.
+
+## Q2
+
+It is not a good idea to measure perceptron, or any other kind of learning
+algorithm, performance on the training data. This is because the perceptron, or
+other algorithm, can be over fit to the training data. That is, it will only
+achieve high accuracy on the training data, and poor accuracy on any data it has
+not used for training. 
+
+Ideally, there should be a test set that is not used for training, that can be
+used to check how accurate the final perceptron is. There should also be a
+validation set that can be used to track accuracy progress. When the accuracy
+for the both the training and validation sets are good, and the validation set
+accuracy starts to decline, then we know that we should stop training in order
+to get high accuracy on the test set.
