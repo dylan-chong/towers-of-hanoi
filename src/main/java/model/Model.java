@@ -11,6 +11,7 @@ public class Model {
   public static final double timeFrame=20;//the bigger, the shorter is the time of a step
   public List<Particle> p=new ArrayList<Particle>();
   public volatile List<DrawableParticle> pDraw=new ArrayList<DrawableParticle>();
+  public static volatile boolean isParallel = false;
 
   public void step() {
 //    p = p.stream()
@@ -26,7 +27,10 @@ public class Model {
     // step 2:           33.37 ms
     // step 3:           15.56 ms
     // step 4:           43.68 ms
-    Timer.INSTANCE.time(() -> {    p.parallelStream().forEach((part) -> part.interact(this));}, "step 1");
+    Timer.INSTANCE.time(() -> {
+      (isParallel ? p.parallelStream() : p.stream())
+        .forEach((part) -> part.interact(this));
+    }, "step 1");
     Timer.INSTANCE.time(() -> {    p.forEach((part) -> part.updateSpeed());}, "step 1.1");
     Timer.INSTANCE.time(() -> {    mergeParticles();}, "step 2");
     Timer.INSTANCE.time(() -> {    p.forEach((part) -> part.move(this));}, "step 3");

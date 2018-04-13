@@ -15,3 +15,5 @@
 {currentTime: 1523615233093, average: 57.75, times: [76, 77, 76, 75, 51, 52, 58, 59, 45, 46]}               # volatile tempSpeedX, parallelStream for interact
 {currentTime: 1523615337060, average: 49.125, times: [71, 70, 46, 49, 57, 57, 50, 47, 43, 44]}              # Ditto
 {currentTime: 1523615587163, average: 51.875, times: [53, 58, 57, 59, 53, 57, 45, 54, 45, 45]}              # Ditto
+
+

@@ -1,5 +1,6 @@
 
 import gui.Gui
+import model.Model
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.it
 import java.io.File
@@ -7,7 +8,9 @@ import java.nio.file.Files
 
 class Benchmarks : Spek({
 
-  it("runs and print out the run times") {
+  fun run(isParallel: Boolean) {
+    Model.isParallel = isParallel
+
     val times = (1..10).map {
       // Start the simulation
       Gui.main(emptyArray())
@@ -44,5 +47,13 @@ class Benchmarks : Spek({
       .toMutableList()
     allResults.add("{currentTime: ${System.currentTimeMillis()}, average: $average, times: $times}")
     Files.write(resultsFile.toPath(), allResults)
+  }
+
+  it("runs and print out the run times (without parallel)") {
+    run(false)
+  }
+
+  it("runs and print out the run times (with parallel)") {
+    run(true)
   }
 })
