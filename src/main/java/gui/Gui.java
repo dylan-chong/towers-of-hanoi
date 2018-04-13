@@ -10,16 +10,23 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 public class Gui extends JFrame implements Runnable{
+  public static volatile int staticAvgTime = -1;
+  public static volatile Gui instance;
+
   private static int frameTime=10;//use a bigger or smaller number for faster/slower simulation
   private static int stepsForFrame=20;//use a bigger or smaller number for faster/slower simulation
   //it will attempt to do 4 steps every 20 milliseconds (less if the machine is too slow)
 
-  //TODO 2
-  public static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
+  public static volatile ScheduledExecutorService scheduler;
+
   Model m;
-  Gui(Model m){this.m=m;}
+
+  Gui(Model m) {
+    this.m = m;
+    instance = this;
+  }
   public void run() {
-    setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     getRootPane().setLayout(new BorderLayout());
     JPanel p=new Canvas(m);
     getRootPane().add(p,BorderLayout.CENTER);
@@ -30,6 +37,16 @@ public class Gui extends JFrame implements Runnable{
       500,25, TimeUnit.MILLISECONDS
       );
     }
+
+  /**
+   * Hacky mc hack face
+   */
+  public void forceClose() {
+    scheduler.shutdownNow();
+    setVisible(false);
+    dispose();
+  }
+
   private static final class MainLoop implements Runnable {
     Model m;
     java.util.Queue<Long> times = new ArrayDeque<>(10);
@@ -39,7 +56,7 @@ public class Gui extends JFrame implements Runnable{
 
     public void run() {
       try{
-        while(true){
+        while(!Thread.currentThread().isInterrupted()){
           long ut=System.currentTimeMillis();
           for(int i=0;i<stepsForFrame;i++) {m.step();}
           ut=System.currentTimeMillis()-ut;//used time
@@ -51,13 +68,13 @@ public class Gui extends JFrame implements Runnable{
 
           long sleepTime=frameTime-ut;
           if(sleepTime>1){ Thread.sleep(sleepTime);}
-          }//if the step was short enough, it wait to make it at least frameTime long.
-        }
-      catch(Throwable t){//not a perfect solution, but
-        t.printStackTrace();//makes sure you see the error and the program dies.
-        System.exit(0);//the "right" solution is much more involved
-        }//and would require storing and passing the exception between different objects.
+        }//if the step was short enough, it wait to make it at least frameTime long.
       }
+      catch(InterruptedException t){//not a perfect solution, but
+        t.printStackTrace();//makes sure you see the error and the program dies.
+//        System.exit(0);//the "right" solution is much more involved
+      }//and would require storing and passing the exception between different objects.
+    }
 
     private void printAvgTime() {
       if (times.size() < 10) return;
@@ -66,7 +83,10 @@ public class Gui extends JFrame implements Runnable{
       long timeSinceStart = (System.currentTimeMillis() - startTime) / 1000;
       System.out.print(",\tAvg time: " + (int) avgTime + ",\tTimeSinceStart: " + timeSinceStart);
       if (timeSinceStart == 10) {
-        System.out.print(",\t****");
+        System.out.print(",\t<-- Use these measurements for testing");
+        staticAvgTime = (int) avgTime;
+      } else {
+        staticAvgTime = -1;
       }
     }
   }
@@ -78,6 +98,7 @@ public class Gui extends JFrame implements Runnable{
 //    Model m=DataSetLoader.getRandomSet(100, 800, 100);
 //    Model m=DataSetLoader.getRandomSet(100, 800, 500);
     //Model m=DataSetLoader.getRandomGrid(100, 800, 30);
+    scheduler = Executors.newScheduledThreadPool(2);
     scheduler.schedule(new MainLoop(m), 500, TimeUnit.MILLISECONDS);
     SwingUtilities.invokeLater(new Gui(m));
 
