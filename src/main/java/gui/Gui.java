@@ -1,7 +1,9 @@
 package gui;
+
 import datasets.DataSetLoader;
 import main.MainKt;
 import model.Model;
+import model.Timer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -66,6 +68,8 @@ public class Gui extends JFrame implements Runnable{
           printAvgTime();
           System.out.println();
 
+          Timer.INSTANCE.printResults();
+
           long sleepTime=frameTime-ut;
           if(sleepTime>1){ Thread.sleep(sleepTime);}
         }//if the step was short enough, it wait to make it at least frameTime long.
@@ -92,6 +96,7 @@ public class Gui extends JFrame implements Runnable{
   }
   public static void main(String[] args) {
     //Model m=DataSetLoader.getRegularGrid(100, 800, 40);//Try those configurations
+    Timer.INSTANCE.reset();
     Model m=DataSetLoader.getRandomRotatingGrid(100, 800, 32);
 //    Model m=DataSetLoader.getRandomRotatingGrid(100, 800, 40);
     //Model m=DataSetLoader.getRandomSet(100, 800, 1//000);

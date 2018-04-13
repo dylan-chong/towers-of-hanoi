@@ -35,7 +35,7 @@ class Benchmarks : Spek({
     println("Milliseconds per frame average: $average")
 
     // Logging
-    val resultsFile = File("results.tmp")
+    val resultsFile = File("src/main/resources/results.txt")
     if (!resultsFile.exists()) {
       resultsFile.createNewFile()
     }

@@ -1,0 +1,9 @@
+{currentTime: 1523605935708, average: 73.125, times: [70, 72, 67, 68, 70, 70, 76, 74, 80, 80]}              # [IMPORTANT] Original
+{currentTime: 1523601493831, average: 72.25, times: [94, 94, 73, 73, 70, 70, 78, 77, 69, 68]}               # Stream map in updateGraphicalRepresentation
+{currentTime: 1523605234348, average: 75.75, times: [81, 83, 77, 76, 76, 80, 74, 74, 74, 75]}               # [TEMP] Parallel stream on updateGraphicalRepresentation
+
+{currentTime: 1523606270308, average: 265.0, times: [301, 292, 265, 264, 263, 263, 264, 263, 271, 267]}     # [TEMP] add volatile to Particle
+
+{currentTime: 1523611700809, average: 74.0, times: [71, 71, 70, 70, 83, 83, 68, 68, 75, 75]}                # Add time() to step() method
+{currentTime: 1523612117064, average: 93.5, times: [123, 121, 135, 132, 94, 94, 71, 71, 75, 76]}            # Use ConcurrentHashMap for Particle
+{currentTime: 1523612283543, average: 117.0, times: [139, 143, 111, 110, 127, 129, 130, 109, 112, 108]}     # ConcurrentHashMap, parallelStream for interact, volatile fields for Particle

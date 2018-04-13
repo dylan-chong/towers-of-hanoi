@@ -3,7 +3,6 @@ package model;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Model {
   public static final double size=900;
@@ -12,26 +11,42 @@ public class Model {
   public static final double timeFrame=20;//the bigger, the shorter is the time of a step
   public List<Particle> p=new ArrayList<Particle>();
   public volatile List<DrawableParticle> pDraw=new ArrayList<DrawableParticle>();
+
   public void step() {
-    p.forEach((part) -> part.interact(this));
-    mergeParticles();
-    p.forEach((part) -> part.move(this));
-    updateGraphicalRepresentation();
+//    p = p.stream()
+//      .map((part) -> part.interact(this))
+//      .collect(Collectors.toList());
+
+    // Timing these show that the interact() is the most expensive step by
+    // two orders of magnitude
+    //
+    // Printed results for a single run of the benchmark (see time() method)
+    // Name:      time spent here
+    // step 1:         9096.42 ms
+    // step 2:           33.37 ms
+    // step 3:           15.56 ms
+    // step 4:           43.68 ms
+    Timer.INSTANCE.time(() -> {    p.parallelStream().forEach((part) -> part.interact(this));}, "step 1");
+    Timer.INSTANCE.time(() -> {    mergeParticles();}, "step 2");
+    Timer.INSTANCE.time(() -> {    p.forEach((part) -> part.move(this));}, "step 3");
+    Timer.INSTANCE.time(() -> {    updateGraphicalRepresentation();}, "step 4");
   }
   private void updateGraphicalRepresentation() {
-//    ArrayList<DrawableParticle> d=new ArrayList<DrawableParticle>();
     Color c=Color.ORANGE;
-//    for(Particle p:this.p){
-//      d.add(new DrawableParticle((int)p.x, (int)p.y, (int)Math.sqrt(p.mass),c ));
-//    }
-//    this.pDraw=d;//atomic update
-    this.pDraw = p
-//      .parallelStream() // not any faster, not enough particles to be faster parallel
-      .stream()
-      .map(particle -> new DrawableParticle(
-        (int)particle.x, (int)particle.y, (int)Math.sqrt(particle.mass),c )
-      )
-      .collect(Collectors.toList());
+
+//    this.pDraw = p
+////      .parallelStream() // not any faster, not enough particles to be faster parallel
+//      .stream()
+//      .map(particle -> new DrawableParticle(
+//        (int)particle.x, (int)particle.y, (int)Math.sqrt(particle.mass),c )
+//      )
+//      .collect(Collectors.toList());
+
+    ArrayList<DrawableParticle> d=new ArrayList<DrawableParticle>();
+    for(Particle p:this.p){
+      d.add(new DrawableParticle((int)p.x, (int)p.y, (int)Math.sqrt(p.mass),c ));
+    }
+    this.pDraw=d;//atomic update
   }
   public void mergeParticles(){
     Stack<Particle> deadPs=new Stack<Particle>();
