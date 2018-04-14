@@ -24,3 +24,21 @@
 {currentTime: 1523657746791, average: 86.625, times: [77, 76, 78, 74, 121, 120, 77, 72, 73, 78]}            # [EXTRA TEST] volatile tempSpeedX
 {currentTime: 1523657858531, average: 49.5, times: [47, 55, 44, 49, 67, 43, 46, 45, 46, 56]}                # [EXTRA TEST] volatile tempSpeedX, parallelStream for interact
 
+# Changed benchmark here (frameTime=300)
+
+{currentTime: 1523662263980, average: 41.0, times: [51, 41, 38, 42, 40, 38, 41, 39, 49, 41]}                # frameTime=300, volatile tempSpeedX
+{currentTime: 1523662366501, average: 83.75, times: [78, 97, 82, 83, 85, 79, 86, 83, 78, 94]}               # frameTime=300, volatile tempSpeedX, parallelStream for interact
+{currentTime: 1523663020745, average: 64.75, times: [71, 59, 59, 62, 62, 68, 67, 66, 67, 67]}               # [EXTRA TEST] frameTime=300, volatile tempSpeedX, parallelStream for interacX
+{currentTime: 1523663315345, average: 50.5, times: [48, 42, 40, 41, 44, 42, 49, 71, 72, 45]}                # [EXTRA TEST] frameTime=300, volatile tempSpeedX
+
+# Changed benchmark here (use stepsSinceStart == 1000 instead of timeSinceStart == 100)
+
+{currentTime: 1523663775753, average: 95.0, times: [100, 103, 95, 95, 104, 105, 83, 83, 103, 92]}           # volatile tempSpeedX
+{currentTime: 1523663793784, average: 53.25, times: [53, 54, 57, 58, 48, 48, 49, 52, 56, 58]}               # volatile tempSpeedX, parallelStream for interact
+{currentTime: 1523663971531, average: 85.5, times: [94, 95, 77, 78, 73, 110, 110, 78, 78, 80]}              # Ditto 1
+{currentTime: 1523663990891, average: 58.5, times: [89, 60, 61, 61, 61, 51, 54, 56, 59, 65]}                # Ditto 2
+
+# Changed benchmark here (use stepsSinceStart == 2000)
+
+{currentTime: 1523664271334, average: 85.375, times: [87, 93, 83, 81, 84, 84, 77, 78, 97, 99]}              # volatile tempSpeedX
+{currentTime: 1523664309177, average: 54.375, times: [66, 66, 55, 53, 52, 54, 59, 60, 50, 52]}              # volatile tempSpeedX, parallelStream for interact

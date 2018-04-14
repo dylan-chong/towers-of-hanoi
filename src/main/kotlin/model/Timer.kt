@@ -5,7 +5,7 @@ import java.util.function.Consumer
 
 object Timer {
 
-  private val times = TreeMap<String, Long>()
+  private var times = TreeMap<String, Long>()
 
   fun time(runnable: Runnable, name: String) {
     val start = System.nanoTime()
@@ -30,7 +30,7 @@ object Timer {
   }
 
   fun reset() {
-    times.clear()
+    times = TreeMap()
   }
 
   class TimerController {

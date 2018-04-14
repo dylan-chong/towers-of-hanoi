@@ -53,6 +53,7 @@ public class Gui extends JFrame implements Runnable{
     Model m;
     java.util.Queue<Long> times = new ArrayDeque<>(10);
     long startTime = System.currentTimeMillis();
+    int stepsSinceStart = 0;
 
     MainLoop(Model m){this.m=m;}
 
@@ -60,19 +61,17 @@ public class Gui extends JFrame implements Runnable{
       try{
         while(!Thread.currentThread().isInterrupted()){
           long ut=System.currentTimeMillis();
-          try {
-            for (int i = 0; i < stepsForFrame; i++) {
-              System.out.printf("BEFORE step: %d %d%n", i, System.currentTimeMillis()); // TODO
-              m.step();
-              System.out.printf("AFTER step: %d %d%n", i, System.currentTimeMillis()); // TODO
-            }
-          } catch (Throwable t) {
-            t.printStackTrace();
-            throw new RuntimeException(t);
+          for (int i = 0; i < stepsForFrame; i++) {
+            m.step();
+            stepsSinceStart++;
           }
           ut=System.currentTimeMillis()-ut;//used time
-          System.out.println("times = " + times); // TODO
-          System.out.print("Particles: "+m.p.size()+"\ttime:"+ut);//if you want to have an idea of the time consumption
+          System.out.printf(
+            "Particles: % 5d,\ttime: % 5d,\tstep: % 5d",
+            m.p.size(),
+            ut,
+            stepsSinceStart
+          );
           times.add(ut);
           if (times.size() > 15) times.remove();
           printAvgTime();
@@ -81,8 +80,12 @@ public class Gui extends JFrame implements Runnable{
           Timer.INSTANCE.printResults();
 
           long sleepTime=frameTime-ut;
-          if(sleepTime>1){ Thread.sleep(sleepTime);}
+          if(sleepTime>1){
+            Thread.sleep(sleepTime);
+          }
         }//if the step was short enough, it wait to make it at least frameTime long.
+      }
+      catch(InterruptedException t) {
       }
       catch(Throwable t){//not a perfect solution, but
         t.printStackTrace();//makes sure you see the error and the program dies.
@@ -95,12 +98,10 @@ public class Gui extends JFrame implements Runnable{
 
       double avgTime = MainKt.avgTime(times);
       long timeSinceStart = (System.currentTimeMillis() - startTime) / 1000;
-      System.out.print(",\tAvg time: " + (int) avgTime + ",\tTimeSinceStart: " + timeSinceStart);
-      if (timeSinceStart == 10) {
+      System.out.printf(",\tAvg time: % 5d,\tTimeSinceStart: % 5d", (int) avgTime, timeSinceStart);
+      if (stepsSinceStart >= 2000) {
         System.out.print(",\t<-- Use these measurements for testing");
         staticAvgTime = (int) avgTime;
-      } else {
-        staticAvgTime = -1;
       }
     }
   }
