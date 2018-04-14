@@ -27,7 +27,6 @@ public class Model {
       (isParallel ? p.parallelStream() : p.stream())
         .forEach((part) -> part.interact(this));
     }, "step 1");
-    Timer.INSTANCE.time(() -> {    p.forEach((part) -> part.updateSpeed());}, "step 1.1");
     Timer.INSTANCE.time(() -> {    mergeParticles();}, "step 2");
     Timer.INSTANCE.time(() -> {    for(Particle p:this.p){p.move(this);}}, "step 3");
     Timer.INSTANCE.time(() -> {    updateGraphicalRepresentation();}, "step 4");

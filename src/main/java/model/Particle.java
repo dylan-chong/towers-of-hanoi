@@ -14,10 +14,8 @@ public class Particle {
 
   public Set<Particle> impacting = new HashSet<Particle>();
   public double mass;
-  public double speedX;
-  public double speedY;
-  public volatile double tempSpeedX; // edit on another thread
-  public volatile double tempSpeedY;
+  public volatile double speedX;
+  public volatile double speedY;
   public double x;
   public double y;
 
@@ -98,13 +96,8 @@ public class Particle {
         //timerController.stop();
       }
 
-      tempSpeedX = speedX;
-      tempSpeedY = speedY;
+      this.speedX = speedX;
+      this.speedY = speedY;
 //    });
-  }
-
-  public void updateSpeed() {
-    speedX = tempSpeedX;
-    speedY = tempSpeedY;
   }
 }
