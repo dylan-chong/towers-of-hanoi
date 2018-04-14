@@ -42,3 +42,5 @@
 
 {currentTime: 1523664271334, average: 85.375, times: [87, 93, 83, 81, 84, 84, 77, 78, 97, 99]}              # volatile tempSpeedX
 {currentTime: 1523664309177, average: 54.375, times: [66, 66, 55, 53, 52, 54, 59, 60, 50, 52]}              # volatile tempSpeedX, parallelStream for interact
+{currentTime: 1523664515009, average: 46.125, times: [45, 47, 47, 48, 45, 45, 46, 46, 46, 46]}              # [ANDREW'S QUAD CORE MACHINE] volatile tempSpeedX
+{currentTime: 1523664529598, average: 12.375, times: [13, 12, 12, 13, 13, 12, 11, 12, 13, 13]}              # [ANDREW'S QUAD CORE MACHINE] volatile tempSpeedX, parallelStream for interact
