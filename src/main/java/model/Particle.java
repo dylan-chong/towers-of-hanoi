@@ -102,6 +102,8 @@ public class Particle {
 //    });
   }
 
+  // equals and hashcode for testing purposes
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -117,6 +119,7 @@ public class Particle {
 
   @Override
   public int hashCode() {
-    return Objects.hash(impacting, mass, speedX, speedY, x, y);
+    // Do not compute hash on impacting because of infinite loops
+    return Objects.hash(impacting.size(), mass, speedX, speedY, x, y);
   }
 }
