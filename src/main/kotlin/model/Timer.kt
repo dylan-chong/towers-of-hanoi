@@ -1,7 +1,6 @@
 package model
 
 import java.util.*
-import java.util.function.Consumer
 
 object Timer {
 
@@ -13,10 +12,6 @@ object Timer {
     val end = System.nanoTime()
 
     addResult(end - start, name)
-  }
-
-  fun time(runnable: Consumer<TimerController>) {
-    runnable.accept(TimerController())
   }
 
   fun addResult(nanoseconds: Long, name: String) {
@@ -31,21 +26,5 @@ object Timer {
 
   fun reset() {
     times = TreeMap()
-  }
-
-  class TimerController {
-
-    private var currentName: String? = null
-    private var startTime: Long = 0
-
-    fun start(name: String) {
-      currentName = name
-      startTime = System.nanoTime()
-    }
-
-    fun stop() {
-      val endTime = System.nanoTime()
-      addResult(endTime - startTime, currentName!!)
-    }
   }
 }
