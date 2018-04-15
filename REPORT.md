@@ -279,9 +279,16 @@ below, and milliseconds. The average field shows the average of all but the
 first two runs of the simulation, and the times field shows the results for each
 of the run of the simulation.
 
-    {currentTime: 1523771121724, average: 84.0, times: [73, 74, 67, 68, 130, 140, 67, 68, 66, 66]} # Parallel
-    {currentTime: 1523771154335, average: 45.125, times: [48, 48, 48, 50, 41, 41, 44, 44, 45, 48]} # Sequential
+    {currentTime: 1523771121724, average: 84.0, times: [73, 74, 67, 68, 130, 140, 67, 68, 66, 66]} # Sequential
+    {currentTime: 1523771154335, average: 45.125, times: [48, 48, 48, 50, 41, 41, 44, 44, 45, 48]} # Parallel
 
 The results above show that I was incorrect with my expectation --- the parallel
-performances still almost twice of the sequential performance. (This must mean
-that the GUI is not significantly contribute to CPU usage.)
+performances still almost twice of the sequential performance. (This must mean that the GUI is not significantly contribute to CPU usage.)
+
+Also, running this on a more powerful quad core hyper threaded desktop, these are the results:
+
+    {currentTime: 1523664515009, average: 46.125, times: [45, 47, 47, 48, 45, 45, 46, 46, 46, 46]} # Sequential
+    {currentTime: 1523664529598, average: 12.375, times: [13, 12, 12, 13, 13, 12, 11, 12, 13, 13]} # Parallel
+
+The parallel results are almost exactly four times as fast, since there are four
+cores.
