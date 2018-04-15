@@ -8,6 +8,7 @@ import model.Timer;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -109,13 +110,18 @@ public class Gui extends JFrame implements Runnable{
     Timer.INSTANCE.reset();
     Gui.staticAvgTime = -1;
 
-    //Model m=DataSetLoader.getRegularGrid(100, 800, 40);//Try those configurations
-    Model m=DataSetLoader.getRandomRotatingGrid(100, 800, 32);
-//    Model m=DataSetLoader.getRandomRotatingGrid(100, 800, 40);
-    //Model m=DataSetLoader.getRandomSet(100, 800, 1//000);
-//    Model m=DataSetLoader.getRandomSet(100, 800, 100);
-//    Model m=DataSetLoader.getRandomSet(100, 800, 500);
-    //Model m=DataSetLoader.getRandomGrid(100, 800, 30);
+    boolean isParallel = false;
+    if (Arrays.asList(args).contains("--parallel")) {
+      isParallel = true;
+    }
+
+    //Model m=DataSetLoader.getRegularGrid(100, 800, 40, isParallel);//Try those configurations
+    Model m=DataSetLoader.getRandomRotatingGrid(100, 800, 32, isParallel);
+//    Model m=DataSetLoader.getRandomRotatingGrid(100, 800, 40, isParallel);
+    //Model m=DataSetLoader.getRandomSet(100, 800, 1//000, isParallel);
+//    Model m=DataSetLoader.getRandomSet(100, 800, 100, isParallel);
+//    Model m=DataSetLoader.getRandomSet(100, 800, 500, isParallel);
+    //Model m=DataSetLoader.getRandomGrid(100, 800, 30, isParallel);
     scheduler = Executors.newScheduledThreadPool(2);
     scheduler.schedule(new MainLoop(m), 500, TimeUnit.MILLISECONDS);
     SwingUtilities.invokeLater(new Gui(m));

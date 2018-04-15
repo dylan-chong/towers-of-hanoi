@@ -26,7 +26,7 @@ public class Model {
   /**
    * Decides whether to use a parallel stream or a sequential stream.
    */
-  public static volatile boolean isParallel = true;
+  public final boolean isParallel;
 
   /**
    * A collection of all of the particles in the universe
@@ -45,6 +45,10 @@ public class Model {
    * See {@link Model#updateGraphicalRepresentation()}.
    */
   public volatile List<DrawableParticle> pDraw=new ArrayList<DrawableParticle>();
+
+  public Model(boolean isParallel) {
+    this.isParallel = isParallel;
+  }
 
   /**
    * Advances the simulation by one step in time. This method has steps that
@@ -69,9 +73,11 @@ public class Model {
    */
   public void step() {
     // Timing these show that the interact() is the most expensive step by
-    // two orders of magnitude
+    // two orders of magnitude.
     //
     // Printed results for a single run of the benchmark (see time() method)
+    // in sequential mode.
+    //
     // Name:      time spent here
     // step 1:         9096.42 ms
     // step 2:           33.37 ms
@@ -150,7 +156,7 @@ public class Model {
 
   /**
    * Combine the given particles into one big one, preserving overall mass and
-   * momentum.
+   * momentum, and centre of mass.
    */
   public Particle mergeParticles(Set<Particle> ps){
     double speedX=0;

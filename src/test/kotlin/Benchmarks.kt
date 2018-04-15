@@ -1,6 +1,5 @@
 
 import gui.Gui
-import model.Model
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.it
 import java.io.File
@@ -9,11 +8,9 @@ import java.nio.file.Files
 class Benchmarks : Spek({
 
   fun run(isParallel: Boolean) {
-    Model.isParallel = isParallel
-
     val times = (1..10).map {
       // Start the simulation
-      Gui.main(emptyArray())
+      Gui.main(if (isParallel) arrayOf("--parallel") else emptyArray())
 
       var millisecondsPerFrame = -1
       while (millisecondsPerFrame == -1) {
@@ -49,7 +46,7 @@ class Benchmarks : Spek({
 
   listOf(false, true).forEach { parallel ->
     val type = if (parallel) "parallel" else "sequential"
-    it("runs and print out the run times ($type)") {
+    it("runs and print out the frame times ($type)") {
       run(parallel)
     }
   }
