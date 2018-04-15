@@ -115,6 +115,14 @@ public class Gui extends JFrame implements Runnable{
       isParallel = true;
     }
 
+    Model m = createModel(isParallel);
+
+    scheduler = Executors.newScheduledThreadPool(2);
+    scheduler.schedule(new MainLoop(m), 500, TimeUnit.MILLISECONDS);
+    SwingUtilities.invokeLater(new Gui(m));
+  }
+
+  public static Model createModel(boolean isParallel) {
     //Model m=DataSetLoader.getRegularGrid(100, 800, 40, isParallel);//Try those configurations
     Model m=DataSetLoader.getRandomRotatingGrid(100, 800, 32, isParallel);
 //    Model m=DataSetLoader.getRandomRotatingGrid(100, 800, 40, isParallel);
@@ -122,9 +130,6 @@ public class Gui extends JFrame implements Runnable{
 //    Model m=DataSetLoader.getRandomSet(100, 800, 100, isParallel);
 //    Model m=DataSetLoader.getRandomSet(100, 800, 500, isParallel);
     //Model m=DataSetLoader.getRandomGrid(100, 800, 30, isParallel);
-    scheduler = Executors.newScheduledThreadPool(2);
-    scheduler.schedule(new MainLoop(m), 500, TimeUnit.MILLISECONDS);
-    SwingUtilities.invokeLater(new Gui(m));
-
-    }
+    return m;
   }
+}
