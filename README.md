@@ -6,9 +6,14 @@ Run tests:
 
 and view test results in `build/reports/tests/test/index.html`
 
-Run program:
+Run program from Gradle:
 
     ./gradlew clean run
+
+Run program with jar:
+    
+    java -jar submit/app.jar # sequential
+    java -jar submit/app.jar --parallel
 
 Code is in `src/main/`
 

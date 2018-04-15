@@ -59,6 +59,12 @@ in parallel.
 
 ## Task 3
 
+NOTE: Because a changed only one line of code in the model to introduce
+parallelism, there would be no point duplicating the model class into
+modelparallel. I have instead added a `isParallel` Boolean field on the model.
+It is checked inside the `step` method to decide whether to use a parallel
+stream or sequential stream.
+
 ### a) How to add parallelism
 
 In the model's step method, the most expensive line of code is:
@@ -122,7 +128,7 @@ uses the model configuration defined in the `Gui.main` method.
 ```
 
 As can be seen above the program spends negligible amounts of time in steps 2 to
-4. The program spends `9096/(9096+33+16+44) = 99%` of its time in the `step`
+4\. The program spends `9096/(9096+33+16+44) = 99%` of its time in the `step`
 method performing the particle `interact` calls.
 
 By performing the interactions in parallel, the speed of the step method can be
@@ -199,3 +205,83 @@ simulation, and check that there looks the same between sequential and parallel
 modes. Visually, they appear to be the same. This of course is not a foolproof
 way to check that there are no data contentions.
 
+I have added some specs that check that the sequential and parallel models
+behave exactly the same (see `src/test/kotlin/ModelSpec.kt`). This spec calls
+the `step` method on a parallel and sequential version of the same model many
+times, and then checks that the models' `p` field equals the other. If there
+were some concurrency problems, such as race conditions, then the particles may
+contain different data. For example a field could be cached, causing a
+miscalculation, and for the wrong value to be written to the field. 
+
+The tests pass (after running them over 100 times - or over an hour), however
+this also is not a foolproof way of checking for concurrency problems. It is not
+guaranteed that a bug due to a concurrency problem will emerge. (Oddly, I was
+not able to get this test to fail by not using `volatile` in the Particle class'
+speed fields. Maybe the ParallelStreams intentionally trigger some CPU cache
+invalidation to prevent accidental issues with parallel streams...)
+
+I have also thoroughly explained above why my design is not prone to concurrency
+issues. This should be the most convincing argument as to why the program's
+concurrency design is correct, other than that it passes the checks for
+consistent seqential and parallel model behaviour.
+
+## Task 4
+
+All of the code that is part of the simulation ui and model is written in java.
+There's benchmarking and test/spec code that is written in kotlin, which is very
+very similar to java, so there should be no problems reading it.
+
+I have explained my design decisions very thoroughly and task 4.
+
+## Task 5
+
+See Task 3, question `d)` for a description of my tests/specs.
+
+## Task 6
+
+I added benchmarking tests in `src/test/kotlin/Benchmarks.kt` and some of
+`src/test/kotlin/ModelSpec.kt`. (See the readme for instructions on how to run
+it). I also added a timer class that measures how long different parts of the
+program take (see `src/main/kotlin/model/Timer.kt`).
+
+The `ModelSpec.kt` file runs simple benchmarks on the model. It simply times how
+long the parallel and sequential models take to advance 2000 steps. Below are
+the results of running it six times.
+
+    Model 0 took 3363ms at iteration 0 # Parallel
+    Model 1 took 6068ms at iteration 0 # Sequential
+    Model 0 took 3373ms at iteration 1 # Parallel
+    Model 1 took 6045ms at iteration 1
+    Model 0 took 3325ms at iteration 2 # Parallel
+    Model 1 took 6002ms at iteration 2
+    Model 0 took 3269ms at iteration 3 # Parallel
+    Model 1 took 6014ms at iteration 3
+    Model 0 took 3252ms at iteration 4 # Parallel
+    Model 1 took 6061ms at iteration 4
+    Model 0 took 3107ms at iteration 5 # Parallel
+    Model 1 took 6020ms at iteration 5
+
+As can be seen above, the results for running it in parallel are just above half
+of the results for the sequential. These results are also consistent. This is to
+be expected on my machine, which has two cores with hyper threading.
+
+The `Benchmarks.kt` file runs the GUI with parallel and sequential versions of
+the model. The reason I wanted to run the benchmarks with the GUI is because the
+GUI uses CPU power to render the particles on the canvas. On a dual core
+machine, I would expect this to reduce the parallel model performance to roughly
+1.5x the speed of the sequential model. This is because there is less CPU power
+available, and so the difference in performance should be worse than the
+almost-double the value for the benchmarks above.
+
+This version of the benchmark checks the average number of milliseconds spent on
+each block of 20 frames, after performing 2000 steps. The results can be seen
+below, and milliseconds. The average field shows the average of all but the
+first two runs of the simulation, and the times field shows the results for each
+of the run of the simulation.
+
+    {currentTime: 1523771121724, average: 84.0, times: [73, 74, 67, 68, 130, 140, 67, 68, 66, 66]} # Parallel
+    {currentTime: 1523771154335, average: 45.125, times: [48, 48, 48, 50, 41, 41, 44, 44, 45, 48]} # Sequential
+
+The results above show that I was incorrect with my expectation --- the parallel
+performances still almost twice of the sequential performance. (This must mean
+that the GUI is not significantly contribute to CPU usage.)

@@ -12,6 +12,7 @@ class Benchmarks : Spek({
       // Start the simulation
       Gui.main(if (isParallel) arrayOf("--parallel") else emptyArray())
 
+      // Wait for results from printAvgTime method in Gui.java
       var millisecondsPerFrame = -1
       while (millisecondsPerFrame == -1) {
         Thread.sleep(200)

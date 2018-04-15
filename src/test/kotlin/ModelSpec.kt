@@ -31,7 +31,7 @@ class ModelSpec : Spek({
 
   // Another variation of the test above, but harder to debug
   // It also acts as a benchmark
-  (0..99).forEach { i ->
+  (0..5).forEach { i ->
 
     it("the parallel and sequential models behave the same (variant 2) on iteration $i") {
       val parallelModel = Gui.createModel(true)
