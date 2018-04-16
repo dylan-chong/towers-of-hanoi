@@ -3,7 +3,7 @@ title: NWEN303 Project 1 (Dylan Chong - 300373593)
 geometry: margin=2.5cm
 ---
 
-## Task 1
+# Task 1
 
 I have added thorough java doc for the class and fields and methods inside
 `src/main/java/model/Model.java`. These contain the explanations for:
@@ -19,7 +19,7 @@ inline comments.
 Note 2: I intentionally added the java doc comments instead of typing here
 because it is much easier to annotate the code for the purposes of explanation.
 
-## Task 2
+# Task 2
 
 The `scheduler` thread pool has two threads. 
 
@@ -60,7 +60,7 @@ in the `scheduler` thread pool, because it contains two threads exactly, and
 only two different tasks (the main loop, scheduling repainting) need to be done
 in parallel.
 
-## Task 3
+# Task 3
 
 NOTE: Because a changed only one line of code in the model to introduce
 parallelism, there would be no point duplicating the model class into
@@ -68,7 +68,7 @@ modelparallel. I have instead added a `isParallel` Boolean field on the model.
 It is checked inside the `step` method to decide whether to use a parallel
 stream or sequential stream.
 
-### a) How to add parallelism
+## a) How to add parallelism
 
 In the model's step method, the most expensive line of code is:
 
@@ -100,7 +100,7 @@ this problem, I read the speed fields into local variables at the start of the
 of the method. This completely gets rid of the (noticeable) volatile speed
 problem, as proven by my benchmarking.
 
-### b) Why is it going to help insinuating particle moving, attracting each other and merging?
+## b) Why is it going to help insinuating particle moving, attracting each other and merging?
 
 The most expensive work in the model is calling the `interact` method on the
 particles. I have proven this by timing how much time the program spends in each
@@ -143,7 +143,7 @@ particle, and figures out what other particles to merge with. That is,
 parallelising the loop that calls `interact` on all of the particles will speed
 up the most time-consuming parts of moving, attracting, and merging.
 
-### c) What kind of data contentions will you need to resolve?
+## c) What kind of data contentions will you need to resolve?
 
 Parallelising the interactions will require being careful about shared memory. 
 
@@ -157,7 +157,7 @@ Parallelising the interactions will require being careful about shared memory.
 - Fourthly, race conditions have the potential to exist in the code. This is
   discussed below.
 
-#### Volatility and caching
+### Volatility and caching
 
 As mentioned in question `a)`, I added the volatile keyword to the speed fields
 on the particle so that there are no CPU caching issues. An avoided CPU caching
@@ -168,7 +168,7 @@ the model.
 
 <!-- TODO check impacting -->
 
-#### Sharing memory between threads in the parallel stream's thread pool
+### Sharing memory between threads in the parallel stream's thread pool
 
 One of the assumptions are made in the rest of this question `c)` is that the
 threads in the parallel stream do not interact, or share memory that gets
@@ -201,7 +201,7 @@ collection is only accessed by the current particle object. This use of the
 Hopefully the above explanations are sufficient to prove that there are no race
 conditions possible related to the `interact` method.
 
-### d) How are you sure that there is no hidden aliasing creating unpredicted data contentions?
+## d) How are you sure that there is no hidden aliasing creating unpredicted data contentions?
 
 One way to check that there are unpredicted data contentions is to run the
 simulation, and check that there looks the same between sequential and parallel
@@ -228,7 +228,7 @@ issues. This should be the most convincing argument as to why the program's
 concurrency design is correct, other than that it passes the checks for
 consistent seqential and parallel model behaviour.
 
-## Task 4
+# Task 4
 
 All of the code that is part of the simulation ui and model is written in java.
 There's benchmarking and test/spec code that is written in kotlin, which is very
@@ -236,11 +236,11 @@ very similar to java, so there should be no problems reading it.
 
 I have explained my design decisions very thoroughly and task 4.
 
-## Task 5
+# Task 5
 
 See Task 3, question `d)` for a description of my tests/specs.
 
-## Task 6
+# Task 6
 
 I added benchmarking tests in `src/test/kotlin/Benchmarks.kt` and some of
 `src/test/kotlin/ModelSpec.kt`. (See the readme for instructions on how to run
@@ -282,16 +282,18 @@ below, and milliseconds. The average field shows the average of all but the
 first two runs of the simulation, and the times field shows the results for each
 of the run of the simulation.
 
-* {currentTime: 1523771121724, average: 84.0, times: [73, 74, 67, 68, 130, 140, 67, 68, 66, 66]} # Sequential
-* {currentTime: 1523771154335, average: 45.125, times: [48, 48, 48, 50, 41, 41, 44, 44, 45, 48]} # Parallel
+* `{currentTime: 1523771121724, average: 84.0, times: [73, 74, 67, 68, 130, 140, 67, 68, 66, 66]} # Sequential`
+* `{currentTime: 1523771154335, average: 45.125, times: [48, 48, 48, 50, 41, 41, 44, 44, 45, 48]} # Parallel`
 
 The results above show that I was incorrect with my expectation --- the parallel
-performances still almost twice of the sequential performance. (This must mean that the GUI is not significantly contribute to CPU usage.)
+performances still almost twice of the sequential performance. (This must mean
+that the GUI is not significantly contribute to CPU usage.)
 
-Also, running this on a more powerful quad core hyper threaded desktop, these are the results:
+Also, running this on a more powerful quad core hyper threaded desktop, these
+are the results (look at the average results):
 
-* {currentTime: 1523664515009, average: 46.125, times: [45, 47, 47, 48, 45, 45, 46, 46, 46, 46]} # Sequential
-* {currentTime: 1523664529598, average: 12.375, times: [13, 12, 12, 13, 13, 12, 11, 12, 13, 13]} # Parallel
+* `{currentTime: 1523664515009, average: 46.125, times: [45, 47, 47, 48, 45, 45, 46, 46, 46, 46]} # Sequential`
+* `{currentTime: 1523664529598, average: 12.375, times: [13, 12, 12, 13, 13, 12, 11, 12, 13, 13]} # Parallel`
 
 The parallel results are almost exactly four times as fast, since there are four
 cores.
@@ -302,8 +304,27 @@ copy of the field in a local variable. This is saved back to the field at the
 end of the method. These benchmarks below show there is barely any difference
 with and without volatile.
 
-* {currentTime: 1523856375227, average: 81.75, times: [74, 75, 73, 74, 95, 96, 72, 72, 87, 85]}  # Sequential, nonvolatile
-* {currentTime: 1523856412061, average: 51.0, times: [52, 52, 50, 50, 52, 51, 51, 51, 52, 51]}   # Parallel, nonvolatile
-* {currentTime: 1523856492643, average: 76.625, times: [85, 84, 84, 84, 69, 70, 70, 71, 82, 83]} # Sequential, volatile
-* {currentTime: 1523856527950, average: 50.875, times: [54, 53, 50, 50, 48, 50, 47, 55, 55, 52]} # Parallel, volatile
+* `{currentTime: 1523856375227, average: 81.75, times: [74, 75, 73, 74, 95, 96, 72, 72, 87, 85]}  # Sequential, nonvolatile`
+* `{currentTime: 1523856412061, average: 51.0, times: [52, 52, 50, 50, 52, 51, 51, 51, 52, 51]}   # Parallel, nonvolatile`
+* `{currentTime: 1523856492643, average: 76.625, times: [85, 84, 84, 84, 69, 70, 70, 71, 82, 83]} # Sequential, volatile`
+* `{currentTime: 1523856527950, average: 50.875, times: [54, 53, 50, 50, 48, 50, 47, 55, 55, 52]} # Parallel, volatile`
 
+# Extra Notes
+
+After completing this assignment and discussing some questions with Marco, I
+learned some information that can simplify the code I changed to make this
+program current. 
+
+Specifically, I learned that the parallel stream flushes the CPU cache once it
+finishes --- and that this is probably documented somewhere. This means that I
+can remove the `volatile` keyword from the fields on the particle class --- as
+they are only there to prevent CPU caching issues that might happen due to
+parallelism. 
+
+As shown by the benchmarks in the section above, my use of the volatile keyword
+is efficient, so removing it would not have any noticeable performance
+difference.
+
+Therefore, the only change to the simulation are made (excluding benchmarking
+code) was to replace a for loop calling the `particle.interact(this)` method
+with the parallel stream.
