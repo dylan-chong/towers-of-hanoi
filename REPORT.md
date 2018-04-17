@@ -44,4 +44,125 @@ the program correct.
 
 ## Part B
 
+    class Example1Bad {
+      private static volatile int count = 0;
 
+      public static void main(String[] args) {
+        Runnable runnable = () -> {
+          count++;
+          System.out.println(count);
+        };
+        new Thread(runnable).start();
+        new Thread(runnable).start();
+        // What gets printed:
+        // Who knows!
+      }
+    }
+
+In the above example we do not know what will get printed out. One possible
+scenario is the correct one --- `1\n2` --- in the situation, the two new threads
+do not run with overlapping times. 
+
+The second possibility is that `1\n1` is printed. In this situation, both
+threads may read the number `0`, and write back the number `1` at the same time.
+Both threads will then read `count` and print number `1`.
+
+The third possibility is that `2\n2` is printed. The first thread increments
+`count`, then the second thread increments `count`, then both of threads print
+the number `2`.
+
+The last possibility is that `2\n1` is printed. The first thread increments
+`count` to `1`, then reads count on the line with the `println`, then gets
+paused. The second thread increments `count` to `2`, and then reads and prints
+`2`. The first thread then continues and prints the value that it read before
+`1`.
+
+Three out of four of these scenarios are undesirable. It is also not possible to
+predict which are the scenarios will happen. Therefore, we should introduce
+synchronisation at this critical section.
+
+    class Example1LessBad {
+      private static volatile int count = 0;
+      private static final Object LOCK = new Object();
+
+      public static void main(String[] args) {
+        Runnable runnable = () -> {
+          synchronized (LOCK) {
+            count++;
+            System.out.println(count);
+          }
+        };
+        new Thread(runnable).start();
+        new Thread(runnable).start();
+        // What gets printed:
+        // 1
+        // 2
+      }
+    }
+
+In this scenario above, the work inside the runnable is synchronised, so only
+one thread can do the work at any given time. The program will always print
+`1\n2`.
+
+## Part C
+
+### Attempt 1
+
+Mutual exclusion holds. Suppose that both threads are in the critical section.
+That means, at some point turn has been set to 2 while the first thread is
+still inside the try block (or set to 1 while the second thread is in the try
+--- a symmetrical scenario). However, turn can only be set to 2 once the first
+thread leaves the try block (similar reasoning for the symmetrical scenario).
+This is a contradiction, so therefore mutual exclusion must hold.
+
+Door locked, key in, no one inside (referred to as `deadlock` from now on) is
+not possible. Suppose it were: this means that both threads will end up looping
+at their while loops. Also, turn would have to be set to something other than
+one or 2 to stop both threads from finishing the while loops. This is not
+possible with the volatile variable in the scenario because it is set to only 1
+or 2.
+
+Starvation is possible. If for example, the first thread loops for ever in the
+normal operations before the while loop (or throws an exception), then turn
+will never be set to 2. In this case, the second thread will be stuck living at
+the while loop for ever.
+
+## Attempt 2
+
+Mutual exclusion does not hold because both of the variables are set to false.
+In the case where both threads run at the same time and at the same speed, both
+threads will finish the while loops at the same time, therefore entering a
+critical section at the same time.
+
+Deadlock is not possible. Suppose that it is, then both threads must be stuck
+at the while loop. That is, both of the variables are set to true. This is not
+possible because the threads' respective variables are set to false in their
+finally blocks, and at the start. Therefore, deadlock is not possible.
+
+Starvation: Same as attempt 1
+
+## Attempt 2b
+
+Mutual exclusion does not hold. Suppose that the two variables are set to
+(true, false), the first thread is about to enter the finally block, and the
+second thread is looping at the while loop. The first thread sets `want1` to
+false, and then pauses. The second thread finishes the while loop and then
+pauses. The first thread continues, skips past the while loop because `want2 ==
+false`. Now both threads can proceed and enter the critical section.
+
+Deadlock: Same as attempt 2
+
+Starvation: Same as attempt 2
+
+## Attempt 3
+
+Mutual exclusion holds. Suppose not, then both of the variables must be set to
+false while both threads are checking the while loops. This is not possible
+because both the variables are set to true just before the while loop.
+
+Deadlock this possible if both threads run at the same time at more or less the
+same speed. That is, both threads set their respective variables to true at the
+same time, and then reach the while loop at the same time. They will both be
+stuck because both the variables are set to true.
+
+Starvation: Same as attempt 1
