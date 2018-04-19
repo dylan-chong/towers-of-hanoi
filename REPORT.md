@@ -22,6 +22,16 @@ immutable data, as read operations will not interfere with each other. A
 critical section would also not exist in a program where  multiple threads can
 write data simultaneously to independent places.
 
+More generally, it is important to consider the critical section when
+operations on the critical section data are not atomic. This can happen when
+the program can be parallelised, or when work is done asynchronously on a
+single thread. For example, one part of the program can mess up the critical
+section and then get paused for an I/O operation. Then a second part of the
+program can try to read from the critical section --- but it is not in a
+coherent state! Then the I/O operation finishes and the first part of the
+program tidies up the critical section. By this time it is too late, the second
+part of the program read the incoherent data.
+
 If the critical sections in a program are not properly considered, ie not
 properly synchronised or otherwise managed, then unexpected behaviour may occur.
 For example, one thread could be trying to read a message is a list of strings:
@@ -115,7 +125,7 @@ still inside the try block (or set to 1 while the second thread is in the try
 thread leaves the try block (similar reasoning for the symmetrical scenario).
 This is a contradiction, so therefore mutual exclusion must hold.
 
-Door locked, key in, no one inside (referred to as `deadlock` from now on) is
+Door locked, key in, no one inside (referred to as `livelock` from now on) is
 not possible. Suppose it were: this means that both threads will end up looping
 at their while loops. Also, turn would have to be set to something other than
 one or 2 to stop both threads from finishing the while loops. This is not
@@ -134,10 +144,10 @@ In the case where both threads run at the same time and at the same speed, both
 threads will finish the while loops at the same time, therefore entering a
 critical section at the same time.
 
-Deadlock is not possible. Suppose that it is, then both threads must be stuck
+Livelock is not possible. Suppose that it is, then both threads must be stuck
 at the while loop. That is, both of the variables are set to true. This is not
 possible because the threads' respective variables are set to false in their
-finally blocks, and at the start. Therefore, deadlock is not possible.
+finally blocks, and at the start. Therefore, livelock is not possible.
 
 Starvation: Same as attempt 1
 
@@ -150,7 +160,7 @@ false, and then pauses. The second thread finishes the while loop and then
 pauses. The first thread continues, skips past the while loop because `want2 ==
 false`. Now both threads can proceed and enter the critical section.
 
-Deadlock: Same as attempt 2
+Livelock: Same as attempt 2
 
 Starvation: Same as attempt 2
 
@@ -160,9 +170,234 @@ Mutual exclusion holds. Suppose not, then both of the variables must be set to
 false while both threads are checking the while loops. This is not possible
 because both the variables are set to true just before the while loop.
 
-Deadlock this possible if both threads run at the same time at more or less the
+Livelock this possible if both threads run at the same time at more or less the
 same speed. That is, both threads set their respective variables to true at the
 same time, and then reach the while loop at the same time. They will both be
 stuck because both the variables are set to true.
 
 Starvation: Same as attempt 1
+
+## Attempt 4
+
+Mutual exclusion holds. Suppose not, then both variables must be false while
+both threads are checking the while loop. This is not possible because,
+firstly, both variables are set to true before the while loops. That is, at
+least one of the variables will be set to true in both threads are checking the
+while loop.
+
+Livelock is not possible. Suppose that it is, then both variables must be set
+to true and both threads are checking the while loop. Inside the while loops,
+the variables are set to false and then true again. It is possible for the
+scheduler to pause one of the threads directly after it has set its variable to
+false, allowing the other thread to proceed. (Although, this may not be
+guaranteed.) That is, the system just unlocked itself from the live lock.
+Livelock implies a permanent stop. Therefore Livelock is not possible.
+
+Starvation is possible. Suppose both of the threads are scheduled to run at
+exactly the same speed at the same time (repeatedly for a long time). Both
+threads will set the variables to true, enter the while loop, set the variables
+to false and then true again, check the while loop, set the variables to false
+then true again... It is possible that this can happen for a long time, and so
+both threads are starved.
+
+## Attempt 5
+
+Mutual exclusion holds. See the explanation for attempt 4 - it is exactly the
+same.
+
+Live lock is also not possible. Suppose it is, then both threads must be stuck
+in the while loop. This means that both of the `want` variables are true.
+Suppose that turn is set to 1 (it could be said to 2 instead, but that is an
+almost identical scenario). It is possible for one of the threads to exit the
+while loop. For this possibility to happen, the second thread enters the if,
+sets `want2=false` and then waits for turn to be set to 2. Now, the first
+thread exits the while loop because `want2==false`, therefore exiting the live
+lock. Live locks, by definition, cannot be exited. Therefore this above
+situation is not a Livelock and therefore live locks are not possible.
+
+Starvation is not possible. Suppose it is, then the second thread is waiting
+for the first thread before being able to proceed (or the other way around.)
+That is, the first thread is taking a very long time at some point (or threw an
+exception). The only two points where the first thread can take a very long
+time is in the critical section, and in the normal operations. We made the
+assumption the work and the critical section will always terminate, and that it
+will be impossible to avoid starvation if this were not true. Therefore, we
+should ignore the case where the first thread is taking a long time in the
+critical section. This leaves the first thread taking a long time in the normal
+operations (or it threw an exception). Now suppose that the second thread has
+finished work on the critical section and has exited the finally block. Now it
+is the priority for the first thread to do work, and the second thread does not
+want to do work (these statements refer to the values of the variables). The
+second thread will want to work (i.e. `want2=true`). The first thread does not
+want to work yet (`want1` is set to false at the end of the finally block, or
+at the beginning of the program). The second thread is allowed to work because
+the first thread does not want to work yet. This creates a contradiction
+because we proposed that starvation is possible when the second thread is
+waiting for the first thread to do it is very long work. However, the second
+thread does not have to wait as it can work instead. Therefore starvation is
+not possible
+
+\newpage
+
+# Task 2
+
+~~~~ {.java .numberLines}
+  static volatile int want1 =0;
+  static volatile int want2 =0;
+//first worker
+...while(true){
+    //normal operations, it can loop forever
+    if(want2==-1)//pre-protocol
+      {want1=-1;}//pre-protocol
+    else
+      {want1=1;}//pre-protocol
+    while(want2==want1){}//pre-protocol
+    try{
+      //critical section operations,
+      // termination assured
+    }
+    finally{want1=0;}//post-protocol
+  }
+//second worker
+...while(true){
+    //normal operations, it can loop forever
+    if(want1==-1)//pre-protocol
+      {want2=1;}//pre-protocol
+    else
+      {want2=-1;}//pre-protocol
+    while(want1==-want2){}//pre-protocol
+    try{
+      //critical section operations,
+      // termination assured
+    }
+    finally{want2=0;}//post-protocol
+  }
+~~~~
+
+Notes: 
+
+    WantX variables are like enum {
+      WANT = -1
+      NORMAL_OPERATIONS = 0 // don't want
+      ALSO_WANT = 1
+    }
+
+Mutual exclusion holds. Suppose not, then the conditions for each workers'
+while loop must be false while both workers are checking the while. This is
+only possible when exactly one of the variables is equal to 0 (i.e the other
+variable is set to 1 or -1).  This is not possible because both of the workers
+will set their own variables to a nonzero value directly before the while loop.
+Therefore, mutual exclusion holds.
+
+Live lock is not possible. Suppose it is, then the conditions for each workers'
+while loop must be true while both workers are checking the while loop. In
+order for this to be true, both variables need to be set to 0. This is not
+possible because both of the workers will set their own variables to a nonzero
+value directly before the while loop. Therefore, live lock is not possible.
+
+Starvation is not possible. Suppose it is, then one worker (say the first) is
+waiting for a long time, while the other is doing work. The second worker must
+be looping for a long time at line 19, which must also mean that `want2 == 0`.
+If the first worker is waiting, then it must be stuck at line 10 because the
+while loop condition is true. The condition cannot be true because `want2 == 0`
+and `want1` must have been assigned to a nonzero value directly above the while
+loop. Therefore, the first worker cannot starve.
+
+Now suppose the symmetrical example is true --- the second worker is waiting
+for a long time at line 24, and the first worker is looping at line 5. The
+following must be true `want1 == 0` and `want1 == -want2` (stuck at line 24).
+This must mean `want2 == 0` which is not possible because `want2` was said to a
+nonzero value on line 21 or line 23. Therefore, the second worker cannot
+starve, in addition to the first worker not being able to starve.
+
+\newpage
+
+## Task 3
+
+~~~ {.java .numberLines}
+static volatile boolean want1 =false;
+static volatile boolean want2 =false;
+static volatile int turn =1;
+//first worker
+while(true){
+  //normal operations, it can loop forever
+  want1=true;
+  if(want2){//pre-protocol
+    if(turn==2){
+      want1=false;
+      while(turn!=1){}//pre-protocol
+      want1=true;
+    }
+    while(want2){}//pre-protocol
+  }//pre-protocol
+  try{
+    //critical section operations,
+    // termination assured
+  }
+  finally{//post-protocol
+    want1=false;//post-protocol
+    turn=2;//post-protocol
+  }//post-protocol
+}
+//second worker
+while(true){
+  //normal operations, it can loop forever
+  want2=true;
+  if(want1){//pre-protocol
+    if(turn==1){
+      want2=false;
+      while(turn!=2){}//pre-protocol
+      want2=true;
+    }
+    while(want1){}//pre-protocol
+  }//pre-protocol
+  try{
+    //critical section operations,
+    // termination assured
+  }
+  finally{//post-protocol
+    want2=false;//post-protocol
+    turn=1;//post-protocol
+  }//post-protocol
+}
+~~~~
+
+Mutual exclusion holds. Suppose not, then both workers entered the critical
+section because `!want1 && !want2`. This is not possible. At lines 7 and 28,
+both of the variables are set to true. If `turn == 1` then `want2` could have
+been set to false on line 31, but `want1` could not have been set to false. A
+symmetrical scenario occurs when `turn == 2`. Since both the variables could
+not have been set to false, mutual exclusion must hold.
+
+Livelock is not possible. Suppose it is, then both threads must be stuck at
+while loops with a conditions are true. There are four possible scenarios:
+
+1. The first worker is at line 11 and the second worker is at line 32. Both of
+these conditions cannot be true at the same time because `turn` is only set to
+one or two. We can eliminate this scenario.
+
+2. The first worker is at line 11 and the second worker is at line 35. TODO
+AFTER
+
+3. The first worker is at line 14 and the second worker is at line 32. We can
+reuse the proof at scenario number two.
+
+4. The first worker is at line 14 and the second worker is at line 35. This
+means `want1 && want2`. Suppose that `turn == 1`. (The situation where `turn ==
+2` is a symmetrical version of the situation where `turn == 1`, so the same
+sort of logic applies.). The `turn` variable must have been set to 1 by the
+second worker before it checked line 30, because it is set to 1 at the start of
+the program and by the second worker online 43. Therefore the second worker
+must have entered the if block at line 30. The second worker then sets `want2 =
+false` on line 31, and then waits for turn to be `2` at line 32. Since the
+first worker is waiting at line 14, it cannot set `turn` to 2. (If it did set
+`turn = 2`, then it must be at line 22, then it would proceed towards line 8,
+where it would not enter the if block, and therefore would not end up getting
+stuck at line 14.) Now we are at the exact same scenario as scenario number 3,
+which we have already shown is not a live lock. (This is actually a
+contradiction because we cannot get the first worker to be stuck at line 14 and
+a second worker to be stuck at line 35.)
+
+Given that all of the above scenarios cannot result in live locks, and that the
+above scenarios are the only possible ones for live locks, live locks are not
+possible.
