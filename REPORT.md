@@ -362,6 +362,8 @@ while(true){
 }
 ~~~~
 
+## Mutual Exclusion
+
 Mutual exclusion holds. Suppose not, then both workers entered the critical
 section because `!want1 && !want2`. This is not possible. At lines 7 and 28,
 both of the variables are set to true. If `turn == 1` then `want2` could have
@@ -369,35 +371,96 @@ been set to false on line 31, but `want1` could not have been set to false. A
 symmetrical scenario occurs when `turn == 2`. Since both the variables could
 not have been set to false, mutual exclusion must hold.
 
+## Live Lock
+
 Livelock is not possible. Suppose it is, then both threads must be stuck at
 while loops with a conditions are true. There are four possible scenarios:
 
-1. The first worker is at line 11 and the second worker is at line 32. Both of
+### 1
+
+The first worker is at line 11 and the second worker is at line 32. Both of
 these conditions cannot be true at the same time because `turn` is only set to
 one or two. We can eliminate this scenario.
 
-2. The first worker is at line 11 and the second worker is at line 35. TODO
-AFTER
+### 2
 
-3. The first worker is at line 14 and the second worker is at line 32. We can
-reuse the proof at scenario number two.
+The first worker is at line 11 and the second worker is at line 35. We can
+reuse the proof at scenario number three.
 
-4. The first worker is at line 14 and the second worker is at line 35. This
-means `want1 && want2`. Suppose that `turn == 1`. (The situation where `turn ==
-2` is a symmetrical version of the situation where `turn == 1`, so the same
-sort of logic applies.). The `turn` variable must have been set to 1 by the
-second worker before it checked line 30, because it is set to 1 at the start of
-the program and by the second worker online 43. Therefore the second worker
-must have entered the if block at line 30. The second worker then sets `want2 =
-false` on line 31, and then waits for turn to be `2` at line 32. Since the
-first worker is waiting at line 14, it cannot set `turn` to 2. (If it did set
-`turn = 2`, then it must be at line 22, then it would proceed towards line 8,
-where it would not enter the if block, and therefore would not end up getting
-stuck at line 14.) Now we are at the exact same scenario as scenario number 3,
-which we have already shown is not a live lock. (This is actually a
-contradiction because we cannot get the first worker to be stuck at line 14 and
-a second worker to be stuck at line 35.)
+### 3
+
+The first worker is at line 14 and the second worker is at line 32. The first
+worker is at line 14 and a second worker is at line 32. We can easily prove
+this is not a live lock by contradiction. By assuming that both workers are
+blocked at their respective lines, we know that `want2 == true && turn == 1`
+--- this means that the while loop conditions will always be true. However, the
+second worker just set `want2 = false` at line 31, the line above where it
+currently is at now. This means that the first worker is not actually blocked.
+Therefore it is not a live lock
+
+### 4
+
+The first worker is at line 14 and the second worker is at line 35. 
+
+In order to block the first worker at line 14, `want1` must be set to true and
+`turn` must have been set to 1 since before the first worker reaches line 9 or
+while the first worker is at line 10 or 11. `turn` cannot be set to 2 while the
+worker is at line 12 or 14, because the only way for `turn` to be set to 2 is
+for the first worker to be at line 22.
+
+However, if `turn == 1`, then the second worker would have entered that if
+block at line 30 and got into line 32 (remembering that the first worker is at
+line 14). This is scenario number three --- we have already proven that this is
+not a live lock. That means that `turn == 2` when the second worker is at line
+30. As stated earlier, if the second worker got to line 35 and `turn == 2`,
+then either case is true: the first worker would have ended up at line 11 upon
+entering that a statement at line 8, or the first worker set `turn = 2` after
+the second worker finished line 30. The first of the two cases is the same as
+scenario number 2, which we have proven is not a live lock, therefore the
+second case must be true. Proceeding with the second case, the second worker
+would now proceed to line 35 at some point, and the first worker is at line 23.
+First worker would proceed to line 6, run line 7, enter the if statement at
+line 8 (because `want2` was set to `true` at line 28), entered that if
+statement at line 9 (because we recently set `turn = 2`), run line 10, and then
+loop at line 11 (because `turn == 2`). Now, because the first worker is at line
+11, and the second worker as at line 35, we are at scenario number 2 again.
+
+Therefore, live lock is not possible in the proposed scenario (first worker at
+line 14, and second worker at line 35) because the first worker it cannot be at
+line 14 at the same time as the second worker is at line 35.
+
+### Summary
 
 Given that all of the above scenarios cannot result in live locks, and that the
 above scenarios are the only possible ones for live locks, live locks are not
 possible.
+
+## Starvation
+
+Starvation is not possible. In order for starvation to happen, one of the
+workers must be busy outside the critical section (forever), while the second
+worker is starving while waiting to do work. We will prove this for one of the
+two symmetrical scenarios, and the same logic can be applied with the variables
+and workers 'switched'.
+
+Suppose the first worker is the one who is busy forever, outside the critical
+section. The first worker must be at line 6 otherwise it would not be
+considered busy. If it is waiting at a while loop, and the second worker is
+waiting, then we have a live lock. (However, we proved that live lock is not
+possible in the section above.)
+
+If the second worker were to starve, then it would have to be waiting at line
+32 or line 35. Because the first worker is at line 6, we know that `want1 ==
+false`. The easy case is where the second worker is at line 35, then it will be
+able to continue past line 35 because we said above that `want1 == false`. The
+harder case is when the second worker is at line 32. If `turn == 2`, then the
+second worker is able to proceed. Otherwise, `turn == 1`, and we have a more
+complex scenario that we have to reverse engineer. We need to prove that it is
+not possible for `want1 == true` and `turn` to be permanently set to 1. This
+needs to be true to allow the second worker to get into the if statements
+online 29 and 30 and starve at line 32. Since the first worker sets `turn = 2`
+at line 22 and `want1` will always be false at line 6, we need to get the
+second worker to set `turn = 1` after the first worker sets `turn = 2` at line
+22\. However, since `want == false` after `turn` is set to 2 the first worker,
+the second worker will not be able to enter the if statement at line 29.
+Therefore, starvation cannot occur with the second worker at line 32.
