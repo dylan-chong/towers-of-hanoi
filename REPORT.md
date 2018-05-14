@@ -79,3 +79,78 @@ http://www.oxfordreference.com/view/10.1093/acref/9780199679591.001.0001/acref-9
 <!-- D. Ince, “Acoustic coupler,” in A Dictionary of the Internet. Oxford University -->
 <!-- Press, [online document ], 2001. Available: Oxford Reference Online, -->
 <!-- http://www.oxfordreference.com [Accessed: May 24, 2007]. -->
+
+## d
+
+`speedup = T(1) / T(10) = 1 / 2 = 0.5`. This means that the parallel program is
+half the speed of the sequential program. The parallel program must be very
+poorly designed for it to be slower than the sequential program. For example,
+there could be a extremely large amount of work required to split up the task
+into 10 independent subtasks for the 10 nodes --- work that is not required in
+a sequential program. Another possibility for the parallel program being very
+slow is that there are many points in the program where threads are waiting for
+other threads to complete, and so the multiple cores/CPUs are not fully taken
+advantage of.
+
+# Question 2
+
+SMP and NUMA systems are both types of shared memory systems. SMP systems have
+uniform memory access, meaning that all of the processors have the same access
+speed for all of the memory (ignoring cache). In NUMA systems, each processor
+has its own memory which it has fast access to, and a memory request module. If
+a processor needs to get access to memory that is owned by another processor,
+it must request the data that across the network through the memory request
+modules. Network requests make accessing other processors' memories much slower
+than accessing the processor's own memory.
+
+# Question 3
+
+Each processor has fast access to its own memory, but to access other memory,
+the data must be requested and transferred across the network from another
+processing element's memory. Because of the distance and limited bandwidth of
+the network, access to a process's own memory will be better faster. P1
+accessing memory at location 100 is fast because location 100 is within its
+local memory store, whereas P3 accessing memory at location 210 will be slow
+because location to 10 is a different processor's memory.
+
+# Question 4
+
+I would suspect that there would be no significant difference between the time
+required to read and write a request, give a simple scenario.
+
+If we suppose that we also need to find a place in another processor's memory
+to save the data, then we may also need a network request to tell it to
+allocate the memory --- a request that won't be needed for reading. The
+external processor may need to perform garbage collection to free up space to
+write data, which may increase the time required to perform the request from
+start to finish.
+
+Another situation is where we have a read-write lock on some popular data in
+the external processor. That is, either a single process can write to the data,
+or zero or more processors can read from the data simultaneously. If the data
+is being read by other processors, then we will be able to read as well without
+delay, assuming that there is no other processor waiting to write. If we want
+to write to the data, then we will have to request access to the write lock.
+Getting access to the right lock involves waiting for all of the current read
+requests to finish, which may take a long time if the data is massive. It would
+also prevent other read requests from being executed, slowing down the rest of
+the distributed program. Therefore, if we assume that the data is read from
+more than it is written to, then writing will be a bit slower.
+
+# Question 5
+
+If rows are delivered to all of the workers first, then computation can only
+begin after the first column has been delivered to the first worker. This is
+because, before the first column is given to the first worker, none of the
+workers have enough information to perform any calculations yet.
+
+# Question 6
+
+Given that the previous output matrix was a 3 x 3 matrix, and that the matrices
+we use now are 6 x 3 and 3 x 3 respectively, the output matrix would be a 3 x 3
+again. (Note: I am assuming a rows by columns format, not columns by rows.)
+
+The only difference between the new and the old way, therefore, would be that
+each row is six numbers long instead of three. That is, during the starting
+phase where the rows are initially passed to all the workers, six numbers at a
+time will have to be passed instead of three.
