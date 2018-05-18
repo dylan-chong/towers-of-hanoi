@@ -1,6 +1,5 @@
 package main
 
-import java.util.*
-
 fun main(args: Array<String>) {
+  throw RuntimeException("It runs!")
 }
