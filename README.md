@@ -17,3 +17,5 @@ Run program with jar:
 Code is in `src/main/`
 
 Tests are in `src/test/`
+
+See `./REPORT.md` for all report-related things, including the diff for Task 1.
