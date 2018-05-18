@@ -12,8 +12,7 @@ Run program from Gradle:
 
 Run program with jar:
     
-    java -jar submit/app.jar # sequential
-    java -jar submit/app.jar --parallel
+    java -jar submit/app.jar
 
 Code is in `src/main/`
 

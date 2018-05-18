@@ -1,0 +1,149 @@
+README ======
+
+Author: Ian Welch Date Created: October 2014
+
+This jar file contains some examples of client-server communication as
+well as using the provided Blowfish wrapper class to do decryption.
+
+All have been tested on barretts.ecs.vuw.ac.nz and should work on our
+workstations with Java 7. 
+(Note: Matt has tested and you should find no problems with Java 8.)
+
+You will need to compile them yourself.
+
+CLIENT-SERVER COMMUNICATION ===========================
+=== A Knock-knock joke ===
+
+EchoServer is a knock knock server that can service multiple clients
+at one time.
+
+EchoClient is a client that sends messages to the server and will
+receive responses.
+
+Connection is a class that is used to manage the conversation between
+a EchoClient and EchoServer.
+
+These programs use a very simple protocol built around sending
+strings. You can build on these to build your solution.
+
+When run together you will see the questions come from the EchoClient
+and the responses come from the EchoServer.
+
+1. Compile both programs.
+
+2. Start EchoServer in a terminal. It will allocate an unused port and
+print this out, you should use this port to communicate with the
+server.
+
+Try the following:
+
+java EchoServer
+
+You should see:
+
+Waiting for connections on 62828
+
+This indicates that the port 62828 has been allocated to your server,
+this number should be used by any clients wishing io communicate with
+your server.
+
+3. Open another terminal and start run EchoClient using the same port
+number that was used in the previous step.
+
+Where you are running the EchoServer and EchoClient on the same
+machine you can use localhost to refer to the same machine, otherwise
+you should use the machine name such as barretts.ecs.vuw.ac.nz.
+
+Try the following:
+
+java EchoClient localhost 62828
+
+You should see the following in the EchoClient terminal:
+
+Who's there? Canoe who? <<<<groan>>>>
+
+You should see the full conversation in the EchoServer terminal:
+
+Client 1: Canoe Server: Canoe who? Client 1: Canoe do my homework?
+Server: <<<<groan>>>> Client 1: bye
+
+CRYPTOGRAPHIC PROGRAMS ======================
+
+The following programs are included to demonstrate the decryption of a
+given ciphertext and how to loop over a set of possible keys until you
+successfully decrypt a ciphertext.
+
+Blowfish - utility class that hides the complexity of using the Java
+cryptography engine Decrypt - simple example of using Blowfish for
+decryption Search - simple example of iterating through a range of
+keys and using Blowfish for decryption
+
+Each program requires three inputs:
+
+a) The decryption key. For convenience, this is provided in the form
+of an integer value (I use the BigInteger class to manipulate these).
+
+b) The length of the key used to encrypt the plaintext into a
+ciphertext. This is to add padding for the most significant bytes
+because every byte in the key will affect the encryption operation. We
+would have a problem if we simply converted an integer value such as
+255 without padding it out.
+
+c) The ciphertext. This is encoded as base64 because mapping byte
+values into characters would lead to the inclusion on non-printable
+characters.
+
+In all cases, a successful decryption should create the following
+plaintext message:
+
+"May good flourish; Kia hua ko te pai.
+
+Here are some example key, key length and ciphertext values for
+testing.
+
+Key, size, ciphertext
+
+3185209680, 4, +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+
+387797488164, 5, /4crfiL9ySN3YlulO7lWu4lLdQOLYCFDQZ5ccXzuVn4vuQUP8gCIqg==
+
+158396074479830, 6, uOHYfhAZvCUoLULdDmdLQWuRJGXPgbWJzeVIvzi0k5nYGRhWeyiFfA==
+
+479485491520023292333259, 10, Q8qwudSWuwxfF4zTsPZSTvdWb37mxY2s6OzI+DmwusYyUegLiA9OQQ==
+
+Now try using the programs.
+
+1. Run the Decrypt program, in this example we are using the four byte
+(32-bit) example.
+
+Try the following (note commas are removed):
+
+java Decrypt 3185209680 4  +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+
+You should see the following output:
+key is (hex) BDDA7150
+decrypted string : May good flourish; Kia hua ko te pai
+
+2. Try this with the other examples, every one of them should work.
+
+java Decrypt 387797488164 5 /4crfiL9ySN3YlulO7lWu4lLdQOLYCFDQZ5ccXzuVn4vuQUP8gCIqg==
+
+java Decrypt 158396074479830 6 uOHYfhAZvCUoLULdDmdLQWuRJGXPgbWJzeVIvzi0k5nYGRhWeyiFfA==
+
+java Decrypt 479485491520023292333259 10 Q8qwudSWuwxfF4zTsPZSTvdWb37mxY2s6OzI+DmwusYyUegLiA9OQQ==
+
+3. There is a program Search that will loop over a set of possible
+keys (it takes an intial key, tries that and the next 99 keys). A
+successful decryption will cause it to stop and display the key.
+
+In this example we deliberately start with a key that is near the true
+one and can be found.
+
+java Search 158396074479790 6 uOHYfhAZvCUoLULdDmdLQWuRJGXPgbWJzeVIvzi0k5nYGRhWeyiFfA==
+
+This should create the following output:
+
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) 900F75C0D0D6 158396074479830
+
