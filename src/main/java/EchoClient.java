@@ -33,9 +33,11 @@ public class EchoClient {
       // send a sequence of messages and print the replies
       out.println("Knock, knock");
       System.out.println(in.readLine());
-      out.println("Canoe");
+      out.println("Owls say");
       System.out.println(in.readLine());
-      out.println("Canoe do my homework?");
+      out.println("Yes, they do");
+      System.out.println(in.readLine());
+      out.println("Very bad, I know");
       System.out.println(in.readLine());
       out.println("bye");
     } catch (IOException ioe) {

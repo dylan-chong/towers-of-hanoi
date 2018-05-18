@@ -46,12 +46,15 @@ public class Connection extends Thread {
         if ((line == null) || line.equals("bye")) {
           break;
         }
+
         if (line.equals("Knock, knock")) {
           response = "Who's there?";
-        } else if (line.equals("Canoe")) {
-          response = "Canoe who?";
-        } else if (line.equals("Canoe do my homework?")) {
+        } else if (line.equals("Owls say")) {
+          response = "Owls say who?";
+        } else if (line.equals("Yes, they do")) {
           response = "<<<<groan>>>>";
+        } else if (line.equals("Very bad, I know")) {
+          response = "You should leave or find better jokes";
         }
 
         // send the response plus a return and newlines (as expected by readLine)
