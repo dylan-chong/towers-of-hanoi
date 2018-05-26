@@ -16,6 +16,7 @@ public class Search {
    * @param args[0] key represented as a big integer value
    * @param args[1] key size
    * @param args[2] ciphertext encoded as base64 value
+   * @param args[3] number of keys to check
    */
   public static void main(String[] args) throws Exception {
 
@@ -25,11 +26,12 @@ public class Search {
     int keySize = Integer.parseInt(args[1]);
     byte[] key = Blowfish.asByteArray(bi, keySize);
     byte[] ciphertext = Blowfish.fromBase64(args[2]);
+    int numberOfKeysToCheck = Integer.parseInt(args[3]);
 
     // Go into a loop where we try a range of keys starting at the given one
     String plaintext = null;
     // Search from the key that will give us our desired ciphertext
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < numberOfKeysToCheck; i++) {
       // tell user which key is being checked
       String keyStr = bi.toString();
       System.out.print(keyStr);
