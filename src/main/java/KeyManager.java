@@ -19,6 +19,8 @@ public class KeyManager {
     int keySize = Integer.parseInt(args[1]);
     String ciperText = args[2];
 
+    String correctKey = null;
+
     int port = 0; // auto pick
     if (args.length > 3) {
       port = Integer.parseInt(args[3]);
@@ -27,7 +29,7 @@ public class KeyManager {
     try (ServerSocket socket = new ServerSocket(port)) {
       System.out.println("Waiting for connections on " + socket.getLocalPort());
 
-      while (true) {
+      while (correctKey == null) {
         Socket client = socket.accept();
         // TODO Do works on a new thread or pool
 
@@ -58,12 +60,16 @@ public class KeyManager {
               BigInteger.valueOf(numberOfKeysToCheck)
             );
           } else if (message.startsWith(Client.RESPONSE)) {
-            throw new IllegalArgumentException(message);
+            if (messageSplit.length >= 4) {
+              correctKey = messageSplit[3];
+            }
           } else {
             throw new IllegalArgumentException(message);
           }
         }
       }
+
+      System.out.println("Correct key: " + correctKey);
     }
   }
 }
