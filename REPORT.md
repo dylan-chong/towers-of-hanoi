@@ -136,3 +136,27 @@ Console output:
     May good flourish; Kia hua ko te pai
     key is (hex) BDDA7150 3185209680
 ```
+
+# Task 2
+
+There will be two main types of nodes on the network --- the key manager, and
+the clients. The user will have to manually start the key manager, read the
+port of the key manager, and start the clients.
+
+The key manager will have a thread that will continuously listen to any input
+from clients on it's socket. The input will either be: 
+
+1. A message from a client saying that it is ready to accept new instructions,
+   along with it's IP address and port and desired chunk size
+2. A result from a client stating the key range, and a valid key if it found
+   one.
+
+If the manager receives the first kind of message, it will dispatch a key range
+to search to the given IP and port. The client will then search this range and
+send the second kind of response back.
+
+When the manager receives the second kind of message and the key is found, the
+manager will print out a success message to standard output and exit, leaving
+the clients to finish their work and timeout sending a message to the manager.
+A response back to the client is not required because the clients will request
+more work.
