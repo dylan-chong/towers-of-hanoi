@@ -62,7 +62,7 @@ sourceSets {
     test.java.srcDirs += 'src/test/java'
 }
 
-mainClassName = 'main.MainKt'
+mainClassName = 'ThereIsNoSingleMainClassSoYouShouldNotRunThisFromGradle'
 
 // Submit task
 def withDependenciesTag = '-with-dependencies'
