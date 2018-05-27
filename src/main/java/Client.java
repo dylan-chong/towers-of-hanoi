@@ -7,12 +7,15 @@ import java.net.Socket;
 
 public class Client {
 
+  public static final String ASK_FOR_WORK = "ASK";
+  public static final String RESPONSE = "RESPONSE";
+
   /**
    * @param args[0] key manager hostname
    * @param args[1] key manager port
    * @param args[2] number of keys to check
    */
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws IOException, InterruptedException {
     String hostname = args[0];
     int port = Integer.parseInt(args[1]);
     String numberOfKeysToCheck = args[2];
@@ -27,15 +30,17 @@ public class Client {
       ) {
 
         String askForWorkMessage = String.format(
-          "%s %d %s",
+          "%s %s %d %s",
+          ASK_FOR_WORK,
           socket.getLocalAddress().getHostAddress(),
           socket.getLocalPort(),
           numberOfKeysToCheck
         );
-        out.write(askForWorkMessage);
+        System.out.println("Output: " + askForWorkMessage);
+        out.println(askForWorkMessage);
 
         String askForWorkResponse = in.readLine();
-        System.out.println(askForWorkResponse);
+        System.out.println("Input: " + askForWorkResponse);
 
         // TODO Disconnect when processing
 
@@ -52,13 +57,17 @@ public class Client {
         );
 
         String completionMessage = String.format(
-          "%s %d %s",
+          "%s %s %d %s",
+          RESPONSE,
           socket.getLocalAddress().getHostAddress(),
           socket.getLocalPort(),
           matchingKey == null ? "" : matchingKey
         ).trim();
-        out.write(completionMessage);
+        System.out.println("Output: " + completionMessage);
+        out.println(completionMessage);
       }
+
+      Thread.sleep(100); // slow for testing
     }
   }
 
@@ -79,7 +88,7 @@ public class Client {
     for (int i = 0; i < numberOfKeysToCheck; i++) {
       // tell user which key is being checked
       String keyStr = bi.toString();
-      System.out.print(keyStr);
+      System.out.println(keyStr);
       // decrypt and compare to known plaintext
       Blowfish.setKey(key);
       plaintext = Blowfish.decryptToString(ciphertext);
@@ -87,7 +96,7 @@ public class Client {
         System.out.println("Plaintext found!");
         System.out.println(plaintext);
         System.out.println("key is (hex) " + Blowfish.toHex(key) + " " + bi);
-        System.exit(-1);
+        return keyStr;
       }
 
       // try the next key
