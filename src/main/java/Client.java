@@ -10,6 +10,17 @@ public class Client {
   public static final String ASK_FOR_WORK = "ASK";
   public static final String RESPONSE = "RESPONSE";
 
+  private final String hostname;
+  private final int port;
+  private final int numberOfKeysToCheck;
+
+  public Client(String hostname, int port, int numberOfKeysToCheck) {
+
+    this.hostname = hostname;
+    this.port = port;
+    this.numberOfKeysToCheck = numberOfKeysToCheck;
+  }
+
   /**
    * @param args[0] key manager hostname
    * @param args[1] key manager port
@@ -18,55 +29,56 @@ public class Client {
   public static void main(String[] args) throws IOException {
     String hostname = args[0];
     int port = Integer.parseInt(args[1]);
-    String numberOfKeysToCheck = args[2];
+    int numberOfKeysToCheck = Integer.parseInt(args[2]);
+
+    Client client = new Client(hostname, port, numberOfKeysToCheck);
 
     while (true) {
-      String askForWorkResponse = doInNetwork(hostname, port, (socket, in, out) -> {
-        String message = String.format(
-          "%s %s %d %s",
-          ASK_FOR_WORK,
-          socket.getLocalAddress().getHostAddress(),
-          socket.getLocalPort(),
-          numberOfKeysToCheck
-        );
-        System.out.println("Output: " + message);
-        out.println(message);
-
-        String response = in.readLine();
-        System.out.println("Input: " + response);
-
-        return response;
-      });
-
-      String[] askForWorkResponseSplit = askForWorkResponse.split(" ");
-      BigInteger startingKey = new BigInteger(askForWorkResponseSplit[0]);
-      int keySize = Integer.parseInt(askForWorkResponseSplit[1]);
-      byte[] ciphertext = Blowfish.fromBase64(askForWorkResponseSplit[2]);
-
-      String matchingKey = processKeys(
-        startingKey,
-        keySize,
-        ciphertext,
-        Integer.parseInt(numberOfKeysToCheck)
-      );
-
-      doInNetwork(hostname, port, (socket, in, out) -> {
-        String completionMessage = String.format(
-          "%s %s %d %s",
-          RESPONSE,
-          socket.getLocalAddress().getHostAddress(),
-          socket.getLocalPort(),
-          matchingKey == null ? "" : matchingKey
-        ).trim();
-        System.out.println("Output: " + completionMessage);
-        out.println(completionMessage);
-        return null;
-      });
+      client.workForKeyManager();
     }
   }
 
-  private static <T> T doInNetwork(String hostname, int port, NetworkWork<T> work)
-    throws IOException {
+  private void workForKeyManager() throws IOException {
+    String askForWorkResponse = findWorkToDo();
+    String matchingKey = processKeys(askForWorkResponse);
+    sendWorkResult(matchingKey);
+  }
+
+  private String findWorkToDo() throws IOException {
+    return this.talkToManager((socket, in, out) -> {
+      String message = String.format(
+        "%s %s %d %s",
+        ASK_FOR_WORK,
+        socket.getLocalAddress().getHostAddress(),
+        socket.getLocalPort(),
+        numberOfKeysToCheck
+      );
+      System.out.println("Output: " + message);
+      out.println(message);
+
+      String response = in.readLine();
+      System.out.println("Input: " + response);
+
+      return response;
+    });
+  }
+
+  private void sendWorkResult(String matchingKey) throws IOException {
+    talkToManager((socket, in, out) -> {
+      String completionMessage = String.format(
+        "%s %s %d %s",
+        RESPONSE,
+        socket.getLocalAddress().getHostAddress(),
+        socket.getLocalPort(),
+        matchingKey == null ? "" : matchingKey
+      ).trim();
+      System.out.println("Output: " + completionMessage);
+      out.println(completionMessage);
+      return null;
+    });
+  }
+
+  private <T> T talkToManager(NetworkWork<T> work) throws IOException {
     try (
       Socket socket = new Socket(hostname, port);
       BufferedReader in = new BufferedReader(
@@ -78,7 +90,21 @@ public class Client {
     }
   }
 
-  private static String processKeys(
+  private String processKeys(String askForWorkResponse) {
+    String[] askForWorkResponseSplit = askForWorkResponse.split(" ");
+    BigInteger startingKey = new BigInteger(askForWorkResponseSplit[0]);
+    int keySize = Integer.parseInt(askForWorkResponseSplit[1]);
+    byte[] ciphertext = Blowfish.fromBase64(askForWorkResponseSplit[2]);
+
+    return processKeys(
+      startingKey,
+      keySize,
+      ciphertext,
+      numberOfKeysToCheck
+    );
+  }
+
+  private String processKeys(
     BigInteger bi,
     int keySize,
     byte[] ciphertext,
