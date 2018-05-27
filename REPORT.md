@@ -139,6 +139,8 @@ Console output:
 
 # Task 2
 
+## Outline
+
 There will be two main types of nodes on the network --- the key manager, and
 the clients. The user will have to manually start the key manager, read the
 port of the key manager, and start the clients.
@@ -153,10 +155,35 @@ from clients on it's socket. The input will either be:
 
 If the manager receives the first kind of message, it will dispatch a key range
 to search to the given IP and port. The client will then search this range and
-send the second kind of response back.
+send the second kind of response back. The client will disconnect from the
+manager after receiving the instructions, and then will reconnect to send the
+response --- this is to avoid overloading the manager with too many
+connections.
 
 When the manager receives the second kind of message and the key is found, the
 manager will print out a success message to standard output and exit, leaving
 the clients to finish their work and timeout sending a message to the manager.
 A response back to the client is not required because the clients will request
 more work.
+
+## Requirements
+
+The above outline describes a design that follows the requirements described in
+the `Project2.pdf`:
+
+1. Clients only need to be aware of the location of the key manager --- the
+   above outline only requires connections between each client and the manager.
+2. Clients can join or leave but will complete the work they have been
+   requested --- clients will be able to join at any time, and leave at any
+   time by simply not asking for more work to do.
+3. Clients request work from the key manager and return results to it --- the
+   client lets the key manager know when it can do some work and how large of a
+   range it wants to do, even though the key manager decides what work it
+   should do.
+4. Connections between clients and the Masters only exist long enough to
+   request work or to return results --- the clients disconnect from the
+   manager after receiving instructions, although they reconnect to send the
+   response.
+5. When the key is found, the key manager will shutdown --- the key manager
+   will halt when it receives a message that the key is found, as described in
+   the outline.
