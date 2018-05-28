@@ -24,7 +24,11 @@ public class Client {
 
     try {
       while (true) {
-        client.workForKeyManager();
+        String matchingKey = client.workForKeyManager();
+
+        if (matchingKey != null) {
+          return;
+        }
       }
     } catch (IOException e) {
       throw new IOException(
@@ -46,10 +50,10 @@ public class Client {
     this.numberOfKeysToCheck = numberOfKeysToCheck;
   }
 
-  private void workForKeyManager() throws IOException {
+  private String workForKeyManager() throws IOException {
     String askForWorkResponse = findWorkToDo();
     String matchingKey = processKeys(askForWorkResponse);
-    sendWorkResult(matchingKey);
+    return sendWorkResult(matchingKey);
   }
 
   private String findWorkToDo() throws IOException {
@@ -71,8 +75,8 @@ public class Client {
     });
   }
 
-  private void sendWorkResult(String matchingKey) throws IOException {
-    talkToManager((socket, in, out) -> {
+  private String sendWorkResult(String matchingKey) throws IOException {
+    return talkToManager((socket, in, out) -> {
       String completionMessage = String.format(
         "%s %s %d %s",
         RESPONSE,
@@ -82,7 +86,7 @@ public class Client {
       ).trim();
       System.out.println("Output: " + completionMessage);
       out.println(completionMessage);
-      return null;
+      return matchingKey;
     });
   }
 
