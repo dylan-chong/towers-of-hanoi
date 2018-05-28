@@ -10,16 +10,6 @@ public class Client {
   public static final String ASK_FOR_WORK = "ASK";
   public static final String RESPONSE = "RESPONSE";
 
-  private final String hostname;
-  private final int port;
-  private final int numberOfKeysToCheck;
-
-  public Client(String hostname, int port, int numberOfKeysToCheck) {
-    this.hostname = hostname;
-    this.port = port;
-    this.numberOfKeysToCheck = numberOfKeysToCheck;
-  }
-
   /**
    * @param args[0] key manager hostname
    * @param args[1] key manager port
@@ -44,6 +34,16 @@ public class Client {
         e
       );
     }
+  }
+
+  private final String hostname;
+  private final int port;
+  private final int numberOfKeysToCheck;
+
+  public Client(String hostname, int port, int numberOfKeysToCheck) {
+    this.hostname = hostname;
+    this.port = port;
+    this.numberOfKeysToCheck = numberOfKeysToCheck;
   }
 
   private void workForKeyManager() throws IOException {
