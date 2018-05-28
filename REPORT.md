@@ -285,3 +285,15 @@ The code was also inspected to make sure it is readable, understandable, and
 follows the requirements.
 
 # Task 5
+
+NOTE: I ran this on a dual core, hyper-threaded CPU (i5-5257U) using the script
+`./run-benchmarks.sh`.
+
+| Chunk Size   | Number Of Clients   | --- | Average Run Time (of 30 runs)   | Standard Deviation   |
+| ------------ | ------------------- | --- | ------------------------------- | -------------------- |
+| 1000         | 3                   |     | 7784.0                          | 507.59012336070265   |
+| 10000        | 3                   |     |
+| 100000       | 3                   |     |
+| 1000         | 2                   |     |
+| 10000        | 2                   |     |
+| 100000       | 2                   |     |
