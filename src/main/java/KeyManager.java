@@ -13,6 +13,7 @@ public class KeyManager {
    * @param args[1] key size
    * @param args[2] ciphertext encoded as base64 value
    * @param args[3] optional: port number
+   * @param args[4] optional: simulate slow network (true)
    */
   public static void main(String[] args) throws IOException {
     BigInteger nextKeyToCheck = new BigInteger(args[0]);
@@ -24,20 +25,37 @@ public class KeyManager {
       port = Integer.parseInt(args[3]);
     }
 
-    KeyManager keyManager = new KeyManager(nextKeyToCheck, keySize, cipherText);
+    boolean simulateSlowNetwork = false;
+    if (args.length > 4) {
+      simulateSlowNetwork = Boolean.parseBoolean(args[4]);
+    }
+
+    KeyManager keyManager = new KeyManager(
+      nextKeyToCheck,
+      keySize,
+      cipherText,
+      simulateSlowNetwork
+    );
     keyManager.serve(port);
   }
 
   private final int keySize;
   private final String cipherText;
+  private final boolean simulateSlowNetwork;
 
   private volatile String correctKey = null;
   private volatile BigInteger nextKeyToCheck;
 
-  public KeyManager(BigInteger nextKeyToCheck, int keySize, String cipherText) {
+  public KeyManager(
+    BigInteger nextKeyToCheck,
+    int keySize,
+    String cipherText,
+    boolean simulateSlowNetwork
+  ) {
     this.nextKeyToCheck = nextKeyToCheck;
     this.keySize = keySize;
     this.cipherText = cipherText;
+    this.simulateSlowNetwork = simulateSlowNetwork;
   }
 
   public void serve(int port) throws IOException {
@@ -46,6 +64,9 @@ public class KeyManager {
 
       while (correctKey == null) {
         Socket client = socket.accept();
+        if (simulateSlowNetwork) {
+          Thread.sleep(1000);
+        }
 
         serveClient(client, (socket1, in, out) -> {
           String message = in.readLine();
@@ -56,6 +77,8 @@ public class KeyManager {
       }
 
       System.out.println("Correct key: " + correctKey);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
     }
   }
 
