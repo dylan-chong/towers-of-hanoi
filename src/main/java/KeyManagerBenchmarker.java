@@ -7,7 +7,7 @@ import java.util.concurrent.Callable;
  */
 public class KeyManagerBenchmarker {
 
-  private static final int NUMBER_OF_REPEATS = 2;
+  private static final int NUMBER_OF_REPEATS = 30;
 
   /**
    * @param args The same arguments as {@link KeyManager#main(String[])}

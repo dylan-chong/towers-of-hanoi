@@ -330,8 +330,8 @@ work is requested, the failed job will be given in response.
 
 The hardcoded duration means that each chunk of work cannot take too long ---
 otherwise the manager will almost always assume that the client, who was still
-part way through the job, has died. I have chosen the value 45 seconds because
-jobs that take roughly 30 seconds are large enough to make overloading the
+part way through the job, has died. I have chosen the value 20 seconds because
+jobs that take roughly 10 seconds are large enough to make overloading the
 manager unlikely.
 
 ## Requirements
