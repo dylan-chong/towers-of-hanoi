@@ -15,7 +15,6 @@ public class Client {
   private final int numberOfKeysToCheck;
 
   public Client(String hostname, int port, int numberOfKeysToCheck) {
-
     this.hostname = hostname;
     this.port = port;
     this.numberOfKeysToCheck = numberOfKeysToCheck;
@@ -33,8 +32,17 @@ public class Client {
 
     Client client = new Client(hostname, port, numberOfKeysToCheck);
 
-    while (true) {
-      client.workForKeyManager();
+    try {
+      while (true) {
+        client.workForKeyManager();
+      }
+    } catch (IOException e) {
+      throw new IOException(
+        "There was a problem connecting to the KeyManager. " +
+          "Maybe the key was already found? " +
+          "Or maybe there actually was a problem connecting. ",
+        e
+      );
     }
   }
 
@@ -45,7 +53,7 @@ public class Client {
   }
 
   private String findWorkToDo() throws IOException {
-    return this.talkToManager((socket, in, out) -> {
+    return talkToManager((socket, in, out) -> {
       String message = String.format(
         "%s %s %d %s",
         ASK_FOR_WORK,
