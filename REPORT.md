@@ -284,10 +284,24 @@ the key manager has successfully been given a solution.
 The code was also inspected to make sure it is readable, understandable, and
 follows the requirements.
 
-# Task 5
+# Task 4
 
-NOTE: I ran this on a dual core, hyper-threaded CPU (i5-5257U) using the script
-`./run-benchmarks.sh`.
+I ran the benchmarking on a dual core, hyper-threaded CPU (i5-5257U) using the
+script `./run-benchmarks.sh`. WARNING: if you run the script and cancel it, you
+will have to deal with the zombie background processes manually. (`pgrep java |
+xargs kill -9` works nicely, however this code assumes that you have no
+important Java processes running.)
+
+The script runs the benchmarks for each hardcoded number of clients, and each
+hardcoded chunk size. At each iteration, the script instantiates a bunch of
+`Client`s as background jobs, runs `KeyManagerBenchmarker`, pipes the results
+into a file, then kills the clients. This takes a very long time, so I had to
+run this overnight.
+
+The `KeyManagerBenchmarker` calculates the key 30 times, as per the
+requirements. Each time, it runs `KeyManager`, which delegates work to the
+clients. The benchmark measures the time for each iteration, finds the average
+and standard deviation, and outputs these values.
 
 | Chunk Size   | Number Of Clients   | --- | Average Run Time (of 30 runs)   | Standard Deviation   |
 | ------------ | ------------------- | --- | ------------------------------- | -------------------- |
@@ -300,3 +314,50 @@ NOTE: I ran this on a dual core, hyper-threaded CPU (i5-5257U) using the script
 | 10000        | 5                   |     |
 | 50000        | 5                   |     |
 | 100000       | 5                   |     |
+
+# Task 5
+
+## Outline
+
+The new program must handle the possibility that a client does not respond. To
+do this, there will be a small modification to the original key manager
+described in task three.
+
+The new program (`Task5KeyManager`) will keep a record of what jobs are in
+progress. There will also be a hardcoded timeout duration, after which the
+manager will assume the client is dead. After such a timeout, the next time
+work is requested, the failed job will be given in response.
+
+The hardcoded duration means that each chunk of work cannot take too long ---
+otherwise the manager will almost always assume that the client, who was still
+part way through the job, has died. I have chosen the value 45 seconds because
+jobs that take roughly 30 seconds are large enough to make overloading the
+manager unlikely.
+
+## Requirements
+
+1. Clients only need to be aware of the location of the key manager --- the
+   program design change has not affected this requirement (the task three
+   version of the program passes this requirement).
+2. Clients can join or leave but will complete the work they have been
+   requested --- the program design change has not affected this requirement
+   (the task three version of the program passes this requirement.
+3. Clients request work from the key manager and return results to it --- the
+   program design change has not affected this requirement (the task three
+   version of the program passes this requirement.
+4. Connections between clients and the Masters only exist long enough to
+   request work or to return results --- the program design change has not
+   affected this requirement (the task three version of the program passes this
+   requirement.
+5. When the key is found, the key manager will shutdown --- the program design
+   change has not affected this requirement (the task three version of the
+   program passes this requirement.
+
+## Testing
+
+To test this new approach, we will use the same testing approach from tasks
+three, but with a new client `Task5Client`. This new client will have a 50%
+chance of ignoring the work given to it --- this is to simulate clients dying,
+without actually having to kill and restart clients manually.
+
+
