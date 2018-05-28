@@ -5,16 +5,8 @@ import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class KeyManager {
-
-  private static final int MAX_SIMULTANEOUS_CONNECTIONS = 8;
-  private static final ExecutorService executorService =
-    Executors.newFixedThreadPool(MAX_SIMULTANEOUS_CONNECTIONS);
 
   /**
    * @param args[0] key represented as a big integer value
@@ -68,35 +60,25 @@ public class KeyManager {
 
   public void serve(int port) throws IOException {
     try (ServerSocket socket = new ServerSocket(port)) {
-      socket.setSoTimeout(1000);
       System.out.println("Waiting for connections on " + socket.getLocalPort());
 
       while (correctKey == null) {
-        Socket client;
-        try {
-          client = socket.accept();
-        } catch (SocketTimeoutException ignored) {
-          continue;
+        Socket client = socket.accept();
+        if (simulateSlowNetwork) {
+          Thread.sleep(1000);
         }
 
-        executorService.submit((Callable<?>) () -> {
-          if (simulateSlowNetwork) {
-            Thread.sleep(1000);
-          }
-
-          serveClient(client, (socket1, in, out) -> {
-            String message = in.readLine();
-            System.out.println("Input: " + message);
-            handleResponse(message, out);
-            return null;
-          });
-
+        serveClient(client, (socket1, in, out) -> {
+          String message = in.readLine();
+          System.out.println("Input: " + message);
+          handleResponse(message, out);
           return null;
         });
       }
 
       System.out.println("Correct key: " + correctKey);
-      executorService.shutdown();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
     }
   }
 
