@@ -50,8 +50,8 @@ public class KeyManager {
   private final String cipherText;
   private final boolean simulateSlowNetwork;
 
-  private volatile String correctKey = null;
-  private volatile BigInteger nextKeyToCheck;
+  private String correctKey = null;
+  private BigInteger nextKeyToCheck;
 
   public KeyManager(
     BigInteger nextKeyToCheck,
@@ -105,7 +105,7 @@ public class KeyManager {
     }
   }
 
-  private synchronized void handleResponse(String message, PrintWriter output) {
+  private void handleResponse(String message, PrintWriter output) {
     String[] messageSplit = message.split(" ");
 
     if (message.startsWith(Client.ASK_FOR_WORK)) {
