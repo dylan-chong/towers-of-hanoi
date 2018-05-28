@@ -6,6 +6,13 @@ import java.math.BigInteger;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * Distributed key cracker. This class delegates the work to {@link Client}s
+ * that say they are available to do work.
+ * <p>
+ * Each time a client asks for work, a unique amount of work is given in return.
+ * The client can then message this manager later with the result of the work.
+ */
 public class KeyManager {
 
   /**
@@ -86,8 +93,6 @@ public class KeyManager {
     Socket client,
     NetworkWork<T> work
   ) throws IOException {
-    // TODO Do works on a new thread or pool
-
     try (
       BufferedReader input = new BufferedReader(
         new InputStreamReader(client.getInputStream())

@@ -166,6 +166,11 @@ the clients to finish their work and timeout sending a message to the manager.
 A response back to the client is not required because the clients will request
 more work after having sent the second kind of message to the key manager.
 
+Note: I have intentionally made the key manager single threaded because the
+implementation is simpler. Even on a slow network, having only one possible
+simultaneous connection barely has any effect on the performance --- as long as
+the chunk size for the clients is decently large, for example 100,000.
+
 ## Requirements
 
 The above outline describes a design that follows the requirements described in
@@ -187,3 +192,96 @@ the `Project2.pdf`:
 5. When the key is found, the key manager will shutdown --- the key manager
    will halt when it receives a message that the key is found, as described in
    the outline.
+
+# Task 3
+
+## Testing process
+
+To test the key managers and clients together, I run the following code.
+Appropriate inputs and outputs should be displayed in each of the terminals.
+One of the clients should reach the correct key (3185209680) within roughly 30
+seconds, and then exit. The key manager should then display the correct key and
+exit.
+
+```bash
+    # Run this on the first terminal
+    ./gradlew compileJava
+    cd build/classes/java/main/
+    java KeyManager 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng== 57842 true
+
+    # Run this in 3 new terminals
+    java Client localhost 57842 100000
+```
+
+Example output (`KeyManager`):
+
+```
+    > java KeyManager 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng== 57843 true
+    Waiting for connections on 57843
+    Input: ASK 127.0.0.1 60326 100000
+    Output: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+    Input: ASK 127.0.0.1 60327 100000
+    Output: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+    Input: ASK 127.0.0.1 60328 100000
+    Output: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+    Input: RESPONSE 127.0.0.1 60329
+    Input: ASK 127.0.0.1 60330 100000
+    Output: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+    Input: RESPONSE 127.0.0.1 60331
+    Input: ASK 127.0.0.1 60332 100000
+    Output: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+    Input: RESPONSE 127.0.0.1 60333
+    Input: ASK 127.0.0.1 60334 100000
+    Output: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+    Input: RESPONSE 127.0.0.1 60335
+    Input: ASK 127.0.0.1 60336 100000
+    Output: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+    Input: RESPONSE 127.0.0.1 60337
+    Input: ASK 127.0.0.1 60338 100000
+    Output: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+    Input: RESPONSE 127.0.0.1 60339
+    Input: ASK 127.0.0.1 60340 100000
+    Output: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+    Input: RESPONSE 127.0.0.1 60341
+    Input: ASK 127.0.0.1 60342 100000
+    Output: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+    Input: RESPONSE 127.0.0.1 60343 3185209680
+    Correct key: 3185209680
+```
+
+Example output (one of the 3 `Client`s):
+
+```
+    > java Client localhost 57843 100000 && sleep 3
+    Output: ASK 127.0.0.1 60696 100000
+    Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+    ....................................................................................................
+    Output: RESPONSE 127.0.0.1 60699
+    Output: ASK 127.0.0.1 60700 100000
+    Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+    ....................................................................................................
+    Output: RESPONSE 127.0.0.1 60706
+    Output: ASK 127.0.0.1 60707 100000
+    Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+    ....................................................................................................
+    Output: RESPONSE 127.0.0.1 60713
+    Output: ASK 127.0.0.1 60714 100000
+    Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+    .
+    Plaintext found!
+    May good flourish; Kia hua ko te pai
+    key is (hex) BDDA7150 3185209680
+    Output: RESPONSE 127.0.0.1 60715 3185209680
+```
+
+The output of the other two clients are not shown here for brevity. Note that
+these clients show an IO exception for not being able to connect to the key
+manager after it has received the correct key. This is because the manager
+shuts down, and the clients do not maintain a connection with the manager (as
+per the requirements) so there is no way for the remaining clients to know that
+the key manager has successfully been given a solution.
+
+The code was also inspected to make sure it is readable, understandable, and
+follows the requirements.
+
+# Task 5

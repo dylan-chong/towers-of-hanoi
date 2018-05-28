@@ -5,6 +5,11 @@ import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.net.Socket;
 
+/**
+ * Asks for work to do from a {@link KeyManager}, performs the work, and then
+ * returns a result. This client then goes back to the start, asking for more
+ * work to do.
+ */
 public class Client {
 
   public static final String ASK_FOR_WORK = "ASK";
