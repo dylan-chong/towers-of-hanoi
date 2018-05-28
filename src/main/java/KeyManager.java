@@ -46,23 +46,34 @@ public class KeyManager {
 
       while (correctKey == null) {
         Socket client = socket.accept();
-        // TODO Do works on a new thread or pool
 
-        try (
-          BufferedReader input = new BufferedReader(
-            new InputStreamReader(client.getInputStream())
-          );
-          PrintWriter output = new PrintWriter(
-            client.getOutputStream(), true
-          )
-        ) {
-          String message = input.readLine();
+        serveClient(client, (socket1, in, out) -> {
+          String message = in.readLine();
           System.out.println("Input: " + message);
-          handleResponse(message, output);
-        }
+          handleResponse(message, out);
+          return null;
+        });
       }
 
       System.out.println("Correct key: " + correctKey);
+    }
+  }
+
+  private <T> T serveClient(
+    Socket client,
+    NetworkWork<T> work
+  ) throws IOException {
+    // TODO Do works on a new thread or pool
+
+    try (
+      BufferedReader input = new BufferedReader(
+        new InputStreamReader(client.getInputStream())
+      );
+      PrintWriter output = new PrintWriter(
+        client.getOutputStream(), true
+      )
+    ) {
+      return work.workWith(client, input, output);
     }
   }
 

@@ -150,9 +150,4 @@ public class Client {
     System.out.println();
     return null;
   }
-
-  public interface NetworkWork<T> {
-    T workWith(Socket socket, BufferedReader in, PrintWriter out)
-      throws IOException;
-  }
 }
