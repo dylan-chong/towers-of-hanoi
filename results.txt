@@ -1,3 +1,0 @@
-- Results:             times = [10324, 7862, 7398, 7667, 7358, 7441, 7721, 7585, 7644, 7663, 7694, 7 [...]
-- Results:       averageTime = 7784.0
-- Results: standardDeviation = 507.59012336070265

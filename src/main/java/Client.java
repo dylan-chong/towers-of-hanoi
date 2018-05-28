@@ -20,28 +20,27 @@ public class Client {
    * @param args[1] key manager port
    * @param args[2] number of keys to check
    */
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws InterruptedException {
     String hostname = args[0];
     int port = Integer.parseInt(args[1]);
     int numberOfKeysToCheck = Integer.parseInt(args[2]);
 
     Client client = new Client(hostname, port, numberOfKeysToCheck);
 
-    try {
-      while (true) {
-        String matchingKey = client.workForKeyManager();
+    while (true) {
+      try {
+        client.workForKeyManager();
+      } catch (IOException e) {
+        Exception e2 = new IOException(
+          "There was a problem connecting to the KeyManager. " +
+            "Maybe the key was already found? " +
+            "Or maybe there actually was a problem connecting. ",
+          e
+        );
+        e2.printStackTrace();
 
-        if (matchingKey != null) {
-          return;
-        }
+        Thread.sleep(1000);
       }
-    } catch (IOException e) {
-      throw new IOException(
-        "There was a problem connecting to the KeyManager. " +
-          "Maybe the key was already found? " +
-          "Or maybe there actually was a problem connecting. ",
-        e
-      );
     }
   }
 
