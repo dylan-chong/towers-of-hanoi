@@ -129,7 +129,9 @@ public class Client {
     for (int i = 0; i < numberOfKeysToCheck; i++) {
       // tell user which key is being checked
       String keyStr = bi.toString();
-      System.out.print('.');
+      if (i % 1000 == 0) {
+        System.out.print('.');
+      }
 
       // decrypt and compare to known plaintext
       Blowfish.setKey(key);

@@ -164,7 +164,7 @@ When the manager receives the second kind of message and the key is found, the
 manager will print out a success message to standard output and exit, leaving
 the clients to finish their work and timeout sending a message to the manager.
 A response back to the client is not required because the clients will request
-more work.
+more work after having sent the second kind of message to the key manager.
 
 ## Requirements
 

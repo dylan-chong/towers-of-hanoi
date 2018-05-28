@@ -91,7 +91,7 @@ public class KeyManager {
     }
   }
 
-  private synchronized BigInteger findNextKeyToCheck(
+  private BigInteger findNextKeyToCheck(
     String[] askMessageSplit,
     PrintWriter output,
     BigInteger nextKeyToCheck
