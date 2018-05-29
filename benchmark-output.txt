@@ -1,0 +1,3627 @@
+Starting a Gradle Daemon (subsequent builds will be faster)
+Parallel execution is an incubating feature.
+:compileKotlin UP-TO-DATE
+:compileJava UP-TO-DATE
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 5.0.
+See https://docs.gradle.org/4.6/userguide/command_line_interface.html#sec:command_line_warnings
+
+BUILD SUCCESSFUL in 10s
+2 actionable tasks: 2 up-to-date
+Running for CHUNKSIZE=50000 CLIENTS=2 :
+Processes (in case you need to kill them)
+69675
+69676
+Output: ASK 127.0.0.1 49576 50000
+Output: ASK 127.0.0.1 49581 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................
+Output: RESPONSE 127.0.0.1 49595
+Output: ASK 127.0.0.1 49596 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 49597
+Output: ASK 127.0.0.1 49598 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................................
+Output: RESPONSE 127.0.0.1 49612
+Output: ASK 127.0.0.1 49613 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 49614
+Output: ASK 127.0.0.1 49615 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................................
+Output: RESPONSE 127.0.0.1 49628
+Output: ASK 127.0.0.1 49629 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 49630
+Output: ASK 127.0.0.1 49631 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................................................................
+Output: RESPONSE 127.0.0.1 49640
+Output: ASK 127.0.0.1 49641 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....
+Output: RESPONSE 127.0.0.1 49642
+Output: ASK 127.0.0.1 49643 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................................
+Output: RESPONSE 127.0.0.1 49652
+Output: ASK 127.0.0.1 49653 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....
+Output: RESPONSE 127.0.0.1 49654
+Output: ASK 127.0.0.1 49655 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................................
+Output: RESPONSE 127.0.0.1 49664
+Output: ASK 127.0.0.1 49665 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....
+Output: RESPONSE 127.0.0.1 49666
+Output: ASK 127.0.0.1 49667 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................................................................
+Output: RESPONSE 127.0.0.1 49677
+.Output: ASK 127.0.0.1 49678 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....
+Output: RESPONSE 127.0.0.1 49679
+Output: ASK 127.0.0.1 49680 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................................
+Output: RESPONSE 127.0.0.1 49689
+Output: ASK 127.0.0.1 49690 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....
+Output: RESPONSE 127.0.0.1 49691
+Output: ASK 127.0.0.1 49692 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................................................................
+Output: RESPONSE 127.0.0.1 49697
+Output: ASK 127.0.0.1 49698 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 49699 3185209680
+.
+Output: ASK 127.0.0.1 49753 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.Output: ASK 127.0.0.1 49754 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................
+Output: RESPONSE 127.0.0.1 49760
+Output: ASK 127.0.0.1 49761 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 49762
+Output: ASK 127.0.0.1 49763 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................
+Output: RESPONSE 127.0.0.1 49777
+Output: ASK 127.0.0.1 49778 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 49779
+Output: ASK 127.0.0.1 49780 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................
+Output: RESPONSE 127.0.0.1 49789
+Output: ASK 127.0.0.1 49790 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 49791
+Output: ASK 127.0.0.1 49792 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................
+Output: RESPONSE 127.0.0.1 49801
+Output: ASK 127.0.0.1 49802 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 49803
+Output: ASK 127.0.0.1 49804 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................
+Output: RESPONSE 127.0.0.1 49813
+Output: ASK 127.0.0.1 49814 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 49815
+Output: ASK 127.0.0.1 49816 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................
+Output: RESPONSE 127.0.0.1 49821
+Output: ASK 127.0.0.1 49822 50000
+
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.Output: RESPONSE 127.0.0.1 49823
+Output: ASK 127.0.0.1 49824 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................
+Output: RESPONSE 127.0.0.1 49830
+Output: ASK 127.0.0.1 49831 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 49832
+Output: ASK 127.0.0.1 49833 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................
+Output: RESPONSE 127.0.0.1 49838
+Output: ASK 127.0.0.1 49839 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 49840
+Output: ASK 127.0.0.1 49841 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................
+Output: RESPONSE 127.0.0.1 49850
+Output: ASK 127.0.0.1 49851 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 49852 3185209680
+Output: ASK 0:0:0:0:0:0:7f00:1 49853 50000
+
+Output: ASK 127.0.0.1 49908 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.Output: ASK 127.0.0.1 49909 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................
+Output: RESPONSE 127.0.0.1 49918
+Output: ASK 127.0.0.1 49919 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 49920
+Output: ASK 127.0.0.1 49921 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................
+Output: RESPONSE 127.0.0.1 49931
+Output: ASK 127.0.0.1 49932 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 49933
+Output: ASK 127.0.0.1 49934 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................................
+Output: RESPONSE 127.0.0.1 49943
+Output: ASK 127.0.0.1 49944 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 49945
+Output: ASK 127.0.0.1 49946 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................................
+Output: RESPONSE 127.0.0.1 49951
+Output: ASK 127.0.0.1 49952 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 49953
+Output: ASK 127.0.0.1 49954 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................
+Output: RESPONSE 127.0.0.1 49959
+Output: ASK 127.0.0.1 49960 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 49961
+Output: ASK 127.0.0.1 49962 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................
+Output: RESPONSE 127.0.0.1 49971
+Output: ASK 127.0.0.1 49972 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 49973
+Output: ASK 127.0.0.1 49974 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................
+Output: RESPONSE 127.0.0.1 49984
+Output: ASK 127.0.0.1 49985 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 49986
+Output: ASK 127.0.0.1 49987 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................
+Output: RESPONSE 127.0.0.1 49996
+Output: ASK 127.0.0.1 49997 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 49998
+Output: ASK 127.0.0.1 49999 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................................
+Output: RESPONSE 127.0.0.1 50008
+Output: ASK 127.0.0.1 50009 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 50010 3185209680
+.
+Output: ASK 127.0.0.1 50072 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..Output: ASK 127.0.0.1 50073 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................................
+Output: RESPONSE 127.0.0.1 50086
+Output: ASK 127.0.0.1 50087 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 50088
+Output: ASK 127.0.0.1 50089 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................................
+Output: RESPONSE 127.0.0.1 50101
+Output: ASK 127.0.0.1 50102 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 50103
+Output: ASK 127.0.0.1 50104 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................................................................
+Output: RESPONSE 127.0.0.1 50115
+Output: ASK 127.0.0.1 50116 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....
+Output: RESPONSE 127.0.0.1 50117
+Output: ASK 127.0.0.1 50118 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................................
+Output: RESPONSE 127.0.0.1 50125
+Output: ASK 127.0.0.1 50126 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....
+Output: RESPONSE 127.0.0.1 50127
+Output: ASK 127.0.0.1 50128 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................................
+Output: RESPONSE 127.0.0.1 50138
+Output: ASK 127.0.0.1 50139 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....
+Output: RESPONSE 127.0.0.1 50140
+Output: ASK 127.0.0.1 50141 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................................
+Output: RESPONSE 127.0.0.1 50152
+Output: ASK 127.0.0.1 50153 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....
+Output: RESPONSE 127.0.0.1 50154
+Output: ASK 127.0.0.1 50155 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................................
+Output: RESPONSE 127.0.0.1 50166
+Output: ASK 127.0.0.1 50167 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....
+Output: RESPONSE 127.0.0.1 50168
+Output: ASK 127.0.0.1 50169 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................................
+Output: RESPONSE 127.0.0.1 50175
+Output: ASK 127.0.0.1 50176 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....
+Output: RESPONSE 127.0.0.1 50181
+Output: ASK 127.0.0.1 50182 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................................
+Output: RESPONSE 127.0.0.1 50190
+Output: ASK 127.0.0.1 50191 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 50192 3185209680
+..
+Output: ASK 127.0.0.1 50250 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....Output: ASK 127.0.0.1 50251 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................
+Output: RESPONSE 127.0.0.1 50256
+Output: ASK 127.0.0.1 50257 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......
+Output: RESPONSE 127.0.0.1 50262
+Output: ASK 127.0.0.1 50263 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................
+Output: RESPONSE 127.0.0.1 50268
+Output: ASK 127.0.0.1 50269 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......
+Output: RESPONSE 127.0.0.1 50270
+Output: ASK 127.0.0.1 50271 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................................................................................
+Output: RESPONSE 127.0.0.1 50282
+Output: ASK 127.0.0.1 50283 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........
+Output: RESPONSE 127.0.0.1 50284
+Output: ASK 127.0.0.1 50285 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................................
+.Output: RESPONSE 127.0.0.1 50290
+Output: ASK 127.0.0.1 50291 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......
+Output: RESPONSE 127.0.0.1 50292
+.Output: ASK 127.0.0.1 50293 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................................
+Output: RESPONSE 127.0.0.1 50302
+Output: ASK 127.0.0.1 50303 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........
+Output: RESPONSE 127.0.0.1 50304
+Output: ASK 127.0.0.1 50305 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................................
+Output: RESPONSE 127.0.0.1 50314
+Output: ASK 127.0.0.1 50315 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........
+Output: RESPONSE 127.0.0.1 50316
+Output: ASK 127.0.0.1 50317 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................................................
+Output: RESPONSE 127.0.0.1 50322
+Output: ASK 127.0.0.1 50323 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........
+Output: RESPONSE 127.0.0.1 50328
+Output: ASK 127.0.0.1 50329 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................................
+Output: RESPONSE 127.0.0.1 50335
+Output: ASK 127.0.0.1 50336 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........
+Output: RESPONSE 127.0.0.1 50337
+Output: ASK 127.0.0.1 50338 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................................
+Output: RESPONSE 127.0.0.1 50347
+Output: ASK 127.0.0.1 50348 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 50349 3185209680
+.....
+Output: ASK 127.0.0.1 50409 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......Output: ASK 127.0.0.1 50410 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................
+Output: RESPONSE 127.0.0.1 50419
+Output: ASK 127.0.0.1 50420 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............
+Output: RESPONSE 127.0.0.1 50425
+Output: ASK 127.0.0.1 50426 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................
+Output: RESPONSE 127.0.0.1 50431
+Output: ASK 127.0.0.1 50432 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............
+Output: RESPONSE 127.0.0.1 50437
+Output: ASK 127.0.0.1 50438 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................
+Output: RESPONSE 127.0.0.1 50443
+Output: ASK 127.0.0.1 50444 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............
+Output: RESPONSE 127.0.0.1 50445
+Output: ASK 127.0.0.1 50446 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................
+Output: RESPONSE 127.0.0.1 50456
+Output: ASK 127.0.0.1 50457 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............
+Output: RESPONSE 127.0.0.1 50458
+Output: ASK 127.0.0.1 50459 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................................................
+Output: RESPONSE 127.0.0.1 50464
+Output: ASK 127.0.0.1 50465 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............
+Output: RESPONSE 127.0.0.1 50470
+Output: ASK 127.0.0.1 50471 50000.
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................
+Output: RESPONSE 127.0.0.1 50476
+Output: ASK 127.0.0.1 50477 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............
+Output: RESPONSE 127.0.0.1 50482
+Output: ASK 127.0.0.1 50483 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................
+Output: RESPONSE 127.0.0.1 50488
+Output: ASK 127.0.0.1 50489 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............
+Output: RESPONSE 127.0.0.1 50494
+Output: ASK 127.0.0.1 50495 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................
+Output: RESPONSE 127.0.0.1 50500
+Output: ASK 127.0.0.1 50501 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............
+Output: RESPONSE 127.0.0.1 50507
+Output: ASK 127.0.0.1 50508 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................
+Output: RESPONSE 127.0.0.1 50513
+Output: ASK 127.0.0.1 50514 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 50515 3185209680
+.......
+Output: ASK 127.0.0.1 50573 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........Output: ASK 127.0.0.1 50574 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................
+Output: RESPONSE 127.0.0.1 50579
+Output: ASK 127.0.0.1 50580 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............
+Output: RESPONSE 127.0.0.1 50585
+Output: ASK 127.0.0.1 50586 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................
+Output: RESPONSE 127.0.0.1 50592
+Output: ASK 127.0.0.1 50593 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............
+Output: RESPONSE 127.0.0.1 50598
+Output: ASK 127.0.0.1 50599 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................................................................................
+Output: RESPONSE 127.0.0.1 50604
+Output: ASK 127.0.0.1 50605 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 50610
+Output: ASK 127.0.0.1 50611 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................
+Output: RESPONSE 127.0.0.1 50617
+Output: ASK 127.0.0.1 50618 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................
+Output: RESPONSE 127.0.0.1 50619
+Output: ASK 127.0.0.1 50620 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................................................................................
+Output: RESPONSE 127.0.0.1 50625
+Output: ASK 127.0.0.1 50626 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 50631
+Output: ASK 127.0.0.1 50632 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................
+Output: RESPONSE 127.0.0.1 50637
+Output: ASK 127.0.0.1 50638 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 50639
+Output: ASK 127.0.0.1 50640 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................
+Output: RESPONSE 127.0.0.1 50645
+Output: ASK 127.0.0.1 50646 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 50651
+Output: ASK 127.0.0.1 50652 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................
+Output: RESPONSE 127.0.0.1 50657
+Output: ASK 127.0.0.1 50658 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 50659
+Output: ASK 127.0.0.1 50660 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................
+Output: RESPONSE 127.0.0.1 50670
+Output: ASK 127.0.0.1 50671 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 50672 3185209680
+........
+Output: ASK 127.0.0.1 50722 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........Output: ASK 127.0.0.1 50727 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................
+Output: RESPONSE 127.0.0.1 50732
+Output: ASK 127.0.0.1 50733 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 50734
+Output: ASK 127.0.0.1 50735 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................
+Output: RESPONSE 127.0.0.1 50744
+Output: ASK 127.0.0.1 50745 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................
+Output: RESPONSE 127.0.0.1 50746
+Output: ASK 127.0.0.1 50747 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................
+Output: RESPONSE 127.0.0.1 50752
+Output: ASK 127.0.0.1 50753 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................
+Output: RESPONSE 127.0.0.1 50758
+Output: ASK 127.0.0.1 50759 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................
+Output: RESPONSE 127.0.0.1 50764
+Output: ASK 127.0.0.1 50765 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................
+Output: RESPONSE 127.0.0.1 50771
+Output: ASK 127.0.0.1 50772 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................
+Output: RESPONSE 127.0.0.1 50777
+Output: ASK 127.0.0.1 50778 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................
+Output: RESPONSE 127.0.0.1 50779
+Output: ASK 127.0.0.1 50780 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................
+Output: RESPONSE 127.0.0.1 50789
+Output: ASK 127.0.0.1 50790 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................
+Output: RESPONSE 127.0.0.1 50791
+Output: ASK 127.0.0.1 50792 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................
+Output: RESPONSE 127.0.0.1 50797
+Output: ASK 127.0.0.1 50798 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................
+Output: RESPONSE 127.0.0.1 50803
+Output: ASK 127.0.0.1 50804 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................
+Output: RESPONSE 127.0.0.1 50809
+Output: ASK 127.0.0.1 50810 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................
+Output: RESPONSE 127.0.0.1 50811
+Output: ASK 127.0.0.1 50812 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................
+Output: RESPONSE 127.0.0.1 50822
+Output: ASK 127.0.0.1 50823 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 50824 3185209680
+.........
+Output: ASK 127.0.0.1 50878 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........Output: ASK 127.0.0.1 50879 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................
+Output: RESPONSE 127.0.0.1 50884
+Output: ASK 127.0.0.1 50885 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 50890
+Output: ASK 127.0.0.1 50891 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................
+Output: RESPONSE 127.0.0.1 50896
+Output: ASK 127.0.0.1 50897 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 50902
+Output: ASK 127.0.0.1 50903 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................
+Output: RESPONSE 127.0.0.1 50909
+Output: ASK 127.0.0.1 50910 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 50911
+Output: ASK 127.0.0.1 50912 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................
+Output: RESPONSE 127.0.0.1 50921
+Output: ASK 127.0.0.1 50922 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 50923
+Output: ASK 127.0.0.1 50924 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................................................
+Output: RESPONSE 127.0.0.1 50934
+Output: ASK 127.0.0.1 50935 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................
+Output: RESPONSE 127.0.0.1 50936
+Output: ASK 127.0.0.1 50937 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................
+Output: RESPONSE 127.0.0.1 50942
+Output: ASK 127.0.0.1 50943 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................
+Output: RESPONSE 127.0.0.1 50944
+Output: ASK 127.0.0.1 50945 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................
+Output: RESPONSE 127.0.0.1 50950
+Output: ASK 127.0.0.1 50951 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................
+Output: RESPONSE 127.0.0.1 50956
+Output: ASK 127.0.0.1 50957 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................
+Output: RESPONSE 127.0.0.1 50963
+Output: ASK 127.0.0.1 50964 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................
+Output: RESPONSE 127.0.0.1 50965
+Output: ASK 127.0.0.1 50966 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................
+Output: RESPONSE 127.0.0.1 50975
+Output: ASK 127.0.0.1 50976 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 50977 3185209680
+...........
+Output: ASK 127.0.0.1 51035 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............Output: ASK 127.0.0.1 51036 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................
+Output: RESPONSE 127.0.0.1 51042
+Output: ASK 127.0.0.1 51043 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................
+Output: RESPONSE 127.0.0.1 51048
+Output: ASK 127.0.0.1 51049 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................
+Output: RESPONSE 127.0.0.1 51055
+Output: ASK 127.0.0.1 51056 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................
+Output: RESPONSE 127.0.0.1 51061
+Output: ASK 127.0.0.1 51062 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................
+Output: RESPONSE 127.0.0.1 51067
+Output: ASK 127.0.0.1 51068 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................
+Output: RESPONSE 127.0.0.1 51069
+Output: ASK 127.0.0.1 51070 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................
+Output: RESPONSE 127.0.0.1 51079
+Output: ASK 127.0.0.1 51080 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................
+Output: RESPONSE 127.0.0.1 51081
+Output: ASK 127.0.0.1 51082 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................
+Output: RESPONSE 127.0.0.1 51087
+Output: ASK 127.0.0.1 51088 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................
+Output: RESPONSE 127.0.0.1 51094
+Output: ASK 127.0.0.1 51095 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................
+Output: RESPONSE 127.0.0.1 51100
+Output: ASK 127.0.0.1 51101 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................
+Output: RESPONSE 127.0.0.1 51102
+Output: ASK 127.0.0.1 51103 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................
+Output: RESPONSE 127.0.0.1 51108
+Output: ASK 127.0.0.1 51109 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................
+Output: RESPONSE 127.0.0.1 51110
+Output: ASK 127.0.0.1 51111 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................
+Output: RESPONSE 127.0.0.1 51120
+Output: ASK 127.0.0.1 51121 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................
+Output: RESPONSE 127.0.0.1 51127
+Output: ASK 127.0.0.1 51128 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................
+Output: RESPONSE 127.0.0.1 51133
+Output: ASK 127.0.0.1 51134 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 51135 3185209680
+.............
+Output: ASK 127.0.0.1 51190 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............Output: ASK 127.0.0.1 51195 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................
+Output: RESPONSE 127.0.0.1 51201
+Output: ASK 127.0.0.1 51202 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................
+Output: RESPONSE 127.0.0.1 51207
+Output: ASK 127.0.0.1 51208 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................
+Output: RESPONSE 127.0.0.1 51213
+Output: ASK 127.0.0.1 51214 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................
+Output: RESPONSE 127.0.0.1 51215
+Output: ASK 127.0.0.1 51216 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................
+Output: RESPONSE 127.0.0.1 51221
+Output: ASK 127.0.0.1 51222 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................
+Output: RESPONSE 127.0.0.1 51227
+Output: ASK 127.0.0.1 51228 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................
+Output: RESPONSE 127.0.0.1 51238
+Output: ASK 127.0.0.1 51239 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................
+Output: RESPONSE 127.0.0.1 51240
+Output: ASK 127.0.0.1 51241 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................
+Output: RESPONSE 127.0.0.1 51250
+Output: ASK 127.0.0.1 51251 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................
+Output: RESPONSE 127.0.0.1 51252
+Output: ASK 127.0.0.1 51253 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................
+Output: RESPONSE 127.0.0.1 51259
+Output: ASK 127.0.0.1 51260 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................
+Output: RESPONSE 127.0.0.1 51261
+Output: ASK 127.0.0.1 51262 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................................
+Output: RESPONSE 127.0.0.1 51271
+Output: ASK 127.0.0.1 51272 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................
+Output: RESPONSE 127.0.0.1 51273
+Output: ASK 127.0.0.1 51274 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................
+Output: RESPONSE 127.0.0.1 51279
+Output: ASK 127.0.0.1 51280 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................
+Output: RESPONSE 127.0.0.1 51285
+Output: ASK 127.0.0.1 51286 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................
+Output: RESPONSE 127.0.0.1 51291
+Output: ASK 127.0.0.1 51292 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 51293 3185209680
+...............
+Output: ASK 127.0.0.1 51349 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................Output: ASK 127.0.0.1 51354 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................
+Output: RESPONSE 127.0.0.1 51359
+Output: ASK 127.0.0.1 51360 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................
+Output: RESPONSE 127.0.0.1 51366
+Output: ASK 127.0.0.1 51367 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................
+Output: RESPONSE 127.0.0.1 51368
+Output: ASK 127.0.0.1 51369 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................
+Output: RESPONSE 127.0.0.1 51374
+Output: ASK 127.0.0.1 51375 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................
+Output: RESPONSE 127.0.0.1 51380
+Output: ASK 127.0.0.1 51381 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................
+Output: RESPONSE 127.0.0.1 51382
+Output: ASK 127.0.0.1 51383 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................
+Output: RESPONSE 127.0.0.1 51388
+Output: ASK 127.0.0.1 51389 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................
+Output: RESPONSE 127.0.0.1 51394
+Output: ASK 127.0.0.1 51395 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................
+Output: RESPONSE 127.0.0.1 51400
+Output: ASK 127.0.0.1 51401 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................
+Output: RESPONSE 127.0.0.1 51406
+Output: ASK 127.0.0.1 51407 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................................
+Output: RESPONSE 127.0.0.1 51412
+Output: ASK 127.0.0.1 51413 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................
+Output: RESPONSE 127.0.0.1 51415
+Output: ASK 127.0.0.1 51416 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................
+Output: RESPONSE 127.0.0.1 51425
+Output: ASK 127.0.0.1 51426 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................
+Output: RESPONSE 127.0.0.1 51431
+Output: ASK 127.0.0.1 51432 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................
+Output: RESPONSE 127.0.0.1 51437
+Output: ASK 127.0.0.1 51438 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................
+Output: RESPONSE 127.0.0.1 51443
+Output: ASK 127.0.0.1 51444 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................
+Output: RESPONSE 127.0.0.1 51445
+Output: ASK 127.0.0.1 51446 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 51447 3185209680
+..................
+Output: ASK 127.0.0.1 51502 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................Output: ASK 127.0.0.1 51507 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................
+Output: RESPONSE 127.0.0.1 51512
+Output: ASK 127.0.0.1 51513 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................
+Output: RESPONSE 127.0.0.1 51518
+Output: ASK 127.0.0.1 51519 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................
+Output: RESPONSE 127.0.0.1 51525
+Output: ASK 127.0.0.1 51526 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................................
+Output: RESPONSE 127.0.0.1 51527
+Output: ASK 127.0.0.1 51528 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................
+Output: RESPONSE 127.0.0.1 51533
+Output: ASK 127.0.0.1 51534 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................
+Output: RESPONSE 127.0.0.1 51539
+Output: ASK 127.0.0.1 51540 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................
+Output: RESPONSE 127.0.0.1 51545
+Output: ASK 127.0.0.1 51546 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................
+Output: RESPONSE 127.0.0.1 51551
+Output: ASK 127.0.0.1 51552 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................
+Output: RESPONSE 127.0.0.1 51553
+Output: ASK 127.0.0.1 51554 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................
+Output: RESPONSE 127.0.0.1 51559
+Output: ASK 127.0.0.1 51560 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................
+Output: RESPONSE 127.0.0.1 51565
+Output: ASK 127.0.0.1 51566 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................
+Output: RESPONSE 127.0.0.1 51572
+Output: ASK 127.0.0.1 51573 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................
+Output: RESPONSE 127.0.0.1 51581
+Output: ASK 127.0.0.1 51582 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................
+Output: RESPONSE 127.0.0.1 51590
+Output: ASK 127.0.0.1 51591 50000
+.Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................
+Output: RESPONSE 127.0.0.1 51597
+Output: ASK 127.0.0.1 51598 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................
+Output: RESPONSE 127.0.0.1 51603
+Output: ASK 127.0.0.1 51604 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................
+Output: RESPONSE 127.0.0.1 51610
+Output: ASK 127.0.0.1 51611 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 51612 3185209680
+....................
+Output: ASK 127.0.0.1 51665 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......Output: ASK 127.0.0.1 51666 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................
+Output: RESPONSE 127.0.0.1 51675
+Output: ASK 127.0.0.1 51676 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............
+Output: RESPONSE 127.0.0.1 51677
+Output: ASK 127.0.0.1 51678 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................
+Output: RESPONSE 127.0.0.1 51691
+Output: ASK 127.0.0.1 51692 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............
+Output: RESPONSE 127.0.0.1 51693
+Output: ASK 127.0.0.1 51694 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................
+Output: RESPONSE 127.0.0.1 51699
+.Output: ASK 127.0.0.1 51700 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........
+Output: RESPONSE 127.0.0.1 51705
+Output: ASK 127.0.0.1 51706 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................................................................................
+Output: RESPONSE 127.0.0.1 51711
+Output: ASK 127.0.0.1 51712 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............
+Output: RESPONSE 127.0.0.1 51717
+Output: ASK 127.0.0.1 51718 50000
+.Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................................................................................
+Output: RESPONSE 127.0.0.1 51728
+Output: ASK 127.0.0.1 51729 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........
+Output: RESPONSE 127.0.0.1 51730
+Output: ASK 127.0.0.1 51731 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................................................
+Output: RESPONSE 127.0.0.1 51737
+Output: ASK 127.0.0.1 51738 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........
+Output: RESPONSE 127.0.0.1 51739
+Output: ASK 127.0.0.1 51740 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................................................
+Output: RESPONSE 127.0.0.1 51749
+Output: ASK 127.0.0.1 51750 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........
+Output: RESPONSE 127.0.0.1 51751
+Output: ASK 127.0.0.1 51752 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................................
+Output: RESPONSE 127.0.0.1 51761
+Output: ASK 127.0.0.1 51762 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........
+Output: RESPONSE 127.0.0.1 51763
+Output: ASK 127.0.0.1 51764 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................................
+Output: RESPONSE 127.0.0.1 51774
+Output: ASK 127.0.0.1 51775 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 51776 3185209680
+.....
+Output: ASK 127.0.0.1 51830 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......Output: ASK 127.0.0.1 51835 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................................
+Output: RESPONSE 127.0.0.1 51841
+Output: ASK 127.0.0.1 51842 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........
+Output: RESPONSE 127.0.0.1 51843
+Output: ASK 127.0.0.1 51844 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................................
+Output: RESPONSE 127.0.0.1 51853
+Output: ASK 127.0.0.1 51854 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........
+Output: RESPONSE 127.0.0.1 51855
+Output: ASK 127.0.0.1 51856 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................................................................................
+Output: RESPONSE 127.0.0.1 51865
+.Output: ASK 127.0.0.1 51866 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........
+Output: RESPONSE 127.0.0.1 51867
+Output: ASK 127.0.0.1 51868 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................................
+Output: RESPONSE 127.0.0.1 51877
+Output: ASK 127.0.0.1 51878 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........
+Output: RESPONSE 127.0.0.1 51883
+Output: ASK 127.0.0.1 51884 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................................
+Output: RESPONSE 127.0.0.1 51896
+Output: ASK 127.0.0.1 51897 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........
+Output: RESPONSE 127.0.0.1 51898
+Output: ASK 127.0.0.1 51899 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................................
+Output: RESPONSE 127.0.0.1 51905
+Output: ASK 127.0.0.1 51906 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........
+Output: RESPONSE 127.0.0.1 51907
+Output: ASK 127.0.0.1 51908 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................................................................................
+Output: RESPONSE 127.0.0.1 51917
+Output: ASK 127.0.0.1 51918 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............
+Output: RESPONSE 127.0.0.1 51919
+Output: ASK 127.0.0.1 51920 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................
+Output: RESPONSE 127.0.0.1 51929
+Output: ASK 127.0.0.1 51930 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............
+Output: RESPONSE 127.0.0.1 51931
+Output: ASK 127.0.0.1 51932 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................
+Output: RESPONSE 127.0.0.1 51942
+Output: ASK 127.0.0.1 51943 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 51944 3185209680
+......
+Output: ASK 127.0.0.1 51999 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......Output: ASK 127.0.0.1 52000 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................
+Output: RESPONSE 127.0.0.1 52005
+Output: ASK 127.0.0.1 52006 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............
+Output: RESPONSE 127.0.0.1 52007
+Output: ASK 127.0.0.1 52008 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................................................
+Output: RESPONSE 127.0.0.1 52017
+Output: ASK 127.0.0.1 52018 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............
+Output: RESPONSE 127.0.0.1 52019
+Output: ASK 127.0.0.1 52020 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................................................
+Output: RESPONSE 127.0.0.1 52025
+Output: ASK 127.0.0.1 52026 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............
+Output: RESPONSE 127.0.0.1 52027
+Output: ASK 127.0.0.1 52028 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................
+Output: RESPONSE 127.0.0.1 52033
+Output: ASK 127.0.0.1 52034 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............
+Output: RESPONSE 127.0.0.1 52039
+Output: ASK 127.0.0.1 52040 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................................................
+Output: RESPONSE 127.0.0.1 52046
+Output: ASK 127.0.0.1 52047 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............
+Output: RESPONSE 127.0.0.1 52048
+Output: ASK 127.0.0.1 52049 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................................................................................
+Output: RESPONSE 127.0.0.1 52054
+Output: ASK 127.0.0.1 52055 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 52056
+Output: ASK 127.0.0.1 52057 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................
+Output: RESPONSE 127.0.0.1 52062
+Output: ASK 127.0.0.1 52063 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 52068
+Output: ASK 127.0.0.1 52069 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................
+Output: RESPONSE 127.0.0.1 52074
+Output: ASK 127.0.0.1 52075 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 52080
+Output: ASK 127.0.0.1 52081 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................
+Output: RESPONSE 127.0.0.1 52086
+Output: ASK 127.0.0.1 52087 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 52088 3185209680
+Output: ASK 0:0:0:0:0:0:7f00:1 52089 50000
+........
+Output: ASK 127.0.0.1 52138 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........Output: ASK 127.0.0.1 52139 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................................................................................
+Output: RESPONSE 127.0.0.1 52145
+Output: ASK 127.0.0.1 52146 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............
+Output: RESPONSE 127.0.0.1 52151
+Output: ASK 127.0.0.1 52152 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................
+Output: RESPONSE 127.0.0.1 52157
+Output: ASK 127.0.0.1 52158 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............
+Output: RESPONSE 127.0.0.1 52159
+Output: ASK 127.0.0.1 52160 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................................................................................
+Output: RESPONSE 127.0.0.1 52165
+Output: ASK 127.0.0.1 52166 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 52171
+Output: ASK 127.0.0.1 52172 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................
+Output: RESPONSE 127.0.0.1 52181
+Output: ASK 127.0.0.1 52182 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 52183
+Output: ASK 127.0.0.1 52184 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................
+Output: RESPONSE 127.0.0.1 52194
+Output: ASK 127.0.0.1 52195 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 52196
+Output: ASK 127.0.0.1 52197 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................
+Output: RESPONSE 127.0.0.1 52202
+Output: ASK 127.0.0.1 52203 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 52208
+Output: ASK 127.0.0.1 52209 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................
+Output: RESPONSE 127.0.0.1 52214
+Output: ASK 127.0.0.1 52215 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................
+Output: RESPONSE 127.0.0.1 52216
+Output: ASK 127.0.0.1 52217 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................
+Output: RESPONSE 127.0.0.1 52226
+Output: ASK 127.0.0.1 52227 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................
+Output: RESPONSE 127.0.0.1 52228
+Output: ASK 127.0.0.1 52229 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................
+Output: RESPONSE 127.0.0.1 52235
+Output: ASK 127.0.0.1 52236 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 52237 3185209680
+.........
+Output: ASK 127.0.0.1 52292 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........Output: ASK 127.0.0.1 52293 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................
+Output: RESPONSE 127.0.0.1 52302
+Output: ASK 127.0.0.1 52303 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................
+Output: RESPONSE 127.0.0.1 52304
+Output: ASK 127.0.0.1 52305 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................
+Output: RESPONSE 127.0.0.1 52310
+Output: ASK 127.0.0.1 52311 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................
+Output: RESPONSE 127.0.0.1 52312
+Output: ASK 127.0.0.1 52313 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................................................
+Output: RESPONSE 127.0.0.1 52322
+Output: ASK 127.0.0.1 52323 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 52324
+Output: ASK 127.0.0.1 52325 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................
+Output: RESPONSE 127.0.0.1 52330
+Output: ASK 127.0.0.1 52331 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 52336
+Output: ASK 127.0.0.1 52337 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................
+Output: RESPONSE 127.0.0.1 52343
+Output: ASK 127.0.0.1 52344 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 52349
+Output: ASK 127.0.0.1 52350 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................
+Output: RESPONSE 127.0.0.1 52355
+Output: ASK 127.0.0.1 52356 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 52357
+Output: ASK 127.0.0.1 52358 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................
+Output: RESPONSE 127.0.0.1 52367
+Output: ASK 127.0.0.1 52368 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 52369
+Output: ASK 127.0.0.1 52370 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................
+Output: RESPONSE 127.0.0.1 52379
+Output: ASK 127.0.0.1 52380 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 52381
+Output: ASK 127.0.0.1 52382 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................
+Output: RESPONSE 127.0.0.1 52387
+Output: ASK 127.0.0.1 52388 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 52389 3185209680
+..........
+Output: ASK 127.0.0.1 52445 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............Output: ASK 127.0.0.1 52451 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................
+Output: RESPONSE 127.0.0.1 52456
+Output: ASK 127.0.0.1 52457 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................
+Output: RESPONSE 127.0.0.1 52462
+Output: ASK 127.0.0.1 52463 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................
+Output: RESPONSE 127.0.0.1 52468
+Output: ASK 127.0.0.1 52469 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................
+Output: RESPONSE 127.0.0.1 52474
+Output: ASK 127.0.0.1 52475 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................
+Output: RESPONSE 127.0.0.1 52480
+Output: ASK 127.0.0.1 52481 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................
+Output: RESPONSE 127.0.0.1 52482
+Output: ASK 127.0.0.1 52483 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................................................................
+Output: RESPONSE 127.0.0.1 52488
+Output: ASK 127.0.0.1 52489 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................
+Output: RESPONSE 127.0.0.1 52494
+Output: ASK 127.0.0.1 52495 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................
+Output: RESPONSE 127.0.0.1 52505
+Output: ASK 127.0.0.1 52506 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................
+Output: RESPONSE 127.0.0.1 52507
+Output: ASK 127.0.0.1 52508 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................................
+Output: RESPONSE 127.0.0.1 52517
+Output: ASK 127.0.0.1 52518 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................
+Output: RESPONSE 127.0.0.1 52519
+Output: ASK 127.0.0.1 52520 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................
+Output: RESPONSE 127.0.0.1 52529
+Output: ASK 127.0.0.1 52530 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................
+Output: RESPONSE 127.0.0.1 52531
+Output: ASK 127.0.0.1 52532 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................................................................
+Output: RESPONSE 127.0.0.1 52537
+Output: ASK 127.0.0.1 52538 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................
+Output: RESPONSE 127.0.0.1 52543
+Output: ASK 127.0.0.1 52544 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................
+Output: RESPONSE 127.0.0.1 52550
+Output: ASK 127.0.0.1 52551 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 52552 3185209680
+..............
+Output: ASK 127.0.0.1 52612 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............Output: ASK 127.0.0.1 52613 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................
+Output: RESPONSE 127.0.0.1 52618
+Output: ASK 127.0.0.1 52619 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................
+Output: RESPONSE 127.0.0.1 52624
+Output: ASK 127.0.0.1 52625 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................
+Output: RESPONSE 127.0.0.1 52630
+Output: ASK 127.0.0.1 52631 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................
+Output: RESPONSE 127.0.0.1 52636
+Output: ASK 127.0.0.1 52637 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................
+Output: RESPONSE 127.0.0.1 52642
+Output: ASK 127.0.0.1 52643 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................
+Output: RESPONSE 127.0.0.1 52644
+Output: ASK 127.0.0.1 52645 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................
+Output: RESPONSE 127.0.0.1 52654
+Output: ASK 127.0.0.1 52655 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................
+Output: RESPONSE 127.0.0.1 52656
+Output: ASK 127.0.0.1 52657 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................
+Output: RESPONSE 127.0.0.1 52667
+Output: ASK 127.0.0.1 52668 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................
+Output: RESPONSE 127.0.0.1 52669
+Output: ASK 127.0.0.1 52670 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................
+Output: RESPONSE 127.0.0.1 52675
+Output: ASK 127.0.0.1 52676 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................
+Output: RESPONSE 127.0.0.1 52681
+Output: ASK 127.0.0.1 52682 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................
+Output: RESPONSE 127.0.0.1 52687
+Output: ASK 127.0.0.1 52688 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................
+Output: RESPONSE 127.0.0.1 52689
+Output: ASK 127.0.0.1 52690 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................
+Output: RESPONSE 127.0.0.1 52695
+Output: ASK 127.0.0.1 52696 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................
+Output: RESPONSE 127.0.0.1 52701
+Output: ASK 127.0.0.1 52702 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................
+Output: RESPONSE 127.0.0.1 52711
+Output: ASK 127.0.0.1 52712 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 52713 3185209680
+...............
+Output: ASK 127.0.0.1 52771 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................Output: ASK 127.0.0.1 52777 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................
+Output: RESPONSE 127.0.0.1 52782
+Output: ASK 127.0.0.1 52783 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................
+Output: RESPONSE 127.0.0.1 52788
+Output: ASK 127.0.0.1 52789 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................................
+Output: RESPONSE 127.0.0.1 52794
+Output: ASK 127.0.0.1 52795 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................
+Output: RESPONSE 127.0.0.1 52800
+Output: ASK 127.0.0.1 52801 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................
+Output: RESPONSE 127.0.0.1 52806
+Output: ASK 127.0.0.1 52807 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................
+Output: RESPONSE 127.0.0.1 52812
+Output: ASK 127.0.0.1 52813 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................
+Output: RESPONSE 127.0.0.1 52822
+Output: ASK 127.0.0.1 52823 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................
+Output: RESPONSE 127.0.0.1 52824
+Output: ASK 127.0.0.1 52825 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................................................................
+Output: RESPONSE 127.0.0.1 52835
+Output: ASK 127.0.0.1 52836 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................
+Output: RESPONSE 127.0.0.1 52837
+Output: ASK 127.0.0.1 52838 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................
+Output: RESPONSE 127.0.0.1 52843
+Output: ASK 127.0.0.1 52844 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................
+Output: RESPONSE 127.0.0.1 52849
+Output: ASK 127.0.0.1 52850 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................
+Output: RESPONSE 127.0.0.1 52855
+Output: ASK 127.0.0.1 52856 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................
+Output: RESPONSE 127.0.0.1 52861
+Output: ASK 127.0.0.1 52862 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................
+Output: RESPONSE 127.0.0.1 52867
+Output: ASK 127.0.0.1 52868 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................
+Output: RESPONSE 127.0.0.1 52869
+Output: ASK 127.0.0.1 52870 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................
+Output: RESPONSE 127.0.0.1 52880
+Output: ASK 127.0.0.1 52881 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 52882 3185209680
+................
+Output: ASK 127.0.0.1 52937 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................Output: ASK 127.0.0.1 52938 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................
+Output: RESPONSE 127.0.0.1 52947
+Output: ASK 127.0.0.1 52948 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................
+Output: RESPONSE 127.0.0.1 52949
+Output: ASK 127.0.0.1 52950 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................
+Output: RESPONSE 127.0.0.1 52959
+Output: ASK 127.0.0.1 52960 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................
+Output: RESPONSE 127.0.0.1 52961
+Output: ASK 127.0.0.1 52962 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................
+Output: RESPONSE 127.0.0.1 52967
+Output: ASK 127.0.0.1 52968 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................
+Output: RESPONSE 127.0.0.1 52973
+Output: ASK 127.0.0.1 52974 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................
+Output: RESPONSE 127.0.0.1 52983
+Output: ASK 127.0.0.1 52984 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................
+Output: RESPONSE 127.0.0.1 52985
+Output: ASK 127.0.0.1 52986 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................................
+Output: RESPONSE 127.0.0.1 52996
+Output: ASK 127.0.0.1 52997 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................
+Output: RESPONSE 127.0.0.1 52998
+Output: ASK 127.0.0.1 52999 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................
+Output: RESPONSE 127.0.0.1 53005
+Output: ASK 127.0.0.1 53006 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................
+Output: RESPONSE 127.0.0.1 53011
+Output: ASK 127.0.0.1 53012 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................
+Output: RESPONSE 127.0.0.1 53021
+Output: ASK 127.0.0.1 53022 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................
+Output: RESPONSE 127.0.0.1 53023
+Output: ASK 127.0.0.1 53024 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................
+Output: RESPONSE 127.0.0.1 53029
+Output: ASK 127.0.0.1 53030 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................
+Output: RESPONSE 127.0.0.1 53035
+Output: ASK 127.0.0.1 53036 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................
+Output: RESPONSE 127.0.0.1 53042
+Output: ASK 127.0.0.1 53043 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 53044 3185209680
+................
+Output: ASK 127.0.0.1 53098 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................Output: ASK 127.0.0.1 53099 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................
+Output: RESPONSE 127.0.0.1 53104
+Output: ASK 127.0.0.1 53105 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................
+Output: RESPONSE 127.0.0.1 53110
+Output: ASK 127.0.0.1 53111 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................
+Output: RESPONSE 127.0.0.1 53116
+Output: ASK 127.0.0.1 53117 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................
+Output: RESPONSE 127.0.0.1 53122
+Output: ASK 127.0.0.1 53123 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................
+Output: RESPONSE 127.0.0.1 53128
+Output: ASK 127.0.0.1 53129 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................
+Output: RESPONSE 127.0.0.1 53130
+Output: ASK 127.0.0.1 53131 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................
+Output: RESPONSE 127.0.0.1 53136
+Output: ASK 127.0.0.1 53137 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................
+Output: RESPONSE 127.0.0.1 53142
+Output: ASK 127.0.0.1 53143 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................
+Output: RESPONSE 127.0.0.1 53149
+Output: ASK 127.0.0.1 53150 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................
+Output: RESPONSE 127.0.0.1 53155
+Output: ASK 127.0.0.1 53156 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................
+Output: RESPONSE 127.0.0.1 53161
+Output: ASK 127.0.0.1 53162 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................
+Output: RESPONSE 127.0.0.1 53167
+Output: ASK 127.0.0.1 53168 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................
+Output: RESPONSE 127.0.0.1 53173
+Output: ASK 127.0.0.1 53174 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................
+Output: RESPONSE 127.0.0.1 53175
+Output: ASK 127.0.0.1 53176 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................
+Output: RESPONSE 127.0.0.1 53181
+Output: ASK 127.0.0.1 53182 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................
+Output: RESPONSE 127.0.0.1 53183
+Output: ASK 127.0.0.1 53184 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................
+Output: RESPONSE 127.0.0.1 53189
+Output: ASK 127.0.0.1 53190 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 53191 3185209680
+.................
+Output: ASK 127.0.0.1 53237 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................Output: ASK 127.0.0.1 53243 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................
+Output: RESPONSE 127.0.0.1 53249
+Output: ASK 127.0.0.1 53250 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................
+Output: RESPONSE 127.0.0.1 53255
+Output: ASK 127.0.0.1 53256 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................
+Output: RESPONSE 127.0.0.1 53261
+Output: ASK 127.0.0.1 53262 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................
+Output: RESPONSE 127.0.0.1 53267
+Output: ASK 127.0.0.1 53268 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................
+Output: RESPONSE 127.0.0.1 53273
+Output: ASK 127.0.0.1 53274 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................
+Output: RESPONSE 127.0.0.1 53279
+Output: ASK 127.0.0.1 53280 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................................
+Output: RESPONSE 127.0.0.1 53285
+Output: ASK 127.0.0.1 53286 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................................
+Output: RESPONSE 127.0.0.1 53291
+Output: ASK 127.0.0.1 53292 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................
+Output: RESPONSE 127.0.0.1 53298
+Output: ASK 127.0.0.1 53299 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................
+Output: RESPONSE 127.0.0.1 53304
+Output: ASK 127.0.0.1 53305 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................
+Output: RESPONSE 127.0.0.1 53306
+Output: ASK 127.0.0.1 53307 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................
+Output: RESPONSE 127.0.0.1 53312
+Output: ASK 127.0.0.1 53313 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................
+Output: RESPONSE 127.0.0.1 53318
+Output: ASK 127.0.0.1 53319 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................
+Output: RESPONSE 127.0.0.1 53324
+Output: ASK 127.0.0.1 53325 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................
+Output: RESPONSE 127.0.0.1 53330
+Output: ASK 127.0.0.1 53331 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................
+Output: RESPONSE 127.0.0.1 53332
+Output: ASK 127.0.0.1 53333 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................................
+Output: RESPONSE 127.0.0.1 53342
+Output: ASK 127.0.0.1 53343 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 53344 3185209680
+.................
+Output: ASK 127.0.0.1 53394 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................Output: ASK 127.0.0.1 53400 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................
+Output: RESPONSE 127.0.0.1 53405
+Output: ASK 127.0.0.1 53406 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................
+Output: RESPONSE 127.0.0.1 53411
+Output: ASK 127.0.0.1 53412 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................
+Output: RESPONSE 127.0.0.1 53417
+Output: ASK 127.0.0.1 53418 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................
+Output: RESPONSE 127.0.0.1 53423
+Output: ASK 127.0.0.1 53424 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................................
+Output: RESPONSE 127.0.0.1 53429
+Output: ASK 127.0.0.1 53430 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................
+Output: RESPONSE 127.0.0.1 53435
+Output: ASK 127.0.0.1 53436 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................
+Output: RESPONSE 127.0.0.1 53441
+Output: ASK 127.0.0.1 53442 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................
+Output: RESPONSE 127.0.0.1 53443
+Output: ASK 127.0.0.1 53444 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................
+Output: RESPONSE 127.0.0.1 53450
+Output: ASK 127.0.0.1 53451 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................................
+Output: RESPONSE 127.0.0.1 53456
+Output: ASK 127.0.0.1 53457 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................
+Output: RESPONSE 127.0.0.1 53462
+Output: ASK 127.0.0.1 53463 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................
+Output: RESPONSE 127.0.0.1 53464
+Output: ASK 127.0.0.1 53465 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................
+Output: RESPONSE 127.0.0.1 53474
+Output: ASK 127.0.0.1 53475 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................
+Output: RESPONSE 127.0.0.1 53476
+Output: ASK 127.0.0.1 53477 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................
+Output: RESPONSE 127.0.0.1 53482
+Output: ASK 127.0.0.1 53483 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................
+Output: RESPONSE 127.0.0.1 53488
+Output: ASK 127.0.0.1 53489 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................
+Output: RESPONSE 127.0.0.1 53494
+Output: ASK 127.0.0.1 53495 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 53496 3185209680
+....................
+Output: ASK 127.0.0.1 53550 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................Output: ASK 127.0.0.1 53556 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................................................
+Output: RESPONSE 127.0.0.1 53561
+Output: ASK 127.0.0.1 53562 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................
+Output: RESPONSE 127.0.0.1 53563
+Output: ASK 127.0.0.1 53564 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................
+Output: RESPONSE 127.0.0.1 53569
+Output: ASK 127.0.0.1 53570 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................
+Output: RESPONSE 127.0.0.1 53575
+Output: ASK 127.0.0.1 53576 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................
+Output: RESPONSE 127.0.0.1 53581
+Output: ASK 127.0.0.1 53582 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................
+Output: RESPONSE 127.0.0.1 53587
+Output: ASK 127.0.0.1 53588 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................
+Output: RESPONSE 127.0.0.1 53593
+Output: ASK 127.0.0.1 53594 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................
+Output: RESPONSE 127.0.0.1 53599
+Output: ASK 127.0.0.1 53600 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................
+.Output: RESPONSE 127.0.0.1 53606
+Output: ASK 127.0.0.1 53607 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................
+Output: RESPONSE 127.0.0.1 53612
+Output: ASK 127.0.0.1 53613 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................
+Output: RESPONSE 127.0.0.1 53618
+Output: ASK 127.0.0.1 53619 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................
+Output: RESPONSE 127.0.0.1 53624
+Output: ASK 127.0.0.1 53625 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................................................
+Output: RESPONSE 127.0.0.1 53630
+Output: ASK 127.0.0.1 53631 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................
+Output: RESPONSE 127.0.0.1 53637
+Output: ASK 127.0.0.1 53638 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................
+Output: RESPONSE 127.0.0.1 53643
+Output: ASK 127.0.0.1 53644 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................................
+Output: RESPONSE 127.0.0.1 53650
+Output: ASK 127.0.0.1 53651 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................
+Output: RESPONSE 127.0.0.1 53656
+Output: ASK 127.0.0.1 53657 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 53658 3185209680
+....................
+Output: ASK 127.0.0.1 53716 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................Output: ASK 127.0.0.1 53722 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................
+Output: RESPONSE 127.0.0.1 53727
+Output: ASK 127.0.0.1 53728 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................
+Output: RESPONSE 127.0.0.1 53729
+Output: ASK 127.0.0.1 53730 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................
+Output: RESPONSE 127.0.0.1 53735
+Output: ASK 127.0.0.1 53736 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................
+Output: RESPONSE 127.0.0.1 53741
+Output: ASK 127.0.0.1 53742 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................
+Output: RESPONSE 127.0.0.1 53747
+Output: ASK 127.0.0.1 53748 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................
+Output: RESPONSE 127.0.0.1 53749
+Output: ASK 127.0.0.1 53750 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................
+Output: RESPONSE 127.0.0.1 53755
+Output: ASK 127.0.0.1 53756 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................
+Output: RESPONSE 127.0.0.1 53761
+Output: ASK 127.0.0.1 53762 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................
+Output: RESPONSE 127.0.0.1 53772
+Output: ASK 127.0.0.1 53773 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................
+Output: RESPONSE 127.0.0.1 53774
+Output: ASK 127.0.0.1 53775 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................
+Output: RESPONSE 127.0.0.1 53780
+Output: ASK 127.0.0.1 53781 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................
+Output: RESPONSE 127.0.0.1 53786
+Output: ASK 127.0.0.1 53787 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................
+Output: RESPONSE 127.0.0.1 53792
+Output: ASK 127.0.0.1 53793 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................
+Output: RESPONSE 127.0.0.1 53798
+Output: ASK 127.0.0.1 53799 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................
+Output: RESPONSE 127.0.0.1 53804
+Output: ASK 127.0.0.1 53805 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................
+Output: RESPONSE 127.0.0.1 53810
+Output: ASK 127.0.0.1 53811 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................
+Output: RESPONSE 127.0.0.1 53817
+Output: ASK 127.0.0.1 53818 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 53819 3185209680
+Output: ASK 0:0:0:0:0:0:7f00:1 53820 50000
+.....................
+Output: ASK 127.0.0.1 53873 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................Output: ASK 127.0.0.1 53878 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................
+Output: RESPONSE 127.0.0.1 53883
+Output: ASK 127.0.0.1 53884 50000.
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................
+Output: RESPONSE 127.0.0.1 53885
+Output: ASK 127.0.0.1 53886 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................
+Output: RESPONSE 127.0.0.1 53891
+Output: ASK 127.0.0.1 53892 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................
+Output: RESPONSE 127.0.0.1 53897
+Output: ASK 127.0.0.1 53898 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................
+Output: RESPONSE 127.0.0.1 53903
+Output: ASK 127.0.0.1 53904 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................
+Output: RESPONSE 127.0.0.1 53905
+Output: ASK 127.0.0.1 53906 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................
+Output: RESPONSE 127.0.0.1 53911
+Output: ASK 127.0.0.1 53912 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................
+Output: RESPONSE 127.0.0.1 53917
+Output: ASK 127.0.0.1 53918 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................
+Output: RESPONSE 127.0.0.1 53924
+Output: ASK 127.0.0.1 53925 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................
+Output: RESPONSE 127.0.0.1 53930
+Output: ASK 127.0.0.1 53931 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................
+Output: RESPONSE 127.0.0.1 53936
+Output: ASK 127.0.0.1 53937 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................
+Output: RESPONSE 127.0.0.1 53942
+Output: ASK 127.0.0.1 53943 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................
+Output: RESPONSE 127.0.0.1 53944
+Output: ASK 127.0.0.1 53945 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................
+Output: RESPONSE 127.0.0.1 53950
+Output: ASK 127.0.0.1 53951 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................
+Output: RESPONSE 127.0.0.1 53957
+Output: ASK 127.0.0.1 53958 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................
+Output: RESPONSE 127.0.0.1 53963
+Output: ASK 127.0.0.1 53964 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................
+Output: RESPONSE 127.0.0.1 53969
+Output: ASK 127.0.0.1 53970 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 53971 3185209680
+.......................
+Output: ASK 127.0.0.1 54020 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....Output: ASK 127.0.0.1 54025 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................................................................
+Output: RESPONSE 127.0.0.1 54031
+Output: ASK 127.0.0.1 54032 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....
+Output: RESPONSE 127.0.0.1 54033
+Output: ASK 127.0.0.1 54034 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................................................................
+Output: RESPONSE 127.0.0.1 54043
+Output: ASK 127.0.0.1 54044 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 54045
+Output: ASK 127.0.0.1 54046 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................................
+Output: RESPONSE 127.0.0.1 54059
+Output: ASK 127.0.0.1 54060 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 54061
+Output: ASK 127.0.0.1 54062 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................................
+Output: RESPONSE 127.0.0.1 54067
+Output: ASK 127.0.0.1 54068 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 54069
+Output: ASK 127.0.0.1 54070 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................
+Output: RESPONSE 127.0.0.1 54080
+Output: ASK 127.0.0.1 54081 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 54082
+Output: ASK 127.0.0.1 54083 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................
+Output: RESPONSE 127.0.0.1 54092
+Output: ASK 127.0.0.1 54093 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 54094
+Output: ASK 127.0.0.1 54095 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................
+Output: RESPONSE 127.0.0.1 54104
+Output: ASK 127.0.0.1 54105 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 54106
+Output: ASK 127.0.0.1 54107 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................
+Output: RESPONSE 127.0.0.1 54112
+Output: ASK 127.0.0.1 54113 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 54114
+Output: ASK 127.0.0.1 54115 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................
+Output: RESPONSE 127.0.0.1 54126
+Output: ASK 127.0.0.1 54127 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 54128 3185209680
+
+Output: ASK 127.0.0.1 54187 50000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.Output: ASK 127.0.0.1 54188 50000
+Input: 3184359670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................
+Output: RESPONSE 127.0.0.1 54201
+Output: ASK 127.0.0.1 54202 50000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 54203
+Output: ASK 127.0.0.1 54204 50000
+Input: 3184459670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................
+Output: RESPONSE 127.0.0.1 54210
+
+Output: ASK 127.0.0.1 54211 50000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.Output: RESPONSE 127.0.0.1 54212
+Output: ASK 127.0.0.1 54213 50000
+Input: 3184559670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................
+Output: RESPONSE 127.0.0.1 54222
+Output: ASK 127.0.0.1 54223 50000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 54224
+Output: ASK 127.0.0.1 54225 50000
+Input: 3184659670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................................
+Output: RESPONSE 127.0.0.1 54234
+Output: ASK 127.0.0.1 54235 50000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 54237
+Output: ASK 127.0.0.1 54238 50000
+Input: 3184759670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................
+Output: RESPONSE 127.0.0.1 54247
+Output: ASK 127.0.0.1 54248 50000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 54249
+Output: ASK 127.0.0.1 54250 50000
+Input: 3184859670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................
+Output: RESPONSE 127.0.0.1 54259
+Output: ASK 127.0.0.1 54260 50000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 54261
+Output: ASK 127.0.0.1 54262 50000
+Input: 3184959670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................
+Output: RESPONSE 127.0.0.1 54271
+Output: ASK 127.0.0.1 54272 50000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 54273
+Output: ASK 127.0.0.1 54274 50000
+Input: 3185059670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................
+Output: RESPONSE 127.0.0.1 54279
+Output: ASK 127.0.0.1 54280 50000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 54281
+Output: ASK 127.0.0.1 54282 50000
+Input: 3185159670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................
+Output: RESPONSE 127.0.0.1 54292
+Output: ASK 127.0.0.1 54293 50000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 54294 3185209680
+
+Running for CHUNKSIZE=100000 CLIENTS=2 :
+Processes (in case you need to kill them)
+69675
+69676
+69907
+69908
+Output: ASK 127.0.0.1 54345 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........Output: ASK 127.0.0.1 54350 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 54369
+Output: ASK 127.0.0.1 54370 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................
+Output: RESPONSE 127.0.0.1 54372
+Output: ASK 127.0.0.1 54373 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 54388
+Output: ASK 127.0.0.1 54389 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................
+Output: RESPONSE 127.0.0.1 54390
+Output: ASK 127.0.0.1 54391 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 54404
+Output: ASK 127.0.0.1 54405 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................
+Output: RESPONSE 127.0.0.1 54406
+Output: ASK 127.0.0.1 54407 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 54421
+Output: ASK 127.0.0.1 54422 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................
+Output: RESPONSE 127.0.0.1 54427
+Output: ASK 127.0.0.1 54428 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 54429 3185209680
+......................................................................................
+Output: ASK 127.0.0.1 54477 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........Output: ASK 127.0.0.1 54478 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 54491
+Output: ASK 127.0.0.1 54492 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................
+Output: RESPONSE 127.0.0.1 54497
+Output: ASK 127.0.0.1 54498 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 54511
+Output: ASK 127.0.0.1 54512 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................
+Output: RESPONSE 127.0.0.1 54513
+Output: ASK 127.0.0.1 54514 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 54532
+Output: ASK 127.0.0.1 54533 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................
+Output: RESPONSE 127.0.0.1 54538
+Output: ASK 127.0.0.1 54539 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 54552
+Output: ASK 127.0.0.1 54553 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................
+Output: RESPONSE 127.0.0.1 54554
+Output: ASK 127.0.0.1 54555 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 54556 3185209680
+Output: ASK 127.0.0.1 54557 100000
+......................................................................................
+Output: ASK 127.0.0.1 54607 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............Output: ASK 127.0.0.1 54608 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 54626
+Output: ASK 127.0.0.1 54627 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 54628
+Output: ASK 127.0.0.1 54629 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 54643
+Output: ASK 127.0.0.1 54644 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 54649
+Output: ASK 127.0.0.1 54650 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 54664
+Output: ASK 127.0.0.1 54665 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 54666
+Output: ASK 127.0.0.1 54667 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 54680
+Output: ASK 127.0.0.1 54681 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................
+Output: RESPONSE 127.0.0.1 54686
+Output: ASK 127.0.0.1 54687 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 54688 3185209680
+..........................................................................................
+Output: ASK 127.0.0.1 54740 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............Output: ASK 127.0.0.1 54741 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 54755
+Output: ASK 127.0.0.1 54756 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................
+.Output: RESPONSE 127.0.0.1 54758
+Output: ASK 127.0.0.1 54759 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 54772
+Output: ASK 127.0.0.1 54773 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................
+Output: RESPONSE 127.0.0.1 54774
+Output: ASK 127.0.0.1 54775 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................................................................................................................
+.Output: RESPONSE 127.0.0.1 54792
+Output: ASK 127.0.0.1 54793 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................
+.Output: RESPONSE 127.0.0.1 54794
+Output: ASK 127.0.0.1 54795 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 54815
+Output: ASK 127.0.0.1 54816 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................
+Output: RESPONSE 127.0.0.1 54824
+Output: ASK 127.0.0.1 54825 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 54826 3185209680
+...................................................................................
+Output: ASK 127.0.0.1 54891 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.Output: ASK 127.0.0.1 54892 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................................................................................................................................................................
+.Output: RESPONSE 127.0.0.1 54922
+Output: ASK 127.0.0.1 54923 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 54924
+Output: ASK 127.0.0.1 54925 100000
+.Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 54942
+Output: ASK 127.0.0.1 54943 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..
+Output: RESPONSE 127.0.0.1 54944
+Output: ASK 127.0.0.1 54945 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 54994
+Output: ASK 127.0.0.1 54995 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 54996
+Output: ASK 127.0.0.1 54997 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55019
+Output: ASK 127.0.0.1 55020 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 55021
+Output: ASK 127.0.0.1 55022 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+.Output: RESPONSE 127.0.0.1 55023 3185209680
+.................................................................................................
+Output: ASK 127.0.0.1 55081 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.Output: ASK 127.0.0.1 55082 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55099
+Output: ASK 127.0.0.1 55100 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 55105
+Output: ASK 127.0.0.1 55106 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55124
+Output: ASK 127.0.0.1 55125 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 55126
+Output: ASK 127.0.0.1 55127 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55145
+Output: ASK 127.0.0.1 55146 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 55147
+Output: ASK 127.0.0.1 55148 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55165
+Output: ASK 127.0.0.1 55166 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 55171
+Output: ASK 127.0.0.1 55172 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 55173 3185209680
+Output: ASK 0:0:0:0:0:0:7f00:1 55174 100000
+..................................................................................................
+Output: ASK 127.0.0.1 55231 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.Output: ASK 127.0.0.1 55232 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55250
+Output: ASK 127.0.0.1 55251 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 55252
+Output: ASK 127.0.0.1 55253 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55270
+Output: ASK 127.0.0.1 55271 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 55272
+Output: ASK 127.0.0.1 55273 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55292
+Output: ASK 127.0.0.1 55293 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+.Output: RESPONSE 127.0.0.1 55294
+Output: ASK 127.0.0.1 55295 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55312
+Output: ASK 127.0.0.1 55313 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 55314
+Output: ASK 127.0.0.1 55315 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 55316 3185209680
+..................................................................................................
+Output: ASK 127.0.0.1 55375 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................Output: ASK 127.0.0.1 55376 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55389
+Output: ASK 127.0.0.1 55390 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................
+Output: RESPONSE 127.0.0.1 55392
+Output: ASK 127.0.0.1 55393 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55402
+Output: ASK 127.0.0.1 55403 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................
+Output: RESPONSE 127.0.0.1 55408
+Output: ASK 127.0.0.1 55409 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55423
+Output: ASK 127.0.0.1 55424 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................
+Output: RESPONSE 127.0.0.1 55429
+Output: ASK 127.0.0.1 55430 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................................................................................................................
+.Output: RESPONSE 127.0.0.1 55445
+Output: ASK 127.0.0.1 55446 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................
+Output: RESPONSE 127.0.0.1 55451
+Output: ASK 127.0.0.1 55452 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 55453 3185209680
+Output: ASK 127.0.0.1 55454 100000
+.............................................................................
+Output: ASK 127.0.0.1 55504 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..Output: ASK 127.0.0.1 55505 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55522
+Output: ASK 127.0.0.1 55523 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....
+Output: RESPONSE 127.0.0.1 55524
+Output: ASK 127.0.0.1 55525 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55539
+Output: ASK 127.0.0.1 55540 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......
+Output: RESPONSE 127.0.0.1 55541
+Output: ASK 127.0.0.1 55542 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55559
+Output: ASK 127.0.0.1 55560 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......
+Output: RESPONSE 127.0.0.1 55561
+Output: ASK 127.0.0.1 55562 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55571
+Output: ASK 127.0.0.1 55572 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......
+Output: RESPONSE 127.0.0.1 55573
+Output: ASK 127.0.0.1 55574 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 55575 3185209680
+................................................................................................
+Output: ASK 127.0.0.1 55623 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................Output: ASK 127.0.0.1 55629 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55638
+Output: ASK 127.0.0.1 55639 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................
+Output: RESPONSE 127.0.0.1 55644
+Output: ASK 127.0.0.1 55645 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55658
+Output: ASK 127.0.0.1 55659 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................
+Output: RESPONSE 127.0.0.1 55664
+Output: ASK 127.0.0.1 55665 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55679
+Output: ASK 127.0.0.1 55680 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................
+Output: RESPONSE 127.0.0.1 55681
+Output: ASK 127.0.0.1 55682 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55691
+Output: ASK 127.0.0.1 55692 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................
+Output: RESPONSE 127.0.0.1 55697
+Output: ASK 127.0.0.1 55698 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 55699 3185209680
+...............................................................................
+Output: ASK 127.0.0.1 55746 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....Output: ASK 127.0.0.1 55747 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55757
+Output: ASK 127.0.0.1 55758 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........
+Output: RESPONSE 127.0.0.1 55763
+Output: ASK 127.0.0.1 55764 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55777
+Output: ASK 127.0.0.1 55778 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........
+Output: RESPONSE 127.0.0.1 55779
+Output: ASK 127.0.0.1 55780 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55793
+Output: ASK 127.0.0.1 55794 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........
+Output: RESPONSE 127.0.0.1 55795
+Output: ASK 127.0.0.1 55796 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55810
+Output: ASK 127.0.0.1 55811 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........
+Output: RESPONSE 127.0.0.1 55812
+Output: ASK 127.0.0.1 55813 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 55814 3185209680
+..............................................................................................
+Output: ASK 127.0.0.1 55866 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................Output: ASK 127.0.0.1 55867 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55880
+Output: ASK 127.0.0.1 55881 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................
+Output: RESPONSE 127.0.0.1 55882
+Output: ASK 127.0.0.1 55883 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55894
+Output: ASK 127.0.0.1 55895 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................
+Output: RESPONSE 127.0.0.1 55900
+Output: ASK 127.0.0.1 55901 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55915
+Output: ASK 127.0.0.1 55916 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................
+Output: RESPONSE 127.0.0.1 55921
+Output: ASK 127.0.0.1 55922 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 55935
+Output: ASK 127.0.0.1 55936 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................
+Output: RESPONSE 127.0.0.1 55938
+Output: ASK 127.0.0.1 55939 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 55940 3185209680
+.................................................................................
+Output: ASK 127.0.0.1 55995 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......Output: ASK 127.0.0.1 55996 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56013
+Output: ASK 127.0.0.1 56014 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........
+Output: RESPONSE 127.0.0.1 56015
+Output: ASK 127.0.0.1 56016 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56029
+Output: ASK 127.0.0.1 56030 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........
+Output: RESPONSE 127.0.0.1 56035
+Output: ASK 127.0.0.1 56036 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56054
+Output: ASK 127.0.0.1 56055 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........
+Output: RESPONSE 127.0.0.1 56056
+Output: ASK 127.0.0.1 56057 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56071
+Output: ASK 127.0.0.1 56072 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........
+Output: RESPONSE 127.0.0.1 56073
+Output: ASK 127.0.0.1 56074 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 56075 3185209680
+..............................................................................................
+Output: ASK 127.0.0.1 56127 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................Output: ASK 127.0.0.1 56132 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56147
+Output: ASK 127.0.0.1 56148 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................
+Output: RESPONSE 127.0.0.1 56153
+Output: ASK 127.0.0.1 56154 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56167
+Output: ASK 127.0.0.1 56168 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................
+Output: RESPONSE 127.0.0.1 56173
+Output: ASK 127.0.0.1 56174 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56187
+Output: ASK 127.0.0.1 56188 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................
+Output: RESPONSE 127.0.0.1 56190
+Output: ASK 127.0.0.1 56191 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56205
+Output: ASK 127.0.0.1 56206 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................
+Output: RESPONSE 127.0.0.1 56211
+Output: ASK 127.0.0.1 56212 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 56213 3185209680
+..................................................................................
+Output: ASK 127.0.0.1 56265 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........Output: ASK 127.0.0.1 56266 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56283
+Output: ASK 127.0.0.1 56284 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 56285
+Output: ASK 127.0.0.1 56286 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56304
+Output: ASK 127.0.0.1 56305 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 56306
+Output: ASK 127.0.0.1 56307 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56326
+Output: ASK 127.0.0.1 56327 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 56328
+Output: ASK 127.0.0.1 56329 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56343
+Output: ASK 127.0.0.1 56344 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 56345
+Output: ASK 127.0.0.1 56346 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 56347 3185209680
+...........................................................................................
+Output: ASK 127.0.0.1 56402 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................Output: ASK 127.0.0.1 56403 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56416
+Output: ASK 127.0.0.1 56417 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................
+Output: RESPONSE 127.0.0.1 56422
+Output: ASK 127.0.0.1 56423 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56436
+Output: ASK 127.0.0.1 56437 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................
+Output: RESPONSE 127.0.0.1 56439
+Output: ASK 127.0.0.1 56440 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56453
+Output: ASK 127.0.0.1 56454 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................
+Output: RESPONSE 127.0.0.1 56455
+Output: ASK 127.0.0.1 56456 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56469
+Output: ASK 127.0.0.1 56470 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................
+Output: RESPONSE 127.0.0.1 56471
+Output: ASK 127.0.0.1 56472 100000
+.Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 56473 3185209680
+.....................................................................................
+Output: ASK 127.0.0.1 56528 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............Output: ASK 127.0.0.1 56529 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56547
+Output: ASK 127.0.0.1 56548 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................
+Output: RESPONSE 127.0.0.1 56549
+Output: ASK 127.0.0.1 56550 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56565
+Output: ASK 127.0.0.1 56566 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................
+Output: RESPONSE 127.0.0.1 56567
+Output: ASK 127.0.0.1 56568 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56582
+Output: ASK 127.0.0.1 56583 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 56584
+Output: ASK 127.0.0.1 56585 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56602
+Output: ASK 127.0.0.1 56603 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................
+Output: RESPONSE 127.0.0.1 56604
+Output: ASK 127.0.0.1 56605 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 56606 3185209680
+........................................................................................
+Output: ASK 127.0.0.1 56660 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................Output: ASK 127.0.0.1 56665 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56678
+Output: ASK 127.0.0.1 56679 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................
+Output: RESPONSE 127.0.0.1 56685
+Output: ASK 127.0.0.1 56686 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56695
+Output: ASK 127.0.0.1 56696 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................
+Output: RESPONSE 127.0.0.1 56701
+Output: ASK 127.0.0.1 56702 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56711
+Output: ASK 127.0.0.1 56712 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................
+Output: RESPONSE 127.0.0.1 56717
+Output: ASK 127.0.0.1 56718 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56728
+Output: ASK 127.0.0.1 56729 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................................
+Output: RESPONSE 127.0.0.1 56734
+Output: ASK 127.0.0.1 56735 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 56736 3185209680
+................................................................................
+Output: ASK 127.0.0.1 56783 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......Output: ASK 127.0.0.1 56788 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56797
+Output: ASK 127.0.0.1 56798 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............
+Output: RESPONSE 127.0.0.1 56803
+Output: ASK 127.0.0.1 56804 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56818
+Output: ASK 127.0.0.1 56819 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............
+Output: RESPONSE 127.0.0.1 56820
+Output: ASK 127.0.0.1 56821 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56839
+Output: ASK 127.0.0.1 56840 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............
+Output: RESPONSE 127.0.0.1 56841
+Output: ASK 127.0.0.1 56842 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56855
+Output: ASK 127.0.0.1 56856 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............
+.Output: RESPONSE 127.0.0.1 56861
+Output: ASK 127.0.0.1 56862 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 56863 3185209680
+............................................................................................
+Output: ASK 127.0.0.1 56910 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................Output: ASK 127.0.0.1 56912 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56925
+Output: ASK 127.0.0.1 56926 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................................
+Output: RESPONSE 127.0.0.1 56931
+Output: ASK 127.0.0.1 56932 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56946
+Output: ASK 127.0.0.1 56947 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................
+Output: RESPONSE 127.0.0.1 56952
+Output: ASK 127.0.0.1 56953 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56964
+.Output: ASK 127.0.0.1 56965 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................
+Output: RESPONSE 127.0.0.1 56966
+Output: ASK 127.0.0.1 56967 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 56980
+Output: ASK 127.0.0.1 56981 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................
+Output: RESPONSE 127.0.0.1 56986
+Output: ASK 127.0.0.1 56987 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 56988 3185209680
+Output: ASK 127.0.0.1 56989 100000
+...................................................................................
+Output: ASK 127.0.0.1 57039 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........Output: ASK 127.0.0.1 57040 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57055
+Output: ASK 127.0.0.1 57056 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 57061
+Output: ASK 127.0.0.1 57062 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57072
+Output: ASK 127.0.0.1 57073 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 57078
+Output: ASK 127.0.0.1 57079 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57088
+Output: ASK 127.0.0.1 57089 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 57094
+Output: ASK 127.0.0.1 57095 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57109
+Output: ASK 127.0.0.1 57110 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 57111
+Output: ASK 127.0.0.1 57112 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 57113 3185209680
+...........................................................................................
+Output: ASK 127.0.0.1 57165 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................Output: ASK 127.0.0.1 57166 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57183
+Output: ASK 127.0.0.1 57184 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................
+Output: RESPONSE 127.0.0.1 57185
+Output: ASK 127.0.0.1 57186 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57196
+Output: ASK 127.0.0.1 57197 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................
+Output: RESPONSE 127.0.0.1 57202
+Output: ASK 127.0.0.1 57203 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57217
+Output: ASK 127.0.0.1 57218 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................
+Output: RESPONSE 127.0.0.1 57219
+Output: ASK 127.0.0.1 57220 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57235
+Output: ASK 127.0.0.1 57236 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................
+Output: RESPONSE 127.0.0.1 57241
+Output: ASK 127.0.0.1 57242 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 57243 3185209680
+....................................................................................
+Output: ASK 127.0.0.1 57290 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........Output: ASK 127.0.0.1 57295 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57308
+Output: ASK 127.0.0.1 57309 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 57310
+.Output: ASK 127.0.0.1 57311 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57324
+Output: ASK 127.0.0.1 57325 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................
+Output: RESPONSE 127.0.0.1 57326
+Output: ASK 127.0.0.1 57327 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57346
+Output: ASK 127.0.0.1 57347 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 57348
+Output: ASK 127.0.0.1 57349 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57362
+Output: ASK 127.0.0.1 57363 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 57368
+Output: ASK 127.0.0.1 57369 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 57370 3185209680
+.........................................................................................
+Output: ASK 127.0.0.1 57419 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............Output: ASK 127.0.0.1 57420 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57434
+Output: ASK 127.0.0.1 57435 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................
+Output: RESPONSE 127.0.0.1 57436
+Output: ASK 127.0.0.1 57437 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57452
+Output: ASK 127.0.0.1 57453 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................
+Output: RESPONSE 127.0.0.1 57454
+Output: ASK 127.0.0.1 57455 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57473
+Output: ASK 127.0.0.1 57474 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................
+Output: RESPONSE 127.0.0.1 57475
+Output: ASK 127.0.0.1 57476 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57489
+Output: ASK 127.0.0.1 57490 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................
+Output: RESPONSE 127.0.0.1 57495
+Output: ASK 127.0.0.1 57496 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 57497 3185209680
+........................................................................................
+Output: ASK 127.0.0.1 57545 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............Output: ASK 127.0.0.1 57546 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57559
+Output: ASK 127.0.0.1 57560 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................
+Output: RESPONSE 127.0.0.1 57561
+Output: ASK 127.0.0.1 57562 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57576
+Output: ASK 127.0.0.1 57577 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................
+Output: RESPONSE 127.0.0.1 57582
+Output: ASK 127.0.0.1 57583 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57596
+Output: ASK 127.0.0.1 57597 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................
+Output: RESPONSE 127.0.0.1 57598
+Output: ASK 127.0.0.1 57599 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57613
+Output: ASK 127.0.0.1 57614 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................
+Output: RESPONSE 127.0.0.1 57619
+Output: ASK 127.0.0.1 57620 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 57621 3185209680
+......................................................................................
+Output: ASK 127.0.0.1 57677 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............Output: ASK 127.0.0.1 57682 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57695
+Output: ASK 127.0.0.1 57696 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 57697
+Output: ASK 127.0.0.1 57698 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57713
+Output: ASK 127.0.0.1 57714 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 57715
+Output: ASK 127.0.0.1 57716 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57729
+Output: ASK 127.0.0.1 57730 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 57735
+Output: ASK 127.0.0.1 57736 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57754
+Output: ASK 127.0.0.1 57755 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 57756
+Output: ASK 127.0.0.1 57757 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 57758 3185209680
+.........................................................................................
+Output: ASK 127.0.0.1 57817 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.Output: ASK 127.0.0.1 57818 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57832
+Output: ASK 127.0.0.1 57833 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 57834
+Output: ASK 127.0.0.1 57835 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57860
+Output: ASK 127.0.0.1 57861 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 57862
+Output: ASK 127.0.0.1 57863 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57883
+Output: ASK 127.0.0.1 57884 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......
+Output: RESPONSE 127.0.0.1 57885
+Output: ASK 127.0.0.1 57886 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57903
+Output: ASK 127.0.0.1 57904 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........
+Output: RESPONSE 127.0.0.1 57905
+Output: ASK 127.0.0.1 57906 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 57907 3185209680
+..............................................................................................
+Output: ASK 127.0.0.1 57963 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................Output: ASK 127.0.0.1 57968 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................................................................................................................................................
+Output: RESPONSE 127.0.0.1 57986
+Output: ASK 127.0.0.1 57987 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................
+Output: RESPONSE 127.0.0.1 57988
+Output: ASK 127.0.0.1 57989 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................................................................................
+Output: RESPONSE 127.0.0.1 58003
+Output: ASK 127.0.0.1 58004 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................
+Output: RESPONSE 127.0.0.1 58009
+Output: ASK 127.0.0.1 58010 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................................................................................
+Output: RESPONSE 127.0.0.1 58024
+Output: ASK 127.0.0.1 58025 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................................
+Output: RESPONSE 127.0.0.1 58030
+Output: ASK 127.0.0.1 58031 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................................................................................................
+Output: RESPONSE 127.0.0.1 58045
+Output: ASK 127.0.0.1 58046 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................
+Output: RESPONSE 127.0.0.1 58051
+Output: ASK 127.0.0.1 58052 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 58053 3185209680
+.............................................................................
+Output: ASK 127.0.0.1 58111 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...Output: ASK 127.0.0.1 58112 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 58130
+Output: ASK 127.0.0.1 58131 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......
+Output: RESPONSE 127.0.0.1 58132
+Output: ASK 127.0.0.1 58133 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 58153
+Output: ASK 127.0.0.1 58154 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......
+Output: RESPONSE 127.0.0.1 58155
+Output: ASK 127.0.0.1 58156 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 58178
+Output: ASK 127.0.0.1 58179 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......
+Output: RESPONSE 127.0.0.1 58180
+Output: ASK 127.0.0.1 58181 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 58200
+Output: ASK 127.0.0.1 58201 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......
+Output: RESPONSE 127.0.0.1 58202
+Output: ASK 127.0.0.1 58203 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 58204 3185209680
+................................................................................................
+Output: ASK 127.0.0.1 58260 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..Output: ASK 127.0.0.1 58261 100000
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 58274
+Output: ASK 127.0.0.1 58275 100000
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 58280
+Output: ASK 127.0.0.1 58281 100000
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 58300
+Output: ASK 127.0.0.1 58301 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 58302
+Output: ASK 127.0.0.1 58303 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 58320
+Output: ASK 127.0.0.1 58321 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 58322
+Output: ASK 127.0.0.1 58323 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 58345
+Output: ASK 127.0.0.1 58346 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....
+Output: RESPONSE 127.0.0.1 58347
+Output: ASK 127.0.0.1 58348 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 58349 3185209680
+.................................................................................................
