@@ -288,9 +288,9 @@ follows the requirements.
 
 I ran the benchmarking on a dual core, hyper-threaded CPU (i5-5257U) using the
 script `./run-benchmarks.sh`. WARNING: if you run the script and cancel it, you
-will have to deal with the zombie background processes manually. (`pgrep java |
-xargs kill -9` works nicely, however this code assumes that you have no
-important Java processes running.)
+will have to deal with the zombie background processes manually. (`killall
+java` works nicely, however this code assumes that you have no important Java
+processes running.)
 
 The script runs the benchmarks for each hardcoded number of clients, and each
 hardcoded chunk size. At each iteration, the script instantiates a bunch of
@@ -303,17 +303,79 @@ requirements. Each time, it runs `KeyManager`, which delegates work to the
 clients. The benchmark measures the time for each iteration, finds the average
 and standard deviation, and outputs these values.
 
-| Chunk Size   | Number Of Clients   | --- | Average Run Time (of 30 runs)   | Standard Deviation   |
-| ------------ | ------------------- | --- | ------------------------------- | -------------------- |
-| 10000        | 2                   |     | 22942.066666666666              | 1439.4397505819948   |
-| 50000        | 2                   |     | 19945.4                         | 1123.1107276963685   |
-| 100000       | 2                   |     | 20432.833333333332              | 620.0603778844624    |
-| 10000        | 3                   |     | 20221.8                         | 937.3999288813002    |
-| 50000        | 3                   |     | 18728.566666666666              | 625.4782534633442    |
-| 100000       | 3                   |     | 16826.066666666666              | 863.6847392937361    |
-| 10000        | 5                   |     | 17034.766666666666              | 669.4118156179265    |
-| 50000        | 5                   |     | 14963.3                         | 1249.56566187349     |
-| 100000       | 5                   |     | 10715.933333333332              | 932.1397582384784    |
+## Benchmark Results
+
+Below is a table of the results for different numbers of clients and chunk
+size. The full, very long script output is available in
+`./benchmark-output.txt`. Note that the full output is for multiple concurrent
+clients whose output was overlapped.
+
+| Chunk Size   | Number Of Clients   | --- | Average Run Time ms (of 30 runs) | Standard Deviation (ms) |
+| ------------ | ------------------- | --- | -------------------------------  | --------------------    |
+| 10000        | 2                   |     | 22942.066666666666               | 1439.4397505819948      |
+| 50000        | 2                   |     | 19945.4                          | 1123.1107276963685      |
+| 100000       | 2                   |     | 20432.833333333332               | 620.0603778844624       |
+| 10000        | 3                   |     | 20221.8                          | 937.3999288813002       |
+| 50000        | 3                   |     | 18728.566666666666               | 625.4782534633442       |
+| 100000       | 3                   |     | 16826.066666666666               | 863.6847392937361       |
+| 10000        | 5                   |     | 17034.766666666666               | 669.4118156179265       |
+| 50000        | 5                   |     | 14963.3                          | 1249.56566187349        |
+| 100000       | 5                   |     | 10715.933333333332               | 932.1397582384784       |
+
+## Results
+
+From the results table above, the following points can be extrapolated:
+
+1. The benchmarks were consistent, as the standard deviation is relatively low
+   in comparison to the size of the average. The standard deviation is no worse
+   than 10% of the average time.
+1. Increasing the number of clients decreased the runtime --- i.e. the amount
+   of time taken to crack the key.
+1. Increasing the chunk size decreased the average runtime, except for the case
+   where there were only two clients.
+1. Increasing the number of clients when the chunk size is 10,000 did not yield
+   as large of an improvement as when the chunk size was 100,000. When the
+   chunk size was 10,000, the runtimes for different numbers of clients was
+   22.9, 20.2, and 17.0 seconds. When the chunk size was 100,000, the runtimes
+   were 20.4, 16.8, 10.7.
+
+## Discussions
+
+# 1.
+
+The low standard deviation showed that each run of the benchmark was the given
+parameters (number of clients and chunk size) was roughly equal. Therefore my
+benchmarking method was consistent.
+
+# 2.
+
+Increasing the number of clients increases the amount of threads that could be
+utilised. My CPU, mentioned above, is dual-core and hyper-threaded, meaning
+that it can run for threads in parallel. Therefore, it makes sense that
+increasing the number of clients from 2 to 3 would increase the speed.
+
+# 3.
+
+The average runtime decreased as the chunk size increased.
+
+A larger chunk size means that data is sent across the network less frequently,
+so that clients would spend less time waiting for a response from the key
+manager. Therefore, the clients would spend more time finding the key, and so
+would reach the solution faster. This explains why increasing the chunk size
+decrease the average runtime.
+
+Given the above idea, it would be reasonable to assume that network traffic is
+low enough that the clients are able to work efficiently --- when there are
+only two clients. This would explain why increasing the chunk size, when there
+are only two clients, did not decrease the runtime.
+
+# 4.
+
+The above idea, that a small chunk size these to higher network traffic, could
+explain why increasing number of clients did not significantly reduce runtime
+--- when chunk size was 10,000. That is, there is so much network traffic that
+extra clients would have to spend significant time waiting for work, and less
+time working. Therefore, the average runtime did not significantly reduce.
 
 # Task 5
 
