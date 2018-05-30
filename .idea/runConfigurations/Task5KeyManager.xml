@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Task5KeyManager" type="Application" factoryName="Application" singleton="true" nameIsGenerated="true">
+    <option name="MAIN_CLASS_NAME" value="Task5KeyManager" />
+    <module name="swen221-assignment-template_main" />
+    <option name="PROGRAM_PARAMETERS" value="3185209679 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng== 57842" />
+    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+    <method />
+  </configuration>
+</component>

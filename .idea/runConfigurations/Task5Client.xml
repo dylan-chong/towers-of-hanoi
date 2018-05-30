@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Task5Client" type="Application" factoryName="Application" singleton="true" nameIsGenerated="true">
+    <option name="MAIN_CLASS_NAME" value="Task5Client" />
+    <module name="swen221-assignment-template_main" />
+    <option name="PROGRAM_PARAMETERS" value="localhost 57842 100000" />
+    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+    <method />
+  </configuration>
+</component>

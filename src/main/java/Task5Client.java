@@ -66,7 +66,7 @@ public class Task5Client {
     }
 
     String matchingKey = processKeys(askForWorkResponse);
-    sendWorkResult(matchingKey);
+    sendWorkResult(askForWorkResponse.split(" ")[0], matchingKey);
   }
 
   private String findWorkToDo() throws IOException {
@@ -88,13 +88,14 @@ public class Task5Client {
     });
   }
 
-  private String sendWorkResult(String matchingKey) throws IOException {
+  private String sendWorkResult(String startingKey, String matchingKey) throws IOException {
     return talkToManager((socket, in, out) -> {
       String completionMessage = String.format(
-        "%s %s %d %s",
+        "%s %s %d %s %s",
         RESPONSE,
         socket.getLocalAddress().getHostAddress(),
         socket.getLocalPort(),
+        startingKey,
         matchingKey == null ? "" : matchingKey
       ).trim();
       System.out.println("Output: " + completionMessage);
