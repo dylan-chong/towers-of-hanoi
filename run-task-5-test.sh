@@ -25,10 +25,23 @@ run() {
     java Task5KeyManager 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng== 57843 \
         | grep Results \
         >> $RESULTS
-
-    jobs -p | xargs kill -9 # Kill clients
 }
 
 for (( i=0; i<10; i++)); do
-    run 5 100000
+    bash -c 'ulimit -t 1; run 5 100000'
+    RESULT=$?
+
+    jobs -p | xargs kill -9 # Kill clients
+
+    if [[ $RESULT == 0 ]]; then
+        echo "*** Test $i PASSED! ***"
+    else
+        echo "*** Test $i FAILED ***"
+        echo "*** TEST FAILED ***"
+        echo "*** exiting... ***"
+        exit 1
+    fi
+
 done
+
+echo "*** TEST PASSED ***"
