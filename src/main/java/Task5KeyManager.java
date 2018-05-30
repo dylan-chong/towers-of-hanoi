@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 /**
  * Distributed key cracker. This class delegates the work to {@link Client}s
@@ -21,8 +22,9 @@ public class Task5KeyManager {
    * @param args[2] ciphertext encoded as base64 value
    * @param args[3] optional: port number
    * @param args[4] optional: simulate slow network (true)
+   * @param args[5] optional: time limit (seconds)
    */
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws IOException, InterruptedException {
     BigInteger nextKeyToCheck = new BigInteger(args[0]);
     int keySize = Integer.parseInt(args[1]);
     String cipherText = args[2];
@@ -37,11 +39,17 @@ public class Task5KeyManager {
       simulateSlowNetwork = Boolean.parseBoolean(args[4]);
     }
 
+    long maxDuration = Long.MAX_VALUE;
+    if (args.length > 5) {
+      maxDuration = Long.parseLong(args[5]) * 1000;
+    }
+
     Task5KeyManager keyManager = new Task5KeyManager(
       nextKeyToCheck,
       keySize,
       cipherText,
-      simulateSlowNetwork
+      simulateSlowNetwork,
+      maxDuration + System.currentTimeMillis()
     );
     keyManager.serve(port);
   }
@@ -49,6 +57,7 @@ public class Task5KeyManager {
   private final int keySize;
   private final String cipherText;
   private final boolean simulateSlowNetwork;
+  private final long endTime;
 
   private String correctKey = null;
   private BigInteger nextKeyToCheck;
@@ -57,22 +66,36 @@ public class Task5KeyManager {
     BigInteger nextKeyToCheck,
     int keySize,
     String cipherText,
-    boolean simulateSlowNetwork
+    boolean simulateSlowNetwork,
+    long endTime
   ) {
     this.nextKeyToCheck = nextKeyToCheck;
     this.keySize = keySize;
     this.cipherText = cipherText;
     this.simulateSlowNetwork = simulateSlowNetwork;
+    this.endTime = endTime;
   }
 
-  public void serve(int port) throws IOException {
+  public void serve(int port) throws IOException, InterruptedException {
     try (ServerSocket socket = new ServerSocket(port)) {
+      socket.setSoTimeout(1000);
       System.out.println("Waiting for connections on " + socket.getLocalPort());
 
       while (correctKey == null) {
-        Socket client = socket.accept();
         if (simulateSlowNetwork) {
           Thread.sleep(1000);
+        }
+
+        if (System.currentTimeMillis() > endTime) {
+          throw new IllegalStateException("Took too long to finish!");
+        }
+
+        Socket client = null;
+
+        try {
+          client = socket.accept();
+        } catch (SocketTimeoutException e) {
+          continue;
         }
 
         serveClient(client, (socket1, in, out) -> {
@@ -84,8 +107,6 @@ public class Task5KeyManager {
       }
 
       System.out.println("Correct key: " + correctKey);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
     }
   }
 
