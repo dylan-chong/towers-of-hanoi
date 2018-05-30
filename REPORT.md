@@ -396,6 +396,12 @@ part way through the job, has died. I have chosen the value 20 seconds because
 jobs that take roughly 10 seconds are large enough to make overloading the
 manager unlikely.
 
+A better alternative to a hardcoded timeout would be to have a heart beat ---
+where the clients would ping the key manager periodically, indicating that it
+is still alive. Given that the requirement state that connections between
+clients and key managers only exist for requesting work on returning results,
+the solution would not be permitted.
+
 ## Requirements
 
 1. Clients only need to be aware of the location of the key manager --- the
@@ -418,8 +424,14 @@ manager unlikely.
 ## Testing
 
 To test this new approach, we will use the same testing approach from tasks
-three, but with a new client `Task5Client`. This new client will have a 50%
-chance of ignoring the work given to it --- this is to simulate clients dying,
-without actually having to kill and restart clients manually.
+three, but with a new client `Task5Client`, and the new key manager
+`Task5KeyManager`. This new client will have a 50% chance of ignoring the work
+given to it --- this is to simulate clients dying, without actually having to
+kill and restart clients manually. If the new key manager is not able to find
+the correct key in 5 minutes, then the implementation is likely not handling
+client failures correctly. When the key manager successfully outputs the
+correct key, that indicates correct functionality.
 
-
+This test must be successfully repeated 10 times in a row to consider the
+implementation reliable. The repeat as required because of the probabilistic
+nature of the test. The test has been implemented in `./run-task-5-test.sh`.
