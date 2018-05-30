@@ -10,10 +10,12 @@ import java.net.Socket;
  * returns a result. This client then goes back to the start, asking for more
  * work to do.
  */
-public class Client {
+public class Task5Client {
 
   public static final String ASK_FOR_WORK = "ASK";
   public static final String RESPONSE = "RESPONSE";
+
+  private static final double RANDOM_SIMULATED_FAILURE_RATE = 0.5;
 
   /**
    * @param args[0] key manager hostname
@@ -25,7 +27,7 @@ public class Client {
     int port = Integer.parseInt(args[1]);
     int numberOfKeysToCheck = Integer.parseInt(args[2]);
 
-    Client client = new Client(hostname, port, numberOfKeysToCheck);
+    Task5Client client = new Task5Client(hostname, port, numberOfKeysToCheck);
 
     while (true) {
       try {
@@ -48,16 +50,23 @@ public class Client {
   private final int port;
   private final int numberOfKeysToCheck;
 
-  public Client(String hostname, int port, int numberOfKeysToCheck) {
+  public Task5Client(String hostname, int port, int numberOfKeysToCheck) {
     this.hostname = hostname;
     this.port = port;
     this.numberOfKeysToCheck = numberOfKeysToCheck;
   }
 
-  private String workForKeyManager() throws IOException {
+  private void workForKeyManager() throws IOException, InterruptedException {
     String askForWorkResponse = findWorkToDo();
+
+    if (Math.random() < RANDOM_SIMULATED_FAILURE_RATE) {
+      System.out.println("Simulating failure ...");
+      Thread.sleep(3000);
+      return;
+    }
+
     String matchingKey = processKeys(askForWorkResponse);
-    return sendWorkResult(matchingKey);
+    sendWorkResult(matchingKey);
   }
 
   private String findWorkToDo() throws IOException {

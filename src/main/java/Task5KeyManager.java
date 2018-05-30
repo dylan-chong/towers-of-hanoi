@@ -13,7 +13,7 @@ import java.net.Socket;
  * Each time a client asks for work, a unique amount of work is given in return.
  * The client can then message this manager later with the result of the work.
  */
-public class KeyManager {
+public class Task5KeyManager {
 
   /**
    * @param args[0] key represented as a big integer value
@@ -37,7 +37,7 @@ public class KeyManager {
       simulateSlowNetwork = Boolean.parseBoolean(args[4]);
     }
 
-    KeyManager keyManager = new KeyManager(
+    Task5KeyManager keyManager = new Task5KeyManager(
       nextKeyToCheck,
       keySize,
       cipherText,
@@ -53,7 +53,7 @@ public class KeyManager {
   private String correctKey = null;
   private BigInteger nextKeyToCheck;
 
-  public KeyManager(
+  public Task5KeyManager(
     BigInteger nextKeyToCheck,
     int keySize,
     String cipherText,
