@@ -1,0 +1,3563 @@
+> ./run-task-5-test.sh
+Starting a Gradle Daemon (subsequent builds will be faster)
+Parallel execution is an incubating feature.
+
+Deprecated Gradle features were used in this build, making it incompatible with
+Gradle 5.0.
+See
+https://docs.gradle.org/4.6/userguide/command_line_interface.html#sec:command_line_warnings
+
+BUILD SUCCESSFUL in 14s
+2 actionable tasks: 2 executed
+Running for CHUNKSIZE=100000 CLIENTS=5 :
+Processes (in case you need to kill them)
+37840
+37841
+37842
+37843
+37844
+Output: ASK 127.0.0.1 51582 100000
+Output: ASK 127.0.0.1 51583 100000
+Output: ASK 127.0.0.1 51584 100000
+Output: ASK 127.0.0.1 51585 100000
+Input: 3184309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Output: ASK 127.0.0.1 51586 100000
+Input: 3184709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51588 3184509670
+Output: ASK 127.0.0.1 51589 100000
+Input: 3184809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 51590 3184409670
+Output: ASK 127.0.0.1 51591 100000
+Input: 3184909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+.Output: RESPONSE 127.0.0.1 51592 3184309670
+Output: ASK 127.0.0.1 51593 100000
+Input: 3185009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....
+Output: RESPONSE 127.0.0.1 51594 3184609670
+Output: ASK 127.0.0.1 51595 100000
+Input: 3185109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..
+Output: RESPONSE 127.0.0.1 51596 3184709670
+Output: ASK 127.0.0.1 51597 100000
+Input: 3185209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 51598 3185209670
+Output: ASK 127.0.0.1 51599 100000
+Input: 3185309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51603 3184809670
+Output: ASK 127.0.0.1 51604 100000
+Input: 3185409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....
+Output: RESPONSE 127.0.0.1 51605 3185009670
+Output: ASK 127.0.0.1 51606 100000
+Input: 3185509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 51607 3184909670
+Output: ASK 127.0.0.1 51608 100000
+Input: 3185609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......
+Output: RESPONSE 127.0.0.1 51609 3185109670
+Output: ASK 127.0.0.1 51610 100000
+Input: 3185709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 51611 3185309670
+Output: ASK 127.0.0.1 51612 100000
+Input: 3185809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+..Output: RESPONSE 127.0.0.1 51619 3185409670
+Output: ASK 127.0.0.1 51620 100000
+Input: 3185909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..
+Output: RESPONSE 127.0.0.1 51621 3185609670
+Output: ASK 127.0.0.1 51622 100000
+Input: 3186009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 51623 3185509670
+Output: ASK 127.0.0.1 51624 100000
+Input: 3186109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......
+Output: RESPONSE 127.0.0.1 51625 3185809670
+Output: ASK 127.0.0.1 51626 100000
+Input: 3186209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..
+Output: RESPONSE 127.0.0.1 51627 3185709670
+Output: ASK 127.0.0.1 51628 100000
+Input: 3186309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51630 3185909670
+Output: ASK 127.0.0.1 51631 100000.
+Input: 3186409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..
+Output: RESPONSE 127.0.0.1 51632 3186009670
+Output: ASK 127.0.0.1 51633 100000
+Input: 3186509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....
+Output: RESPONSE 127.0.0.1 51634 3186109670
+Output: ASK 127.0.0.1 51635 100000
+Input: 3186609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........
+Output: RESPONSE 127.0.0.1 51636 3186209670
+.Output: ASK 127.0.0.1 51637 100000
+Input: 3186709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 51638 3186309670
+Output: ASK 127.0.0.1 51639 100000
+Input: 3186809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+
+Output: RESPONSE 127.0.0.1 51640 3186409670
+Output: RESPONSE 127.0.0.1 51641 3186509670
+Output: ASK 127.0.0.1 51642 100000
+Input: 3186909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Output: ASK 127.0.0.1 51643 100000
+Input: 3187009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............
+Output: RESPONSE 127.0.0.1 51644 3186609670
+Output: ASK 127.0.0.1 51645 100000
+Input: 3187109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........
+Output: RESPONSE 127.0.0.1 51646 3186709670
+Output: ASK 127.0.0.1 51647 100000
+Input: 3187209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 51648 3186809670
+Output: ASK 127.0.0.1 51649 100000
+Input: 3187309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+
+Output: RESPONSE 127.0.0.1 51659 3186909670
+Output: ASK 127.0.0.1 51660 100000
+Input: 3187409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..Output: RESPONSE 127.0.0.1 51661 3187009670
+Output: ASK 127.0.0.1 51662 100000
+Input: 3187509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......
+Output: RESPONSE 127.0.0.1 51663 3187109670
+Output: ASK 127.0.0.1 51664 100000
+Input: 3187609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................
+Output: RESPONSE 127.0.0.1 51666 3187209670
+.Output: ASK 127.0.0.1 51667 100000
+Input: 3187709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 51668 3187309670
+Output: ASK 127.0.0.1 51669 100000
+Input: 3187809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51672 3187509670
+Output: ASK 127.0.0.1 51673 100000
+Input: 3187909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 51674 3187409670
+Output: ASK 127.0.0.1 51675 100000
+Input: 3188009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......
+Output: RESPONSE 127.0.0.1 51676 3187609670
+Output: ASK 127.0.0.1 51677 100000
+Input: 3188109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................
+Output: RESPONSE 127.0.0.1 51678 3187709670
+Output: ASK 127.0.0.1 51679 100000
+Input: 3188209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+.Output: RESPONSE 127.0.0.1 51680 3187809670
+Output: ASK 127.0.0.1 51681 100000
+Input: 3188309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51689 3187909670
+Output: ASK 127.0.0.1 51690 100000
+Input: 3188409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....
+Output: RESPONSE 127.0.0.1 51691 3188009670
+Output: ASK 127.0.0.1 51692 100000
+Input: 3188509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........
+Output: RESPONSE 127.0.0.1 51693 3188109670
+Output: ASK 127.0.0.1 51694 100000
+Input: 3188609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................
+Output: RESPONSE 127.0.0.1 51695 3188209670
+.Output: ASK 127.0.0.1 51696 100000
+Input: 3188709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....
+.Output: RESPONSE 127.0.0.1 51697 3188309670
+Output: ASK 127.0.0.1 51698 100000
+Input: 3188809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51699 3188409670
+Output: ASK 127.0.0.1 51700 100000
+Input: 3188909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+.Output: RESPONSE 127.0.0.1 51701 3188509670
+Output: ASK 127.0.0.1 51702 100000
+Input: 3189009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........
+Output: RESPONSE 127.0.0.1 51703 3188609670
+Output: ASK 127.0.0.1 51704 100000
+Input: 3189109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................
+Output: RESPONSE 127.0.0.1 51705 3188709670
+Output: ASK 127.0.0.1 51706 100000
+Input: 3189209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......
+.Output: RESPONSE 127.0.0.1 51707 3188809670
+.Output: ASK 127.0.0.1 51708 100000
+Input: 3189309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51709 3188909670
+Output: ASK 127.0.0.1 51710 100000
+Input: 3189409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......
+.Output: RESPONSE 127.0.0.1 51711 3189009670
+.Output: ASK 127.0.0.1 51712 100000
+Input: 3189509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....
+Output: RESPONSE 127.0.0.1 51713 3189109670
+Output: ASK 127.0.0.1 51714 100000
+Input: 3189609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................
+Output: RESPONSE 127.0.0.1 51715 3189209670
+Output: ASK 127.0.0.1 51716 100000
+Input: 3189709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 51717 3189309670
+Output: ASK 127.0.0.1 51718 100000
+Input: 3189809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51719 3189409670
+.Output: ASK 127.0.0.1 51720 100000
+Input: 3189909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........
+Output: RESPONSE 127.0.0.1 51721 3189509670
+Output: ASK 127.0.0.1 51722 100000
+Input: 3190009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........
+Output: RESPONSE 127.0.0.1 51723 3189609670
+Output: ASK 127.0.0.1 51724 100000
+Input: 3190109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................
+Output: RESPONSE 127.0.0.1 51725 3189809670
+Output: ASK 127.0.0.1 51726 100000
+Input: 3190209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 51727 3189709670
+Output: ASK 127.0.0.1 51728 100000
+Input: 3190309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51729 3189909670
+Output: ASK 127.0.0.1 51730 100000
+Input: 3190409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......
+Output: RESPONSE 127.0.0.1 51731 3190009670
+Output: ASK 127.0.0.1 51732 100000
+Input: 3190509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............
+Output: RESPONSE 127.0.0.1 51733 3190109670
+Output: ASK 127.0.0.1 51734 100000
+Input: 3190609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................
+Output: RESPONSE 127.0.0.1 51735 3190309670
+Output: ASK 127.0.0.1 51736 100000
+Input: 3190709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....
+Output: RESPONSE 127.0.0.1 51737 3190209670
+Output: ASK 127.0.0.1 51738 100000
+Input: 3190809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................................................................................................................................................................................................................................................................................................................................................................................................................................
+..Output: RESPONSE 127.0.0.1 51739 3190409670
+Output: ASK 127.0.0.1 51740 100000
+.Input: 3190909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....
+Output: RESPONSE 127.0.0.1 51741 3190509670
+Output: ASK 127.0.0.1 51742 100000
+Input: 3191009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+.Output: RESPONSE 127.0.0.1 51743 3190609670
+Output: ASK 127.0.0.1 51744 100000
+Input: 3191109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................
+.Output: RESPONSE 127.0.0.1 51745 3190709670
+Output: ASK 127.0.0.1 51746 100000
+Input: 3191209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......
+.Output: RESPONSE 127.0.0.1 51747 3190809670
+Output: ASK 127.0.0.1 51748 100000
+Input: 3191309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51749 3190909670
+Output: ASK 127.0.0.1 51750 100000
+Input: 3191409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..
+.Output: RESPONSE 127.0.0.1 51751 3191009670
+Output: ASK 127.0.0.1 51752 100000
+Input: 3191509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................
+Output: RESPONSE 127.0.0.1 51753 3191109670
+Output: ASK 127.0.0.1 51754 100000
+Input: 3191609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................
+Output: RESPONSE 127.0.0.1 51755 3191209670
+Output: ASK 127.0.0.1 51756 100000
+Input: 3191709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....
+Output: RESPONSE 127.0.0.1 51757 3191309670
+Output: ASK 127.0.0.1 51758 100000
+Input: 3191809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51760 3191409670
+Output: ASK 127.0.0.1 51761 100000
+.Input: 3191909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..
+Output: RESPONSE 127.0.0.1 51762 3191509670
+.Output: ASK 127.0.0.1 51763 100000
+Input: 3192009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................
+Output: RESPONSE 127.0.0.1 51764 3191609670
+Output: ASK 127.0.0.1 51765 100000
+Input: 3192109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................
+Output: RESPONSE 127.0.0.1 51766 3191709670
+Output: ASK 127.0.0.1 51767 100000
+Input: 3192209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......
+Output: RESPONSE 127.0.0.1 51768 3191809670
+Output: ASK 127.0.0.1 51769 100000
+Input: 3192309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51770 3191909670
+.Output: ASK 127.0.0.1 51771 100000
+Input: 3192409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 51772 3192009670
+Output: ASK 127.0.0.1 51773 100000
+Input: 3192509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................
+Output: RESPONSE 127.0.0.1 51774 3192109670
+Output: ASK 127.0.0.1 51775 100000
+Input: 3192609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 51776 3192209670
+Output: ASK 127.0.0.1 51777 100000
+Input: 3192709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........
+Output: RESPONSE 127.0.0.1 51778 3192309670
+Output: ASK 127.0.0.1 51779 100000
+Input: 3192809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51780 3192409670
+Output: ASK 127.0.0.1 51781 100000
+.Input: 3192909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......
+Output: RESPONSE 127.0.0.1 51782 3192509670
+Output: ASK 127.0.0.1 51783 100000
+Input: 3193009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................
+Output: RESPONSE 127.0.0.1 51784 3192609670
+Output: ASK 127.0.0.1 51785 100000
+Input: 3193109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............
+.Output: RESPONSE 127.0.0.1 51786 3192709670
+.Output: ASK 127.0.0.1 51787 100000
+Input: 3193209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........
+Output: RESPONSE 127.0.0.1 51788 3192809670
+Output: ASK 127.0.0.1 51789 100000
+Input: 3193309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51790 3192909670
+Output: ASK 127.0.0.1 51791 100000
+Input: 3193409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......
+Output: RESPONSE 127.0.0.1 51792 3193009670
+.Output: ASK 127.0.0.1 51793 100000
+Input: 3193509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................
+.Output: RESPONSE 127.0.0.1 51794 3193109670
+Output: ASK 127.0.0.1 51795 100000
+Input: 3193609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................
+Output: RESPONSE 127.0.0.1 51796 3193209670
+Output: ASK 127.0.0.1 51797 100000
+Input: 3193709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............
+Output: RESPONSE 127.0.0.1 51798 3193309670
+Output: ASK 127.0.0.1 51799 100000
+Input: 3193809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51800 3193409670
+Output: ASK 127.0.0.1 51801 100000
+Input: 3193909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......
+Output: RESPONSE 127.0.0.1 51802 3193509670
+Output: ASK 127.0.0.1 51803 100000
+Input: 3194009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................
+Output: RESPONSE 127.0.0.1 51804 3193609670
+Output: ASK 127.0.0.1 51805 100000
+Input: 3194109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................
+.Output: RESPONSE 127.0.0.1 51806 3193709670
+Output: ASK 127.0.0.1 51807 100000
+Input: 3194209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............
+Output: RESPONSE 127.0.0.1 51808 3193809670
+Output: ASK 127.0.0.1 51809 100000
+Input: 3194309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51810 3193909670
+Output: ASK 127.0.0.1 51811 100000
+Input: 3194409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......
+.Output: RESPONSE 127.0.0.1 51812 3194009670
+Output: ASK 127.0.0.1 51813 100000
+Input: 3194509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................
+Output: RESPONSE 127.0.0.1 51814 3194109670
+Output: ASK 127.0.0.1 51815 100000.
+Input: 3194609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................
+Output: RESPONSE 127.0.0.1 51816 3194209670
+Output: ASK 127.0.0.1 51817 100000
+Input: 3194709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............
+Output: RESPONSE 127.0.0.1 51818 3194309670
+.Output: ASK 127.0.0.1 51819 100000
+Input: 3194809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................................................................................................................................................................................................................................................................................................................................................................................................
+.Output: RESPONSE 127.0.0.1 51821 3194409670
+Output: ASK 127.0.0.1 51822 100000
+Input: 3194909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........
+Output: RESPONSE 127.0.0.1 51823 3194509670
+Output: ASK 127.0.0.1 51824 100000
+Input: 3195009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................
+Output: RESPONSE 127.0.0.1 51825 3194609670
+Output: ASK 127.0.0.1 51826 100000
+Input: 3195109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................
+Output: RESPONSE 127.0.0.1 51827 3194709670
+Output: ASK 127.0.0.1 51828 100000
+Input: 3195209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+.Output: RESPONSE 127.0.0.1 51829 3194809670
+Output: ASK 127.0.0.1 51830 100000
+Input: 3195309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51831 3194909670
+Output: ASK 127.0.0.1 51832 100000
+.Input: 3195409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....
+Output: RESPONSE 127.0.0.1 51833 3195009670
+Output: ASK 127.0.0.1 51834 100000
+Input: 3195509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................
+.Output: RESPONSE 127.0.0.1 51835 3195109670
+Output: ASK 127.0.0.1 51836 100000
+Input: 3195609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................
+Output: RESPONSE 127.0.0.1 51837 3195209670
+..Output: ASK 127.0.0.1 51838 100000
+Input: 3195709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................
+Output: RESPONSE 127.0.0.1 51839 3195309670
+Output: ASK 127.0.0.1 51840 100000
+Input: 3195809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51841 3195409670
+Output: ASK 127.0.0.1 51842 100000
+Input: 3195909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........
+Output: RESPONSE 127.0.0.1 51843 3195509670
+Output: ASK 127.0.0.1 51844 100000
+Input: 3196009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................
+Output: RESPONSE 127.0.0.1 51845 3195609670
+Output: ASK 127.0.0.1 51846 100000
+Input: 3196109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................
+Output: RESPONSE 127.0.0.1 51847 3195709670
+.Output: ASK 127.0.0.1 51848 100000
+Input: 3196209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 51849 3195809670
+Output: ASK 127.0.0.1 51850 100000
+Input: 3196309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51851 3195909670
+Output: ASK 127.0.0.1 51852 100000
+Input: 3196409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......
+Output: RESPONSE 127.0.0.1 51853 3196009670
+Output: ASK 127.0.0.1 51854 100000
+Input: 3196509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................
+..Output: RESPONSE 127.0.0.1 51855 3196109670
+Output: ASK 127.0.0.1 51856 100000
+Input: 3196609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................
+Output: RESPONSE 127.0.0.1 51857 3196209670
+Output: ASK 127.0.0.1 51858 100000
+Input: 3196709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==.
+.................
+Output: RESPONSE 127.0.0.1 51859 3196309670
+Output: ASK 127.0.0.1 51860 100000
+Input: 3196809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51862 3196409670
+Output: ASK 127.0.0.1 51863 100000
+Input: 3196909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....
+Output: RESPONSE 127.0.0.1 51864 3196509670
+Output: ASK 127.0.0.1 51865 100000
+Input: 3197009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................
+Output: RESPONSE 127.0.0.1 51866 3196609670
+Output: ASK 127.0.0.1 51867 100000
+Input: 3197109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+.Output: RESPONSE 127.0.0.1 51868 3196709670
+Output: ASK 127.0.0.1 51869 100000
+Input: 3197209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 51870 3196809670
+Output: ASK 127.0.0.1 51871 100000
+Input: 3197309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51872 3196909670
+Output: ASK 127.0.0.1 51873 100000
+Input: 3197409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..
+Output: RESPONSE 127.0.0.1 51874 3197009670
+Output: ASK 127.0.0.1 51875 100000
+Input: 3197509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................
+Output: RESPONSE 127.0.0.1 51876 3197109670
+Output: ASK 127.0.0.1 51877 100000
+.Input: 3197609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................
+Output: RESPONSE 127.0.0.1 51878 3197209670
+Output: ASK 127.0.0.1 51879 100000
+Input: 3197709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+Output: RESPONSE 127.0.0.1 51880 3197309670
+Output: ASK 127.0.0.1 51881 100000
+Input: 3197809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51882 3197409670
+Output: ASK 127.0.0.1 51883 100000
+Input: 3197909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....
+Output: RESPONSE 127.0.0.1 51884 3197509670
+Output: ASK 127.0.0.1 51885 100000
+Input: 3198009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................................................
+Output: RESPONSE 127.0.0.1 51886 3197609670
+Output: ASK 127.0.0.1 51887 100000
+Input: 3198109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................
+Output: RESPONSE 127.0.0.1 51888 3197709670
+Output: ASK 127.0.0.1 51889 100000
+.Input: 3198209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................
+Output: RESPONSE 127.0.0.1 51890 3197809670
+Output: ASK 127.0.0.1 51891 100000
+Input: 3198309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51893 3197909670
+Output: ASK 127.0.0.1 51894 100000
+Input: 3198409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 51895 3198009670
+.Output: ASK 127.0.0.1 51896 100000
+Input: 3198509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................................................
+Output: RESPONSE 127.0.0.1 51898 3198109670
+Output: ASK 127.0.0.1 51899 100000
+Input: 3198609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................
+Output: RESPONSE 127.0.0.1 51900 3198209670
+Output: ASK 127.0.0.1 51901 100000
+Input: 3198709670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+..Output: RESPONSE 127.0.0.1 51902 3198309670
+Output: ASK 127.0.0.1 51903 100000
+Input: 3198809670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................................................................................................................................................................................................................................................................................................................................................................................................
+.Output: RESPONSE 127.0.0.1 51904 3198409670
+Output: ASK 127.0.0.1 51905 100000
+Input: 3198909670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==..
+.
+Output: RESPONSE 127.0.0.1 51906 3198509670
+Output: ASK 127.0.0.1 51907 100000
+Input: 3199009670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................................................
+.Output: RESPONSE 127.0.0.1 51908 3198609670
+Output: ASK 127.0.0.1 51909 100000
+Input: 3199109670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................
+Output: RESPONSE 127.0.0.1 51910 3198709670
+Output: ASK 127.0.0.1 51911 100000
+Input: 3199209670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 51912 3198809670
+Output: ASK 127.0.0.1 51913 100000
+Input: 3199309670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51915 3198909670
+Output: ASK 127.0.0.1 51916 100000
+Input: 3199409670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..
+Output: RESPONSE 127.0.0.1 51917 3199009670
+Output: ASK 127.0.0.1 51918 100000
+Input: 3199509670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................
+.Output: RESPONSE 127.0.0.1 51919 3199109670
+Output: ASK 127.0.0.1 51920 100000
+Input: 3199609670 4 +UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................
+Output: RESPONSE 127.0.0.1 51921 3199209670
+Exception in thread "main" java.lang.IllegalStateException: Took too long to
+finish!
+at Task5KeyManager.serve(Task5KeyManager.java:97)
+at Task5KeyManager.main(Task5KeyManager.java:59)
+./run-task-5-test-run-one.sh: line 30: 37841 Killed: 9
+java Task5Client localhost 57843 $CHUNKSIZE 2> /dev/null
+*** Test 0 FAILED ***
+*** TEST FAILED ***
+*** exiting... ***
+
+Dylan@Dylans-MacBook-Pro:(nwen303-project2)~/Dropbox/Programming/GitHub/towers-of-hanoi
+> ./run-task-5-test.sh
+Parallel execution is an incubating feature.
+
+Deprecated Gradle features were used in this build, making it
+incompatible with Gradle 5.0.
+See
+https://docs.gradle.org/4.6/userguide/command_line_interface.html#sec:command_line_warnings
+
+BUILD SUCCESSFUL in 1s
+2 actionable tasks: 2 up-to-date
+Running for CHUNKSIZE=100000 CLIENTS=5 :
+Processes (in case you need to kill them)
+37965
+37966
+37967
+37968
+37969
+Output: ASK 127.0.0.1 51932 100000
+Output: ASK 127.0.0.1 51933 100000
+Input: 3184309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........Output: ASK 127.0.0.1 51934 100000
+Input: 3184509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Output: ASK 127.0.0.1 51936 100000
+Output: ASK 127.0.0.1 51935 100000
+Input: 3184609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51937 3184309670
+Output: ASK 127.0.0.1 51938 100000
+Input: 3184809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......
+Output: RESPONSE 127.0.0.1 51939 3184409670
+Output: ASK 127.0.0.1 51940 100000
+Input: 3184909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................
+Output: RESPONSE 127.0.0.1 51941 3184709670
+.Output: ASK 127.0.0.1 51942 100000
+Input: 3185009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......
+Output: RESPONSE 127.0.0.1 51943 3184509670
+Output: ASK 127.0.0.1 51944 100000
+Input: 3185109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....
+Output: RESPONSE 127.0.0.1 51945 3184609670
+..Output: ASK 127.0.0.1 51946 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 51947 3185209670
+Output: ASK 127.0.0.1 51948 100000
+Input: 3185309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51949 3184809670
+Output: ASK 127.0.0.1 51950 100000
+Input: 3185409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+
+..Output: RESPONSE 127.0.0.1 51951 3184909670
+Output: ASK 127.0.0.1 51952 100000
+Input: 3185509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................
+.Output: RESPONSE 127.0.0.1 51954 3185009670
+Output: ASK 127.0.0.1 51955 100000
+Input: 3185609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......
+.Output: RESPONSE 127.0.0.1 51956 3185109670
+Output: ASK 127.0.0.1 51957 100000
+Input: 3185709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........
+Output: RESPONSE 127.0.0.1 51958 3185309670
+Output: ASK 127.0.0.1 51959 100000
+Input: 3185809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51962 3185409670
+Output: ASK 127.0.0.1 51963 100000
+Input: 3185909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 51964 3185509670
+Output: ASK 127.0.0.1 51965 100000
+Input: 3186009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................
+.Output: RESPONSE 127.0.0.1 51966 3185609670
+Output: ASK 127.0.0.1 51967 100000
+Input: 3186109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..
+.Output: RESPONSE 127.0.0.1 51968 3185709670
+.Output: ASK 127.0.0.1 51969 100000
+Input: 3186209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........
+Output: RESPONSE 127.0.0.1 51970 3185809670
+Output: ASK 127.0.0.1 51971 100000
+Input: 3186309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................................................................................................................................................................................................................................................................................................................................................................................
+..Output: RESPONSE 127.0.0.1 51972 3185909670
+Output: ASK 127.0.0.1 51973 100000
+Input: 3186409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 51974 3186009670
+Output: ASK 127.0.0.1 51975 100000
+Input: 3186509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................
+
+Output: RESPONSE 127.0.0.1 51976 3186109670
+.Output: ASK 127.0.0.1 51978 100000
+Output: RESPONSE 127.0.0.1 51977 3186209670
+Input: 3186609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.Output: ASK 127.0.0.1 51979 100000
+Input: 3186709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......
+Output: RESPONSE 127.0.0.1 51980 3186309670
+Output: ASK 127.0.0.1 51981 100000
+Input: 3186809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51982 3186509670
+Output: ASK 127.0.0.1 51983 100000
+.Input: 3186909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 51984 3186409670
+Output: ASK 127.0.0.1 51985 100000
+Input: 3187009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................
+Output: RESPONSE 127.0.0.1 51986 3186709670
+Output: ASK 127.0.0.1 51987 100000
+Input: 3187109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......
+Output: RESPONSE 127.0.0.1 51988 3186609670
+Output: ASK 127.0.0.1 51989 100000
+Input: 3187209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......
+Output: RESPONSE 127.0.0.1 51990 3186809670
+Output: ASK 127.0.0.1 51991 100000
+Input: 3187309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................................................................................................................................................................................................................................................................................................................................................................
+.Output: RESPONSE 127.0.0.1 51995 3186909670
+.Output: ASK 127.0.0.1 51996 100000
+Input: 3187409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 51997 3187009670
+Output: ASK 127.0.0.1 51998 100000
+Input: 3187509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................................
+Output: RESPONSE 127.0.0.1 51999 3187109670
+.Output: ASK 127.0.0.1 52000 100000
+Input: 3187609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............
+Output: RESPONSE 127.0.0.1 52001 3187309670
+.Output: ASK 127.0.0.1 52002 100000
+
+Input: 3187709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.Output: RESPONSE 127.0.0.1 52003 3187209670
+Output: ASK 127.0.0.1 52004 100000
+Input: 3187809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52005 3187409670
+Output: ASK 127.0.0.1 52006 100000
+Input: 3187909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..
+Output: RESPONSE 127.0.0.1 52007 3187509670
+.Output: ASK 127.0.0.1 52008 100000
+Input: 3188009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................
+Output: RESPONSE 127.0.0.1 52009 3187609670
+Output: ASK 127.0.0.1 52010 100000
+Input: 3188109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................
+Output: RESPONSE 127.0.0.1 52011 3187709670
+Output: ASK 127.0.0.1 52012 100000
+Input: 3188209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+.Output: RESPONSE 127.0.0.1 52013 3187809670
+Output: ASK 127.0.0.1 52014 100000
+Input: 3188309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52015 3187909670
+Output: ASK 127.0.0.1 52016 100000
+Input: 3188409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..
+.Output: RESPONSE 127.0.0.1 52017 3188009670
+...Output: ASK 127.0.0.1 52018 100000
+Input: 3188509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................
+.Output: RESPONSE 127.0.0.1 52019 3188109670
+Output: ASK 127.0.0.1 52020 100000
+Input: 3188609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................
+.Output: RESPONSE 127.0.0.1 52021 3188209670
+Output: ASK 127.0.0.1 52022 100000
+Input: 3188709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 52023 3188309670
+Output: ASK 127.0.0.1 52024 100000
+Input: 3188809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52025 3188409670
+Output: ASK 127.0.0.1 52026 100000
+Input: 3188909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 52027 3188509670
+Output: ASK 127.0.0.1 52028 100000
+Input: 3189009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................
+Output: RESPONSE 127.0.0.1 52029 3188609670
+.Output: ASK 127.0.0.1 52030 100000
+Input: 3189109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................
+
+Output: RESPONSE 127.0.0.1 52031 3188709670
+Output: ASK 127.0.0.1 52033 100000
+Output: RESPONSE 127.0.0.1 52032 3188809670
+Input: 3189209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.Output: ASK 127.0.0.1 52034 100000
+Input: 3189309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................................................................................................................................................................................................................................................................................................................................................................................
+.Output: RESPONSE 127.0.0.1 52035 3188909670
+Output: ASK 127.0.0.1 52036 100000
+Input: 3189409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 52037 3189009670
+Output: ASK 127.0.0.1 52038 100000
+Input: 3189509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................
+Output: RESPONSE 127.0.0.1 52039 3189109670
+Output: ASK 127.0.0.1 52040 100000
+Input: 3189609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................
+Output: RESPONSE 127.0.0.1 52041 3189209670
+Output: ASK 127.0.0.1 52042 100000
+.Input: 3189709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..
+Output: RESPONSE 127.0.0.1 52043 3189309670
+Output: ASK 127.0.0.1 52044 100000
+Input: 3189809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52045 3189409670
+Output: ASK 127.0.0.1 52046 100000
+Input: 3189909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+.Output: RESPONSE 127.0.0.1 52047 3189509670
+Output: ASK 127.0.0.1 52048 100000
+Input: 3190009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................
+Output: RESPONSE 127.0.0.1 52049 3189609670
+Output: ASK 127.0.0.1 52050 100000
+Input: 3190109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................
+Output: RESPONSE 127.0.0.1 52051 3189709670
+Output: ASK 127.0.0.1 52052 100000
+Input: 3190209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............
+Output: RESPONSE 127.0.0.1 52053 3189809670
+Output: ASK 127.0.0.1 52054 100000
+Input: 3190309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52055 3189909670
+Output: ASK 127.0.0.1 52056 100000
+
+Input: 3190409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.Output: RESPONSE 127.0.0.1 52057 3190009670
+Output: ASK 127.0.0.1 52058 100000
+Input: 3190509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................
+Output: RESPONSE 127.0.0.1 52059 3190109670
+Output: ASK 127.0.0.1 52060 100000
+Input: 3190609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................
+.Output: RESPONSE 127.0.0.1 52061 3190209670
+Output: ASK 127.0.0.1 52062 100000
+Input: 3190709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................
+Output: RESPONSE 127.0.0.1 52063 3190309670
+Output: ASK 127.0.0.1 52064 100000
+Input: 3190809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52069 3190409670
+Output: ASK 127.0.0.1 52070 100000
+Input: 3190909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........
+Output: RESPONSE 127.0.0.1 52071 3190509670
+Output: ASK 127.0.0.1 52072 100000
+Input: 3191009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................
+Output: RESPONSE 127.0.0.1 52073 3190609670
+Output: ASK 127.0.0.1 52074 100000
+Input: 3191109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................
+Output: RESPONSE 127.0.0.1 52075 3190709670
+Output: ASK 127.0.0.1 52076 100000
+Input: 3191209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................
+Output: RESPONSE 127.0.0.1 52077 3190809670
+.Output: ASK 127.0.0.1 52078 100000
+.Input: 3191309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52079 3190909670
+Output: ASK 127.0.0.1 52080 100000
+Input: 3191409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........
+Output: RESPONSE 127.0.0.1 52081 3191009670
+Output: ASK 127.0.0.1 52082 100000
+Input: 3191509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................
+Output: RESPONSE 127.0.0.1 52083 3191109670
+Output: ASK 127.0.0.1 52084 100000
+Input: 3191609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................
+Output: RESPONSE 127.0.0.1 52085 3191209670
+Output: ASK 127.0.0.1 52086 100000
+Input: 3191709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................
+Output: RESPONSE 127.0.0.1 52087 3191309670
+Output: ASK 127.0.0.1 52088 100000
+Input: 3191809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52089 3191409670
+Output: ASK 127.0.0.1 52090 100000
+Input: 3191909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............
+Output: RESPONSE 127.0.0.1 52091 3191509670
+Output: ASK 127.0.0.1 52092 100000
+Input: 3192009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................
+.Output: RESPONSE 127.0.0.1 52093 3191609670
+Output: ASK 127.0.0.1 52094 100000
+Input: 3192109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................
+Output: RESPONSE 127.0.0.1 52096 3191709670
+.Output: ASK 127.0.0.1 52097 100000
+Input: 3192209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................
+Output: RESPONSE 127.0.0.1 52098 3191809670
+Output: ASK 127.0.0.1 52099 100000
+Input: 3192309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52100 3191909670
+Output: ASK 127.0.0.1 52101 100000
+Input: 3192409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................
+Output: RESPONSE 127.0.0.1 52102 3192009670
+Output: ASK 127.0.0.1 52103 100000
+Input: 3192509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................
+Output: RESPONSE 127.0.0.1 52104 3192109670
+Output: ASK 127.0.0.1 52105 100000
+Input: 3192609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................
+.Output: RESPONSE 127.0.0.1 52106 3192209670
+..Output: ASK 127.0.0.1 52107 100000
+Input: 3192709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................
+Output: RESPONSE 127.0.0.1 52108 3192309670
+Output: ASK 127.0.0.1 52109 100000
+Input: 3192809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................................................................................................................................................................................................................................................................................................................
+..Output: RESPONSE 127.0.0.1 52110 3192409670
+Output: ASK 127.0.0.1 52111 100000
+Input: 3192909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................
+Output: RESPONSE 127.0.0.1 52112 3192509670
+Output: ASK 127.0.0.1 52113 100000
+Input: 3193009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................
+Output: RESPONSE 127.0.0.1 52114 3192609670
+Output: ASK 127.0.0.1 52115 100000
+..Input: 3193109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................
+Output: RESPONSE 127.0.0.1 52116 3192709670
+Output: ASK 127.0.0.1 52117 100000
+Input: 3193209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................
+Output: RESPONSE 127.0.0.1 52118 3192809670
+Output: ASK 127.0.0.1 52119 100000
+Input: 3193309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52121 3192909670
+Output: ASK 127.0.0.1 52122 100000
+Input: 3193409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................
+Output: RESPONSE 127.0.0.1 52123 3193009670
+Output: ASK 127.0.0.1 52124 100000
+Input: 3193509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................................
+Output: RESPONSE 127.0.0.1 52125 3193109670
+Output: ASK 127.0.0.1 52126 100000
+Input: 3193609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................
+Output: RESPONSE 127.0.0.1 52127 3193209670
+Output: ASK 127.0.0.1 52128 100000
+Input: 3193709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................
+..Output: RESPONSE 127.0.0.1 52129 3193309670
+Output: ASK 127.0.0.1 52130 100000
+Input: 3193809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52131 3193409670
+Output: ASK 127.0.0.1 52132 100000
+Input: 3193909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................
+Output: RESPONSE 127.0.0.1 52133 3193509670
+Output: ASK 127.0.0.1 52134 100000
+Input: 3194009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................
+Output: RESPONSE 127.0.0.1 52135 3193609670
+.Output: ASK 127.0.0.1 52136 100000
+Input: 3194109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................................................
+Output: RESPONSE 127.0.0.1 52137 3193709670
+Output: ASK 127.0.0.1 52138 100000
+.Input: 3194209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................
+Output: RESPONSE 127.0.0.1 52139 3193809670
+Output: ASK 127.0.0.1 52140 100000
+Input: 3194309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52142 3193909670
+Output: ASK 127.0.0.1 52143 100000
+.Input: 3194409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................
+.Output: RESPONSE 127.0.0.1 52144 3194009670
+Output: ASK 127.0.0.1 52145 100000
+Input: 3194509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................................
+Output: RESPONSE 127.0.0.1 52146 3194109670
+Output: ASK 127.0.0.1 52147 100000
+Input: 3194609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................
+Output: RESPONSE 127.0.0.1 52148 3194209670
+Output: ASK 127.0.0.1 52149 100000
+Input: 3194709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................
+Output: RESPONSE 127.0.0.1 52150 3194309670
+Output: ASK 127.0.0.1 52151 100000
+Input: 3194809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52153 3194409670
+Output: ASK 127.0.0.1 52154 100000
+Input: 3194909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................
+.Output: RESPONSE 127.0.0.1 52155 3194509670
+Output: ASK 127.0.0.1 52156 100000
+Input: 3195009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................
+Output: RESPONSE 127.0.0.1 52157 3194609670
+Output: ASK 127.0.0.1 52158 100000
+Input: 3195109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................
+Output: RESPONSE 127.0.0.1 52159 3194709670
+Output: ASK 127.0.0.1 52160 100000
+Input: 3195209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................
+Output: RESPONSE 127.0.0.1 52161 3194809670
+Output: ASK 127.0.0.1 52162 100000
+Input: 3195309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52163 3194909670
+Output: ASK 127.0.0.1 52164 100000
+Input: 3195409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................
+.Output: RESPONSE 127.0.0.1 52165 3195009670
+Output: ASK 127.0.0.1 52166 100000
+Input: 3195509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................
+Output: RESPONSE 127.0.0.1 52167 3195109670
+Output: ASK 127.0.0.1 52168 100000
+Input: 3195609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................
+Output: RESPONSE 127.0.0.1 52169 3195209670
+Output: ASK 127.0.0.1 52170 100000
+Input: 3195709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................
+Output: RESPONSE 127.0.0.1 52171 3195309670
+Output: ASK 127.0.0.1 52172 100000
+Input: 3195809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52173 3195409670
+Output: ASK 127.0.0.1 52174 100000
+Input: 3195909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................
+Output: RESPONSE 127.0.0.1 52175 3195509670
+Output: ASK 127.0.0.1 52176 100000
+Input: 3196009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................
+Output: RESPONSE 127.0.0.1 52177 3195609670
+Output: ASK 127.0.0.1 52178 100000
+Input: 3196109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................
+Output: RESPONSE 127.0.0.1 52179 3195709670
+Output: ASK 127.0.0.1 52180 100000
+Input: 3196209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................
+..Output: RESPONSE 127.0.0.1 52181 3195809670
+Output: ASK 127.0.0.1 52182 100000
+Input: 3196309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52183 3195909670
+Output: ASK 127.0.0.1 52184 100000
+Input: 3196409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................
+.Output: RESPONSE 127.0.0.1 52185 3196009670
+Output: ASK 127.0.0.1 52186 100000
+Input: 3196509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................
+Output: RESPONSE 127.0.0.1 52187 3196109670
+Output: ASK 127.0.0.1 52188 100000
+Input: 3196609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................................
+Output: RESPONSE 127.0.0.1 52189 3196209670
+Output: ASK 127.0.0.1 52190 100000
+Input: 3196709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................
+Output: RESPONSE 127.0.0.1 52191 3196309670
+Output: ASK 127.0.0.1 52192 100000
+Input: 3196809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52193 3196409670
+Output: ASK 127.0.0.1 52194 100000
+Input: 3196909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................
+Output: RESPONSE 127.0.0.1 52195 3196509670
+Output: ASK 127.0.0.1 52196 100000
+Input: 3197009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................
+Output: RESPONSE 127.0.0.1 52197 3196609670
+Output: ASK 127.0.0.1 52198 100000
+.Input: 3197109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................
+.Output: RESPONSE 127.0.0.1 52199 3196709670
+.Output: ASK 127.0.0.1 52200 100000
+Input: 3197209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................
+Output: RESPONSE 127.0.0.1 52201 3196809670
+Output: ASK 127.0.0.1 52202 100000
+Input: 3197309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52204 3196909670
+Output: ASK 127.0.0.1 52205 100000
+Input: 3197409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................
+Output: RESPONSE 127.0.0.1 52206 3197009670
+Output: ASK 127.0.0.1 52207 100000
+Input: 3197509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................
+Output: RESPONSE 127.0.0.1 52208 3197109670
+Output: ASK 127.0.0.1 52209 100000
+Input: 3197609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................................................................
+Output: RESPONSE 127.0.0.1 52210 3197209670
+Output: ASK 127.0.0.1 52211 100000
+Input: 3197709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................
+..Output: RESPONSE 127.0.0.1 52212 3197309670
+Output: ASK 127.0.0.1 52213 100000
+Input: 3197809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52214 3197409670
+Output: ASK 127.0.0.1 52215 100000
+Input: 3197909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................
+Output: RESPONSE 127.0.0.1 52216 3197509670
+Output: ASK 127.0.0.1 52217 100000
+Input: 3198009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................
+Output: RESPONSE 127.0.0.1 52218 3197609670
+Output: ASK 127.0.0.1 52219 100000
+Input: 3198109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................
+Output: RESPONSE 127.0.0.1 52220 3197709670
+Output: ASK 127.0.0.1 52221 100000
+Input: 3198209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................................
+Output: RESPONSE 127.0.0.1 52222 3197809670
+.Output: ASK 127.0.0.1 52223 100000
+.Input: 3198309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52224 3197909670
+Output: ASK 127.0.0.1 52225 100000
+Input: 3198409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................................
+Output: RESPONSE 127.0.0.1 52226 3198009670
+Output: ASK 127.0.0.1 52227 100000
+Input: 3198509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................
+Output: RESPONSE 127.0.0.1 52228 3198109670
+Output: ASK 127.0.0.1 52229 100000
+Input: 3198609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................
+Output: RESPONSE 127.0.0.1 52230 3198209670
+.Output: ASK 127.0.0.1 52231 100000
+Input: 3198709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................
+Output: RESPONSE 127.0.0.1 52232 3198309670
+Output: ASK 127.0.0.1 52233 100000
+Input: 3198809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................^C.......^C..*** Test 0 FAILED
+***
+*** TEST FAILED ***
+*** exiting... ***
+
+Dylan@Dylans-MacBook-Pro:(nwen303-project2)~/Dropbox/Programming/GitHub/towers-of-hanoi
+>
+
+Dylan@Dylans-MacBook-Pro:(nwen303-project2)~/Dropbox/Programming/GitHub/towers-of-hanoi
+> g3
+
+Dylan@Dylans-MacBook-Pro:(nwen303-project2)~/Dropbox/Programming/GitHub/towers-of-hanoi
+> ll
+total 1320
+drwxr-xr-x@ 31 Dylan  staff   992B 31 May 09:44 .
+drwxr-xr-x@ 24 Dylan  staff   768B 26 May 18:21 ..
+-rw-r--r--@  1 Dylan  staff    10K 18 May 18:06 .DS_Store
+-rw-r--r--@  1 Dylan  staff    41B 24 Mar 10:27 .editorconfig
+drwxr-xr-x@ 17 Dylan  staff   544B 31 May 15:27 .git
+-rw-r--r--@  1 Dylan  staff   235B 14 May 09:43 .gitignore
+drwxr-xr-x   5 Dylan  staff   160B 30 May 11:55 .gradle
+drwxr-xr-x@ 15 Dylan  staff   480B 31 May 15:27 .idea
+-rw-r--r--@  1 Dylan  staff    16K 26 Sep  2016 First tests.pdf
+-rw-r--r--@  1 Dylan  staff   4.9K 14 May 09:40 PROJECT_README
+-rw-r--r--@  1 Dylan  staff   1.9K 14 May 09:24
+PROJECT_READ_ME_FIRST.txt
+-rw-r--r--@  1 Dylan  staff   340K  2 Oct  2014 Project2.pdf
+-rw-r--r--@  1 Dylan  staff   354B 18 May 18:54 README.md
+-rw-r--r--@  1 Dylan  staff    19K 30 May 12:05 REPORT.md
+-rw-r--r--@  1 Dylan  staff   5.7K 31 May 09:36 Session.vim
+-rw-r--r--@  1 Dylan  staff   181K 29 May 19:37
+benchmark-output.txt
+drwxr-xr-x   6 Dylan  staff   192B 30 May 11:55 build
+-rw-r--r--@  1 Dylan  staff   3.0K 27 May 16:37 build.gradle
+drwxr-xr-x@  3 Dylan  staff    96B 22 Mar 14:15 gradle
+-rwxr-xr-x@  1 Dylan  staff   5.2K 24 Mar 10:27 gradlew
+-rw-r--r--@  1 Dylan  staff   2.2K 22 Mar 14:16 gradlew.bat
+drwxr-xr-x@  3 Dylan  staff    96B 15 Mar 12:07 lib
+drwxr-xr-x   3 Dylan  staff    96B 31 May 09:31 out
+-rw-r--r--@  1 Dylan  staff   6.2K 31 May 09:12 results.tmp
+-rwxr-xr-x@  1 Dylan  staff   813B 29 May 19:37
+run-benchmarks.sh
+-rwxr-xr-x@  1 Dylan  staff   642B 30 May 19:09
+run-task-5-test-run-one.sh
+-rwxr-xr-x@  1 Dylan  staff   459B 30 May 19:09
+run-task-5-test.sh
+drwxr-xr-x@  3 Dylan  staff    96B 15 Mar 12:07 scripts
+-rw-r--r--@  1 Dylan  staff    50B 15 Mar 12:07 settings.gradle
+drwxr-xr-x@  5 Dylan  staff   160B 14 Apr 15:13 src
+-rw-r--r--@  1 Dylan  staff    14K 31 May 09:44 tags
+
+Dylan@Dylans-MacBook-Pro:(nwen303-project2)~/Dropbox/Programming/GitHub/towers-of-hanoi
+> ./run-task-5-test.sh
+
+Dylan@Dylans-MacBook-Pro:(nwen303-project2)~/Dropbox/Programming/GitHub/towers-of-hanoi
+> ./run-task-5-test.sh
+Parallel execution is an incubating feature.
+
+Deprecated Gradle features were used in this build, making it
+incompatible with Gradle 5.0.
+See
+https://docs.gradle.org/4.6/userguide/command_line_interface.html#sec:command_line_warnings
+
+BUILD SUCCESSFUL in 1s
+2 actionable tasks: 2 up-to-date
+Running for CHUNKSIZE=100000 CLIENTS=5 :
+Processes (in case you need to kill them)
+68335
+68336
+68337
+68338
+68339
+Output: ASK 127.0.0.1 50888 100000
+Output: ASK 127.0.0.1 50887 100000
+Input: 3184309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Input: 3184409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........Output: ASK 127.0.0.1 50891 100000
+Output: ASK 127.0.0.1 50890 100000
+Output: ASK 127.0.0.1 50889 100000
+Input: 3184609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+................................Output: ASK 127.0.0.1 50901
+100000
+Input: 3184809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.....................................Output: ASK 127.0.0.1
+50907 100000
+Input: 3184909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...................................Output: ASK 127.0.0.1 50918
+100000
+Input: 3185009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................Output: ASK 127.0.0.1 50923 100000
+Input: 3185109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+........................................................................Output:
+ASK 127.0.0.1 50928 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 50929 3185209670 3185209680
+*** Test 0 PASSED! ***
+Running for CHUNKSIZE=100000 CLIENTS=5 :
+Processes (in case you need to kill them)
+68354
+68355
+68356
+68357
+68358
+Output: ASK 127.0.0.1 50942 100000
+Output: ASK 127.0.0.1 50944 100000
+Output: ASK 127.0.0.1 50945 100000
+Output: ASK 127.0.0.1 50946 100000
+Output: ASK 127.0.0.1 50943 100000
+Input: 3184309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Input: 3184609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..........................Output: ASK 127.0.0.1 50957 100000
+Input: 3184809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Output: ASK 127.0.0.1 50958 100000
+Input: 3184909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..............................................................Output:
+ASK 127.0.0.1 50969 100000
+.Input: 3185009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...............................................................................................Output:
+ASK 127.0.0.1 50974 100000
+Input: 3185109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 50996 3184609670
+Output: ASK 127.0.0.1 50997 100000
+..Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+....
+Output: RESPONSE 127.0.0.1 50998 3184309670
+Output: ASK 127.0.0.1 50999 100000
+Input: 3185309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Output: RESPONSE 127.0.0.1 51000 3184409670
+Output: ASK 127.0.0.1 51001 100000
+Input: 3185409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+........................................
+Output: RESPONSE 127.0.0.1 51006 3184809670
+Output: ASK 127.0.0.1 51007 100000
+Input: 3185509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.Simulating failure ...
+.........................................Output: ASK 127.0.0.1
+51012 100000
+Input: 3185609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......Output: ASK 127.0.0.1 51013 100000
+Input: 3185709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.................................Output: ASK 127.0.0.1 51018
+100000
+Input: 3184709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..............................
+Output: RESPONSE 127.0.0.1 51023 3185109670
+Output: ASK 127.0.0.1 51024 100000
+Input: 3185809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.................Output: ASK 127.0.0.1 51025 100000
+Input: 3185909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................Output:
+ASK 127.0.0.1 51030 100000
+Input: 3184909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..........................................Output: ASK 127.0.0.1
+51035 100000
+Input: 3186009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..
+Output: RESPONSE 127.0.0.1 51036 3185309670
+Output: ASK 127.0.0.1 51037 100000
+Input: 3186109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+....................................................................
+Output: RESPONSE 127.0.0.1 51042 3185609670
+Output: ASK 127.0.0.1 51043 100000
+Input: 3185009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...Output: ASK 127.0.0.1 51044 100000
+Input: 3186209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................Output: ASK 127.0.0.1
+51049 100000
+Input: 3186309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...Output: ASK 127.0.0.1 51050 100000
+Input: 3186409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...............................................
+Output: RESPONSE 127.0.0.1 51057 3185909670
+Output: ASK 127.0.0.1 51058 100000
+Input: 3186509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................Output:
+ASK 127.0.0.1 51063 100000
+Input: 3186609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..Output: ASK 127.0.0.1 51064 100000
+Input: 3186709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................................................................................................Output:
+ASK 127.0.0.1 51074 100000
+Input: 3186809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+....................
+Output: RESPONSE 127.0.0.1 51079 3185009670
+Output: ASK 127.0.0.1 51080 100000
+Input: 3186909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+......
+Output: RESPONSE 127.0.0.1 51081 3186209670
+Output: ASK 127.0.0.1 51082 100000
+.Input: 3187009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+............................................................
+Output: RESPONSE 127.0.0.1 51087 3186509670
+Output: ASK 127.0.0.1 51088 100000
+Input: 3187109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................Output: ASK 127.0.0.1 51093
+100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 51094 3185209670 3185209680
+Output: ASK 0:0:0:0:0:0:7f00:1 51095 100000
+*** Test 1 PASSED! ***
+Running for CHUNKSIZE=100000 CLIENTS=5 :
+Processes (in case you need to kill them)
+68371
+68372
+68373
+68374
+68375
+Output: ASK 127.0.0.1 51098 100000
+Output: ASK 127.0.0.1 51099 100000
+Output: ASK 127.0.0.1 51100 100000
+Input: 3184309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+......Output: ASK 127.0.0.1 51105 100000
+Input: 3184609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.Output: ASK 127.0.0.1 51106 100000
+Input: 3184709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.................................................................Output:
+ASK 127.0.0.1 51111 100000
+Input: 3184809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...............................................Output: ASK
+127.0.0.1 51116 100000
+Input: 3184909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.........................................................................................Output:
+ASK 127.0.0.1 51121 100000
+Input: 3185009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.........................................Output: ASK 127.0.0.1
+51126 100000
+Input: 3185109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................
+Output: RESPONSE 127.0.0.1 51131 3184309670
+Output: ASK 127.0.0.1 51132 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+..Output: RESPONSE 127.0.0.1 51133 3185209670 3185209680
+*** Test 2 PASSED! ***
+Running for CHUNKSIZE=100000 CLIENTS=5 :
+Processes (in case you need to kill them)
+68383
+68384
+68385
+68386
+68387
+Output: ASK 127.0.0.1 51139 100000
+Output: ASK 127.0.0.1 51138 100000
+Output: ASK 127.0.0.1 51140 100000
+Input: 3184309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==Input:
+3184509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+
+Simulating failure ...
+..........Output: ASK 127.0.0.1 51144 100000
+Input: 3184609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Output: ASK 127.0.0.1 51145 100000
+Input: 3184709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..............................................................Output:
+ASK 127.0.0.1 51150 100000
+Input: 3184809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.................................................Output: ASK
+127.0.0.1 51155 100000
+Input: 3184909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+......................................................................................Output:
+ASK 127.0.0.1 51160 100000
+Input: 3185009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+............................................Output: ASK
+127.0.0.1 51165 100000
+Input: 3185109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................
+Output: RESPONSE 127.0.0.1 51170 3184409670
+Output: ASK 127.0.0.1 51171 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+..Output: RESPONSE 127.0.0.1 51172 3185209670 3185209680
+*** Test 3 PASSED! ***
+Running for CHUNKSIZE=100000 CLIENTS=5 :
+Processes (in case you need to kill them)
+68396
+68397
+68398
+68399
+68400
+Output: ASK 127.0.0.1 51176 100000
+Output: ASK 127.0.0.1 51177 100000
+Output: ASK 127.0.0.1 51178 100000
+Input: 3184309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Input: 3184409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..........Output: ASK 127.0.0.1 51183 100000
+Input: 3184609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Output: ASK 127.0.0.1 51184 100000
+Input: 3184709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................Output:
+ASK 127.0.0.1 51193 100000
+Input: 3184809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Output: ASK 127.0.0.1 51194 100000
+Input: 3184909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51211 3184409670
+Output: ASK 127.0.0.1 51212 100000
+Input: 3185009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...................................................................
+.Output: RESPONSE 127.0.0.1 51217 3184609670
+Output: ASK 127.0.0.1 51218 100000
+Input: 3185109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...
+Output: RESPONSE 127.0.0.1 51223 3184709670
+Output: ASK 127.0.0.1 51224 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+........................................
+Output: RESPONSE 127.0.0.1 51229 3184809670
+Output: ASK 127.0.0.1 51230 100000
+Input: 3185309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 51231 3184909670
+Output: ASK 127.0.0.1 51232 100000
+Input: 3185409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.......Output: ASK 127.0.0.1 51233 100000
+Input: 3185509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................Output:
+ASK 127.0.0.1 51238 100000
+Input: 3185609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....Output: ASK 127.0.0.1 51243 100000
+Input: 3185709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...............................................................Output:
+ASK 127.0.0.1 51248 100000
+Input: 3185809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................................Output:
+ASK 127.0.0.1 51257 100000
+Input: 3185909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+........................................................................
+Output: RESPONSE 127.0.0.1 51262 3185309670
+Output: ASK 127.0.0.1 51263 100000
+Input: 3184309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................
+Output: RESPONSE 127.0.0.1 51268 3185509670
+Output: ASK 127.0.0.1 51269 100000
+.Input: 3184509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................Output: ASK
+127.0.0.1 51274 100000
+Input: 3186009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................
+Output: RESPONSE 127.0.0.1 51280 3185609670
+Output: ASK 127.0.0.1 51281 100000
+Input: 3186109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................................................................................
+Output: RESPONSE 127.0.0.1 51290 3185809670
+Output: ASK 127.0.0.1 51291 100000
+Input: 3186209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................................................................................................................................
+.Output: RESPONSE 127.0.0.1 51308 3184309670
+Output: ASK 127.0.0.1 51309 100000
+Input: 3186309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................
+Output: RESPONSE 127.0.0.1 51314 3184509670
+Output: ASK 127.0.0.1 51315 100000
+Input: 3186409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................
+Output: RESPONSE 127.0.0.1 51321 3186009670
+Output: ASK 127.0.0.1 51322 100000
+Input: 3185009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..........................................................
+Output: RESPONSE 127.0.0.1 51331 3186109670
+Output: ASK 127.0.0.1 51332 100000
+Input: 3185109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................................................................Output:
+ASK 127.0.0.1 51337 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..................
+Output: RESPONSE 127.0.0.1 51342 3186209670
+Output: ASK 127.0.0.1 51343 100000
+Input: 3185409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+........................................................................................................Output:
+ASK 127.0.0.1 51352 100000
+Input: 3185709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+......................Output: ASK 127.0.0.1 51357 100000
+Input: 3186509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..
+Output: RESPONSE 127.0.0.1 51358 3186309670
+Output: ASK 127.0.0.1 51359 100000
+Input: 3186609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................
+Output: RESPONSE 127.0.0.1 51364 3186409670
+Output: ASK 127.0.0.1 51365 100000
+Input: 3185909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..................................................
+Output: RESPONSE 127.0.0.1 51370 3185109670
+Output: ASK 127.0.0.1 51371 100000
+Input: 3186709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............Output: ASK 127.0.0.1 51372 100000
+Input: 3186809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+................Output: ASK 127.0.0.1 51377 100000
+Input: 3186909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.......................Output: ASK 127.0.0.1 51382 100000
+Input: 3187009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.........................................................................Output:
+ASK 127.0.0.1 51387 100000
+Input: 3187109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+........
+Output: RESPONSE 127.0.0.1 51392 3186609670
+Output: ASK 127.0.0.1 51393 100000
+Input: 3187209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........Output: ASK 127.0.0.1 51394 100000
+Input: 3187309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................Output: ASK 127.0.0.1
+51399 100000
+Input: 3187409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.................................................
+Output: RESPONSE 127.0.0.1 51404 3186709670
+Output: ASK 127.0.0.1 51405 100000
+Input: 3187509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................Output: ASK 127.0.0.1 51406 100000
+Input: 3187609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................Output:
+ASK 127.0.0.1 51415 100000
+Input: 3187709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..................................................................................................................................................................Output:
+ASK 127.0.0.1 51428 100000
+Input: 3187809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............
+Output: RESPONSE 127.0.0.1 51429 3187209670
+Output: ASK 127.0.0.1 51430 100000
+Input: 3187909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...........................
+Output: RESPONSE 127.0.0.1 51431 3187309670
+Output: ASK 127.0.0.1 51432 100000
+Input: 3185009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................................................
+Output: RESPONSE 127.0.0.1 51445 3187509670
+Output: ASK 127.0.0.1 51446 100000
+Input: 3188009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.........Output: ASK 127.0.0.1 51447 100000
+Input: 3188109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...........
+Output: RESPONSE 127.0.0.1 51448 3187609670
+Output: ASK 127.0.0.1 51449 100000
+Input: 3188209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..................................................................................................Output:
+ASK 127.0.0.1 51462 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..........Output: ASK 127.0.0.1 51463 100000
+Input: 3185409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+
+Output: RESPONSE 127.0.0.1 51464 3187809670
+Output: ASK 127.0.0.1 51465 100000
+Input: 3188309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+....Output: ASK 127.0.0.1 51466 100000
+Input: 3188409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............
+.Output: RESPONSE 127.0.0.1 51471 3185009670
+Output: ASK 127.0.0.1 51472 100000
+Input: 3185709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................................................................Output:
+ASK 127.0.0.1 51481 100000
+Input: 3186509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......Output: ASK 127.0.0.1 51482 100000
+Input: 3185909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Output: ASK 127.0.0.1 51483 100000
+Input: 3188509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................................................................................................................Output:
+ASK 127.0.0.1 51496 100000
+Input: 3186809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................
+Output: RESPONSE 127.0.0.1 51505 3188409670
+Output: ASK 127.0.0.1 51506 100000
+Input: 3186909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...................................
+Output: RESPONSE 127.0.0.1 51507 3185709670
+Output: ASK 127.0.0.1 51508 100000
+Input: 3187009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................................................................................Output:
+ASK 127.0.0.1 51521 100000
+Input: 3187109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...................................
+Output: RESPONSE 127.0.0.1 51522 3188509670
+Output: ASK 127.0.0.1 51523 100000
+Input: 3187409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+
+Output: RESPONSE 127.0.0.1 51524 3186509670
+..Output: ASK 127.0.0.1 51525 100000
+Input: 3187709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.......................................................................
+Output: RESPONSE 127.0.0.1 51534 3186809670
+Output: ASK 127.0.0.1 51535 100000
+Input: 3188609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....Output: ASK 127.0.0.1 51536 100000
+Input: 3188709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..............Output: ASK 127.0.0.1 51537 100000
+Input: 3187909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+....Output: ASK 127.0.0.1 51538 100000
+Input: 3188809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................
+Output: RESPONSE 127.0.0.1 51543 3187009670
+Output: ASK 127.0.0.1 51544 100000
+Input: 3188909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+....................................Output: ASK 127.0.0.1 51549
+100000
+Input: 3189009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..................Output: ASK 127.0.0.1 51554 100000
+Input: 3188009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..................................Output: ASK 127.0.0.1 51555
+100000
+Input: 3188109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+................................Output: ASK 127.0.0.1 51560
+100000
+Input: 3188209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.......................Output: ASK 127.0.0.1 51561 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 51562 3185209670 3185209680
+*** Test 4 PASSED! ***
+Running for CHUNKSIZE=100000 CLIENTS=5 :
+Processes (in case you need to kill them)
+68425
+68426
+68427
+68428
+68429
+Output: ASK 127.0.0.1 51566 100000
+Output: ASK 127.0.0.1 51565 100000
+Output: ASK 127.0.0.1 51567 100000
+Output: ASK 127.0.0.1 51568 100000
+Input: 3184309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Input: 3184509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...Output: ASK 127.0.0.1 51569 100000
+Input: 3184709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................................Output: ASK
+127.0.0.1 51578 100000
+Input: 3184809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Output: ASK 127.0.0.1 51579 100000
+Input: 3184909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................................Output:
+ASK 127.0.0.1 51588 100000
+Input: 3185009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+....................................................................................................................Output:
+ASK 127.0.0.1 51597 100000
+Input: 3185109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.............................................................................................
+Output: RESPONSE 127.0.0.1 51606 3184309670
+Output: ASK 127.0.0.1 51607 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.....
+Output: RESPONSE 127.0.0.1 51608 3184409670
+Output: ASK 127.0.0.1 51609 100000
+Input: 3185309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.......Output: ASK 127.0.0.1 51611 100000
+Input: 3185409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+....
+Output: RESPONSE 127.0.0.1 51612 3184709670
+Output: ASK 127.0.0.1 51613 100000
+Input: 3185509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...................
+Output: RESPONSE 127.0.0.1 51621 3184909670
+Output: ASK 127.0.0.1 51622 100000
+Input: 3185609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................Output: ASK 127.0.0.1 51627 100000
+Input: 3185709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......Output: ASK 127.0.0.1 51628 100000
+Input: 3185809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........Output: ASK 127.0.0.1 51629 100000
+Input: 3185909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...Output: ASK 127.0.0.1 51630 100000
+Input: 3186009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51652 3185609670
+Output: ASK 127.0.0.1 51653 100000
+Input: 3184509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................
+.Output: RESPONSE 127.0.0.1 51658 3185709670
+Output: ASK 127.0.0.1 51659 100000
+Input: 3184609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........
+Output: RESPONSE 127.0.0.1 51660 3185809670
+Output: ASK 127.0.0.1 51661 100000
+Input: 3184809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+............
+Output: RESPONSE 127.0.0.1 51662 3186009670
+Output: ASK 127.0.0.1 51663 100000
+Input: 3185009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................
+Output: RESPONSE 127.0.0.1 51665 3185909670
+Output: ASK 127.0.0.1 51666 100000
+Input: 3185109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................Output: ASK 127.0.0.1 51667 100000
+Input: 3186109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51689 3184509670
+Output: ASK 127.0.0.1 51690 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...................................................................
+Output: RESPONSE 127.0.0.1 51695 3184609670
+Output: ASK 127.0.0.1 51696 100000
+Input: 3185309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+................
+Output: RESPONSE 127.0.0.1 51701 3185009670
+Output: ASK 127.0.0.1 51702 100000
+Input: 3185409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................
+.Output: RESPONSE 127.0.0.1 51703 3185109670
+Output: ASK 127.0.0.1 51704 100000
+Input: 3185509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==.
+Simulating failure ...
+.........
+Output: RESPONSE 127.0.0.1 51705 3186109670
+Output: ASK 127.0.0.1 51706 100000
+Input: 3186209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.Output: ASK 127.0.0.1 51707 100000
+Input: 3186309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................................................Output:
+ASK 127.0.0.1 51712 100000
+Input: 3186409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................................................Output:
+ASK 127.0.0.1 51717 100000
+Input: 3186509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................................................................................................................................................................
+.Output: RESPONSE 127.0.0.1 51731 3185409670
+Output: ASK 127.0.0.1 51732 100000
+Input: 3184809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...........................................
+Output: RESPONSE 127.0.0.1 51737 3186309670
+Output: ASK 127.0.0.1 51738 100000
+Input: 3186609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+........
+Output: RESPONSE 127.0.0.1 51739 3186209670
+Output: ASK 127.0.0.1 51740 100000
+Input: 3186709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..............................................
+Output: RESPONSE 127.0.0.1 51745 3186409670
+Output: ASK 127.0.0.1 51746 100000
+Input: 3186809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+............
+Output: RESPONSE 127.0.0.1 51748 3186509670
+Output: ASK 127.0.0.1 51749 100000
+Input: 3186909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..Output: ASK 127.0.0.1 51750 100000
+Input: 3187009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................Output: ASK 127.0.0.1 51755
+100000
+Input: 3187109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+........Output: ASK 127.0.0.1 51756 100000
+Input: 3187209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................Output:
+ASK 127.0.0.1 51761 100000
+Input: 3187309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................Output:
+ASK 127.0.0.1 51768 100000
+Input: 3187409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51782 3186909670
+Output: ASK 127.0.0.1 51783 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.
+Output: RESPONSE 127.0.0.1 51784 3187009670
+Output: ASK 127.0.0.1 51785 100000
+Input: 3185309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................
+Output: RESPONSE 127.0.0.1 51786 3187209670
+Output: ASK 127.0.0.1 51787 100000
+Input: 3185509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...............................................
+Output: RESPONSE 127.0.0.1 51793 3187309670
+Output: ASK 127.0.0.1 51794 100000
+Input: 3187509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................Output: ASK 127.0.0.1 51795 100000
+Input: 3187609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..............
+Output: RESPONSE 127.0.0.1 51796 3187409670
+.Output: ASK 127.0.0.1 51797 100000
+Input: 3187709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..................................................Output: ASK
+127.0.0.1 51806 100000
+Input: 3187809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..................................................
+Output: RESPONSE 127.0.0.1 51807 3185309670
+Output: ASK 127.0.0.1 51808 100000
+Input: 3187909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........Output: ASK 127.0.0.1 51809 100000
+Input: 3188009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................Output: ASK 127.0.0.1 51810 100000
+Input: 3188109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................................Output:
+ASK 127.0.0.1 51811 100000
+Input: 3188209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+........................................
+Output: RESPONSE 127.0.0.1 51812 3187509670
+Output: ASK 127.0.0.1 51813 100000
+Input: 3184809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................................................................Output:
+ASK 127.0.0.1 51818 100000
+Input: 3186609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51831 3187909670
+Output: ASK 127.0.0.1 51832 100000
+Input: 3186709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................
+Output: RESPONSE 127.0.0.1 51833 3188009670
+Output: ASK 127.0.0.1 51834 100000
+Input: 3186809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................
+Output: RESPONSE 127.0.0.1 51835 3188109670
+Output: ASK 127.0.0.1 51836 100000
+Input: 3187109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51845 3184809670
+Output: ASK 127.0.0.1 51846 100000
+Input: 3188309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+........................................................................................................................
+.Output: RESPONSE 127.0.0.1 51855 3186609670
+Output: ASK 127.0.0.1 51856 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.......................................Output: ASK 127.0.0.1
+51861 100000
+Input: 3188409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................................................
+Output: RESPONSE 127.0.0.1 51866 3186709670
+Output: ASK 127.0.0.1 51867 100000
+Input: 3185509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...........
+Output: RESPONSE 127.0.0.1 51868 3186809670
+Output: ASK 127.0.0.1 51869 100000
+Input: 3188509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+........
+Output: RESPONSE 127.0.0.1 51874 3187109670
+Output: ASK 127.0.0.1 51875 100000
+Input: 3187609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...Output: ASK 127.0.0.1 51876 100000
+Input: 3188609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+........................................................Output:
+ASK 127.0.0.1 51885 100000
+Input: 3187709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............Output: ASK 127.0.0.1 51886 100000
+Input: 3187809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..........Output: ASK 127.0.0.1 51887 100000
+Input: 3188709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......
+Output: RESPONSE 127.0.0.1 51888 3188409670
+Output: ASK 127.0.0.1 51889 100000
+Input: 3188809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.Output: ASK 127.0.0.1 51890 100000
+Input: 3188909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.........................................................................................................................................Output:
+ASK 127.0.0.1 51903 100000
+Input: 3188209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+................Output: ASK 127.0.0.1 51904 100000
+Input: 3189009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.................................................................................................................
+Output: RESPONSE 127.0.0.1 51913 3187709670
+Output: ASK 127.0.0.1 51914 100000
+Input: 3189109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................Output: ASK 127.0.0.1 51919 100000
+Input: 3189209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..
+Output: RESPONSE 127.0.0.1 51920 3188709670
+Output: ASK 127.0.0.1 51921 100000
+Input: 3189309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............
+Output: RESPONSE 127.0.0.1 51922 3188809670
+Output: ASK 127.0.0.1 51923 100000
+Input: 3189409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Output: ASK 127.0.0.1 51924 100000
+Input: 3189509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................................................Output:
+ASK 127.0.0.1 51929 100000
+Input: 3189609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................Output: ASK 127.0.0.1 51930 100000
+Input: 3189709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 51943 3189109670
+Output: ASK 127.0.0.1 51944 100000
+Input: 3188309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+....................
+Output: RESPONSE 127.0.0.1 51945 3189309670
+.Output: ASK 127.0.0.1 51946 100000
+Input: 3189809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................
+Output: RESPONSE 127.0.0.1 51951 3189509670
+Output: ASK 127.0.0.1 51952 100000
+Input: 3189909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................................................................................Output:
+ASK 127.0.0.1 51957 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 51958 3185209670 3185209680
+Output: ASK 127.0.0.1 51959 100000
+.*** Test 5 PASSED! ***
+Running for CHUNKSIZE=100000 CLIENTS=5 :
+Processes (in case you need to kill them)
+68491
+68492
+68493
+68494
+68495
+Output: ASK 127.0.0.1 51968 100000
+Output: ASK 127.0.0.1 51967 100000
+Input: 3184309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Input: 3184409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Output: ASK 127.0.0.1 51973 100000
+Input: 3184509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Output: ASK 127.0.0.1 51974 100000
+Input: 3184609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Output: ASK 127.0.0.1 51975 100000
+Input: 3184709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................Output: ASK 127.0.0.1 51976 100000
+Output: ASK 127.0.0.1 51977 100000
+Input: 3184809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+................................................................................................................Output:
+ASK 127.0.0.1 51986 100000
+Input: 3185009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................................................................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52011 3184609670
+Output: ASK 127.0.0.1 52012 100000
+Input: 3185109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....
+Output: RESPONSE 127.0.0.1 52013 3184709670
+Output: ASK 127.0.0.1 52014 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 52015 3185209670 3185209680
+Output: ASK 0:0:0:0:0:0:7f00:1 52016 100000
+*** Test 6 PASSED! ***
+Running for CHUNKSIZE=100000 CLIENTS=5 :
+Processes (in case you need to kill them)
+68516
+68517
+68518
+68519
+68520
+Output: ASK 127.0.0.1 52019 100000
+Output: ASK 127.0.0.1 52021 100000
+Output: ASK 127.0.0.1 52020 100000
+Input: 3184309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Output: ASK 127.0.0.1 52022 100000
+Input: 3184609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Output: ASK 127.0.0.1 52023 100000
+Simulating failure ...
+Input: 3184709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.....................................................................................................Output:
+ASK 127.0.0.1 52028 100000
+.Input: 3184809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Output: ASK 127.0.0.1 52029 100000
+Input: 3184909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.........................................................Output:
+ASK 127.0.0.1 52038 100000
+Input: 3185009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52043 3184409670
+Output: ASK 127.0.0.1 52044 100000
+Input: 3185109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..
+Output: RESPONSE 127.0.0.1 52045 3184309670
+Output: ASK 127.0.0.1 52046 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 52047 3185209670 3185209680
+.*** Test 7 PASSED! ***
+Running for CHUNKSIZE=100000 CLIENTS=5 :
+Processes (in case you need to kill them)
+68543
+68544
+68545
+68546
+68547
+Output: ASK 127.0.0.1 52054 100000
+Output: ASK 127.0.0.1 52055 100000
+Output: ASK 127.0.0.1 52057 100000
+Input: 3184309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Simulating failure ...
+Input: 3184509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Output: ASK 127.0.0.1 52058 100000
+Input: 3184609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Output: ASK 127.0.0.1 52060 100000
+Input: 3184709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............Output: ASK 127.0.0.1 52072 100000
+Output: ASK 127.0.0.1 52073 100000
+Input: 3184809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Output: ASK 127.0.0.1 52074 100000
+Input: 3185009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Output: ASK 127.0.0.1 52075 100000
+Input: 3185109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.............................................................Output:
+ASK 127.0.0.1 52087 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Output: ASK 127.0.0.1 52088 100000
+Input: 3185309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Output: ASK 127.0.0.1 52090 100000
+Input: 3185409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.......................................................Output:
+ASK 127.0.0.1 52097 100000
+Output: ASK 127.0.0.1 52098 100000
+Input: 3185509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Input: 3185609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................Output: ASK 127.0.0.1 52101
+100000
+Input: 3185709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+........................................................................
+Output: RESPONSE 127.0.0.1 52106 3184709670
+Output: ASK 127.0.0.1 52107 100000
+Input: 3185809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................Output: ASK 127.0.0.1 52112 100000
+Input: 3185909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+........................................................................
+.Output: RESPONSE 127.0.0.1 52117 3184809670
+Output: ASK 127.0.0.1 52118 100000
+Input: 3186009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.Simulating failure ...
+............................................Output: ASK
+127.0.0.1 52120 100000
+.Input: 3186109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............................................................Output:
+ASK 127.0.0.1 52127 100000
+Input: 3186209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..........
+Output: RESPONSE 127.0.0.1 52128 3185409670
+Output: ASK 127.0.0.1 52129 100000
+.Input: 3184309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+............................................................
+.Output: RESPONSE 127.0.0.1 52138 3185609670
+Output: ASK 127.0.0.1 52139 100000
+Input: 3184409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+....................................
+Output: RESPONSE 127.0.0.1 52140 3185809670
+Output: ASK 127.0.0.1 52141 100000
+Input: 3184509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+....Output: ASK 127.0.0.1 52142 100000
+Input: 3184609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+......Output: ASK 127.0.0.1 52143 100000
+Input: 3184909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+................................Output: ASK 127.0.0.1 52152
+100000
+Input: 3185009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................
+Output: RESPONSE 127.0.0.1 52153 3186109670
+Output: ASK 127.0.0.1 52154 100000
+Input: 3185109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................Output: ASK 127.0.0.1 52155 100000
+Input: 3186309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+........Output: ASK 127.0.0.1 52156 100000
+Input: 3186409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............Output: ASK 127.0.0.1 52157 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...................................................................................................................................Output:
+ASK 127.0.0.1 52166 100000
+Input: 3185309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.........................Output: ASK 127.0.0.1 52167 100000
+Input: 3185509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+........................................................
+Output: RESPONSE 127.0.0.1 52172 3185009670
+Output: ASK 127.0.0.1 52173 100000
+Input: 3186509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................
+.Output: RESPONSE 127.0.0.1 52174 3185109670
+Output: ASK 127.0.0.1 52175 100000
+Input: 3186609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..............................
+Output: RESPONSE 127.0.0.1 52180 3186409670
+Output: ASK 127.0.0.1 52181 100000
+Input: 3186709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Output: ASK 127.0.0.1 52182 100000
+Input: 3186809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................Output: ASK 127.0.0.1 52183 100000
+Input: 3185709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+............................................................................Output:
+ASK 127.0.0.1 52188 100000
+Input: 3186909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...............................Output: ASK 127.0.0.1 52193
+100000
+Input: 3187009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+......................Output: ASK 127.0.0.1 52194 100000
+Input: 3185909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..
+Output: RESPONSE 127.0.0.1 52195 3186509670
+Output: ASK 127.0.0.1 52196 100000
+Input: 3187109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+........................
+Output: RESPONSE 127.0.0.1 52197 3186809670
+Output: ASK 127.0.0.1 52198 100000
+Input: 3187209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................Output: ASK 127.0.0.1 52203 100000
+Input: 3186009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................Output: ASK 127.0.0.1 52208
+100000
+Input: 3187309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+....................Output: ASK 127.0.0.1 52209 100000
+Input: 3187409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....Output: ASK 127.0.0.1 52210 100000
+Input: 3187509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................................................................Output:
+ASK 127.0.0.1 52219 100000
+Input: 3186209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+....................................................................................
+Output: RESPONSE 127.0.0.1 52220 3187209670
+Output: ASK 127.0.0.1 52221 100000
+Input: 3184309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.......................................................
+Output: RESPONSE 127.0.0.1 52228 3186009670
+Output: ASK 127.0.0.1 52229 100000
+Input: 3184409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...................Output: ASK 127.0.0.1 52234 100000
+Input: 3184509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..........................
+Output: RESPONSE 127.0.0.1 52235 3187409670
+Output: ASK 127.0.0.1 52236 100000
+Input: 3184609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..
+Output: RESPONSE 127.0.0.1 52237 3187509670
+Output: ASK 127.0.0.1 52238 100000
+Input: 3184909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................Output: ASK 127.0.0.1 52239 100000
+Input: 3187609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...........................Output: ASK 127.0.0.1 52244 100000
+Input: 3186309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................Output: ASK 127.0.0.1 52249 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+........................Output: ASK 127.0.0.1 52251 100000
+Input: 3187709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................Output: ASK
+127.0.0.1 52256 100000
+Input: 3187809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........................................................................................
+Output: RESPONSE 127.0.0.1 52261 3184909670
+.Output: ASK 127.0.0.1 52262 100000
+Input: 3185309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..Output: ASK 127.0.0.1 52263 100000
+Input: 3185509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...........................................................................................................................
+Output: RESPONSE 127.0.0.1 52272 3186309670
+Output: ASK 127.0.0.1 52273 100000
+.Input: 3186609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.............................Output: ASK 127.0.0.1 52274 100000
+Input: 3186709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..Output: ASK 127.0.0.1 52275 100000
+Input: 3185709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.........
+Output: RESPONSE 127.0.0.1 52276 3187709670
+Output: ASK 127.0.0.1 52277 100000
+Input: 3187909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.............
+Output: RESPONSE 127.0.0.1 52278 3187809670
+Output: ASK 127.0.0.1 52279 100000
+Input: 3188009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Output: ASK 127.0.0.1 52284 100000
+Input: 3186909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Output: ASK 127.0.0.1 52289 100000
+Input: 3187009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.Output: ASK 127.0.0.1 52290 100000
+Input: 3185909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........Output: ASK 127.0.0.1 52291 100000
+Input: 3187109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+......................Output: ASK 127.0.0.1 52296 100000
+Input: 3188109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+................................................................Output:
+ASK 127.0.0.1 52301 100000
+Input: 3187309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...............................................Output: ASK
+127.0.0.1 52306 100000
+Input: 3188209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.............................Output: ASK 127.0.0.1 52307 100000
+Input: 3188309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................................................................
+Output: RESPONSE 127.0.0.1 52312 3185909670
+Output: ASK 127.0.0.1 52313 100000
+Input: 3186209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..
+Output: RESPONSE 127.0.0.1 52314 3187009670
+Output: ASK 127.0.0.1 52315 100000
+Input: 3188409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................Output: ASK 127.0.0.1 52320 100000
+Input: 3188509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................................................................................................................Output:
+ASK 127.0.0.1 52325 100000
+Input: 3184309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+....................
+Output: RESPONSE 127.0.0.1 52326 3187309670
+.Output: ASK 127.0.0.1 52327 100000
+Input: 3184409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.....................................................................
+Output: RESPONSE 127.0.0.1 52328 3188309670
+Output: ASK 127.0.0.1 52329 100000
+Input: 3184509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.......................................................Output:
+ASK 127.0.0.1 52334 100000
+Input: 3184609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..
+Output: RESPONSE 127.0.0.1 52335 3188409670
+Output: ASK 127.0.0.1 52336 100000
+Input: 3187609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+......
+Output: RESPONSE 127.0.0.1 52337 3188509670
+Output: ASK 127.0.0.1 52338 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Output: ASK 127.0.0.1 52339 100000
+Input: 3188609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Output: ASK 127.0.0.1 52344 100000
+Input: 3188709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Output: ASK 127.0.0.1 52349 100000
+Input: 3185309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..Output: ASK 127.0.0.1 52350 100000
+Input: 3185509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.......Output: ASK 127.0.0.1 52351 100000
+Input: 3188809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.Output: ASK 127.0.0.1 52352 100000
+Input: 3188909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+................................Output: ASK 127.0.0.1 52357
+100000
+Input: 3186609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+................................Output: ASK 127.0.0.1 52362
+100000
+Input: 3186709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............Output: ASK 127.0.0.1 52367 100000
+Input: 3185709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..Output: ASK 127.0.0.1 52368 100000
+Input: 3187909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+............................................................
+.Output: RESPONSE 127.0.0.1 52373 3185309670
+Output: ASK 127.0.0.1 52374 100000
+Input: 3188009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+......Output: ASK 127.0.0.1 52375 100000
+Input: 3186909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+......................................................................Output:
+ASK 127.0.0.1 52380 100000
+Input: 3187109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................Output:
+ASK 127.0.0.1 52385 100000
+Input: 3188109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........Output: ASK 127.0.0.1 52386 100000
+Input: 3189009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................
+.Output: RESPONSE 127.0.0.1 52391 3186709670
+Output: ASK 127.0.0.1 52392 100000
+Input: 3188209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..........................
+.Output: RESPONSE 127.0.0.1 52397 3185709670
+Output: ASK 127.0.0.1 52398 100000
+Input: 3189109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..................................................................................................................................Output:
+ASK 127.0.0.1 52403 100000
+Input: 3186209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................Output: ASK 127.0.0.1 52404 100000
+Input: 3189209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.......................................
+Output: RESPONSE 127.0.0.1 52409 3187109670
+Output: ASK 127.0.0.1 52410 100000
+Input: 3189309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................................................................
+Output: RESPONSE 127.0.0.1 52415 3188109670
+Output: ASK 127.0.0.1 52416 100000
+Input: 3184309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...
+Output: RESPONSE 127.0.0.1 52417 3189009670
+Output: ASK 127.0.0.1 52418 100000
+Input: 3184409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...................................................Output: ASK
+127.0.0.1 52419 100000
+Input: 3189409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................................................................................Output:
+ASK 127.0.0.1 52424 100000
+Input: 3184509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+............................................................................
+Output: RESPONSE 127.0.0.1 52429 3186209670
+Output: ASK 127.0.0.1 52430 100000
+Input: 3184609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................................
+Output: RESPONSE 127.0.0.1 52435 3189309670
+Output: ASK 127.0.0.1 52436 100000
+Input: 3187609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................Output: ASK 127.0.0.1 52437 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...........................................................
+Output: RESPONSE 127.0.0.1 52442 3184309670
+Output: ASK 127.0.0.1 52443 100000
+Input: 3188609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................
+Output: RESPONSE 127.0.0.1 52444 3189409670
+Output: ASK 127.0.0.1 52445 100000
+Input: 3188709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................Output: ASK
+127.0.0.1 52450 100000
+Input: 3185509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52463 3184609670
+Output: ASK 127.0.0.1 52464 100000
+Input: 3188809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.....................................................................
+Output: RESPONSE 127.0.0.1 52465 3187609670
+Output: ASK 127.0.0.1 52466 100000
+Input: 3188909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.........................................................
+.Output: RESPONSE 127.0.0.1 52471 3188609670
+Output: ASK 127.0.0.1 52472 100000
+Input: 3186609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+............................
+Output: RESPONSE 127.0.0.1 52477 3188709670
+Output: ASK 127.0.0.1 52478 100000
+Input: 3187909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Output: ASK 127.0.0.1 52479 100000
+Input: 3188009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.........
+Output: RESPONSE 127.0.0.1 52480 3185509670
+Output: ASK 127.0.0.1 52481 100000
+Input: 3186909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....................Output: ASK 127.0.0.1 52486 100000
+Input: 3188209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.................................................Output: ASK
+127.0.0.1 52487 100000
+Input: 3189109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................Output: ASK 127.0.0.1 52492
+100000
+Input: 3189209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.Output: ASK 127.0.0.1 52493 100000
+Input: 3189509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.............................................................................................................................................................................Output:
+ASK 127.0.0.1 52502 100000
+Input: 3184409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.....
+Output: RESPONSE 127.0.0.1 52503 3186909670
+Output: ASK 127.0.0.1 52504 100000
+Input: 3189609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.......................................................................................
+Output: RESPONSE 127.0.0.1 52509 3188209670
+Output: ASK 127.0.0.1 52510 100000
+Input: 3184509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.....................................................................
+Output: RESPONSE 127.0.0.1 52515 3189109670
+Output: ASK 127.0.0.1 52516 100000
+Input: 3189709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Output: ASK 127.0.0.1 52517 100000
+Input: 3189809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.....................
+Output: RESPONSE 127.0.0.1 52518 3189209670
+Output: ASK 127.0.0.1 52519 100000
+Input: 3189909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........................................Output: ASK 127.0.0.1
+52528 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+........................................
+Output: RESPONSE 127.0.0.1 52533 3184409670
+Output: ASK 127.0.0.1 52534 100000
+Input: 3190009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........Output: ASK 127.0.0.1 52535 100000
+Input: 3190109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..Output: ASK 127.0.0.1 52536 100000
+Input: 3190209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.....................................................Output:
+ASK 127.0.0.1 52545 100000
+Input: 3190309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.....................................................Output:
+ASK 127.0.0.1 52550 100000
+Input: 3190409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.Output: ASK 127.0.0.1 52551 100000
+Input: 3190509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.
+Output: RESPONSE 127.0.0.1 52552 3189909670
+Output: ASK 127.0.0.1 52553 100000
+Input: 3190609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+......................................Output: ASK 127.0.0.1
+52562 100000
+Input: 3190709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..
+Output: RESPONSE 127.0.0.1 52563 3190009670
+Output: ASK 127.0.0.1 52564 100000
+Input: 3190809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................Output: ASK 127.0.0.1 52569
+100000
+Input: 3188809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..Output: ASK 127.0.0.1 52570 100000
+Input: 3190909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..Output: ASK 127.0.0.1 52571 100000
+Input: 3191009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.....................................................................Output:
+ASK 127.0.0.1 52580 100000
+Input: 3188909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.............................................................Output:
+ASK 127.0.0.1 52585 100000
+Input: 3186609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..Output: ASK 127.0.0.1 52586 100000
+Input: 3187909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.....
+Output: RESPONSE 127.0.0.1 52587 3190809670
+Output: ASK 127.0.0.1 52588 100000
+Input: 3188009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.............................
+Output: RESPONSE 127.0.0.1 52593 3188809670
+Output: ASK 127.0.0.1 52594 100000
+Input: 3191109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Output: ASK 127.0.0.1 52599 100000
+Input: 3191209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Output: ASK 127.0.0.1 52604 100000
+Input: 3189509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..Output: ASK 127.0.0.1 52605 100000
+Input: 3191309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......Output: ASK 127.0.0.1 52606 100000
+Input: 3191409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...................................................Output: ASK
+127.0.0.1 52611 100000
+Input: 3191509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........Output: ASK 127.0.0.1 52616 100000
+Input: 3191609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................................................Output:
+ASK 127.0.0.1 52621 100000
+Input: 3189609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................................................................................................................................................................................................
+Output: RESPONSE 127.0.0.1 52642 3189509670
+Output: ASK 127.0.0.1 52643 100000
+Input: 3184509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.........
+Output: RESPONSE 127.0.0.1 52644 3191309670
+Output: ASK 127.0.0.1 52645 100000
+Input: 3189709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........................................................................................................................................
+Output: RESPONSE 127.0.0.1 52658 3191509670
+Output: ASK 127.0.0.1 52659 100000
+Input: 3189809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.........
+Output: RESPONSE 127.0.0.1 52660 3191609670
+Output: ASK 127.0.0.1 52661 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.........................................................
+Output: RESPONSE 127.0.0.1 52666 3189609670
+Output: ASK 127.0.0.1 52667 100000
+Input: 3190109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..................................................................................Output:
+ASK 127.0.0.1 52676 100000
+Input: 3190209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.........Output: ASK 127.0.0.1 52677 100000
+Input: 3190309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................
+Output: RESPONSE 127.0.0.1 52682 3184509670
+Output: ASK 127.0.0.1 52683 100000
+Input: 3190409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......
+Output: RESPONSE 127.0.0.1 52688 3189709670
+Output: ASK 127.0.0.1 52689 100000
+Input: 3190509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..........................................................Output:
+ASK 127.0.0.1 52694 100000
+Input: 3190609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................................................................................Output:
+ASK 127.0.0.1 52703 100000
+Input: 3190709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+....................
+Output: RESPONSE 127.0.0.1 52704 3190109670
+Output: ASK 127.0.0.1 52705 100000
+Input: 3190909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+...........................................................................................
+Output: RESPONSE 127.0.0.1 52714 3190309670
+Output: ASK 127.0.0.1 52715 100000
+Input: 3191009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................Output: ASK 127.0.0.1 52720
+100000
+Input: 3188909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..................Output: ASK 127.0.0.1 52721 100000
+Input: 3186609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............
+Output: RESPONSE 127.0.0.1 52722 3190409670
+Output: ASK 127.0.0.1 52723 100000
+Input: 3187909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.............................................................
+Output: RESPONSE 127.0.0.1 52732 3190609670
+Output: ASK 127.0.0.1 52733 100000
+Input: 3188009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................Output: ASK 127.0.0.1 52738
+100000
+Input: 3191109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...................................Output: ASK 127.0.0.1 52739
+100000
+Input: 3191209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+..............................................................................................................Output:
+ASK 127.0.0.1 52752 100000
+Input: 3191409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................................
+Output: RESPONSE 127.0.0.1 52765 3191009670
+Output: ASK 127.0.0.1 52766 100000
+Input: 3189809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+................................................................................
+Output: RESPONSE 127.0.0.1 52771 3186609670
+Output: ASK 127.0.0.1 52772 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 52773 3185209670 3185209680
+.*** Test 8 PASSED! ***
+Running for CHUNKSIZE=100000 CLIENTS=5 :
+Processes (in case you need to kill them)
+68593
+68594
+68595
+68596
+68597
+Output: ASK 127.0.0.1 52778 100000
+Output: ASK 127.0.0.1 52779 100000
+Input: 3184309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Input: 3184409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+........Output: ASK 127.0.0.1 52781 100000
+Output: ASK 127.0.0.1 52782 100000
+Output: ASK 127.0.0.1 52780 100000
+Input: 3184609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Input: 3184709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+Input: 3184509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................................................................................Output:
+ASK 127.0.0.1 52783 100000
+Input: 3184809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.Output: ASK 127.0.0.1 52784 100000
+Input: 3184909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+....................................................................................................................................Output:
+ASK 127.0.0.1 52785 100000
+Input: 3185009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................................................................
+Output: RESPONSE 127.0.0.1 52790 3184309670
+Output: ASK 127.0.0.1 52791 100000
+Input: 3185109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+............
+Output: RESPONSE 127.0.0.1 52792 3184409670
+Output: ASK 127.0.0.1 52793 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+....................................
+Output: RESPONSE 127.0.0.1 52798 3184509670
+Output: ASK 127.0.0.1 52799 100000
+Input: 3185309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==.
+Simulating failure ...
+......................................Output: ASK 127.0.0.1
+52800 100000
+Input: 3185409670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........Output: ASK 127.0.0.1 52801 100000
+Input: 3185509670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+...........................................................................................................................
+Output: RESPONSE 127.0.0.1 52802 3184809670
+Output: ASK 127.0.0.1 52803 100000
+Input: 3185609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.........................................................................................................................................
+Output: RESPONSE 127.0.0.1 52808 3185009670
+Output: ASK 127.0.0.1 52809 100000
+Input: 3184609670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+....................Output: ASK 127.0.0.1 52810 100000
+Input: 3184709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.............................................
+.Output: RESPONSE 127.0.0.1 52813 3185109670
+Output: ASK 127.0.0.1 52814 100000
+Input: 3185709670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+................................................................................................
+Output: RESPONSE 127.0.0.1 52817 3185409670
+Output: ASK 127.0.0.1 52818 100000
+Input: 3184909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+......
+Output: RESPONSE 127.0.0.1 52819 3185509670
+Output: ASK 127.0.0.1 52820 100000
+Input: 3185809670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.................................Output: ASK 127.0.0.1 52825
+100000
+Input: 3185909670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+......................................................................................................Output:
+ASK 127.0.0.1 52830 100000
+Input: 3186009670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+.........Output: ASK 127.0.0.1 52831 100000
+Input: 3186109670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+Simulating failure ...
+......................
+Output: RESPONSE 127.0.0.1 52832 3184609670
+Output: ASK 127.0.0.1 52833 100000
+Input: 3186209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..........
+Output: RESPONSE 127.0.0.1 52834 3184709670
+.Output: ASK 127.0.0.1 52835 100000
+Input: 3186309670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+..............................................................................................................Output:
+ASK 127.0.0.1 52840 100000
+Input: 3185209670 4
++UHC88LxQEgKq6BmdGo31UtE5HqTimlZssAZMXqSXXXT7NJLc52Fng==
+.
+Plaintext found!
+May good flourish; Kia hua ko te pai
+key is (hex) BDDA7150 3185209680
+Output: RESPONSE 127.0.0.1 52841 3185209670 3185209680
+Output: ASK 127.0.0.1 52842 100000
+./run-task-5-test-run-one.sh: line 29: 68594 Killed: 9
+java Task5Client localhost 57843 $CHUNKSIZE 2> /dev/null
+./run-task-5-test-run-one.sh: line 29: 68596 Killed: 9
+java Task5Client localhost 57843 $CHUNKSIZE 2> /dev/null
+*** Test 9 PASSED! ***
+*

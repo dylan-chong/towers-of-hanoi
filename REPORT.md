@@ -435,3 +435,18 @@ correct key, that indicates correct functionality.
 This test must be successfully repeated 10 times in a row to consider the
 implementation reliable. The repeat as required because of the probabilistic
 nature of the test. The test has been implemented in `./run-task-5-test.sh`.
+Given that there is a 50% chance that work will fail, and that the original
+implementation from task three did not retried at work, there is a 50% chance
+of each test failing. Therefore there is a `1- 0.5^10 = 99.9%` chance that at
+least one of the 10 runs will fail.
+
+### Results
+
+The new implementation was able to successfully pass the test (all of the 10
+runs). This shows that the new implementation was able to handle network
+failures. The full (rather hard to read) log output can be seen in the file
+`./test-task-5-output.txt`, although there are 10 lines that mention `PASSED`,
+showing that each test passed.
+
+It has been checked that the new design follows all of the requirements, which
+is shown in the section above.
